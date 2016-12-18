@@ -2,64 +2,25 @@
  * Created by Masa on 18-Dec-16.
  */
 import React from 'react';
-import CardSignRenderer from './CardSignRenderer';
+import CardMain from './CardMain';
+import CardSymbol from './CardSymbol';
+
 
 const cardHeight = 310;
 const cardWidth = cardHeight/3*2;
-const blackColor = "#36474f";
-const redColor = "#d4494f";
+export const blackColor = "#36474f";
+export const redColor = "#d4494f";
 
 const font = "Roboto Condensed";
-const rotatedStyle = {
+export const rotatedStyle = {
     transform: "rotate(180deg)",
 };
 
-function isBlack(symbol) {
+export function isBlack(symbol) {
     return symbol === "spades" || symbol === "clubs";
 }
 
-class CardSymbol extends React.Component {
-    render() {
 
-        const circleSize = this.props.containerSize;
-        const circleSignSize = circleSize * 0.7;
-        const headerCircleSignStyle = {
-            lineHeight: circleSize + "px",
-            fontSize: circleSignSize + "px",
-            margin: "auto",
-            fontFamily: "monospace",
-            fontWeight: "600",
-            color: isBlack(this.props.symbol) ? blackColor : redColor,
-        };
-        if (this.props.lineHeight) {
-            headerCircleSignStyle.lineHeight = this.props.lineHeight + "px";
-        }
-        if (this.props.margin) {
-            headerCircleSignStyle.marginRight = this.props.margin + "px";
-            headerCircleSignStyle.marginLeft = this.props.margin + "px";
-        }
-        var cardSymbol;
-        switch (this.props.symbol) {
-            case "spades":
-                cardSymbol = <span style={headerCircleSignStyle}>&spades;</span>;
-                break;
-            case "diamonds":
-                cardSymbol = <span style={headerCircleSignStyle}>&diams;</span>;
-                break;
-            case "clubs":
-                cardSymbol = <span style={headerCircleSignStyle}>&clubs;</span>;
-                break;
-            case "hearts":
-                cardSymbol = <span style={headerCircleSignStyle}>&hearts;</span>;
-                break;
-            default:
-        }
-
-        return (
-            cardSymbol
-        );
-    }
-}
 
 class CardHeader extends React.Component {
 
@@ -120,81 +81,6 @@ class CardHeader extends React.Component {
     }
 }
 
-class CardMain extends React.Component {
-    render() {
-        const mainStyle = {
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-        };
-        const mainStyle23 = {
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-        };
-        var mainSection;
-        const num = this.props.number;
-        if (this.props.number > 10) {
-            mainSection =
-                <div style={mainStyle}>
-                    <CardSignRenderer type={this.props.number} color={isBlack(this.props.symbol)? "black" : "red"}/>
-                    <div style={rotatedStyle}>
-                        <CardSignRenderer type={this.props.number} color={isBlack(this.props.symbol)? "black" : "red"}/>
-                    </div>
-                </div>
-        } else {
-
-            const symbolSize = num === 1 ? cardHeight / 3 : cardHeight / 6;
-            const middle = Math.ceil(num / 2);
-            var symArr = [];
-            for (let i = 0; i < num; i++) {
-                symArr.push(<CardSymbol containerSize={symbolSize} symbol={this.props.symbol} lineHeight={35} margin={4}
-                                        key={i}/>);
-            }
-            const symUpper = symArr.slice().splice(0, middle);
-            const symBottom = symArr.slice().splice(middle, num);
-
-            if (num === 2) {
-                mainSection =
-                    <div style={mainStyle23}>
-                        <div>
-                            {symUpper}
-                        </div>
-                        <div style={rotatedStyle}>
-                            {symBottom}
-                        </div>
-                    </div>
-            } else if (num === 3) {
-                mainSection =
-                    <div style={mainStyle23}>
-                        <div>
-                            {symBottom}
-                        </div>
-                        <div style={rotatedStyle}>
-                            {symBottom}
-                        </div>
-                        <div>
-                            {symBottom}
-                        </div>
-                    </div>
-            } else {
-                mainSection =
-                    <div style={mainStyle}>
-                        <div>
-                            {symUpper}
-                        </div>
-                        <div style={rotatedStyle}>
-                            {symBottom}
-                        </div>
-                    </div>
-            }
-        }
-
-        return mainSection;
-    }
-}
 
 class Card extends React.Component {
     stringifyCard(number) {
@@ -264,7 +150,7 @@ class Card extends React.Component {
                     <CardHeader cardHeight={cardHeight} symbol={this.props.symbol} number={cardName.num}
                                 numText={cardName.str}/>
                 </div>
-                <CardMain number={this.props.number} symbol={this.props.symbol}/>
+                <CardMain number={this.props.number} symbol={this.props.symbol} cardHeight={cardHeight}/>
                 <div style={{...headerStyle, ...rotatedStyle}}>
                     <CardHeader cardHeight={cardHeight} symbol={this.props.symbol} number={cardName.num}
                                 numText={cardName.str}/>
