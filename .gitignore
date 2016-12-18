@@ -1,0 +1,13 @@
+# dependencies
+makao-react/node_modules
+
+# testing
+makao-react/coverage
+
+# production
+makao-react/build
+
+# misc
+makao-react/.DS_Store
+makao-react/.env
+makao-react/npm-debug.log
