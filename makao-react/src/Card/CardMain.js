@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import {isBlack, rotatedStyle} from './Card';
+import {isBlack, rotatedStyle} from './common';
 import CardSymbol from './CardSymbol';
 import CardSignRenderer from './CardSignRenderer';
 

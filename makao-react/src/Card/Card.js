@@ -3,84 +3,11 @@
  */
 import React from 'react';
 import CardMain from './CardMain';
-import CardSymbol from './CardSymbol';
-
+import CardHeader from './CardHeader';
+import { blackColor, redColor, isBlack, rotatedStyle} from './common';
 
 const cardHeight = 310;
 const cardWidth = cardHeight/3*2;
-export const blackColor = "#36474f";
-export const redColor = "#d4494f";
-
-const font = "Roboto Condensed";
-export const rotatedStyle = {
-    transform: "rotate(180deg)",
-};
-
-export function isBlack(symbol) {
-    return symbol === "spades" || symbol === "clubs";
-}
-
-
-
-class CardHeader extends React.Component {
-
-    render() {
-        const headerTextContainerStyle = {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingTop: "3%",
-        };
-        const circleSize = cardHeight / 5 / 2;
-        const signPadding = 16;
-        const numberStyle = {
-            width: circleSize,
-            color: "white",
-            fontSize: cardHeight / 5 / 2,
-            fontFamily: "Raleway",
-            fontWeight: "100",
-            textAlign: "center",
-            marginLeft: signPadding
-        };
-        const textStyle = {
-            color: "white",
-            fontSize: cardHeight / 5 / 6,
-            fontFamily: font,
-            fontWeight: "400",
-            marginRight: "20px",
-            marginTop: "10px",
-            textAlign: "center",
-        };
-
-        const headerCircleStyle = {
-            display: "block",
-            position: "absolute",
-            width: circleSize,
-            height: circleSize,
-            left: signPadding,
-            border: "none",
-            borderRadius: "50%",
-            backgroundColor: "white",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-
-        };
-
-
-        return (
-            <div>
-                <div style={headerTextContainerStyle}>
-                    <span style={numberStyle}>{this.props.number}</span>
-                    <span style={textStyle}>{this.props.numText.toUpperCase()}
-                        &nbsp;OF&nbsp;{this.props.symbol.toUpperCase()}</span>
-                </div>
-                <div style={headerCircleStyle}>
-                    <CardSymbol containerSize={circleSize} symbol={this.props.symbol}/>
-                </div>
-            </div>
-        );
-    }
-}
-
 
 class Card extends React.Component {
     stringifyCard(number) {

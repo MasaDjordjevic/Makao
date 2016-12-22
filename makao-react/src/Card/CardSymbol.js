@@ -1,6 +1,6 @@
 import React from 'react';
 import Radium from 'radium';
-import {blackColor, redColor, isBlack} from './Card'
+import {blackColor, redColor, isBlack} from './common';
 
 class CardSymbol extends React.Component {
     getStyles() {
@@ -13,9 +13,6 @@ class CardSymbol extends React.Component {
             fontFamily: "monospace",
             fontWeight: "600",
             color: isBlack(this.props.symbol) ? blackColor : redColor,
-            ':hover': {
-                backgroundColor: "red",
-            }
         };
         if (this.props.lineHeight) {
             style.lineHeight = this.props.lineHeight + "px";
