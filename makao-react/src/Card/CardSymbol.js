@@ -9,7 +9,8 @@ class CardSymbol extends React.Component {
         var style = {
             lineHeight: circleSize + "px",
             fontSize: circleSignSize + "px",
-            margin: "auto",
+            marginTop: "auto",
+            marginBottom: "auto",
             fontFamily: "monospace",
             fontWeight: "600",
             color: isBlack(this.props.symbol) ? blackColor : redColor,

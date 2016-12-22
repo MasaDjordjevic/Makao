@@ -69,4 +69,11 @@ class CardHeader extends React.Component {
     }
 }
 
+CardHeader.propTypes = {
+    cardHeight: React.PropTypes.number.isRequired,
+    number: React.PropTypes.string.isRequired,
+    symbol: React.PropTypes.string.isRequired,
+    numText: React.PropTypes.string.isRequired,
+}
+
 export default Radium(CardHeader);
