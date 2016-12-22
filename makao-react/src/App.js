@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
-import Card from "./Card/Card"
+import Card from './Card/Card'
+import CardComponent from "./Card/CardComponent"
 
 class App extends Component {
     get testCards(){
         return [
-            {sym:"spades", num: "2" },
-            {sym:"spades", num: "7" },
-            {sym:"diamonds", num: "1" },
-            {sym:"spades", num: "12" },
-            {sym:"spades", num: "13" },
-            {sym:"spades", num: "1" },
-
-            {sym:"diamonds", num: "2" },
-            {sym:"diamonds", num: "13" },
-            {sym:"clubs", num: "1" },
-            {sym:"clubs", num: "2" },
-            {sym:"clubs", num: "10" },
-            {sym:"clubs", num: "14" },
-            {sym:"hearts", num: "3" },
-            {sym:"hearts", num: "12" },
+            new Card("spades", "2"),
+            new Card("spades", "7"),
+            new Card("diamonds", "1"),
+            new Card("spades", "12"),
+            new Card("spades", "13"),
+            new Card("spades", "1"),
+            new Card("diamonds", "2"),
+            new Card("diamonds", "13"),
+            new Card("clubs", "1"),
+            new Card("clubs", "2"),
+            new Card("clubs", "10"),
+            new Card("clubs", "14"),
+            new Card("hearts", "3"),
+            new Card("hearts", "12"),
         ];
     }
     get style(){
@@ -37,9 +37,8 @@ class App extends Component {
     return (
       <div className="App" style={this.style}>
           {this.testCards.map((card, i)=>
-                <Card
-                    symbol={card.sym}
-                    number={card.num}
+                <CardComponent
+                    card={card}
                     key={i.toString()}
                     cardHeight={310}/>
           )}

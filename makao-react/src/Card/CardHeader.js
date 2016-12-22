@@ -6,6 +6,7 @@ import Radium from 'radium';
 import {font} from './common';
 import CardSymbol from './CardSymbol';
 
+
 class CardHeader extends React.Component {
     get circleSize(){
         return this.props.cardHeight / 5 / 2;
@@ -57,12 +58,12 @@ class CardHeader extends React.Component {
         return (
             <div>
                 <div style={this.getStyles().headerTextContainerStyle}>
-                    <span style={this.getStyles().numberStyle}>{this.props.number}</span>
-                    <span style={this.getStyles().textStyle}>{this.props.numText.toUpperCase()}
-                        &nbsp;OF&nbsp;{this.props.symbol.toUpperCase()}</span>
+                    <span style={this.getStyles().numberStyle}>{this.props.card.stringify().short}</span>
+                    <span style={this.getStyles().textStyle}>{this.props.card.stringify().long.toUpperCase()}
+                        &nbsp;OF&nbsp;{this.props.card.symbol.toUpperCase()}</span>
                 </div>
                 <div style={this.getStyles().headerCircleStyle}>
-                    <CardSymbol containerSize={this.circleSize} symbol={this.props.symbol}/>
+                    <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
                 </div>
             </div>
         );
@@ -71,9 +72,6 @@ class CardHeader extends React.Component {
 
 CardHeader.propTypes = {
     cardHeight: React.PropTypes.number.isRequired,
-    number: React.PropTypes.string.isRequired,
-    symbol: React.PropTypes.string.isRequired,
-    numText: React.PropTypes.string.isRequired,
 }
 
 export default Radium(CardHeader);

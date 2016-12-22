@@ -24,13 +24,13 @@ class CardMain extends React.Component {
             justifyContent: "center",
         };
         var mainSection;
-        const num = this.props.number;
-        if (this.props.number > 10) {
+        const num = this.props.card.number;
+        if (num > 10) {
             mainSection =
                 <div style={mainStyle}>
-                    <CardSignRenderer type={this.props.number} color={isBlack(this.props.symbol)? "black" : "red"}/>
+                    <CardSignRenderer type={this.props.card.number} color={isBlack(this.props.symbol)? "black" : "red"}/>
                     <div style={rotatedStyle}>
-                        <CardSignRenderer type={this.props.number} color={isBlack(this.props.symbol)? "black" : "red"}/>
+                        <CardSignRenderer type={this.props.card.number} color={isBlack(this.props.symbol)? "black" : "red"}/>
                     </div>
                 </div>
         } else {
@@ -39,7 +39,7 @@ class CardMain extends React.Component {
             const middle = Math.ceil(num / 2);
             var symArr = [];
             for (let i = 0; i < num; i++) {
-                symArr.push(<CardSymbol containerSize={symbolSize} symbol={this.props.symbol} lineHeight={35} margin={4}
+                symArr.push(<CardSymbol containerSize={symbolSize} symbol={this.props.card.symbol} lineHeight={35} margin={4}
                                         key={i}/>);
             }
             const symUpper = symArr.slice().splice(0, middle);
