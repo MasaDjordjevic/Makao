@@ -4,15 +4,6 @@ import Card from "./Card/Card"
 
 class App extends Component {
   render() {
-      const appStyle = {
-          height: "100vh",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignContent:"space-around",
-          flexWrap: "wrap",
-          backgroundColor: "#ECEFF1"
-      }
       const testCards = [
           {sym:"spades", num: "2" },
           {sym:"spades", num: "7" },
@@ -39,5 +30,15 @@ class App extends Component {
     );
   }
 }
+
+var appStyle = {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignContent:"space-around",
+    flexWrap: "wrap",
+    backgroundColor: "#ECEFF1"
+};
 
 export default App;
