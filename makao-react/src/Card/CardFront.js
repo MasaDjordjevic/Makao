@@ -8,7 +8,7 @@ import React from 'react';
 import Radium from 'radium';
 import CardMain from './CardMain';
 import CardHeader from './CardHeader';
-import { blackColor, redColor, isBlack, rotatedStyle, getCardWidth} from './common';
+import { blackColor, redColor, isBlack, rotatedStyle, getCardWidth, cardHoverGrowth} from './common';
 
 
 
@@ -30,7 +30,7 @@ class CardFront extends React.Component {
                 marginRight: "10px",
                 backgroundColor: "white",
                 ':hover':{
-                    transform: 'scale(1.05)'
+                    transform: 'scale(' + cardHoverGrowth + ')'
                 }
             },
 

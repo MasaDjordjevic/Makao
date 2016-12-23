@@ -4,6 +4,7 @@
 import React from 'react';
 import CardSetLine from './CardSetLine';
 import _ from 'lodash';
+import {cardHoverGrowth} from './common'
 
 
 class CardSet extends React.Component{
@@ -12,7 +13,7 @@ class CardSet extends React.Component{
         return {
             container: {
                 width: this.props.width,
-                height: height,
+                height: height*1.05,
                 position: 'relative',
                 overflow: 'hidden',
             },
@@ -34,7 +35,7 @@ class CardSet extends React.Component{
                 <div style={{
                     zIndex: i,
                     position:'absolute',
-                    top:i*this.props.height/cardArrays.length}}
+                    top:i*this.props.height/cardArrays.length + (this.props.height*(cardHoverGrowth-1))}}
                      key={i.toString()}>
                        <CardSetLine
                             height={this.props.height}
