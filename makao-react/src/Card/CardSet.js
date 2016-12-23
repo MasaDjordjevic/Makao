@@ -63,6 +63,7 @@ CardSet.defaultProps = {
 };
 CardSet.propTypes = {
     width: React.PropTypes.number.isRequired,
+    height: React.PropTypes.number,
 
     back: React.PropTypes.bool,
     cardNumber: React.PropTypes.number,
