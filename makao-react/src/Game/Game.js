@@ -2,7 +2,10 @@
  * Created by Masa on 22-Dec-16.
  */
 import React from 'react';
+import CardComponent from '../Card/CardComponent';
+import CardSet from '../Card/CardSet';
 import Card from '../Card/Card';
+import Talon from './Talon';
 
 class Game extends React.Component {
     constructor(){
@@ -33,27 +36,52 @@ class Game extends React.Component {
             ],
             pile: [],
         };
+
+
     }
 
     playMove(playerId, card){
-        if(playerId !== this.state.userId){
-            const players = this.state.players.slice();
-            players.find((player) => player.id === playerId).cardNumber--;
-            const pile = this.state.pile.slice();
-            pile.push(card);
+        if(playerId === this.state.userId) {
+            const myCards = this.state.myCards.slice();
+            myCards.splice(myCards.indexOf(card), 1);
             this.setState({
-                players: players,
-                pile: pile,
+                myCards: myCards,
             })
         }
+        const players = this.state.players.slice();
+        players.find((player) => player.id === playerId).cardNumber--;
+        const pile = this.state.pile.slice();
+        pile.push(card);
+        this.setState({
+            players: players,
+            pile: pile,
+        })
+
     }
 
+    componentDidMount(){
+        this.playMove(1, this.state.myCards[0]);
+
+    }
+    get styles(){
+        return {
+            game: {
+
+            },
+            myCards: {
+
+            }
+        }
+    }
     render(){
         return(
-            <div>
-                {this.state.players.map((player, i) =>
-                    <span key={i.toString()}>{player.name} {player.cardNumber}</span>
-                )}
+            <div style={this.styles.game}>
+                <div style={this.styles.myCards}>
+                   <CardSet width={700} height={310} cards={this.state.myCards} />
+                </div>
+                <div>
+                    <Talon cardHeight={310} card={this.state.pile.slice(-1)[0]}/>
+                </div>
             </div>
         );
     }

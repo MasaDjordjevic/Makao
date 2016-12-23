@@ -57,11 +57,11 @@ class App extends Component {
     */
   render() {
     return (
-        /*<div className="App" style={this.style}>
+        <div className="App" style={this.style}>
             <Game />
-        </div>*/
+        </div>
 
-
+/*
        <div className="App" style={this.style}>
            <CardSet width={500} cards={this.testCards.splice(5)} cardNumber={5} sort />
            <CardSet width={500} cards={this.testCards.splice(7)} cardNumber={5} sort />
@@ -70,7 +70,7 @@ class App extends Component {
            <CardSet width={500} back cardNumber={5} />
 
        </div>
-
+*/
     );
   }
 }
