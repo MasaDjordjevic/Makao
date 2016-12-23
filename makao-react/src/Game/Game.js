@@ -124,7 +124,7 @@ class Game extends React.Component {
      </div>*/
     render(){
         const players = this.state.players.slice();
-        const playersWithoutUser = _.remove(players, (p) => p.id != this.state.userId);
+        const playersWithoutUser = _.remove(players, (p) => p.id !== this.state.userId);
         return(
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
