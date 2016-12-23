@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import CardComponent from './CardComponent';
-import {getCardWidth} from './common';
 
 class CardSet extends React.Component{
     get styles(){
@@ -25,10 +24,7 @@ class CardSet extends React.Component{
 
     render(){
         const cardNum = this.props.back ? this.props.cardNumber : this.props.cards.length;
-        const setWidth = this.props.width;
-        const offset = setWidth/cardNum;
-
-        console.log(offset);
+        const offset = this.props.width/cardNum;
         return(
             <div style={this.styles.container}>
                 {
