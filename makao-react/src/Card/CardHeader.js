@@ -25,8 +25,8 @@ class CardHeader extends React.Component {
                 width: this.circleSize,
                 color: "white",
                 fontSize: cardHeight / 5 / 2,
-                fontFamily: "Raleway",
-                fontWeight: "100",
+                fontFamily: "Dosis",
+                fontWeight: "200",
                 textAlign: "center",
                 marginLeft: signPadding
             },
