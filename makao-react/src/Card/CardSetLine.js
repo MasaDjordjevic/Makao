@@ -3,26 +3,38 @@
  */
 import React from 'react';
 import CardComponent from './CardComponent';
-import {getCardWidth} from './common'
+import {getCardWidth, font} from './common';
 
 class CardSetLine extends React.Component{
     get styles(){
+        const height = this.props.height;
         const cardWidth = getCardWidth(this.props.height);
         return {
             container: {
                 width: this.props.width,
-                height: this.props.height,
+                height: height,
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'space-around',
             },
             cardContainer: {
                 width: '1px',
-                height: '100%'
+                height: '100%',
+                position: 'relative',
             },
             lastChild: {
                 marginRight: cardWidth,
-            }
+            },
+            cardNum: {
+                textAlign: 'right',
+                position: 'absolute',
+                bottom: height/24,
+                right: -cardWidth*0.9, //nzm sto je ovo ovako
+                color: "white",
+                fontSize: height/10,
+                fontFamily: font,
+                fontWeight: "400",
+            },
         }
     }
 
@@ -42,6 +54,9 @@ class CardSetLine extends React.Component{
 
     render(){
         const offset = this.props.width/this.props.cards.length;
+        if(this.props.backCardNumberLabel && this.props.back){
+            var cardNum = <span style={this.styles.cardNum}>{this.props.cards.length}</span>
+        }
         return(
             <div style={this.styles.container}>
                 {
@@ -50,10 +65,14 @@ class CardSetLine extends React.Component{
                                 key={i.toString()}
                                 style={this.cardContainerStyle(i)}>
                                 <CardComponent
+                                    back={this.props.back}
                                     cardHeight={this.props.height}
                                     card={card}
                                     offset={offset} />
+
+                                {cardNum}
                             </div>
+
                     )
                 }
             </div>
@@ -62,12 +81,14 @@ class CardSetLine extends React.Component{
 }
 CardSetLine.defaultProps = {
     height: 310,
+    backCardNumberLabel: true,
 };
 CardSetLine.propTypes = {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number,
 
     back: React.PropTypes.bool,
+    backCardNumberLabel: React.PropTypes.bool,
     cardNumber: React.PropTypes.number,
     cards: React.PropTypes.array,
     sort: React.PropTypes.bool

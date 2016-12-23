@@ -79,6 +79,12 @@ class Game extends React.Component {
                 <div style={this.styles.myCards}>
                    <CardSet width={700} height={310} cards={this.state.myCards} />
                 </div>
+                <div style={this.styles.myCards}>
+                    <CardSet width={700} height={310} cardNumber={50} back />
+                </div>
+                <div style={this.styles.myCards}>
+                    <CardSet width={500} height={310} cardNumber={5} back />
+                </div>
                 <div>
                     <Talon cardHeight={310} card={this.state.pile.slice(-1)[0]}/>
                 </div>

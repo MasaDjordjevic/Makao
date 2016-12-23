@@ -40,10 +40,8 @@ class App extends Component {
         return {
             height: "100vh",
             display: "flex",
-            flexDirection: "column",
             justifyContent: "space-around",
             alignContent:"space-around",
-            flexWrap: "wrap",
             backgroundColor: "#ECEFF1"
         };
     }
