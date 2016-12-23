@@ -17,20 +17,8 @@ class Game extends React.Component {
               {id: 1, name: 'Masa', cardNumber: '10'},
               {id: 2, name: 'Jajac', cardNumber: '13'},
               {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-
-
-
-
+              {id: 4, name: 'Nemanja', cardNumber: '7'},
+              {id: 5, name: 'Darko', cardNumber: '8'},
             ],
             playerOnMoveId: 1,
             userId: 1,
@@ -95,14 +83,29 @@ class Game extends React.Component {
     }
     get styles(){
         return {
-            game: {
-
+            container: {
+                position: 'relative',
             },
             myCards: {
-
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-end'
             },
             opponents:{
 
+            },
+            talon:{
+                top: '-8%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            absolute: {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
             }
         }
     }
@@ -122,8 +125,16 @@ class Game extends React.Component {
         const players = this.state.players.slice();
         const playersWithoutUser = _.remove(players, (p) => p.id != this.state.userId);
         return(
-            <div style={this.styles.game}>
-                <Opponents playerHeight={150} players={playersWithoutUser} />
+            <div style={this.styles.container}>
+                <div style={this.styles.opponents}>
+                    <Opponents playerHeight={150} players={playersWithoutUser} />
+                </div>
+                <div style={{ ...this.styles.absolute,...this.styles.talon}}>
+                    <Talon cardHeight={270} card={this.state.pile.slice(-1)[0]}/>
+                </div>
+                <div style={{...this.styles.myCards, ...this.styles.absolute}}>
+                    <CardSet width={700} height={250} cards={this.state.myCards} />
+                </div>
             </div>
         );
     }
