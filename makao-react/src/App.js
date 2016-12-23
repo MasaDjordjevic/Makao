@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import Card from './Card/Card'
-import CardComponent from "./Card/CardComponent"
+import Card from './Card/Card';
+import CardComponent from "./Card/CardComponent";
+import CardSet from "./Card/CardSet";
+import Game from "./Game/Game";
 
 class App extends Component {
     get testCards(){
@@ -33,16 +35,27 @@ class App extends Component {
             backgroundColor: "#ECEFF1"
         };
     }
+    /*
+     {this.testCards.map((card, i)=>
+     <CardComponent
+     card={card}
+     key={i.toString()}
+     cardHeight={310}/>
+     )}
+    */
   render() {
     return (
-      <div className="App" style={this.style}>
-          {this.testCards.map((card, i)=>
-                <CardComponent
-                    card={card}
-                    key={i.toString()}
-                    cardHeight={310}/>
-          )}
-      </div>
+        /*<div className="App" style={this.style}>
+            <Game />
+        </div>*/
+
+
+       <div className="App" style={this.style}>
+           <CardSet width={500} cards={this.testCards} cardNumber={5} />
+           <CardSet width={500} back cardNumber={5} />
+
+       </div>
+
     );
   }
 }
