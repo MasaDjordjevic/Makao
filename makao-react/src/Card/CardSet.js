@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 class CardSet extends React.Component{
     get styles(){
-        const height = this.props.height
+        const height = this.props.height;
         return {
             container: {
                 width: this.props.width,
@@ -37,6 +37,7 @@ class CardSet extends React.Component{
                     top:i*this.props.height/cardArrays.length}}
                      key={i.toString()}>
                        <CardSetLine
+                            height={this.props.height}
                             width={this.props.width}
                             cards={arr}
                             back={this.props.back}/>

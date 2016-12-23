@@ -14,16 +14,18 @@ class CardBack extends React.Component {
         return this.cardWidth*0.7
     }
     get style(){
+        const cardHeight = this.props.cardHeight;
         const border = '2px grey solid';
-        const cardBorderSize = 10;
+        const cardBorderSize = cardHeight / 31;
+        const cardBorderRadius = cardHeight / 20;
         return {
             container: {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
                 width: this.cardWidth ,
-                height: this.props.cardHeight,
-                borderRadius: "15px",
+                height: cardHeight,
+                borderRadius: cardBorderRadius,
                 overflow: "hidden",
                 boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
                 border: cardBorderSize + 'px white solid',
