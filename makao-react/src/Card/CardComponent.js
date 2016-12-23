@@ -18,7 +18,8 @@ class CardComponent extends React.Component {
                 <CardBack cardHeight={this.props.cardHeight}/>
                 : <CardFront
                     cardHeight={this.props.cardHeight}
-                    card={this.props.card}/>
+                    card={this.props.card}
+                    offset={this.props.offset}/>
         );
     }
 }

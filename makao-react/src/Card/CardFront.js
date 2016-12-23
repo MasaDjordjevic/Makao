@@ -52,7 +52,8 @@ class CardFront extends React.Component {
                 <div style={this.styles.headerStyle}>
                     <CardHeader
                         cardHeight={this.props.cardHeight}
-                        card={this.props.card}/>
+                        card={this.props.card}
+                        offset={this.props.offset}/>
                 </div>
                 <CardMain
                     card={this.props.card}
@@ -60,7 +61,8 @@ class CardFront extends React.Component {
                 <div style={{...this.styles.headerStyle, ...rotatedStyle}}>
                     <CardHeader
                         cardHeight={this.props.cardHeight}
-                        card={this.props.card}/>
+                        card={this.props.card}
+                        offset={this.props.offset}/>
                 </div>
 
             </div>

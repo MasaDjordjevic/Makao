@@ -28,7 +28,7 @@ class App extends Component {
         return {
             height: "100vh",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "space-around",
             alignContent:"space-around",
             flexWrap: "wrap",
@@ -51,6 +51,9 @@ class App extends Component {
 
 
        <div className="App" style={this.style}>
+           <CardSet width={500} cards={this.testCards.splice(5)} cardNumber={5} sort />
+           <CardSet width={500} cards={this.testCards.splice(7)} cardNumber={5} sort />
+           <CardSet width={500} cards={this.testCards.splice(2)} cardNumber={5} />
            <CardSet width={500} cards={this.testCards} cardNumber={5} />
            <CardSet width={500} back cardNumber={5} />
 
