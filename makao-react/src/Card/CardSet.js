@@ -8,7 +8,8 @@ class CardSet extends React.Component{
     get styles(){
         return {
             container: {
-                width: this.props.setWidth,
+                width: this.props.width,
+                height: this.props.height,
                 position: 'relative',
             },
             card: {
@@ -25,28 +26,40 @@ class CardSet extends React.Component{
     render(){
         const cardNum = this.props.back ? this.props.cardNumber : this.props.cards.length;
         const offset = this.props.width/cardNum;
+        const chunkSize = 15;
+        const verticalOffset = this.props.height/Math.ceil(cardNum/chunkSize);
         return(
             <div style={this.styles.container}>
                 {
                     this.props.back ?
                         Array(this.props.cardNumber).fill(0).map((card, i) =>
                             <div key={i.toString()} style={{...this.styles.card, ...{left: i*offset}}}>
-                                <CardComponent back />
+                                <CardComponent back cardHeight={this.props.height} />
                             </div>
                                 )
                         :
-                        this.props.cards.map((card, i) =>
-                            <div key={i.toString()} style={{...this.styles.card, ...{left: i*offset}}}>
-                                <CardComponent card={card} key={i.toString()} offset={offset}/>
-                            </div>
-                        )
+                        this.props.cards.map((card, i) => {
+                        return i%chunkSize === 0 ? this.props.cards.slice(i, i+chunkSize) : null;
+                        }).filter(function(e){ return e; }).map((arr, index) => {
+                            return arr.map((card, i) =>
+                                <div
+                                    key={i.toString()}
+                                    style={{...this.styles.card, ...{
+                                        left: i*offset,
+                                        top: index*verticalOffset
+                                    }}}>
+                                    <CardComponent cardHeight={this.props.height} card={card} key={i.toString()} offset={offset} />
+                                </div>
+                            )
+                        })
+
                 }
             </div>
         );
     }
 }
 CardSet.defaultProps = {
-    cardHeight: 310,
+    height: 310,
 };
 CardSet.propTypes = {
     width: React.PropTypes.number.isRequired,

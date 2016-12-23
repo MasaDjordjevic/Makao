@@ -22,6 +22,18 @@ class App extends Component {
             new Card("clubs", "14"),
             new Card("hearts", "3"),
             new Card("hearts", "12"),
+
+            new Card("spades", "12"),
+            new Card("spades", "13"),
+            new Card("spades", "1"),
+            new Card("diamonds", "2"),
+            new Card("diamonds", "13"),
+            new Card("clubs", "1"),
+            new Card("clubs", "2"),
+            new Card("clubs", "10"),
+            new Card("clubs", "14"),
+            new Card("hearts", "3"),
+            new Card("hearts", "12"),
         ];
     }
     get style(){
