@@ -2,7 +2,8 @@
  * Created by Masa on 23-Dec-16.
  */
 import React from 'react';
-import CardComponent from './CardComponent';
+import CardSetLine from './CardSetLine';
+import _ from 'lodash';
 
 class CardSet extends React.Component{
     get styles(){
@@ -24,36 +25,19 @@ class CardSet extends React.Component{
     }
 
     render(){
-        const cardNum = this.props.back ? this.props.cardNumber : this.props.cards.length;
-        const offset = this.props.width/cardNum;
+        const cardArray = this.props.back ? Array(this.props.cardNumber).fill(null) : this.props.cards;
         const chunkSize = 15;
-        const verticalOffset = this.props.height/Math.ceil(cardNum/chunkSize);
+        const cardArrays = _.chunk(cardArray,chunkSize);
         return(
             <div style={this.styles.container}>
-                {
-                    this.props.back ?
-                        Array(this.props.cardNumber).fill(0).map((card, i) =>
-                            <div key={i.toString()} style={{...this.styles.card, ...{left: i*offset}}}>
-                                <CardComponent back cardHeight={this.props.height} />
-                            </div>
-                                )
-                        :
-                        this.props.cards.map((card, i) => {
-                        return i%chunkSize === 0 ? this.props.cards.slice(i, i+chunkSize) : null;
-                        }).filter(function(e){ return e; }).map((arr, index) => {
-                            return arr.map((card, i) =>
-                                <div
-                                    key={i.toString()}
-                                    style={{...this.styles.card, ...{
-                                        left: i*offset,
-                                        top: index*verticalOffset
-                                    }}}>
-                                    <CardComponent cardHeight={this.props.height} card={card} key={i.toString()} offset={offset} />
-                                </div>
-                            )
-                        })
+                {cardArrays.map((arr, i)=>
+                       <CardSetLine
+                           key={i.toString()}
+                            width={this.props.width}
+                            cards={arr}
+                            back={this.props.back}/>
 
-                }
+                )}
             </div>
         );
     }

@@ -13,7 +13,7 @@ class CardHeader extends React.Component {
     }
     getStyles() {
         const cardHeight = this.props.cardHeight;
-        const signPadding = !this.props.offset || this.props.offset > 50 ? 16 : this.props.offset/7 ;
+        const signPadding = !this.props.offset || this.props.offset > 60 ? 16 : this.props.offset/7;
         return {
             headerTextContainerStyle : {
                 display: "flex",
