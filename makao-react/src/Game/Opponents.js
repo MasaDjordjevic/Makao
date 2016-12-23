@@ -17,8 +17,10 @@ class Opponents extends React.Component{
         if(this.total%2 === 1){
             if(i<Math.floor(this.total/2))
                 angle+= angleDiff;
-            if(i==Math.floor(this.total/2))
-                angle += angleDiff/this.total;
+            if(i==Math.floor(this.total/2)){
+                angle += angleDiff/(this.total);
+                angle = 90;
+            }
         }else {
             if( i == this.total/2 - 1)
             {
@@ -35,7 +37,8 @@ class Opponents extends React.Component{
         console.log(angle);
         const top = 50 - 50*Math.sin(angle.toRad()) + '%';
         const leftNum = Math.round(50 - 50*Math.cos(angle.toRad()));
-        const left =  leftNum > 50 ? 'calc('+leftNum + '% - ' + this.elementWidth + 'px)' :leftNum + '%';
+        const left =  leftNum > 50 ? 'calc('+leftNum + '% - ' + this.elementWidth + 'px)' :
+            leftNum === 50 ?  'calc('+leftNum + '% - ' + this.elementWidth/2 + 'px)' :leftNum + '%';
 
         return {
             position: 'absolute',

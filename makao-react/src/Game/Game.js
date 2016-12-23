@@ -79,6 +79,7 @@ class Game extends React.Component {
 
     componentDidMount(){
         this.playMove(1, this.state.myCards[0]);
+        this.playMove(2, new Card("clubs", "9"));
 
     }
     get styles(){
@@ -95,7 +96,7 @@ class Game extends React.Component {
 
             },
             talon:{
-                top: '-8%',
+                top: '-2%',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
