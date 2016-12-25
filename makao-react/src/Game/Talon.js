@@ -3,8 +3,9 @@
  */
 import React from 'react';
 import CardComponent from '../Card/CardComponent';
-import Transition from 'react-motion-ui-pack'
-
+import Transition from 'react-motion-ui-pack';
+import AnimateOnChange from 'react-animate-on-change';
+import styles from './talon.css';
 
 class Talon extends React.Component {
     getKey() {
@@ -17,16 +18,10 @@ class Talon extends React.Component {
     render() {
         return (
             <div>
-                <Transition
-                    component={false}
-                    measure={false}
-                    enter={{
-                        scale: 1,
-                    }}
-                    leave={{
-                        scale: 1.2,
-                    }}
-                >
+                <AnimateOnChange
+                    baseClassName="test"
+                    animationClassName="testLarge"
+                    animate={this.props.card != null}>
                     <div key={this.getKey()}>
                         {this.props.card ?
                             <CardComponent cardHeight={this.props.cardHeight}
@@ -34,7 +29,7 @@ class Talon extends React.Component {
                             : <CardComponent cardHeight={this.props.cardHeight} back/>
                         }
                     </div>
-                </Transition>
+                </AnimateOnChange>
             </div>
         );
     }
