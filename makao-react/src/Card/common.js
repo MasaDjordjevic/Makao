@@ -14,6 +14,6 @@ export const rotatedStyle = {
 export function isBlack(symbol) {
     return symbol === "spades" || symbol === "clubs";
 }
-export function getCardWidth(height){
-    return height/3*2;
+export function getCardWidth(height) {
+    return height / 3 * 2;
 }

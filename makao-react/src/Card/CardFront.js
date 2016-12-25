@@ -8,13 +8,12 @@ import React from 'react';
 import Radium from 'radium';
 import CardMain from './CardMain';
 import CardHeader from './CardHeader';
-import { blackColor, redColor, isBlack, rotatedStyle, getCardWidth, cardHoverGrowth} from './common';
-
+import {blackColor, redColor, isBlack, rotatedStyle, getCardWidth, cardHoverGrowth} from './common';
 
 
 class CardFront extends React.Component {
 
-    get styles(){
+    get styles() {
         const cardHeight = this.props.cardHeight;
         const cardWidth = getCardWidth(cardHeight);
         return {
@@ -29,8 +28,9 @@ class CardFront extends React.Component {
                 boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
                 marginRight: "10px",
                 backgroundColor: "white",
-                ':hover':{
-                    transform: 'scale(' + cardHoverGrowth + ')'
+                ':hover': {
+                    transform: 'scale(' + cardHoverGrowth + ')',
+                    cursor: 'pointer',
                 }
             },
 
@@ -47,10 +47,6 @@ class CardFront extends React.Component {
     render() {
         return (
             <div style={this.styles.cardStyle}>
-                <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,400,600" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400" rel="stylesheet" />
                 <div style={this.styles.headerStyle}>
                     <CardHeader
                         cardHeight={this.props.cardHeight}

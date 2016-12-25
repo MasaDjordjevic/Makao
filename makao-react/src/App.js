@@ -56,8 +56,13 @@ class App extends Component {
   render() {
     return (
         <div className="App" style={this.style}>
+            <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" />
+            <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,400,600" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400" rel="stylesheet" />
             <Game />
         </div>
+
 
 /*
        <div className="App" style={this.style}>

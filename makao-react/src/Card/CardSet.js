@@ -7,42 +7,43 @@ import _ from 'lodash';
 import {cardHoverGrowth} from './common'
 
 
-class CardSet extends React.Component{
-    get styles(){
+class CardSet extends React.Component {
+    get styles() {
         const height = this.props.height;
         return {
             container: {
                 width: this.props.width,
-                height: height*1.05,
+                height: height * 1.05,
                 position: 'relative',
                 overflow: 'hidden',
             },
         }
     }
 
-    componentWillMount(){
-        if(this.props.sort)
-            this.props.cards.sort((c1, c2) => c1.number-c2.number);
+    componentWillMount() {
+        if (this.props.sort)
+            this.props.cards.sort((c1, c2) => c1.number - c2.number);
     }
 
-    render(){
+    render() {
         const cardArray = this.props.back ? Array(this.props.cardNumber).fill(null) : this.props.cards;
         const chunkSize = this.props.back ? cardArray.length : this.props.chunkSize;
-        const cardArrays = _.chunk(cardArray,chunkSize);
-        return(
+        const cardArrays = _.chunk(cardArray, chunkSize);
+        return (
             <div style={this.styles.container}>
-                {cardArrays.map((arr, i)=>
-                <div style={{
-                    zIndex: i,
-                    position:'absolute',
-                    top:i*this.props.height/cardArrays.length + (this.props.height*(cardHoverGrowth-1))}}
-                     key={i.toString()}>
-                       <CardSetLine
+                {cardArrays.map((arr, i) =>
+                    <div style={{
+                        zIndex: i,
+                        position: 'absolute',
+                        top: i * this.props.height / cardArrays.length + (this.props.height * (cardHoverGrowth - 1))
+                    }}
+                         key={i.toString()}>
+                        <CardSetLine
                             height={this.props.height}
                             width={this.props.width}
                             cards={arr}
                             back={this.props.back}/>
-                </div>
+                    </div>
                 )}
             </div>
         );

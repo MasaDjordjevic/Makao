@@ -10,15 +10,16 @@ import Opponents from './Opponents';
 import _ from 'lodash';
 
 class Game extends React.Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             players: [
-              {id: 1, name: 'Masa', cardNumber: '10'},
-              {id: 2, name: 'Jajac', cardNumber: '13'},
-              {id: 3, name: 'Nikolica', cardNumber: '5'},
-              {id: 4, name: 'Nemanja', cardNumber: '7'},
-              {id: 5, name: 'Darko', cardNumber: '8'},
+                {id: 1, name: 'Masa', cardNumber: '10'},
+                {id: 2, name: 'Jajac', cardNumber: '13'},
+                {id: 3, name: 'Nikolica', cardNumber: '5'},
+                {id: 4, name: 'Nemanja', cardNumber: '7'},
+                {id: 5, name: 'Darko', cardNumber: '8'},
+                {id: 5, name: 'Darko', cardNumber: '8'},
             ],
             playerOnMoveId: 1,
             userId: 1,
@@ -58,8 +59,8 @@ class Game extends React.Component {
 
     }
 
-    playMove(playerId, card){
-        if(playerId === this.state.userId) {
+    playMove(playerId, card) {
+        if (playerId === this.state.userId) {
             const myCards = this.state.myCards.slice();
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
@@ -77,12 +78,12 @@ class Game extends React.Component {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.playMove(1, this.state.myCards[0]);
         this.playMove(2, new Card("clubs", "9"));
-
     }
-    get styles(){
+
+    get styles() {
         return {
             container: {
                 position: 'relative',
@@ -92,10 +93,8 @@ class Game extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'flex-end'
             },
-            opponents:{
-
-            },
-            talon:{
+            opponents: {},
+            talon: {
                 top: '-2%',
                 display: 'flex',
                 justifyContent: 'center',
@@ -110,6 +109,7 @@ class Game extends React.Component {
             }
         }
     }
+
     /*<div style={this.styles.myCards}>
      <CardSet width={700} height={310} cards={this.state.myCards} />
      </div>
@@ -122,19 +122,24 @@ class Game extends React.Component {
      <div>
      <Talon cardHeight={310} card={this.state.pile.slice(-1)[0]}/>
      </div>*/
-    render(){
+
+
+    render() {
         const players = this.state.players.slice();
         const playersWithoutUser = _.remove(players, (p) => p.id !== this.state.userId);
-        return(
+        return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
-                    <Opponents playerHeight={150} players={playersWithoutUser} />
+                    <Opponents playerHeight={150} players={playersWithoutUser}/>
                 </div>
-                <div style={{ ...this.styles.absolute,...this.styles.talon}}>
+                <div style={{...this.styles.absolute, ...this.styles.talon}}>
                     <Talon cardHeight={270} card={this.state.pile.slice(-1)[0]}/>
                 </div>
                 <div style={{...this.styles.myCards, ...this.styles.absolute}}>
-                    <CardSet width={700} height={250} cards={this.state.myCards} />
+                    <CardSet
+                        width={700}
+                        height={250}
+                        cards={this.state.myCards} />
                 </div>
             </div>
         );

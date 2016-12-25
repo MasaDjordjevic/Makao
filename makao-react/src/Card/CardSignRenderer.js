@@ -26,17 +26,19 @@ class CardSignRenderer extends React.Component {
                 colorTwo = '#025490';
             }
             svgRet =
-                    <svg width="57px" height="30px">
-                        <g>
-                            <rect id="XMLID_5_" x="34.7" y="9.7" fill="#E55125" width="9.1" height="4"/>
-                            <rect id="XMLID_4_" x="12.9" y="9.7" fill="#F57E20" width="9.1" height="4"/>
-                            <polygon id="XMLID_3_" fill="#FEBB18" points="28.2,27.7 28.2,0 21.3,2 21.3,13.4 15,13.2 12.9,5.7 0,5.7 5.6,27.7"/>
-                            <polygon id="XMLID_2_" fill="#F49221" points="28.2,27.7 28.2,0 35.2,2 35.2,13.4 41.4,13.2 43.5,5.7 56.5,5.7 50.8,27.7"/>
-                            <polygon fill={colorOne} points="3.1,17.9 4.5,23.4 28.2,23.4 28.2,17.9"/>
-                            <polygon fill={colorTwo} points="53.3,17.9 51.9,23.4 28.2,23.4 28.2,17.9"/>
-                        </g>
-                    </svg>
-                ;
+                <svg width="57px" height="30px">
+                    <g>
+                        <rect id="XMLID_5_" x="34.7" y="9.7" fill="#E55125" width="9.1" height="4"/>
+                        <rect id="XMLID_4_" x="12.9" y="9.7" fill="#F57E20" width="9.1" height="4"/>
+                        <polygon id="XMLID_3_" fill="#FEBB18"
+                                 points="28.2,27.7 28.2,0 21.3,2 21.3,13.4 15,13.2 12.9,5.7 0,5.7 5.6,27.7"/>
+                        <polygon id="XMLID_2_" fill="#F49221"
+                                 points="28.2,27.7 28.2,0 35.2,2 35.2,13.4 41.4,13.2 43.5,5.7 56.5,5.7 50.8,27.7"/>
+                        <polygon fill={colorOne} points="3.1,17.9 4.5,23.4 28.2,23.4 28.2,17.9"/>
+                        <polygon fill={colorTwo} points="53.3,17.9 51.9,23.4 28.2,23.4 28.2,17.9"/>
+                    </g>
+                </svg>
+            ;
 
         } else if (type === '13') {
             if (color === 'red') {
@@ -75,10 +77,11 @@ class CardSignRenderer extends React.Component {
                         <polygon id="XMLID_6_" fill={colorSix} points="27.2,27.9 30.6,32.9 30.6,27.9 30.6,23"/>
                         <polygon id="XMLID_5_" fill={colorSeven} points="30.6,23 30.6,27.9 30.6,32.9 33.9,27.9"/>
                         <polygon id="XMLID_3_" fill="#E38825" points="37.3,23 30.6,32.9 30.6,37.2 46.3,37.2"/>
-                        <path id="XMLID_2_" fill="#FFFFFF" d="M30.6,19.8c-1.8,0-3.3-1.5-3.3-3.3c0,1.8-1.5,3.3-3.3,3.3c1.8,0,3.3,1.5,3.3,3.3 C27.3,21.2,28.8,19.8,30.6,19.8z"/>
+                        <path id="XMLID_2_" fill="#FFFFFF"
+                              d="M30.6,19.8c-1.8,0-3.3-1.5-3.3-3.3c0,1.8-1.5,3.3-3.3,3.3c1.8,0,3.3,1.5,3.3,3.3 C27.3,21.2,28.8,19.8,30.6,19.8z"/>
                     </g>
                 </svg>
-        }else if (type === '14') {
+        } else if (type === '14') {
             if (color === 'red') {
                 colorOne = '#F59090';
                 colorTwo = '#F37B7B';
@@ -103,9 +106,11 @@ class CardSignRenderer extends React.Component {
                 <svg width="60px" height="40px">
                     <rect id="XMLID_16_" x="36.2" y="10.9" fill="#E55125" width="9.1" height="4"/>
                     <rect id="XMLID_15_" x="14.4" y="10.9" fill="#F57E20" width="9.1" height="4"/>
-                    <polygon id="XMLID_14_" fill="#F49221" points="51.5,35.5 59.4,4.8 46.7,6.8 43.6,14.4 36.7,14.6 36.7,2 29.7,0 29.7,35.5"/>
+                    <polygon id="XMLID_14_" fill="#F49221"
+                             points="51.5,35.5 59.4,4.8 46.7,6.8 43.6,14.4 36.7,14.6 36.7,2 29.7,0 29.7,35.5"/>
                     <polygon id="XMLID_13_" fill="#E38825" points="36.4,22.4 29.7,32.3 29.7,35.5 45.3,35.5"/>
-                    <polygon id="XMLID_12_" fill="#FEBB18" points="8,35.5 0,4.8 12.8,6.8 15.8,14.4 22.8,14.6 22.8,2 29.7,0 29.7,35.5"/>
+                    <polygon id="XMLID_12_" fill="#FEBB18"
+                             points="8,35.5 0,4.8 12.8,6.8 15.8,14.4 22.8,14.6 22.8,2 29.7,0 29.7,35.5"/>
                     <g>
                         <polygon id="XMLID_11_" fill={colorFive} points="29.8,22.4 23.1,22.4 26.4,27.4"/>
                         <polygon id="XMLID_10_" fill={colorTwo} points="23.1,22.4 29.8,22.4 26.4,17.5"/>
@@ -115,7 +120,8 @@ class CardSignRenderer extends React.Component {
                         <polygon id="XMLID_6_" fill={colorFour} points="29.8,22.4 36.5,22.4 33.1,17.5"/>
                         <polygon id="XMLID_5_" fill={colorSix} points="26.4,27.4 29.8,32.3 29.8,27.4 29.8,22.4"/>
                         <polygon id="XMLID_4_" fill={colorSeven} points="29.8,22.4 29.8,27.4 29.8,32.3 33.1,27.4"/>
-                        <path id="XMLID_2_" fill="#FFFFFF" d="M29.8,19.2c-1.8,0-3.3-1.5-3.3-3.3c0,1.8-1.5,3.3-3.3,3.3c1.8,0,3.3,1.5,3.3,3.3 C26.5,20.7,28,19.2,29.8,19.2z"/>
+                        <path id="XMLID_2_" fill="#FFFFFF"
+                              d="M29.8,19.2c-1.8,0-3.3-1.5-3.3-3.3c0,1.8-1.5,3.3-3.3,3.3c1.8,0,3.3,1.5,3.3,3.3 C26.5,20.7,28,19.2,29.8,19.2z"/>
                     </g>
                 </svg>
         }

@@ -27,7 +27,7 @@ export default class Card {
             case 9:
                 return {short: "9", long: "nine"};
             case 10:
-                return {short: "10",long: "ten"};
+                return {short: "10", long: "ten"};
             case 12:
                 return {short: "J", long: "jack"};
             case 13:

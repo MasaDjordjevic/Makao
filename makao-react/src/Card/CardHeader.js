@@ -8,20 +8,21 @@ import CardSymbol from './CardSymbol';
 
 
 class CardHeader extends React.Component {
-    get circleSize(){
+    get circleSize() {
         return this.props.cardHeight / 5 / 2;
     }
+
     getStyles() {
         const cardHeight = this.props.cardHeight;
-        const signPadding = !this.props.offset || this.props.offset > 60 ? 16 : this.props.offset/7;
+        const signPadding = !this.props.offset || this.props.offset > 60 ? 16 : this.props.offset / 7;
         return {
-            headerTextContainerStyle : {
+            headerTextContainerStyle: {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 paddingTop: "3%",
             },
-            numberStyle : {
+            numberStyle: {
                 width: this.circleSize,
                 color: "white",
                 fontSize: cardHeight / 5 / 2,
@@ -30,7 +31,7 @@ class CardHeader extends React.Component {
                 textAlign: "center",
                 marginLeft: signPadding
             },
-            textStyle : {
+            textStyle: {
                 color: "white",
                 fontSize: cardHeight / 5 / 6,
                 fontFamily: font,
@@ -40,7 +41,7 @@ class CardHeader extends React.Component {
                 textAlign: "center",
             },
 
-            headerCircleStyle : {
+            headerCircleStyle: {
                 display: "block",
                 position: "absolute",
                 width: this.circleSize,
@@ -54,6 +55,7 @@ class CardHeader extends React.Component {
             },
         }
     }
+
     render() {
         return (
             <div>

@@ -7,13 +7,15 @@ import {redColor, blackColor, getCardWidth} from './common';
 import CardSymbol from './CardSymbol';
 
 class CardBack extends React.Component {
-    get cardWidth(){
-        return  getCardWidth(this.props.cardHeight);
+    get cardWidth() {
+        return getCardWidth(this.props.cardHeight);
     }
-    get circleSize(){
-        return this.cardWidth*0.7
+
+    get circleSize() {
+        return this.cardWidth * 0.7
     }
-    get style(){
+
+    get style() {
         const cardHeight = this.props.cardHeight;
         const border = '2px grey solid';
         const cardBorderSize = cardHeight / 31;
@@ -23,7 +25,7 @@ class CardBack extends React.Component {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                width: this.cardWidth ,
+                width: this.cardWidth,
                 height: cardHeight,
                 borderRadius: cardBorderRadius,
                 overflow: "hidden",
@@ -34,12 +36,12 @@ class CardBack extends React.Component {
             },
             half: {
                 width: '100%',
-                height: this.props.cardHeight/2,
+                height: this.props.cardHeight / 2,
             },
             upperHalf: {
                 backgroundColor: redColor,
             },
-            bottomHalf:{
+            bottomHalf: {
                 backgroundColor: blackColor,
             },
             center: {
@@ -49,8 +51,8 @@ class CardBack extends React.Component {
                 position: "absolute",
                 width: this.circleSize,
                 height: this.circleSize,
-                top: this.props.cardHeight/4,
-                left: (this.cardWidth-2*cardBorderSize)/2 - this.circleSize/2,
+                top: this.props.cardHeight / 4,
+                left: (this.cardWidth - 2 * cardBorderSize) / 2 - this.circleSize / 2,
                 border: "none",
                 borderRadius: "50%",
                 backgroundColor: "white",
@@ -64,12 +66,12 @@ class CardBack extends React.Component {
             },
             verticalSeparator: {
                 width: 1,
-                height: this.circleSize/2*0.7,
+                height: this.circleSize / 2 * 0.7,
                 backgroundColor: '#e9edef'
             },
             horizontalSeparator: {
                 height: 1,
-                width: this.circleSize*0.7,
+                width: this.circleSize * 0.7,
                 backgroundColor: '#e9edef'
             },
             circleHalf: {
@@ -86,7 +88,7 @@ class CardBack extends React.Component {
                 transform: 'rotate(-45deg)'
             },
             borderRight: {
-              borderRight: border,
+                borderRight: border,
             },
             borderBottom: {
                 borderBottom: border,
@@ -94,8 +96,9 @@ class CardBack extends React.Component {
 
         }
     }
-    render(){
-        const symbolSize = this.circleSize*0.25;
+
+    render() {
+        const symbolSize = this.circleSize * 0.25;
         return (
             <div style={this.style.container}>
                 <div style={[this.style.half, this.style.upperHalf]}></div>
@@ -103,29 +106,29 @@ class CardBack extends React.Component {
                     <div style={this.style.circle}>
                         <div style={this.style.circleHalf}>
                             <div style={this.style.circleFourth}>
-                            <CardSymbol containerSize={symbolSize}   symbol="hearts"/>
+                                <CardSymbol containerSize={symbolSize} symbol="hearts"/>
                             </div>
                             <div style={this.style.verticalSeparator}>
                             </div>
                             <div style={this.style.circleFourth}>
-                            <CardSymbol containerSize={symbolSize}   symbol="spades"/>
+                                <CardSymbol containerSize={symbolSize} symbol="spades"/>
                             </div>
                         </div>
                         <div style={this.style.horizontalSeparator}>
                         </div>
                         <div style={this.style.circleHalf}>
                             <div style={this.style.circleFourth}>
-                            <CardSymbol containerSize={symbolSize}   symbol="clubs"/>
+                                <CardSymbol containerSize={symbolSize} symbol="clubs"/>
                             </div>
                             <div style={this.style.verticalSeparator}>
                             </div>
                             <div style={this.style.circleFourth}>
-                            <CardSymbol containerSize={symbolSize}   symbol="diamonds"/>
+                                <CardSymbol containerSize={symbolSize} symbol="diamonds"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style={[this.style.half,this.style.bottomHalf]}></div>
+                <div style={[this.style.half, this.style.bottomHalf]}></div>
             </div>
         );
     }

@@ -29,10 +29,18 @@ class CardSymbol extends React.Component {
     render() {
         let charCode;
         switch (this.props.symbol) {
-            case "spades": charCode = 9824; break;
-            case "diamonds": charCode = 9830; break;
-            case "clubs": charCode = 9827; break;
-            case "hearts": charCode = 9829; break;
+            case "spades":
+                charCode = 9824;
+                break;
+            case "diamonds":
+                charCode = 9830;
+                break;
+            case "clubs":
+                charCode = 9827;
+                break;
+            case "hearts":
+                charCode = 9829;
+                break;
             default:
         }
 

@@ -7,11 +7,11 @@ import CardFront from './CardFront';
 import CardBack from './CardBack';
 
 
-
 class CardComponent extends React.Component {
-    cardHeight(){
+    cardHeight() {
         return this.props.cardHeight;
     }
+
     render() {
         return (
             this.props.back ?

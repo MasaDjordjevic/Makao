@@ -5,8 +5,8 @@ import React from 'react';
 import CardComponent from './CardComponent';
 import {getCardWidth, font} from './common';
 
-class CardSetLine extends React.Component{
-    get styles(){
+class CardSetLine extends React.Component {
+    get styles() {
         const height = this.props.height;
         const cardWidth = getCardWidth(this.props.height);
         return {
@@ -28,51 +28,52 @@ class CardSetLine extends React.Component{
             cardNum: {
                 textAlign: 'right',
                 position: 'absolute',
-                bottom: height/24,
-                right: -cardWidth*0.9, //nzm sto je ovo ovako
+                bottom: height / 24,
+                right: -cardWidth * 0.9, //nzm sto je ovo ovako
                 color: "white",
-                fontSize: height/10,
+                fontSize: height / 10,
                 fontFamily: font,
                 fontWeight: "400",
             },
         }
     }
 
-    cardContainerStyle(i){
+    cardContainerStyle(i) {
         let style = this.styles.cardContainer;
         style.zIndex = i;
-        if(i === this.props.cards.length - 1) {
+        if (i === this.props.cards.length - 1) {
             style = {...style, ...this.styles.lastChild};
         }
         return style;
     }
 
-    componentWillMount(){
-        if(this.props.sort)
-            this.props.cards.sort((c1, c2) => c1.number-c2.number);
+    componentWillMount() {
+        if (this.props.sort)
+            this.props.cards.sort((c1, c2) => c1.number - c2.number);
     }
 
-    render(){
-        const offset = this.props.width/this.props.cards.length;
-        if(this.props.backCardNumberLabel && this.props.back){
+
+
+
+    render() {
+        const offset = this.props.width / this.props.cards.length;
+        if (this.props.backCardNumberLabel && this.props.back) {
             var cardNum = <span style={this.styles.cardNum}>{this.props.cards.length}</span>
         }
-        return(
+        return (
             <div style={this.styles.container}>
                 {
                     this.props.cards.map((card, i) =>
-                            <div
-                                key={i.toString()}
-                                style={this.cardContainerStyle(i)}>
-                                <CardComponent
-                                    back={this.props.back}
-                                    cardHeight={this.props.height}
-                                    card={card}
-                                    offset={offset} />
-
-                                {cardNum}
-                            </div>
-
+                        <div
+                            key={i.toString()}
+                            style={this.cardContainerStyle(i)}
+                            <CardComponent
+                                back={this.props.back}
+                                cardHeight={this.props.height}
+                                card={card}
+                                offset={offset}/>
+                            {cardNum}
+                        </div>
                     )
                 }
             </div>
