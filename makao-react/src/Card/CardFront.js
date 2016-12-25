@@ -8,7 +8,7 @@ import React from 'react';
 import Radium from 'radium';
 import CardMain from './CardMain';
 import CardHeader from './CardHeader';
-import {blackColor, redColor, isBlack, rotatedStyle, getCardWidth, cardHoverGrowth} from './common';
+import {blackColor, redColor, isBlack, rotatedStyle, getCardWidth, cardHoverGrowth, getCardBorderRadius} from './common';
 
 
 class CardFront extends React.Component {
@@ -16,6 +16,7 @@ class CardFront extends React.Component {
     get styles() {
         const cardHeight = this.props.cardHeight;
         const cardWidth = getCardWidth(cardHeight);
+        const cardBorderRadius = getCardBorderRadius(cardHeight);
         return {
             cardStyle: {
                 display: "flex",
@@ -23,7 +24,7 @@ class CardFront extends React.Component {
                 justifyContent: "space-between",
                 width: cardWidth,
                 height: cardHeight,
-                borderRadius: "15px",
+                borderRadius: cardBorderRadius,
                 overflow: "hidden",
                 boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
                 marginRight: "10px",

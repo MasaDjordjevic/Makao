@@ -17,3 +17,6 @@ export function isBlack(symbol) {
 export function getCardWidth(height) {
     return height / 3 * 2;
 }
+export function getCardBorderRadius(height){
+    return height/20;
+}

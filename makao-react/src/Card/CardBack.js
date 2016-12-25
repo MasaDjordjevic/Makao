@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import Radium from 'radium';
-import {redColor, blackColor, getCardWidth} from './common';
+import {redColor, blackColor, getCardWidth, getCardBorderRadius} from './common';
 import CardSymbol from './CardSymbol';
 
 class CardBack extends React.Component {
@@ -19,7 +19,7 @@ class CardBack extends React.Component {
         const cardHeight = this.props.cardHeight;
         const border = '2px grey solid';
         const cardBorderSize = cardHeight / 31;
-        const cardBorderRadius = cardHeight / 20;
+        const cardBorderRadius = getCardBorderRadius(cardHeight);
         return {
             container: {
                 display: "flex",
