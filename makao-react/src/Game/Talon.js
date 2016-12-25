@@ -8,13 +8,6 @@ import AnimateOnChange from 'react-animate-on-change';
 import styles from './talon.css';
 
 class Talon extends React.Component {
-    getKey() {
-        if (!this.props.card)
-            return "back";
-        const card = this.props.card;
-        return card.number + card.symbol
-    }
-
     render() {
         return (
             <div>
@@ -22,7 +15,7 @@ class Talon extends React.Component {
                     baseClassName="test"
                     animationClassName="testLarge"
                     animate={this.props.card != null}>
-                    <div key={this.getKey()}>
+                    <div>
                         {this.props.card ?
                             <CardComponent cardHeight={this.props.cardHeight}
                                            card={this.props.card}/>
