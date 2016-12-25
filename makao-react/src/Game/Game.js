@@ -123,6 +123,9 @@ class Game extends React.Component {
      <Talon cardHeight={310} card={this.state.pile.slice(-1)[0]}/>
      </div>*/
 
+    handleCardClick(card){
+        this.playMove(this.state.userId, _(this.state.myCards).find(card));
+    }
 
     render() {
         const players = this.state.players.slice();
@@ -137,6 +140,7 @@ class Game extends React.Component {
                 </div>
                 <div style={{...this.styles.myCards, ...this.styles.absolute}}>
                     <CardSet
+                        onClick={(card)=>this.handleCardClick(card)}
                         width={700}
                         height={250}
                         cards={this.state.myCards} />

@@ -67,6 +67,7 @@ class CardSetLine extends React.Component {
                         <div
                             key={i.toString()}
                             style={this.cardContainerStyle(i)}
+                            onClick={() => this.props.onClick(card)}>
                             <CardComponent
                                 back={this.props.back}
                                 cardHeight={this.props.height}
