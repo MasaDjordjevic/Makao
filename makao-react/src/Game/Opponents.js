@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import CardSet from '../Card/CardSet';
+import LinearProgress from 'material-ui/LinearProgress';
 
 Number.prototype.toRad = function () {
     return this * Math.PI / 180;
@@ -62,6 +63,8 @@ class Opponents extends React.Component {
          return retVal*/
         const arc = this.getEllipseLength(window.innerWidth / 2, window.innerHeight / 2) / 2;
         return arc / this.total;
+    isOnTurn(player) {
+        return player.id == this.props.playerOnMoveId
     }
 
     render() {
@@ -82,6 +85,11 @@ class Opponents extends React.Component {
                     players.map((player, i) =>
                         <div key={i.toString()} style={this.getStyles(i)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
+                            {this.isOnTurn(player) ?
+                                <LinearProgress mode="determinate" value={30} style={this.styles.timer}/>
+                                :
+                                ""
+                            }
                         </div>
                     )
                 }
@@ -93,6 +101,7 @@ class Opponents extends React.Component {
 Opponents.propTypes = {
     players: React.PropTypes.array.isRequired,
     playerHeight: React.PropTypes.number,
+    playerOnMoveId: React.PropTypes.number,
 }
 
 export default Opponents;
