@@ -4,6 +4,7 @@
 import React from 'react';
 import CardSet from '../Card/CardSet';
 import LinearProgress from 'material-ui/LinearProgress';
+import TimerProgress from './TimerProgress';
 
 
 Number.prototype.toRad = function () {
@@ -85,6 +86,11 @@ class Opponents extends React.Component {
         return player.id == this.props.playerOnMoveId;
     }
 
+    handleTimeExpiration(player){
+        return function(){
+            alert("Igracu " + player.name + " je isteklo vreme.");
+        }
+    }
 
     render() {
         const players = this.props.players;
@@ -106,7 +112,7 @@ class Opponents extends React.Component {
                         <div key={i.toString()} style={this.getStyles(i)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
                             {this.isOnTurn(player) ?
-                                <LinearProgress mode="determinate" value={30} style={this.styles.timer}/>
+                                <TimerProgress length={2} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
                                 :
                                 ""
                             }
