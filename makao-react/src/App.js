@@ -4,6 +4,7 @@ import Card from './Card/Card';
 import CardComponent from "./Card/CardComponent";
 import CardSet from "./Card/CardSet";
 import Game from "./Game/Game";
+import Main from "./Main";
 
 class App extends Component {
     get testCards(){
@@ -60,7 +61,9 @@ class App extends Component {
             <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,400,600" rel="stylesheet"/>
             <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400" rel="stylesheet" />
-            <Game />
+            <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet" />
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+            <Main/>
         </div>
 
 
