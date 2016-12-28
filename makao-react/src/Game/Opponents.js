@@ -4,7 +4,6 @@
 import React from 'react';
 import CardSet from '../Card/CardSet';
 import LinearProgress from 'material-ui/LinearProgress';
-import FontIcon from 'material-ui/FontIcon';
 
 
 Number.prototype.toRad = function () {
@@ -61,39 +60,12 @@ class Opponents extends React.Component {
         return (Math.PI * ( rx + ry )) * (1 + ( (3 * h) / ( 10 + Math.sqrt(4 - (3 * h))) ));
     };
 
-    get elementEffectiveWidth() {
+
+    get elementWidth() {
         return this.props.playerHeight / 3 * 4;
     }
 
-    get elementWidth() {
-        const width = this.elementEffectiveWidth;
-        const fontSize = 24;
-        return width + fontSize;
-        /*if(this.props.players.length > 8){
-         retVal = retVal*this.props.players.length/20;
-         }
-         return retVal
-         const arc = this.getEllipseLength(window.innerWidth / 2, window.innerHeight / 2) / 2;
-         return arc / this.total;
-         */
-    }
 
-    isRight(i) {
-        return i < this.total / 2;
-    }
-
-    getContainerStyle(i) {
-        const fontSize = 24;
-        const direction = this.isRight(i) ? 'row' : 'row-reverse';
-        return {
-            width: this.elementWidth,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: direction,
-            fontSize: fontSize,
-        }
-    }
 
     get styles() {
         return {
@@ -110,12 +82,13 @@ class Opponents extends React.Component {
     }
 
     isOnTurn(player) {
-        return player.id == this.props.playerOnMoveId
+        return player.id == this.props.playerOnMoveId;
     }
+
 
     render() {
         const players = this.props.players;
-        const width = this.elementEffectiveWidth;
+        const width = this.elementWidth;
         let height = this.props.playerHeight;
         if (players.length > 8)
             height = height * players.length / 11;
@@ -131,20 +104,12 @@ class Opponents extends React.Component {
                 {
                     players.map((player, i) =>
                         <div key={i.toString()} style={this.getStyles(i)}>
-                            <div style={this.getContainerStyle(i)}>
-                                {this.isOnTurn(player) ?
-                                    <FontIcon
-                                        className="material-icons">{this.isRight(i) ? 'chevron_right' : 'chevron_left'}</FontIcon>
-                                    : ""
-                                }
-                                <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
-                            </div>
+                            <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
                             {this.isOnTurn(player) ?
                                 <LinearProgress mode="determinate" value={30} style={this.styles.timer}/>
                                 :
                                 ""
                             }
-
                         </div>
                     )
                 }
@@ -156,7 +121,6 @@ class Opponents extends React.Component {
 Opponents.propTypes = {
     players: React.PropTypes.array.isRequired,
     playerHeight: React.PropTypes.number,
-    playerOnMoveId: React.PropTypes.number,
 }
 
 export default Opponents;
