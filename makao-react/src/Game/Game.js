@@ -8,6 +8,8 @@ import Card from '../Card/Card';
 import Talon from './Talon';
 import Opponents from './Opponents';
 import _ from 'lodash';
+import LinearProgress from 'material-ui/LinearProgress';
+
 
 class Game extends React.Component {
     constructor() {
@@ -21,7 +23,7 @@ class Game extends React.Component {
                 {id: 5, name: 'Darko', cardNumber: '8'},
                 {id: 5, name: 'Darko', cardNumber: '8'},
             ],
-            playerOnMoveId: 1,
+            playerOnMoveId: 2,
             userId: 1,
             myCards: [
                 new Card("spades", "2"),
@@ -89,9 +91,7 @@ class Game extends React.Component {
                 position: 'relative',
             },
             myCards: {
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-end'
+
             },
             opponents: {},
             talon: {
@@ -106,6 +106,15 @@ class Game extends React.Component {
                 left: 0,
                 width: '100%',
                 height: '100%',
+            },
+            userContainer: {
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'center'
+            },
+            timer: {
+                height: 7,
             }
         }
     }
@@ -123,7 +132,7 @@ class Game extends React.Component {
      <Talon cardHeight={310} card={this.state.pile.slice(-1)[0]}/>
      </div>*/
 
-    handleCardClick(card){
+    handleCardClick(card) {
         this.playMove(this.state.userId, _(this.state.myCards).find(card));
     }
 
@@ -133,20 +142,24 @@ class Game extends React.Component {
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
-                    <Opponents playerHeight={150} players={playersWithoutUser}/>
+                    <Opponents playerHeight={150} players={playersWithoutUser} playerOnMoveId={this.state.playerOnMoveId}/>
                 </div>
                 <div style={{...this.styles.absolute, ...this.styles.talon}}>
                     <Talon cardHeight={270} card={this.state.pile.slice(-1)[0]}/>
                 </div>
-                <div style={{...this.styles.myCards, ...this.styles.absolute}}>
-                    <CardSet
-                        onClick={(card)=>this.handleCardClick(card)}
-                        width={700}
-                        height={250}
-                        cards={this.state.myCards} />
-                </div>
+                <div style={{...this.styles.userContainer, ...this.styles.absolute}}>
+                    <div style={this.styles.myCards}>
+                        <CardSet
+                            onClick={(card) => this.handleCardClick(card)}
+                            width={700}
+                            height={250}
+                            cards={this.state.myCards}/>
+                    </div>
+                <LinearProgress mode="determinate" value={30} style={this.styles.timer} />
             </div>
-        );
+    </div>
+    )
+        ;
     }
 }
 
