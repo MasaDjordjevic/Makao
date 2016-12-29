@@ -29,7 +29,7 @@ export default class TimerProgress extends React.Component {
 
         } else {
             this.setState({completed});
-            this.timer = setTimeout(() => this.progress(completed + 1), 1000);
+            //this.timer = setTimeout(() => this.progress(completed + 1), 1000);
         }
     }
 

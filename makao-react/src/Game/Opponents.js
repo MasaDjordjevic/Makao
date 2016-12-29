@@ -5,6 +5,8 @@ import React from 'react';
 import CardSet from '../Card/CardSet';
 import LinearProgress from 'material-ui/LinearProgress';
 import TimerProgress from './TimerProgress';
+import theme from '../MainMuiTheme';
+import {red500, blueGrey100, blueGrey200} from 'material-ui/styles/colors';
 
 
 Number.prototype.toRad = function () {
@@ -68,8 +70,24 @@ class Opponents extends React.Component {
 
 
 
+
+    isOnTurn(player) {
+        return player.id == this.props.playerOnMoveId;
+    }
+
+    handleTimeExpiration(player){
+        return function(){
+            alert("Igracu " + player.name + " je isteklo vreme.");
+        }
+    }
+
     get styles() {
         return {
+            playerName: {
+                marginTop: '1%',
+                color: blueGrey200,
+                fontFamily: 'Roboto, sans-serif',
+            },
             timer: {
                 marginTop: '5%',
                 width: '97%',
@@ -82,15 +100,6 @@ class Opponents extends React.Component {
         }
     }
 
-    isOnTurn(player) {
-        return player.id == this.props.playerOnMoveId;
-    }
-
-    handleTimeExpiration(player){
-        return function(){
-            alert("Igracu " + player.name + " je isteklo vreme.");
-        }
-    }
 
     render() {
         const players = this.props.players;
@@ -112,10 +121,11 @@ class Opponents extends React.Component {
                         <div key={i.toString()} style={this.getStyles(i)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
                             {this.isOnTurn(player) ?
-                                <TimerProgress length={2} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
+                                <TimerProgress length={30} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
                                 :
                                 ""
                             }
+                            <span style={this.styles.playerName}>{player.name.toLowerCase()}</span>
                         </div>
                     )
                 }
