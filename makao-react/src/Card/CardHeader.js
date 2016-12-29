@@ -14,7 +14,10 @@ class CardHeader extends React.Component {
 
     getStyles() {
         const cardHeight = this.props.cardHeight;
-        const signPadding = !this.props.offset || this.props.offset > 60 ? 16 : this.props.offset / 7;
+        let signPadding = !this.props.offset || this.props.offset > 60 ? 16 : this.props.offset / 10;
+        if(cardHeight < 160){
+            signPadding = cardHeight/16;
+        }
         return {
             headerTextContainerStyle: {
                 display: "flex",
@@ -25,7 +28,7 @@ class CardHeader extends React.Component {
             numberStyle: {
                 width: this.circleSize,
                 color: "white",
-                fontSize: cardHeight / 5 / 2,
+                fontSize: this.circleSize,
                 fontFamily: "Dosis",
                 fontWeight: "200",
                 textAlign: "center",

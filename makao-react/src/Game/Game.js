@@ -15,6 +15,12 @@ class Game extends React.Component {
     constructor() {
         super();
         this.state = {
+            dimensions: {
+                userCardsWidth: 700,
+                userCardsHeight: 250,
+                talon: 270,
+                opponents: 150,
+            },
             players: [
                 {id: 1, name: 'Masa', cardNumber: '10'},
                 {id: 2, name: 'Jajac', cardNumber: '13'},
@@ -59,6 +65,8 @@ class Game extends React.Component {
         };
 
 
+        this.handleResize = this.handleResize.bind(this);
+
     }
 
     playMove(playerId, card) {
@@ -80,9 +88,43 @@ class Game extends React.Component {
 
     }
 
+    handleResize(){
+        const w = document.documentElement.clientWidth;
+        const h = document.documentElement.clientHeight;
+        let  dimensions = {
+            userCardsWidth: 700,
+            userCardsHeight: 250,
+            talon: 270,
+            opponents: 150,
+        };
+        if(w < 1000){
+            dimensions.userCardsWidth = w*7/10;
+            dimensions.talon = w*270/1000;
+            dimensions.opponents = w*15/100;
+        }
+        if(w < 550){
+            dimensions.userCardsWidth = w*0.95;
+        }
+        if(h<750){
+            dimensions.userCardsHeight = h*250/750;
+            dimensions.talon = h*dimensions.talon/750;
+            dimensions.opponents = h*dimensions.opponents/750;
+        }
+
+        this.setState({dimensions: dimensions});
+    }
+
     componentDidMount() {
         this.playMove(1, this.state.myCards[0]);
         this.playMove(2, new Card("clubs", "9"));
+        window.addEventListener("resize", this.handleResize);
+    }
+    componentWillMount(){
+        this.handleResize();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.handleResize);
     }
 
     get styles() {
@@ -142,17 +184,17 @@ class Game extends React.Component {
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
-                    <Opponents playerHeight={150} players={playersWithoutUser} playerOnMoveId={this.state.playerOnMoveId}/>
+                    <Opponents playerHeight={this.state.dimensions.opponents} players={playersWithoutUser} playerOnMoveId={this.state.playerOnMoveId}/>
                 </div>
                 <div style={{...this.styles.absolute, ...this.styles.talon}}>
-                    <Talon cardHeight={270} card={this.state.pile.slice(-1)[0]}/>
+                    <Talon cardHeight={this.state.dimensions.talon} card={this.state.pile.slice(-1)[0]}/>
                 </div>
                 <div style={{...this.styles.userContainer, ...this.styles.absolute}}>
                     <div style={this.styles.myCards}>
                         <CardSet
                             onClick={(card) => this.handleCardClick(card)}
-                            width={700}
-                            height={250}
+                            width={this.state.dimensions.userCardsWidth}
+                            height={this.state.dimensions.userCardsHeight}
                             cards={this.state.myCards}/>
                     </div>
                 <LinearProgress mode="determinate" value={30} style={this.styles.timer} />
