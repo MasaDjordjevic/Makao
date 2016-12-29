@@ -20,6 +20,16 @@ class CardBack extends React.Component {
         const border = '2px grey solid';
         const cardBorderSize = cardHeight / 31;
         const cardBorderRadius = getCardBorderRadius(cardHeight);
+        let hover;
+        if(this.props.hover){
+            hover = {
+                cursor: this.props.hover
+            }
+        }else {
+            hover = {
+                cursor: 'default',
+            }
+        }
         return {
             container: {
                 display: "flex",
@@ -33,6 +43,7 @@ class CardBack extends React.Component {
                 border: cardBorderSize + 'px white solid',
                 boxSizing: 'border-box',
                 position: 'relative',
+                ':hover': hover,
             },
             half: {
                 width: '100%',

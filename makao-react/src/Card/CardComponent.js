@@ -14,12 +14,15 @@ class CardComponent extends React.Component {
 
     render() {
         return (
+
             this.props.back ?
-                <CardBack cardHeight={this.props.cardHeight}/>
+                <CardBack cardHeight={this.props.cardHeight} hover={this.props.hover}/>
                 : <CardFront
                     cardHeight={this.props.cardHeight}
                     card={this.props.card}
-                    offset={this.props.offset}/>
+                    offset={this.props.offset}
+                    hover={this.props.hover}/>
+
         );
     }
 }

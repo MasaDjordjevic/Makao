@@ -3,14 +3,29 @@
  */
 import React from 'react';
 import CardComponent from '../Card/CardComponent';
-import Transition from 'react-motion-ui-pack';
 import AnimateOnChange from 'react-animate-on-change';
 import styles from './talon.css';
 
-class Talon extends React.Component {
-    render() {
+    class Talon extends React.Component {
+    get styles(){
+        return {
+            container: {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+            },
+            deck: {
+                marginLeft: '10%',
+                ':hover': {
+                    cursor: 'pointer',
+                }
+            }
+        }
+    }
+        render() {
         return (
-            <div>
+            <div style={this.styles.container}>
                 <AnimateOnChange
                     baseClassName="test"
                     animationClassName="testLarge"
@@ -18,11 +33,14 @@ class Talon extends React.Component {
                     <div>
                         {this.props.card ?
                             <CardComponent cardHeight={this.props.cardHeight}
-                                           card={this.props.card}/>
+                                           card={this.props.card} hover={false}/>
                             : <CardComponent cardHeight={this.props.cardHeight} back/>
                         }
                     </div>
                 </AnimateOnChange>
+                <div style={this.styles.deck} onClick={()=>this.props.onClick()}>
+                    <CardComponent cardHeight={this.props.cardHeight/1.5} back hover="pointer"/>
+                </div>
             </div>
         );
     }

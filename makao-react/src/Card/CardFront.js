@@ -17,6 +17,14 @@ class CardFront extends React.Component {
         const cardHeight = this.props.cardHeight;
         const cardWidth = getCardWidth(cardHeight);
         const cardBorderRadius = getCardBorderRadius(cardHeight);
+
+        if(this.props.hover){
+            var hover = {
+                transform: 'scale(' + cardHoverGrowth + ')',
+                cursor: 'pointer',
+            };
+        }
+
         return {
             cardStyle: {
                 display: "flex",
@@ -29,10 +37,7 @@ class CardFront extends React.Component {
                 boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
                 marginRight: "10px",
                 backgroundColor: "white",
-                ':hover': {
-                    transform: 'scale(' + cardHoverGrowth + ')',
-                    cursor: 'pointer',
-                }
+                ':hover': hover,
             },
 
             headerStyle: {
@@ -71,9 +76,11 @@ class CardFront extends React.Component {
 
 CardFront.defaultProps = {
     cardHeight: 310,
+    hover: true,
 };
 CardFront.propTypes = {
     cardHeight: React.PropTypes.number,
+    hover: React.PropTypes.bool,
 };
 
 export default Radium(CardFront);

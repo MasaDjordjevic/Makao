@@ -3,10 +3,8 @@
  */
 import React from 'react';
 import CardSet from '../Card/CardSet';
-import LinearProgress from 'material-ui/LinearProgress';
 import TimerProgress from './TimerProgress';
-import theme from '../MainMuiTheme';
-import {red500, blueGrey100, blueGrey200} from 'material-ui/styles/colors';
+import {blueGrey200} from 'material-ui/styles/colors';
 
 
 Number.prototype.toRad = function () {
@@ -72,7 +70,7 @@ class Opponents extends React.Component {
 
 
     isOnTurn(player) {
-        return player.id == this.props.playerOnMoveId;
+        return player.id === this.props.playerOnMoveId;
     }
 
     handleTimeExpiration(player){
