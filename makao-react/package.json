@@ -12,6 +12,7 @@
     "react-animate-on-change": "^0.2.1",
     "react-dom": "^15.4.1",
     "react-motion-ui-pack": "^0.10.2",
+    "react-splitter-layout": "^0.1.2",
     "react-tap-event-plugin": "^2.0.1"
   },
   "scripts": {

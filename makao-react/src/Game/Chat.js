@@ -44,10 +44,7 @@ class Chat extends React.Component{
         return {
             container: {
                 width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-
+                overflowY: 'auto'
             }
         }
     }
@@ -77,7 +74,6 @@ class Chat extends React.Component{
                     )
                 }
              <ChatInputField onEnter={(m) => this.handleNewMessage(m)}/>
-
             </div>
         );
     }

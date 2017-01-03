@@ -4,25 +4,28 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off'
+import SplitPane from 'react-split-pane';
+import SplitterLayout from 'react-splitter-layout';
 
-import Chat from './Chat';
 
-class RightSidebar extends React.Component{
-    constructor(){
+import ChatWrapper from './ChatWrapper';
+
+class RightSidebar extends React.Component {
+    constructor() {
         super();
-        this.state={
+        this.state = {
             show: true,
         };
 
         this.handleShowHide = this.handleShowHide.bind(this);
     }
 
-    handleShowHide(){
+    handleShowHide() {
         this.setState({show: !this.state.show});
     }
 
-    get styles(){
+    get styles() {
         return {
             container: {
                 width: this.state.show ? '20%' : '2.5%',
@@ -40,13 +43,29 @@ class RightSidebar extends React.Component{
         }
     }
 
-    render(){
-        return(
+
+    render() {
+        return (
             <div style={this.styles.container}>
 
                 {
                     this.state.show ?
-                       <Chat  userId={this.props.userId}/>
+                        <div style={{
+                            width: '100%',
+                            height: '100%',
+                            flexGrow: 1,
+                        }}>
+                            <SplitterLayout vertical
+                                            percentage={true}
+                                            primaryMinSize={2} secondaryMinSize={20}>
+                                <div style={{height: '100%'}}>
+                                    <button>nesto</button>
+                                </div>
+
+                                <ChatWrapper userId={this.props.userId}/>
+                            </SplitterLayout>
+
+                        </div>
                         : ''
                 }
                 <Checkbox
@@ -62,5 +81,6 @@ class RightSidebar extends React.Component{
         );
     }
 }
+
 
 export default RightSidebar;
