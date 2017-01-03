@@ -29,6 +29,7 @@ class RightSidebar extends React.Component{
                 margin: 0,
                 transition: 'width 0.5s',
 
+                backgroundColor: 'white',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
@@ -41,12 +42,11 @@ class RightSidebar extends React.Component{
 
     render(){
         return(
-
             <div style={this.styles.container}>
 
                 {
                     this.state.show ?
-                       <Chat />
+                       <Chat  userId={this.props.userId}/>
                         : ''
                 }
                 <Checkbox

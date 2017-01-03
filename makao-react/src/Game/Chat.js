@@ -3,14 +3,49 @@
  */
 import React from 'react';
 import TextField from 'material-ui/TextField';
-
+import ChatMessage from './ChatMessage';
 
 class Chat extends React.Component{
+    constructor(){
+        super();
+        this.state = {
+            messages:[
+                {
+                    userId: 3,
+                    userName: "Nemanja",
+                    time: "2:45",
+                    message: "zdravo"
+                },
+                {
+                    userId: 2,
+                    userName: "Darko",
+                    time: "1:50",
+                    message: "poz"
+                },
+                {
+                    userId: 1,
+                    userName: "Nikolica",
+                    time: "2:35",
+                    message: "poruka"
+                },
+                {
+                    userId: 4,
+                    userName: "Jajac",
+                    time: "2:38",
+                    message: "13"
+                },
+            ]
+        }
+    }
 
     get styles(){
         return {
             container: {
-                width: '100%'
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+
             }
         }
     }
@@ -18,9 +53,14 @@ class Chat extends React.Component{
     render(){
         return(
             <div style={this.styles.container}>
-
+                {
+                    this.state.messages.map((message, index)=>
+                        <ChatMessage key={index} message={message} mine={this.props.userId === message.userId}/>
+                    )
+                }
                 <TextField
-                    hintText="Type message"
+                    id="chat-input"
+                    hintText=""
                     multiLine={true}
                     fullWidth={true}
                     rows={1}
@@ -31,5 +71,13 @@ class Chat extends React.Component{
         );
     }
 }
+
+Chat.defaultProps = {
+
+};
+
+Chat.PropTypes = {
+    userId: React.PropTypes.number,
+};
 
 export default Chat;

@@ -24,7 +24,6 @@ class Game extends React.Component {
                 {id: 5, name: 'Darko', cardNumber: '8'},
             ],
             playerOnMoveId: 2,
-            userId: 1,
             myCards: [
                 new Card("spades", "2"),
                 new Card("spades", "7"),
@@ -64,7 +63,7 @@ class Game extends React.Component {
     }
 
     playMove(playerId, card) {
-        if (playerId === this.state.userId) {
+        if (playerId === this.props.userId) {
             const myCards = this.state.myCards.slice();
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
@@ -151,12 +150,12 @@ class Game extends React.Component {
      </div>*/
 
     handleCardClick(card) {
-        this.playMove(this.state.userId, _(this.state.myCards).find(card));
+        this.playMove(this.props.userId, _(this.state.myCards).find(card));
     }
 
     render() {
         const players = this.state.players.slice();
-        const playersWithoutUser = _.remove(players, (p) => p.id !== this.state.userId);
+        const playersWithoutUser = _.remove(players, (p) => p.id !== this.props.userId);
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
@@ -185,5 +184,10 @@ class Game extends React.Component {
             ;
     }
 }
+
+
+Game.PropTypes = {
+    userId: React.PropTypes.number,
+};
 
 export default Game;

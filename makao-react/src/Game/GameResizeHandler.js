@@ -44,7 +44,6 @@ export default class GameResizeHandler extends React.Component{
             dimensions.talon = h * dimensions.talon / 750;
             dimensions.opponents = h * dimensions.opponents / 750;
         }
-        console.log(dimensions.talon);
         this.setState({dimensions: dimensions});
     }
 
@@ -62,7 +61,7 @@ export default class GameResizeHandler extends React.Component{
 
     render(){
         return(
-            <Game dimensions={this.state.dimensions}/>
+            <Game dimensions={this.state.dimensions} userId={this.props.userId}/>
         );
     }
 }

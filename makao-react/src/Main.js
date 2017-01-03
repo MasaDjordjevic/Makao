@@ -13,6 +13,7 @@ import RightSidebar from './Game/RightSidebar';
 class Main extends React.Component {
 
 
+
     get styles() {
 
         return {
@@ -40,9 +41,9 @@ class Main extends React.Component {
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
-                            <GameResizeHandler />
+                            <GameResizeHandler userId={1} />
                         </div>
-                        <RightSidebar />
+                        <RightSidebar userId={1}/>
                     </div>
 
                 </MuiThemeProvider>
