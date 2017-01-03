@@ -66,9 +66,6 @@ class Opponents extends React.Component {
         return this.props.playerHeight / 3 * 4;
     }
 
-
-
-
     isOnTurn(player) {
         return player.id === this.props.playerOnMoveId;
     }
@@ -91,9 +88,8 @@ class Opponents extends React.Component {
                 width: '97%',
             },
             container: {
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                width: '100%',
+                height: '100%',
             }
         }
     }
@@ -109,11 +105,7 @@ class Opponents extends React.Component {
             height = height * players.length / 15;
 
         return (
-            <div style={{
-                width: '100vw',
-                height: '100vh',
-                position: 'relative',
-            }}>
+            <div style={this.styles.container}>
                 {
                     players.map((player, i) =>
                         <div key={i.toString()} style={this.getStyles(i)}>
@@ -135,6 +127,6 @@ class Opponents extends React.Component {
 Opponents.propTypes = {
     players: React.PropTypes.array.isRequired,
     playerHeight: React.PropTypes.number,
-}
+};
 
 export default Opponents;

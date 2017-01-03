@@ -15,12 +15,6 @@ class Game extends React.Component {
     constructor() {
         super();
         this.state = {
-            dimensions: {
-                userCardsWidth: 700,
-                userCardsHeight: 250,
-                talon: 270,
-                opponents: 150,
-            },
             players: [
                 {id: 1, name: 'Masa', cardNumber: '10'},
                 {id: 2, name: 'Jajac', cardNumber: '13'},
@@ -65,7 +59,6 @@ class Game extends React.Component {
         };
 
 
-        this.handleResize = this.handleResize.bind(this);
         this.handleDraw = this.handleDraw.bind(this);
 
     }
@@ -93,56 +86,28 @@ class Game extends React.Component {
         alert("vucem kartu");
     }
 
-    handleResize() {
-        const w = document.documentElement.clientWidth;
-        const h = document.documentElement.clientHeight;
 
-        let dimensions = {
-            userCardsWidth: 700,
-            userCardsHeight: 250,
-            talon: 270,
-            opponents: 150,
-        };
-        if (w < 1000) {
-            dimensions.userCardsWidth = w * 7 / 10;
-            dimensions.talon = w * 270 / 1000;
-            dimensions.opponents = w * 15 / 100;
-        }
-        if (w < 550) {
-            dimensions.userCardsWidth = w * 0.95;
-        }
-        if (h < 750) {
-            dimensions.userCardsHeight = h * 250 / 750;
-            dimensions.talon = h * dimensions.talon / 750;
-            dimensions.opponents = h * dimensions.opponents / 750;
-        }
-        console.log(dimensions.talon);
-        this.setState({dimensions: dimensions});
-    }
 
     componentDidMount() {
         this.playMove(1, this.state.myCards[0]);
         this.playMove(2, new Card("clubs", "9"));
-        window.addEventListener("resize", this.handleResize);
     }
 
-    componentWillMount() {
-        this.handleResize();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.handleResize);
-    }
 
     get styles() {
-        const talonMargin = this.state.dimensions.talon / 40;
+        const talonMargin = this.props.dimensions.talon / 40;
 
         return {
             container: {
                 position: 'relative',
+                width: '100%',
+                height: '100%',
             },
             myCards: {},
-            opponents: {},
+            opponents: {
+                width: '100%',
+                height: '100%'
+            },
             talon: {
                 marginBottom: talonMargin + '%',
                 display: 'flex',
@@ -195,13 +160,13 @@ class Game extends React.Component {
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
-                    <Opponents playerHeight={this.state.dimensions.opponents}
+                    <Opponents playerHeight={this.props.dimensions.opponents}
                                players={playersWithoutUser}
                                playerOnMoveId={this.state.playerOnMoveId}/>
                 </div>
                 <div style={this.styles.userCardsTalon}>
                     <div style={this.styles.talon}>
-                        <Talon cardHeight={this.state.dimensions.talon}
+                        <Talon cardHeight={this.props.dimensions.talon}
                                card={this.state.pile.slice(-1)[0]}
                                onClick={() => this.handleDraw()}/>
                     </div>
@@ -209,8 +174,8 @@ class Game extends React.Component {
                         <div style={this.styles.myCards}>
                             <CardSet
                                 onClick={(card) => this.handleCardClick(card)}
-                                width={this.state.dimensions.userCardsWidth}
-                                height={this.state.dimensions.userCardsHeight}
+                                width={this.props.dimensions.userCardsWidth}
+                                height={this.props.dimensions.userCardsHeight}
                                 cards={this.state.myCards}/>
                         </div>
                     </div>
