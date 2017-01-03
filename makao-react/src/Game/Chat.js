@@ -4,17 +4,29 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
+
 class Chat extends React.Component{
+
+    get styles(){
+        return {
+            container: {
+                width: '100%'
+            }
+        }
+    }
 
     render(){
         return(
-            <div>
+            <div style={this.styles.container}>
+
                 <TextField
                     hintText="Type message"
                     multiLine={true}
-                    rows={2}
-                    rowsMax={4}/>
-                <br />
+                    fullWidth={true}
+                    rows={1}
+                    rowsMax={3}/>
+
+
             </div>
         );
     }

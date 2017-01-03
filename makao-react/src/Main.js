@@ -8,7 +8,7 @@ import mainMuiTheme from './MainMuiTheme';
 
 
 import GameResizeHandler from './Game/GameResizeHandler';
-import Chat from './Game/Chat';
+import RightSidebar from './Game/RightSidebar';
 
 class Main extends React.Component {
 
@@ -24,13 +24,11 @@ class Main extends React.Component {
                 justifyContent: 'flex-start',
             },
             game: {
-                flexGrow: 4,
                 width: '100%',
                 height: '100%',
             },
             rightSidebar: {
-                flexGrow: 1,
-                backgroundColor: 'red',
+
             }
         }
     }
@@ -44,9 +42,7 @@ class Main extends React.Component {
                         <div style={this.styles.game}>
                             <GameResizeHandler />
                         </div>
-                        <div style={this.styles.rightSidebar}>
-                            <Chat />
-                        </div>
+                        <RightSidebar />
                     </div>
 
                 </MuiThemeProvider>
