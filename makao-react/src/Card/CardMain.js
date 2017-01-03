@@ -15,12 +15,14 @@ class CardMain extends React.Component {
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            textAlign: 'center',
             justifyContent: "space-around",
         };
         const mainStyle23 = {
             width: "100%",
             display: "flex",
             flexDirection: "row",
+            textAlign: 'center',
             justifyContent: "center",
         };
         var mainSection;
