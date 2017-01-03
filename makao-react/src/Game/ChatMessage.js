@@ -4,13 +4,16 @@
 import React from 'react';
 
 import DefaultTooltip from '../DefaultTooltip';
-import {blueGrey300} from 'material-ui/styles/colors';
+import {blueGrey300, teal800} from 'material-ui/styles/colors';
 
 class ChatMessage extends React.Component {
     get styles() {
         return {
             container: {
-                alignSelf: this.props.mine ? 'flex-end' : 'flex-start'
+                alignSelf: this.props.mine ? 'flex-end' : 'flex-start',
+                textAlign: this.props.mine ? 'right' : 'left',
+                color: this.props.mine ? teal800 : 'black',
+                marginTop: '3%'
             },
             userName: {
                 color: blueGrey300,

@@ -2,7 +2,7 @@
  * Created by Masa on 03-Jan-17.
  */
 import React from 'react';
-import TextField from 'material-ui/TextField';
+import ChatInputField from './ChatInputField';
 import ChatMessage from './ChatMessage';
 
 class Chat extends React.Component{
@@ -35,7 +35,9 @@ class Chat extends React.Component{
                     message: "13"
                 },
             ]
-        }
+        };
+
+        this.handleNewMessage = this.handleNewMessage.bind(this);
     }
 
     get styles(){
@@ -50,6 +52,22 @@ class Chat extends React.Component{
         }
     }
 
+    handleNewMessage(message){
+
+        const time = new Date();
+        const newMessage = {
+            userId: this.props.userId,
+            userName: this.props.userName,
+            time: time.getHours() + ":" + time.getMinutes(),
+            message: message,
+        };
+        const messages = [...this.state.messages, newMessage];
+        this.setState({messages: messages});
+        document.getElementById('chat-input').value = null;
+
+
+    }
+
     render(){
         return(
             <div style={this.styles.container}>
@@ -58,14 +76,7 @@ class Chat extends React.Component{
                         <ChatMessage key={index} message={message} mine={this.props.userId === message.userId}/>
                     )
                 }
-                <TextField
-                    id="chat-input"
-                    hintText=""
-                    multiLine={true}
-                    fullWidth={true}
-                    rows={1}
-                    rowsMax={3}/>
-
+             <ChatInputField onEnter={(m) => this.handleNewMessage(m)}/>
 
             </div>
         );
@@ -73,11 +84,12 @@ class Chat extends React.Component{
 }
 
 Chat.defaultProps = {
-
+    userName: "masa"
 };
 
 Chat.PropTypes = {
     userId: React.PropTypes.number,
+    userName: React.PropTypes.string,
 };
 
 export default Chat;
