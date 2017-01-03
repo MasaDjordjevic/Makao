@@ -4,8 +4,7 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off'
-import SplitPane from 'react-split-pane';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import SplitterLayout from 'react-splitter-layout';
 
 
@@ -27,18 +26,29 @@ class RightSidebar extends React.Component {
 
     get styles() {
         return {
+            wrapper: {
+                width: '20%',
+                height: '100%',
+                overflow: 'hidden',
+                boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
+
+            },
             container: {
-                width: this.state.show ? '20%' : '2.5%',
-                margin: 0,
-                transition: 'width 0.5s',
+                width: '100%',
+                height: '100%',
+                transform: this.state.show ? '' : 'translate(75%, 0)',
+                transition: 'transform 0.5s',
+                padding: '0 3% 2%',
+
+                boxSizing: 'border-box',
 
                 backgroundColor: 'white',
+
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                padding: '0 .8% 2%',
-                boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
+
             }
         }
     }
@@ -46,36 +56,40 @@ class RightSidebar extends React.Component {
 
     render() {
         return (
-            <div style={this.styles.container}>
+            <div style={this.styles.wrapper}>
+                <div style={this.styles.container}>
 
-                {
-                    this.state.show ?
-                        <div style={{
-                            width: '100%',
-                            height: '100%',
-                            flexGrow: 1,
-                        }}>
-                            <SplitterLayout vertical
-                                            percentage={true}
-                                            primaryMinSize={2} secondaryMinSize={20}>
-                                <div style={{height: '100%'}}>
-                                    <button>nesto</button>
-                                </div>
+                    {
+                        this.state.show ?
+                            <div style={{
+                                width: '100%',
+                                height: '100%',
+                                flexGrow: 1,
+                            }}>
+                                <SplitterLayout vertical
+                                                percentage={true}
+                                                primaryMinSize={2} secondaryMinSize={20}>
+                                    <div style={{height: '100%'}}>
+                                        <Checkbox
+                                            label="proba"
 
-                                <ChatWrapper userId={this.props.userId}/>
-                            </SplitterLayout>
+                                        />
+                                    </div>
 
-                        </div>
-                        : ''
-                }
-                <Checkbox
-                    style={{marginTop: '5%', width: '', alignSelf: 'flex-end'}}
-                    inputStyle={{marginRight: 13}}
-                    checkedIcon={<Visibility />}
-                    uncheckedIcon={<VisibilityOff />}
-                    onCheck={this.handleShowHide}
-                />
+                                    <ChatWrapper userId={this.props.userId}/>
+                                </SplitterLayout>
 
+                            </div>
+                            : ''
+                    }
+                    <Checkbox
+                        style={{marginTop: '5%', marginLeft: 'auto'}}
+                        checkedIcon={<Visibility />}
+                        uncheckedIcon={<VisibilityOff />}
+                        onCheck={this.handleShowHide}
+                    />
+
+                </div>
             </div>
 
         );
