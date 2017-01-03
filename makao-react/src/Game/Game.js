@@ -96,6 +96,7 @@ class Game extends React.Component {
     handleResize() {
         const w = document.documentElement.clientWidth;
         const h = document.documentElement.clientHeight;
+
         let dimensions = {
             userCardsWidth: 700,
             userCardsHeight: 250,
@@ -115,7 +116,7 @@ class Game extends React.Component {
             dimensions.talon = h * dimensions.talon / 750;
             dimensions.opponents = h * dimensions.opponents / 750;
         }
-
+        console.log(dimensions.talon);
         this.setState({dimensions: dimensions});
     }
 
@@ -134,6 +135,8 @@ class Game extends React.Component {
     }
 
     get styles() {
+        const talonMargin = this.state.dimensions.talon / 40;
+
         return {
             container: {
                 position: 'relative',
@@ -141,7 +144,7 @@ class Game extends React.Component {
             myCards: {},
             opponents: {},
             talon: {
-                marginBottom: '7%',
+                marginBottom: talonMargin + '%',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
