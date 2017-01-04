@@ -30,20 +30,20 @@ class RightSidebar extends React.Component {
                 width: '20%',
                 height: '100%',
                 overflow: 'hidden',
-                boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
 
             },
             container: {
-                width: '100%',
+                marginLeft: '5%',
                 height: '100%',
-                transform: this.state.show ? '' : 'translate(75%, 0)',
+                transform: this.state.show ? '' : 'translateX(calc(94% - 24px))',
                 transition: 'transform 0.5s',
                 padding: '0 3% 2%',
 
                 boxSizing: 'border-box',
+                boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
 
                 backgroundColor: 'white',
-
+                flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
@@ -61,11 +61,7 @@ class RightSidebar extends React.Component {
 
                     {
                         this.state.show ?
-                            <div style={{
-                                width: '100%',
-                                height: '100%',
-                                flexGrow: 1,
-                            }}>
+
                                 <SplitterLayout vertical
                                                 percentage={true}
                                                 primaryMinSize={2} secondaryMinSize={20}>
@@ -79,11 +75,10 @@ class RightSidebar extends React.Component {
                                     <ChatWrapper userId={this.props.userId}/>
                                 </SplitterLayout>
 
-                            </div>
                             : ''
                     }
                     <Checkbox
-                        style={{marginTop: '5%', marginLeft: 'auto'}}
+                        style={{marginTop: '5%'}}
                         checkedIcon={<Visibility />}
                         uncheckedIcon={<VisibilityOff />}
                         onCheck={this.handleShowHide}
