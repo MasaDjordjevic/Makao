@@ -25,7 +25,7 @@ import styles from './talon.css';
     }
         render() {
         return (
-            <div style={this.styles.container}>
+            <div style={{...this.styles.container, ...this.props.style}}>
                 <AnimateOnChange
                     baseClassName="test"
                     animationClassName="testLarge"

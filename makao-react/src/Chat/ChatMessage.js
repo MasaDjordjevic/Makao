@@ -26,7 +26,7 @@ class ChatMessage extends React.Component {
     render() {
         return (
             <div style={this.styles.container}>
-                <DefaultTooltip tooltip={this.props.message.time} tooltipPosition={this.props.mine ? 'top-left' : 'top-right'}>
+                <DefaultTooltip tooltip={this.props.message.time} tooltipPosition={this.props.mine ? 'top-left' : 'top-center'}>
 
                         {
                             this.props.mine ? "" :

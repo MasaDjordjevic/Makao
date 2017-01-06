@@ -1,5 +1,4 @@
 import React from 'react';
-import Radium from 'radium';
 import {blackColor, redColor, isBlack} from './common';
 
 class CardSymbol extends React.Component {
@@ -50,4 +49,15 @@ class CardSymbol extends React.Component {
     }
 }
 
-export default Radium(CardSymbol);
+export default CardSymbol;
+
+CardSymbol.defaultProps = {
+    containerSize: 25,
+};
+
+CardSymbol.propTypes = {
+    symbol: React.PropTypes.oneOf(['spades', 'diamonds', 'clubs', 'hearts']).isRequired,
+    containerSize: React.PropTypes.number,
+    lineHeight: React.PropTypes.number,
+    margin: React.PropTypes.number,
+};
