@@ -125,6 +125,7 @@ class Opponents extends React.Component {
 Opponents.propTypes = {
     players: React.PropTypes.array.isRequired,
     playerHeight: React.PropTypes.number,
+    playerOnMoveId: React.PropTypes.number.isRequired,
 };
 
 export default Opponents;

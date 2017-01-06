@@ -5,9 +5,10 @@ import React from 'react';
 import CardComponent from '../Card/CardComponent';
 import AnimateOnChange from 'react-animate-on-change';
 import styles from './talon.css';
+import Card from '../Card/Card';
 
-    class Talon extends React.Component {
-    get styles(){
+class Talon extends React.Component {
+    get styles() {
         return {
             container: {
                 display: 'flex',
@@ -23,12 +24,13 @@ import styles from './talon.css';
             }
         }
     }
-        render() {
+
+    render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AnimateOnChange
-                    baseClassName="test"
-                    animationClassName="testLarge"
+                    baseClassName="talon"
+                    animationClassName="talonLarge"
                     animate={this.props.card != null}>
                     <div>
                         {this.props.card ?
@@ -38,8 +40,8 @@ import styles from './talon.css';
                         }
                     </div>
                 </AnimateOnChange>
-                <div style={this.styles.deck} onClick={()=>this.props.onClick()}>
-                    <CardComponent cardHeight={this.props.cardHeight/1.5} back hover="pointer"/>
+                <div style={this.styles.deck} onClick={() => this.props.onClick()}>
+                    <CardComponent cardHeight={this.props.cardHeight / 1.5} back hover="pointer"/>
                 </div>
             </div>
         );
@@ -47,3 +49,9 @@ import styles from './talon.css';
 
 }
 export default Talon;
+
+Talon.propTypes = {
+    card: React.PropTypes.instanceOf(Card),
+    cardHeight: React.PropTypes.number,
+    onClick: React.PropTypes.func,
+};

@@ -40,6 +40,6 @@ LogEntry.defaultProps = {};
 LogEntry.propTypes = {
     log: React.PropTypes.string,
     playerName: React.PropTypes.any,
-    left: React.PropTypes.bool,
     card: React.PropTypes.instanceOf(Card),
+    left: React.PropTypes.bool,
 };

@@ -53,6 +53,7 @@ Chat.defaultProps = {
 };
 
 Chat.PropTypes = {
+    messages: React.PropTypes.array.isRequired,
 };
 
 export default Chat;

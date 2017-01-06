@@ -50,4 +50,7 @@ export default LogAndChat;
 
 LogAndChat.defaultProps = {};
 
-LogAndChat.propTypes = {};
+LogAndChat.propTypes = {
+    chatMessages: React.PropTypes.array.isRequired,
+    onNewChatMessage: React.PropTypes.func,
+};

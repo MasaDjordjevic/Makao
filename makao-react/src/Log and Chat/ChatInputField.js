@@ -80,3 +80,6 @@ export default class ChatInputField extends React.Component {
         );
     }
 }
+ChatInputField.propTypes = {
+    onEnter: React.PropTypes.func,
+};

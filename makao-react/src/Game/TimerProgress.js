@@ -44,4 +44,4 @@ export default class TimerProgress extends React.Component {
 TimerProgress.propTypes = {
     length: React.PropTypes.number,
     onTimeExpiration: React.PropTypes.func,
-}
+};

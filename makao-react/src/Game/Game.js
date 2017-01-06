@@ -186,6 +186,7 @@ class Game extends React.Component {
 
 
 Game.PropTypes = {
+    dimensions: React.PropTypes.object,
 };
 
 export default Game;

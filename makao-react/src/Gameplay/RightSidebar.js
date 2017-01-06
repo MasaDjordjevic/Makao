@@ -81,3 +81,8 @@ class RightSidebar extends React.Component {
 
 
 export default RightSidebar;
+
+RightSidebar.defaultProps = {
+    chatMessages: React.PropTypes.array,
+    onNewChatMessage: React.PropTypes.func,
+};

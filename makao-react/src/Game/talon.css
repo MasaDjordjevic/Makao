@@ -1,7 +1,7 @@
-.test{
+.talon{
     display: block;
 }
-.testLarge{
+.talonLarge{
     animation:zoom-out 0.8s ease-in
 }
 @keyframes zoom-out{

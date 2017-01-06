@@ -7,4 +7,4 @@ class GlobalVariables extends React.Component {
         this.userName = 'Masa';
     }
 }
-export default new GlobalVariables;
+export default (new GlobalVariables);

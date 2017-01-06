@@ -43,4 +43,5 @@ export default ChatMessage;
 
 ChatMessage.propTypes = {
     mine: React.PropTypes.bool,
+    message: React.PropTypes.object.isRequired,
 };
