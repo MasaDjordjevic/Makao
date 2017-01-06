@@ -4,11 +4,11 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import mainMuiTheme from './MainMuiTheme';
+import mainMuiTheme from '../MainMuiTheme';
 
 
-import GameResizeHandler from './Game/GameResizeHandler';
-import RightSidebar from './Game/RightSidebar';
+import GameResizeHandler from '../Game/GameResizeHandler';
+import RightSidebar from './RightSidebar';
 
 class Main extends React.Component {
 

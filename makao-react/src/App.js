@@ -4,7 +4,7 @@ import Card from './Card/Card';
 import CardComponent from "./Card/CardComponent";
 import CardSet from "./Card/CardSet";
 import Game from "./Game/Game";
-import Main from "./Main";
+import Main from "./Gameplay/Main";
 
 class App extends Component {
     get testCards(){

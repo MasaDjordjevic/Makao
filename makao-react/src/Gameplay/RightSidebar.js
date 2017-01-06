@@ -8,7 +8,7 @@ import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import SplitterLayout from 'react-splitter-layout';
 
 
-import ChatWrapper from './ChatWrapper';
+import ChatWrapper from '../Chat/ChatWrapper';
 
 class RightSidebar extends React.Component {
     constructor() {
