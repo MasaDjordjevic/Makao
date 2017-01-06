@@ -26,7 +26,7 @@ class ChatMessage extends React.Component {
     render() {
         return (
             <div style={this.styles.container}>
-                <DefaultTooltip tooltip={this.props.message.time}>
+                <DefaultTooltip tooltip={this.props.message.time} tooltipPosition={this.props.mine ? 'top-left' : 'top-right'}>
 
                         {
                             this.props.mine ? "" :
@@ -41,3 +41,6 @@ class ChatMessage extends React.Component {
 }
 export default ChatMessage;
 
+ChatMessage.propTypes = {
+    mine: React.PropTypes.bool,
+};

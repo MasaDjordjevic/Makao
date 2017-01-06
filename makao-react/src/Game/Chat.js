@@ -44,8 +44,7 @@ class Chat extends React.Component{
         return {
             container: {
                 width: '100%',
-                overflowY: 'auto',
-                overflowX: 'hidden',
+                overflowY: 'visible',
                 display: 'flex',
                 flexDirection: 'column',
 

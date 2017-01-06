@@ -129,7 +129,11 @@ class DefaultTooltip extends React.Component{
 
         const styles = getStyles(this.props, this.context);
         const tooltipPosition = tooltipPositionProp.split('-');
-
+        if(tooltipPosition[1] === 'left') {
+            tooltipPosition[1] = 'right';
+        }else if(tooltipPosition[1] === 'right'){
+            tooltipPosition[1] = 'left';
+        }
         const hovered = this.state.hovered && !disabled;
 
         const mergedRootStyles = Object.assign(
@@ -168,4 +172,12 @@ DefaultTooltip.defaultProps = {
     disableTouchRipple: false,
     tooltipPosition: 'top-center',
     touch: false,
+};
+
+DefaultTooltip.propTypes = {
+    tooltip: React.PropTypes.string,
+    disabled: React.PropTypes.bool,
+    disableTouchRipple: React.PropTypes.bool,
+    tooltipPosition: React.PropTypes.string,
+    touch: React.PropTypes.bool,
 };
