@@ -14,7 +14,6 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            userId: 1,
             userName: 'masa',
             chatMessages: [
                 {
@@ -85,10 +84,9 @@ class Main extends React.Component {
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
-                            <GameResizeHandler userId={this.state.userId}/>
+                            <GameResizeHandler/>
                         </div>
-                        <RightSidebar userId={this.state.userId}
-                                      chatMessages={this.state.chatMessages}
+                        <RightSidebar chatMessages={this.state.chatMessages}
                                       onNewChatMessage={(m)=>this.handleNewMessage(m)} />
                     </div>
 

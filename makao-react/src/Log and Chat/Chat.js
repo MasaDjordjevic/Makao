@@ -4,6 +4,7 @@
 import React from 'react';
 import ChatMessage from './ChatMessage';
 import ReactDOM from 'react-dom'
+import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class Chat extends React.Component{
     componentWillUpdate(){
@@ -39,7 +40,7 @@ class Chat extends React.Component{
                 <div style={this.styles.messagesContainer}>
                 {
                     this.props.messages.map((message, index)=>
-                        <ChatMessage key={index} message={message} mine={this.props.userId === message.userId}/>
+                        <ChatMessage key={index} message={message} mine={GlobalVariables.userId === message.userId}/>
                     )
                 }
                 </div>
@@ -53,7 +54,6 @@ Chat.defaultProps = {
 };
 
 Chat.PropTypes = {
-    userId: React.PropTypes.number,
     userName: React.PropTypes.string,
 };
 

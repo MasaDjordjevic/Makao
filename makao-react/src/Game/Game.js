@@ -2,13 +2,12 @@
  * Created by Masa on 22-Dec-16.
  */
 import React from 'react';
-import CardComponent from '../Card/CardComponent';
 import CardSet from '../Card/CardSet';
 import Card from '../Card/Card';
 import Talon from './Talon';
 import Opponents from './Opponents';
 import _ from 'lodash';
-import LinearProgress from 'material-ui/LinearProgress';
+import GlobalVariables from '../Gameplay/GlobalVariables';
 
 
 class Game extends React.Component {
@@ -63,7 +62,7 @@ class Game extends React.Component {
     }
 
     playMove(playerId, card) {
-        if (playerId === this.props.userId) {
+        if (playerId === GlobalVariables.userId) {
             const myCards = this.state.myCards.slice();
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
@@ -150,12 +149,12 @@ class Game extends React.Component {
      </div>*/
 
     handleCardClick(card) {
-        this.playMove(this.props.userId, _(this.state.myCards).find(card));
+        this.playMove(GlobalVariables.userId, _(this.state.myCards).find(card));
     }
 
     render() {
         const players = this.state.players.slice();
-        const playersWithoutUser = _.remove(players, (p) => p.id !== this.props.userId);
+        const playersWithoutUser = _.remove(players, (p) => p.id !== GlobalVariables.userId);
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
@@ -187,7 +186,6 @@ class Game extends React.Component {
 
 
 Game.PropTypes = {
-    userId: React.PropTypes.number,
 };
 
 export default Game;

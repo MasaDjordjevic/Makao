@@ -62,7 +62,6 @@ class RightSidebar extends React.Component {
                     {
                         this.state.show &&
                         <LogAndChat
-                            userId={this.props.userId}
                             chatMessages={this.props.chatMessages}
                             onNewChatMessage={(m) => this.props.onNewChatMessage(m)}/>
                     }

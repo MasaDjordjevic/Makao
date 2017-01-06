@@ -37,8 +37,7 @@ class LogAndChat extends React.Component {
                                     percentage={true}
                                     primaryMinSize={2} secondaryMinSize={20}>
                         <Log />
-                        <Chat userId={this.props.userId}
-                              messages={this.props.chatMessages}
+                        <Chat messages={this.props.chatMessages}
                               style={this.styles.chat}/>
                     </SplitterLayout>
 

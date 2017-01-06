@@ -5,6 +5,7 @@ import React from 'react';
 import LogEntry from './LogEntry';
 import Card from '../Card/Card';
 import ReactDOM from 'react-dom'
+import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class Log extends React.Component {
     componentWillUpdate(){
@@ -42,8 +43,8 @@ class Log extends React.Component {
                     this.props.logs.map((log, index) =>
                         <LogEntry key={index}
                                   log={log.log}
-                                  playerName={log.playerId !== this.props.userId && log.playerName}
-                                  left={log.playerId !== this.props.userId}
+                                  playerName={log.playerId !== GlobalVariables.userId && log.playerName}
+                                  left={log.playerId !== GlobalVariables.userId}
                                   card={log.card}/>
                     )
                 }
@@ -55,7 +56,6 @@ class Log extends React.Component {
 export default Log;
 
 Log.defaultProps = {
-    userId: 1,
     logs: [
         {
             playerName: 'masa',
@@ -77,6 +77,5 @@ Log.defaultProps = {
 };
 
 Log.propTypes = {
-    userId: React.PropTypes.number,
     logs: React.PropTypes.array.isRequired,
 };
