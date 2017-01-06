@@ -9,9 +9,9 @@ import ChatInputField from '../Log and Chat/ChatInputField';
 class LogAndChat extends React.Component {
     get styles() {
         return {
-            container: {},
-            contentContainer: {
+            container: {
                 height: '100%',
+                width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
             },
@@ -30,7 +30,6 @@ class LogAndChat extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <div style={this.styles.contentContainer}>
                     <span style={this.styles.title}>LOG</span>
                     <Divider />
 
@@ -44,7 +43,6 @@ class LogAndChat extends React.Component {
                     </SplitterLayout>
 
                     <ChatInputField onEnter={(m) => this.props.onNewChatMessage(m)}/>
-                </div>
             </div>
         );
     }
