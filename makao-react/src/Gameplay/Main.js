@@ -10,11 +10,12 @@ import mainMuiTheme from '../MainMuiTheme';
 import GameResizeHandler from '../Game/GameResizeHandler';
 import RightSidebar from './RightSidebar';
 
+import GlobalVariables from '../Gameplay/GlobalVariables';
+
 class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            userName: 'masa',
             chatMessages: [
                 {
                     userId: 3,
@@ -49,8 +50,8 @@ class Main extends React.Component {
     handleNewMessage(message, id, name) {
         const time = new Date();
         const newMessage = {
-            userId: id ? id : this.state.userId,
-            userName: name ? name : this.state.userName,
+            userId: id ? id : GlobalVariables.userId,
+            userName: name ? name : GlobalVariables.userName,
             time: time.getHours() + ":" + time.getMinutes(),
             message: message,
         };

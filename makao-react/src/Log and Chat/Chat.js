@@ -50,11 +50,9 @@ class Chat extends React.Component{
 }
 
 Chat.defaultProps = {
-    userName: "masa"
 };
 
 Chat.PropTypes = {
-    userName: React.PropTypes.string,
 };
 
 export default Chat;
