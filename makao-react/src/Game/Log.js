@@ -4,21 +4,25 @@
 import React from 'react';
 import LogEntry from './LogEntry';
 import Card from '../Card/Card';
-import {blueGrey300} from 'material-ui/styles/colors';
-import Divider from 'material-ui/Divider';
+import ReactDOM from 'react-dom'
 
 class Log extends React.Component {
+    componentWillUpdate(){
+        const node = ReactDOM.findDOMNode(this).parentElement;
+        this.scrollHeight = node.scrollHeight;
+        this.scrollTop = node.scrollTop;
+    }
+
+    componentDidUpdate() {
+        const node = ReactDOM.findDOMNode(this).parentElement;
+        node.scrollTop = this.scrollTop + (node.scrollHeight - this.scrollHeight);
+    }
+
     get styles() {
         return {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
-            },
-            title: {
-                margin: '5% 0',
-                textAlign: 'center',
-                fontSize: 14,
-                color: blueGrey300,
             },
             logContainer: {
                 display: 'flex',
@@ -32,8 +36,7 @@ class Log extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <span style={this.styles.title}>LOG</span>
-                <Divider />
+
                 <div style={this.styles.logContainer}>
                 {
                     this.props.logs.map((log, index) =>
@@ -54,214 +57,6 @@ export default Log;
 Log.defaultProps = {
     userId: 1,
     logs: [
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
-        {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
-            card: new Card('spades', '7'),
-        },
-        {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
-        },
-        {
-            playerName: 'nikolica',
-            playerId: 3,
-            card: new Card('hearts', '12'),
-        },
         {
             playerName: 'masa',
             playerId: 1,
