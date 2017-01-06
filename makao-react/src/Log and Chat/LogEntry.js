@@ -9,10 +9,10 @@ class LogEntry extends React.Component {
             container: {
                 alignSelf: this.props.left ? 'flex-start' : 'flex-end',
             },
-            cardContainer:{
+            cardContainer: {
                 display: 'inline',
             },
-            playerName:{
+            playerName: {
                 color: blueGrey300,
             }
         }
@@ -21,14 +21,14 @@ class LogEntry extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                {this.props.playerName ? <label style={this.styles.playerName}>{this.props.playerName} :</label> : ''}
-                {this.props.log ? <label>{this.props.log}</label> : ""}
-                {this.props.card ?
-                    <div style={this.styles.cardContainer}>
-                        <label>{this.props.card.stringify().short}&nbsp;</label>
-                        <CardSymbol symbol={this.props.card.symbol} lineHeight={12}/>
-                    </div>
-                    : ""}
+                {this.props.playerName && <label style={this.styles.playerName}>{this.props.playerName} :</label>}
+                {this.props.log && <label>{this.props.log}</label>}
+                {this.props.card &&
+                <div style={this.styles.cardContainer}>
+                    <label>{this.props.card.stringify().short}&nbsp;</label>
+                    <CardSymbol symbol={this.props.card.symbol} lineHeight={12}/>
+                </div>
+                }
             </div>
         );
     }

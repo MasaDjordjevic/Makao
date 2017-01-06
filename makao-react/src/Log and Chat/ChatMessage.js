@@ -29,7 +29,7 @@ class ChatMessage extends React.Component {
                 <DefaultTooltip tooltip={this.props.message.time} tooltipPosition={this.props.mine ? 'top-left' : 'top-center'}>
 
                         {
-                            this.props.mine ? "" :
+                            !this.props.mine &&
                                 <label style={this.styles.userName}>{this.props.message.userName}: </label>
                         }
                         <label>{this.props.message.message}</label>

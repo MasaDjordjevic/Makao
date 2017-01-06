@@ -110,10 +110,8 @@ class Opponents extends React.Component {
                     players.map((player, i) =>
                         <div key={i.toString()} style={this.getStyles(i)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
-                            {this.isOnTurn(player) ?
+                            {this.isOnTurn(player) &&
                                 <TimerProgress length={30} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
-                                :
-                                ""
                             }
                             <span style={this.styles.playerName}>{player.name.toLowerCase()}</span>
                         </div>
