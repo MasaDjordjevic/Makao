@@ -5,6 +5,7 @@ import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import {teal900} from 'material-ui/styles/colors';
 
 import LogAndChat from '../Log and Chat/LogAndChat';
 
@@ -68,7 +69,7 @@ class RightSidebar extends React.Component {
                     <Checkbox
                         style={{marginTop: '5%'}}
                         checkedIcon={<Visibility />}
-                        uncheckedIcon={<VisibilityOff />}
+                        uncheckedIcon={<VisibilityOff style={{fill: teal900}} />}
                         onCheck={this.handleShowHide}
                     />
 
