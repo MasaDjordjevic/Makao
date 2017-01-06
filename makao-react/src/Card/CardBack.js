@@ -15,17 +15,17 @@ class CardBack extends React.Component {
         return this.cardWidth * 0.7
     }
 
-    get style() {
+    get styles() {
         const cardHeight = this.props.cardHeight;
         const border = '2px grey solid';
         const cardBorderSize = cardHeight / 31;
         const cardBorderRadius = getCardBorderRadius(cardHeight);
         let hover;
-        if(this.props.hover){
+        if (this.props.hover) {
             hover = {
                 cursor: this.props.hover
             }
-        }else {
+        } else {
             hover = {
                 cursor: 'default',
             }
@@ -111,38 +111,43 @@ class CardBack extends React.Component {
     render() {
         const symbolSize = this.circleSize * 0.25;
         return (
-            <div style={this.style.container}>
-                <div style={[this.style.half, this.style.upperHalf]}></div>
-                <div style={this.style.center}>
-                    <div style={this.style.circle}>
-                        <div style={this.style.circleHalf}>
-                            <div style={this.style.circleFourth}>
+            <div style={this.styles.container}>
+                <div style={[this.styles.half, this.styles.upperHalf]}></div>
+                <div style={this.styles.center}>
+                    <div style={this.styles.circle}>
+                        <div style={this.styles.circleHalf}>
+                            <div style={this.styles.circleFourth}>
                                 <CardSymbol containerSize={symbolSize} symbol="hearts"/>
                             </div>
-                            <div style={this.style.verticalSeparator}>
+                            <div style={this.styles.verticalSeparator}>
                             </div>
-                            <div style={this.style.circleFourth}>
+                            <div style={this.styles.circleFourth}>
                                 <CardSymbol containerSize={symbolSize} symbol="spades"/>
                             </div>
                         </div>
-                        <div style={this.style.horizontalSeparator}>
+                        <div style={this.styles.horizontalSeparator}>
                         </div>
-                        <div style={this.style.circleHalf}>
-                            <div style={this.style.circleFourth}>
+                        <div style={this.styles.circleHalf}>
+                            <div style={this.styles.circleFourth}>
                                 <CardSymbol containerSize={symbolSize} symbol="clubs"/>
                             </div>
-                            <div style={this.style.verticalSeparator}>
+                            <div style={this.styles.verticalSeparator}>
                             </div>
-                            <div style={this.style.circleFourth}>
+                            <div style={this.styles.circleFourth}>
                                 <CardSymbol containerSize={symbolSize} symbol="diamonds"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style={[this.style.half, this.style.bottomHalf]}></div>
+                <div style={[this.styles.half, this.styles.bottomHalf]}></div>
             </div>
         );
     }
 }
 
 export default Radium(CardBack);
+
+CardBack.propTypes = {
+    cardHeight: React.PropTypes.number.isRequired,
+    hover: React.PropTypes.any,
+};

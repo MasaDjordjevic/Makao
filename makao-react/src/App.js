@@ -68,7 +68,7 @@ class App extends Component {
 
 
 /*
-       <div className="App" style={this.style}>
+       <div className="App" styles={this.styles}>
            <CardSet width={500} cards={this.testCards.splice(5)} cardNumber={5} sort />
            <CardSet width={500} cards={this.testCards.splice(7)} cardNumber={5} sort />
            <CardSet width={500} cards={this.testCards.splice(2)} cardNumber={5} />

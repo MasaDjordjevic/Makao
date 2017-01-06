@@ -12,11 +12,11 @@ class CardHeader extends React.Component {
         return this.props.cardHeight / 5 / 2;
     }
 
-    getStyles() {
+    get styles() {
         const cardHeight = this.props.cardHeight;
         let signPadding = !this.props.offset || this.props.offset > 60 ? 16 : this.props.offset / 10;
-        if(cardHeight < 160){
-            signPadding = cardHeight/16;
+        if (cardHeight < 160) {
+            signPadding = cardHeight / 16;
         }
         return {
             headerTextContainerStyle: {
@@ -62,12 +62,12 @@ class CardHeader extends React.Component {
     render() {
         return (
             <div>
-                <div style={this.getStyles().headerTextContainerStyle}>
-                    <span style={this.getStyles().numberStyle}>{this.props.card.stringify().short}</span>
-                    <span style={this.getStyles().textStyle}>{this.props.card.stringify().long.toUpperCase()}
+                <div style={this.styles.headerTextContainerStyle}>
+                    <span style={this.styles.numberStyle}>{this.props.card.stringify().short}</span>
+                    <span style={this.styles.textStyle}>{this.props.card.stringify().long.toUpperCase()}
                         &nbsp;OF&nbsp;{this.props.card.symbol.toUpperCase()}</span>
                 </div>
-                <div style={this.getStyles().headerCircleStyle}>
+                <div style={this.styles.headerCircleStyle}>
                     <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
                 </div>
             </div>
@@ -77,6 +77,7 @@ class CardHeader extends React.Component {
 
 CardHeader.propTypes = {
     cardHeight: React.PropTypes.number.isRequired,
-}
+    offset: React.PropTypes.number,
+};
 
 export default Radium(CardHeader);

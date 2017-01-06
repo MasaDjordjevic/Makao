@@ -6,6 +6,7 @@ import React from 'react';
 import {isBlack, rotatedStyle} from './common';
 import CardSymbol from './CardSymbol';
 import CardSignRenderer from './CardSignRenderer';
+import Card from './Card';
 
 
 class CardMain extends React.Component {
@@ -25,16 +26,16 @@ class CardMain extends React.Component {
             textAlign: 'center',
             justifyContent: "center",
         };
-        var mainSection;
+        let mainSection;
         const num = this.props.card.number;
         if (num > 10) {
             mainSection =
                 <div style={mainStyle}>
                     <CardSignRenderer type={this.props.card.number}
-                                      color={isBlack(this.props.symbol) ? "black" : "red"}/>
+                                      color={isBlack(this.props.card.symbol) ? "black" : "red"}/>
                     <div style={rotatedStyle}>
                         <CardSignRenderer type={this.props.card.number}
-                                          color={isBlack(this.props.symbol) ? "black" : "red"}/>
+                                          color={isBlack(this.props.card.symbol) ? "black" : "red"}/>
                     </div>
                 </div>
         } else {
@@ -91,3 +92,7 @@ class CardMain extends React.Component {
 }
 
 export default CardMain;
+
+CardMain.propTypes = {
+    card: React.PropTypes.instanceOf(Card).isRequired,
+};

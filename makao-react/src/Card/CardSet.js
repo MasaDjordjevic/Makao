@@ -39,7 +39,7 @@ class CardSet extends React.Component {
                     }}
                          key={i.toString()}>
                         <CardSetLine
-                            onClick={(card)=>this.props.onClick(card)}
+                            onClick={(card) => this.props.onClick(card)}
                             height={this.props.height}
                             width={this.props.width}
                             cards={arr}

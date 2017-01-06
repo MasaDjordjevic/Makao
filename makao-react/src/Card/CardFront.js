@@ -8,8 +8,16 @@ import React from 'react';
 import Radium from 'radium';
 import CardMain from './CardMain';
 import CardHeader from './CardHeader';
-import {blackColor, redColor, isBlack, rotatedStyle, getCardWidth, cardHoverGrowth, getCardBorderRadius} from './common';
-
+import {
+    blackColor,
+    redColor,
+    isBlack,
+    rotatedStyle,
+    getCardWidth,
+    cardHoverGrowth,
+    getCardBorderRadius
+} from './common';
+import Card from './Card';
 
 class CardFront extends React.Component {
 
@@ -18,7 +26,7 @@ class CardFront extends React.Component {
         const cardWidth = getCardWidth(cardHeight);
         const cardBorderRadius = getCardBorderRadius(cardHeight);
 
-        if(this.props.hover){
+        if (this.props.hover) {
             var hover = {
                 transform: 'scale(' + cardHoverGrowth + ')',
                 cursor: 'pointer',
@@ -80,7 +88,9 @@ CardFront.defaultProps = {
 };
 CardFront.propTypes = {
     cardHeight: React.PropTypes.number,
-    hover: React.PropTypes.bool,
+    hover: React.PropTypes.any,
+    card: React.PropTypes.instanceOf(Card),
+    offset: React.PropTypes.number,
 };
 
 export default Radium(CardFront);

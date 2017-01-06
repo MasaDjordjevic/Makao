@@ -135,13 +135,13 @@ class Game extends React.Component {
         }
     }
 
-    /*<div style={this.styles.myCards}>
+    /*<div styles={this.styles.myCards}>
      <CardSet width={700} height={310} cards={this.state.myCards} />
      </div>
-     <div style={this.styles.myCards}>
+     <div styles={this.styles.myCards}>
      <CardSet width={100/3*2+100} height={100} cardNumber={100} back />
      </div>
-     <div style={this.styles.myCards}>
+     <div styles={this.styles.myCards}>
      <CardSet width={500} height={310} cardNumber={5} back />
      </div>
      <div>

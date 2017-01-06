@@ -2,10 +2,11 @@
  * Created by Masa on 22-Dec-16.
  */
 export default class Card {
-    constructor(sym, num){
+    constructor(sym, num) {
         this.symbol = sym;
         this.number = num;
     }
+
     stringify() {
         switch (+this.number) {
             case 1:
