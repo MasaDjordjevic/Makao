@@ -9,6 +9,7 @@ import SplitterLayout from 'react-splitter-layout';
 
 
 import ChatWrapper from '../Chat/ChatWrapper';
+import Log from '../Game/Log'
 
 class RightSidebar extends React.Component {
     constructor() {
@@ -65,13 +66,7 @@ class RightSidebar extends React.Component {
                                 <SplitterLayout vertical
                                                 percentage={true}
                                                 primaryMinSize={2} secondaryMinSize={20}>
-                                    <div style={{height: '100%'}}>
-                                        <Checkbox
-                                            label="proba"
-
-                                        />
-                                    </div>
-
+                                    <Log />
                                     <ChatWrapper userId={this.props.userId}/>
                                 </SplitterLayout>
 
