@@ -14,6 +14,7 @@ class RightSidebar extends React.Component {
         super();
         this.state = {
             show: true,
+            animate: false,
         };
 
         this.handleShowHide = this.handleShowHide.bind(this);
@@ -21,7 +22,7 @@ class RightSidebar extends React.Component {
     }
 
     handleShowHide() {
-        this.setState({show: !this.state.show});
+        this.setState({show: !this.state.show, animate: true});
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -30,8 +31,12 @@ class RightSidebar extends React.Component {
         }
     }
 
+    componentWillReceiveProps(){
+        this.setState({animate: false});
+    }
+
     componentDidUpdate() {
-        if (this.state.show) {
+        if (this.state.animate) {
             document.getElementById('right-sidebar').firstChild.style.display = 'none';
             setTimeout(() => {
                 document.getElementById('right-sidebar').firstChild.style.display = 'flex';
