@@ -8,7 +8,7 @@ import Talon from './Talon';
 import Opponents from './Opponents';
 import _ from 'lodash';
 import GlobalVariables from '../Gameplay/GlobalVariables';
-
+import UserInfo from './UserInfo';
 
 class Game extends React.Component {
     constructor() {
@@ -22,7 +22,7 @@ class Game extends React.Component {
                 {id: 5, name: 'Darko', cardNumber: '8'},
                 {id: 5, name: 'Darko', cardNumber: '8'},
             ],
-            playerOnMoveId: 2,
+            playerOnMoveId: 1,
             myCards: [
                 new Card("spades", "2"),
                 new Card("spades", "7"),
@@ -85,7 +85,6 @@ class Game extends React.Component {
     }
 
 
-
     componentDidMount() {
         this.playMove(1, this.state.myCards[0]);
         this.playMove(2, new Card("clubs", "9"));
@@ -101,7 +100,11 @@ class Game extends React.Component {
                 width: '100%',
                 height: '100%',
             },
-            myCards: {},
+            myCards: {
+                flexGrow: 2,
+                display: 'flex',
+                justifyContent: 'center',
+            },
             opponents: {
                 width: '100%',
                 height: '100%'
@@ -125,13 +128,21 @@ class Game extends React.Component {
             },
             userContainer: {
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
                 justifyContent: 'flex-end',
-                alignItems: 'center'
+                alignItems: 'center',
+                width: '100%',
             },
             timer: {
                 height: 7,
+            },
+            spacer: {
+                flexGrow: 1,
+            },
+            userInfo:{
+                marginTop: '5%',
             }
+
         }
     }
 
@@ -169,12 +180,17 @@ class Game extends React.Component {
                                onClick={() => this.handleDraw()}/>
                     </div>
                     <div style={this.styles.userContainer}>
+                        <div style={this.styles.spacer}></div>
                         <div style={this.styles.myCards}>
                             <CardSet
                                 onClick={(card) => this.handleCardClick(card)}
                                 width={this.props.dimensions.userCardsWidth}
                                 height={this.props.dimensions.userCardsHeight}
                                 cards={this.state.myCards}/>
+                        </div>
+                        <div style={this.styles.spacer}>
+                            <UserInfo style={this.styles.userInfo}
+                                      myMove={this.state.playerOnMoveId === GlobalVariables.userId}/>
                         </div>
                     </div>
                 </div>

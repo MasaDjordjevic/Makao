@@ -5,7 +5,7 @@ import React from 'react';
 import CardSet from '../Card/CardSet';
 import TimerProgress from './TimerProgress';
 import {blueGrey200} from 'material-ui/styles/colors';
-
+import GlobalVariables from '../Gameplay/GlobalVariables';
 
 Number.prototype.toRad = function () {
     return this * Math.PI / 180;
@@ -111,7 +111,7 @@ class Opponents extends React.Component {
                         <div key={i.toString()} style={this.getStyles(i)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
                             {this.isOnTurn(player) &&
-                                <TimerProgress length={30} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
+                                <TimerProgress length={GlobalVariables.handLength} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
                             }
                             <span style={this.styles.playerName}>{player.name.toLowerCase()}</span>
                         </div>

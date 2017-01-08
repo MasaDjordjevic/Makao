@@ -5,6 +5,7 @@ class GlobalVariables extends React.Component {
         super();
         this.userId = 1;
         this.userName = 'Masa';
+        this.handLength = 5;
     }
 }
 export default (new GlobalVariables);
