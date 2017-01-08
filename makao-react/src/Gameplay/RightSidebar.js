@@ -24,6 +24,19 @@ class RightSidebar extends React.Component {
         this.setState({show: !this.state.show});
     }
 
+    componentWillUpdate(nextProps, nextState) {
+       if (!nextState.show) {
+           document.getElementById('right-sidebar').firstChild.style.display = 'none';
+        }
+    }
+    componentDidUpdate() {
+        if (this.state.show) {
+            document.getElementById('right-sidebar').firstChild.style.display = 'none';
+            setTimeout(() => {
+                document.getElementById('right-sidebar').firstChild.style.display = 'flex';
+            }, 50);
+        }
+    }
 
     get styles() {
         return {
@@ -31,9 +44,10 @@ class RightSidebar extends React.Component {
                 marginLeft: '0.5%',
                 height: '100%',
                 willChange: 'transform',
-                transform: this.state.show ? 'translateX(0)' : 'translateX(calc(80% - 24px))',
-                //width: this.state.show ? '20%' : 'calc(1% + 24px)',
-                transition: 'transform 0.5s',
+                //transform: this.state.show ? 'translateX(0)' : 'translateX(calc(80% - 24px))',
+                width: this.state.show ? '20%' : 'calc(1% + 24px)',
+                //transition: this.state.show ? 'transform 0.5s' : "",
+                transition: 'width 0.5s',
                 padding: '0 .5% 1%',
 
                 boxSizing: 'border-box',
@@ -45,7 +59,6 @@ class RightSidebar extends React.Component {
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-
             },
         }
     }
@@ -53,8 +66,7 @@ class RightSidebar extends React.Component {
 
     render() {
         return (
-                <div style={this.styles.container}>
-
+            <div style={this.styles.container} id="right-sidebar">
                     {
                         this.state.show &&
                         <LogAndChat
@@ -64,12 +76,11 @@ class RightSidebar extends React.Component {
                     <Checkbox
                         style={{marginTop: '5%'}}
                         checkedIcon={<Visibility />}
-                        uncheckedIcon={<VisibilityOff style={{fill: teal900}} />}
+                        uncheckedIcon={<VisibilityOff style={{fill: teal900}}/>}
                         onCheck={this.handleShowHide}
                     />
 
-                </div>
-
+            </div>
         );
     }
 }
