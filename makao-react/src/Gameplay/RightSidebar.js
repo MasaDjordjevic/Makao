@@ -27,18 +27,14 @@ class RightSidebar extends React.Component {
 
     get styles() {
         return {
-            wrapper: {
-                width: '20%',
-                height: '100%',
-                overflow: 'hidden',
-
-            },
             container: {
-                marginLeft: '5%',
+                marginLeft: '0.5%',
                 height: '100%',
-                transform: this.state.show ? '' : 'translateX(calc(94% - 24px))',
+                willChange: 'transform',
+                transform: this.state.show ? 'translateX(0)' : 'translateX(calc(80% - 24px))',
+                //width: this.state.show ? '20%' : 'calc(1% + 24px)',
                 transition: 'transform 0.5s',
-                padding: '0 3% 2%',
+                padding: '0 .5% 1%',
 
                 boxSizing: 'border-box',
                 boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
@@ -57,7 +53,6 @@ class RightSidebar extends React.Component {
 
     render() {
         return (
-            <div style={this.styles.wrapper}>
                 <div style={this.styles.container}>
 
                     {
@@ -74,7 +69,6 @@ class RightSidebar extends React.Component {
                     />
 
                 </div>
-            </div>
 
         );
     }

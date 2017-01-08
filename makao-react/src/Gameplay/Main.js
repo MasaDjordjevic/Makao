@@ -69,6 +69,7 @@ class Main extends React.Component {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                overflow: 'hidden',
             },
             game: {
                 width: '100%',
