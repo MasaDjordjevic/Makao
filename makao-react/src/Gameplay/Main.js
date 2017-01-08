@@ -74,6 +74,8 @@ class Main extends React.Component {
             game: {
                 width: '100%',
                 height: '100%',
+                padding: '1% 1% 0 1%',
+                boxSizing: 'border-box',
             },
             rightSidebar: {}
         }
