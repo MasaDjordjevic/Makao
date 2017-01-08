@@ -8,6 +8,21 @@ import styles from './talon.css';
 import Card from '../Card/Card';
 
 class Talon extends React.Component {
+    constructor(){
+        super();
+        this.state = {
+            animate: false,
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.card != nextProps.card){
+            this.setState({animate: true});
+        }else {
+            this.setState({animate: false});
+        }
+    }
+
     get styles() {
         return {
             container: {
@@ -31,7 +46,7 @@ class Talon extends React.Component {
                 <AnimateOnChange
                     baseClassName="talon"
                     animationClassName="talonLarge"
-                    animate={this.props.card != null}>
+                    animate={this.state.animate}>
                     <div>
                         {this.props.card ?
                             <CardComponent cardHeight={this.props.cardHeight}
