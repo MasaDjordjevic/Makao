@@ -7,7 +7,7 @@ import FastForward from 'material-ui/svg-icons/av/fast-forward';
 
 class UserInfo extends React.Component {
     get styles() {
-        const nextIconSize = 30;
+        const nextIconSize = 50;
         return {
             container: {
                 display: 'flex',
@@ -28,7 +28,12 @@ class UserInfo extends React.Component {
             nextButton:{
                 alignSelf: 'center',
                 width: '100%',
+                height: nextIconSize,
+                lineHeight: nextIconSize + 'px',
                 margin: '1% 0',
+            },
+            nextLabel: {
+                fontSize: 17
             }
         }
     }
@@ -50,6 +55,7 @@ class UserInfo extends React.Component {
                     primary={true}
                     onClick={this.handleNext}
                     style={this.styles.nextButton}
+                    labelStyle={this.styles.nextLabel}
                     icon={<FastForward />}
                 />
                 {this.props.myMove &&
