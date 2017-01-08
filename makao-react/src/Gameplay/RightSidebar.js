@@ -25,16 +25,17 @@ class RightSidebar extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-       if (!nextState.show) {
-           document.getElementById('right-sidebar').firstChild.style.display = 'none';
+        if (!nextState.show) {
+            document.getElementById('right-sidebar').firstChild.style.display = 'none';
         }
     }
+
     componentDidUpdate() {
         if (this.state.show) {
             document.getElementById('right-sidebar').firstChild.style.display = 'none';
             setTimeout(() => {
                 document.getElementById('right-sidebar').firstChild.style.display = 'flex';
-            }, 50);
+            }, 100);
         }
     }
 
@@ -43,10 +44,8 @@ class RightSidebar extends React.Component {
             container: {
                 marginLeft: '0.5%',
                 height: '100%',
-                willChange: 'transform',
-                //transform: this.state.show ? 'translateX(0)' : 'translateX(calc(80% - 24px))',
+                willChange: 'width',
                 width: this.state.show ? '20%' : 'calc(1% + 24px)',
-                //transition: this.state.show ? 'transform 0.5s' : "",
                 transition: 'width 0.5s',
                 padding: '0 .5% 1%',
 
@@ -58,7 +57,7 @@ class RightSidebar extends React.Component {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
-                alignItems: 'center',
+                alignItems: 'baseline',
             },
         }
     }
@@ -67,18 +66,21 @@ class RightSidebar extends React.Component {
     render() {
         return (
             <div style={this.styles.container} id="right-sidebar">
-                    {
-                        this.state.show &&
-                        <LogAndChat
-                            chatMessages={this.props.chatMessages}
-                            onNewChatMessage={(m) => this.props.onNewChatMessage(m)}/>
-                    }
+                {
+                    this.state.show &&
+                    <LogAndChat
+                        chatMessages={this.props.chatMessages}
+                        onNewChatMessage={(m) => this.props.onNewChatMessage(m)}/>
+                }
+                <div>
                     <Checkbox
-                        style={{marginTop: '5%'}}
+                        style={{marginTop: '50%'}}
+                        iconStyle={{marginRight: 0}}
                         checkedIcon={<Visibility />}
                         uncheckedIcon={<VisibilityOff style={{fill: teal900}}/>}
                         onCheck={this.handleShowHide}
                     />
+                </div>
 
             </div>
         );
