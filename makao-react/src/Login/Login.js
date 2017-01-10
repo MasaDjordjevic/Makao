@@ -32,6 +32,10 @@ class Login extends React.Component {
                 alignItems: 'center',
             },
             tabs: {
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
             },
             form: {
                 display: 'flex',
@@ -43,11 +47,11 @@ class Login extends React.Component {
                 transition: 'all 0.5s'
             },
             title: {
-                fontSize: '70px',
-                color: grey400,
-                marginLeft: -25,
+                fontSize: '60px',
+                color: grey500,
+                marginLeft: -10,
                 fontWeight: 300,
-                fontFamily: 'Roboto'
+                //boxShadow: '0px 0.2px 0px 0px rgba(0, 0, 0, 0.2)',
             },
             logoWrapper: {
                 height: 100,
