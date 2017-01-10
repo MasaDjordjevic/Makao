@@ -23,7 +23,7 @@ export default {
         primary1Color: teal900,
         primary2Color: cyan700,
         primary3Color: blueGrey200,
-        accent1Color: pinkA200,
+        accent1Color: teal900,
         accent2Color: grey100,
         accent3Color: grey500,
         textColor: darkBlack,
@@ -35,5 +35,10 @@ export default {
         pickerHeaderColor: cyan500,
         clockCircleColor: fade(darkBlack, 0.07),
         shadowColor: fullBlack,
+    },
+    tabs: {
+        backgroundColor: 'rgba(0,0,0,0)',
+        textColor: fade(teal900, 0.7),
+        selectedTextColor: teal900,
     },
 };

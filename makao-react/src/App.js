@@ -5,6 +5,12 @@ import CardComponent from "./Card/CardComponent";
 import CardSet from "./Card/CardSet";
 import Game from "./Game/Game";
 import Main from "./Gameplay/Main";
+import Login from "./Login/Login";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import mainMuiTheme from './MainMuiTheme';
+import {StyleRoot} from 'radium';
+
 
 class App extends Component {
     get testCards(){
@@ -63,7 +69,14 @@ class App extends Component {
             <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-            <Main/>
+            <div>
+                <StyleRoot>
+                <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
+                 <Login/>
+
+                </MuiThemeProvider>
+                </StyleRoot>
+            </div>
         </div>
 
 

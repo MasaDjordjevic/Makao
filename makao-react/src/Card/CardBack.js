@@ -112,7 +112,7 @@ class CardBack extends React.Component {
         const margin = '0 auto';
         const padding = 0.01;
         return (
-            <div style={this.styles.container}>
+            <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={[this.styles.half, this.styles.upperHalf]}></div>
                 <div style={this.styles.center}>
                     <div style={this.styles.circle}>
