@@ -17,6 +17,7 @@ class CardSymbol extends React.Component {
             svg: {
                 display: 'block',
                 height: '100%',
+                width: 'auto',
                 margin: '0 auto',
             }
 
