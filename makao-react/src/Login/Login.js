@@ -48,17 +48,21 @@ class Login extends React.Component {
             title: {
                 fontSize: '70px',
                 color: grey500,
-                marginLeft: 90,
+                marginLeft: -10,
                 fontWeight: 300,
-                fontFamily: 'Roboto Condensed'
+                fontFamily: 'Roboto'
             },
             logoWrapper: {
                 height: 100,
-                width: 309.13,
+                width: 375,
                 marginBottom: '1%',
                 display: 'flex',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
+
+                backgroundColor: 'rgb(250, 250, 250)',
+                border: '1px solid #ebebeb',
+                boxShadow: 'rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px',
             }
         }
     }
