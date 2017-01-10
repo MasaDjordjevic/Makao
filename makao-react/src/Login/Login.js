@@ -47,7 +47,7 @@ class Login extends React.Component {
                 transition: 'all 0.5s'
             },
             title: {
-                fontSize: '60px',
+                fontSize: '63px',
                 color: grey500,
                 marginLeft: -10,
                 fontWeight: 300,
@@ -81,7 +81,7 @@ class Login extends React.Component {
                 <div style={this.styles.wrapper}>
                 <div style={this.styles.logoWrapper}>
                     <Logo style={this.styles.logo}/>
-                    <label style={this.styles.title}>MAKAO</label>
+                    <span style={this.styles.title}>MAKAO</span>
                 </div>
                 <Tabs contentContainerStyle={{padding: '5% 10% 7% 10%'}}
                       onChange={this.handleChange}
