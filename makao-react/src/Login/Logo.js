@@ -17,7 +17,7 @@ class Logo extends React.Component {
             transformOrigin: '0% 100%',
             transform: 'rotate(' + (i * 10 - this.startAngle) + 'deg)',
             left: getCardWidth(this.props.cardHeight)*0.25,
-            top: -10,
+            top: -40,
         }
     }
 
@@ -55,7 +55,7 @@ class Logo extends React.Component {
 export default Logo;
 
 Logo.defaultProps = {
-    cardHeight: 100,
+    cardHeight: 120,
     cardNumber: 4,
 };
 

@@ -44,8 +44,8 @@ class Login extends React.Component {
             },
             title: {
                 fontSize: '70px',
-                color: grey500,
-                marginLeft: -10,
+                color: grey400,
+                marginLeft: -25,
                 fontWeight: 300,
                 fontFamily: 'Roboto'
             },
