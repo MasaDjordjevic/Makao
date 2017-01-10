@@ -13,14 +13,19 @@ class CardMain extends React.Component {
     render() {
         const cardHeight = this.props.cardHeight;
         const mainStyle = {
-            width: "100%",
             display: "flex",
             flexDirection: "column",
             textAlign: 'center',
             justifyContent: "space-around",
         };
         const mainStyle23 = {
-            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            textAlign: 'center',
+            justifyContent: "center",
+        };
+        const symbolContainer = {
+            width: '100%',
             display: "flex",
             flexDirection: "row",
             textAlign: 'center',
@@ -40,12 +45,13 @@ class CardMain extends React.Component {
                 </div>
         } else {
 
-            const symbolSize = num === 1 ? cardHeight / 3 : cardHeight / 6;
+            const symbolSize = num === 1 ? cardHeight / 3 : cardHeight / 8;
             const middle = Math.ceil(num / 2);
             var symArr = [];
             for (let i = 0; i < num; i++) {
-                symArr.push(<CardSymbol containerSize={symbolSize} symbol={this.props.card.symbol} lineHeight={35}
-                                        margin={4}
+                symArr.push(<CardSymbol containerSize={symbolSize}
+                                        symbol={this.props.card.symbol}
+                                        padding={0.15}
                                         key={i}/>);
             }
             const symUpper = symArr.slice().splice(0, middle);
@@ -54,20 +60,20 @@ class CardMain extends React.Component {
             if (num === 2) {
                 mainSection =
                     <div style={mainStyle23}>
-                        <div>
+                        <div style={symbolContainer}>
                             {symUpper}
                         </div>
-                        <div style={rotatedStyle}>
+                        <div style={{...symbolContainer, ...rotatedStyle}}>
                             {symBottom}
                         </div>
                     </div>
             } else if (num === 3) {
                 mainSection =
                     <div style={mainStyle23}>
-                        <div>
+                        <div style={symbolContainer}>
                             {symBottom}
                         </div>
-                        <div style={rotatedStyle}>
+                        <div style={{...symbolContainer, ...rotatedStyle}}>
                             {symBottom}
                         </div>
                         <div>
@@ -77,10 +83,10 @@ class CardMain extends React.Component {
             } else {
                 mainSection =
                     <div style={mainStyle}>
-                        <div>
+                        <div style={symbolContainer}>
                             {symUpper}
                         </div>
-                        <div style={rotatedStyle}>
+                        <div style={{...symbolContainer, ...rotatedStyle}}>
                             {symBottom}
                         </div>
                     </div>

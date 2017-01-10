@@ -88,14 +88,13 @@ class CardBack extends React.Component {
             circleHalf: {
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: "space-between",
+                justifyContent: "space-around",
                 alignItems: 'center',
-                width: "50%",
+                width: "65%",
                 height: '100%',
             },
             circleFourth: {
-                width: '25%',
-                height: '25%',
+                width: this.circleSize * 0.25,
                 transform: 'rotate(-45deg)'
             },
             borderRight: {
@@ -109,7 +108,9 @@ class CardBack extends React.Component {
     }
 
     render() {
-        const symbolSize = this.circleSize * 0.25;
+        const symbolSize = this.circleSize * 0.16;
+        const margin = '0 auto';
+        const padding = 0.01;
         return (
             <div style={this.styles.container}>
                 <div style={[this.styles.half, this.styles.upperHalf]}></div>
@@ -117,24 +118,24 @@ class CardBack extends React.Component {
                     <div style={this.styles.circle}>
                         <div style={this.styles.circleHalf}>
                             <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} symbol="hearts"/>
+                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="hearts"/>
                             </div>
                             <div style={this.styles.verticalSeparator}>
                             </div>
                             <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} symbol="spades"/>
+                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="spades"/>
                             </div>
                         </div>
                         <div style={this.styles.horizontalSeparator}>
                         </div>
                         <div style={this.styles.circleHalf}>
                             <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} symbol="clubs"/>
+                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="clubs"/>
                             </div>
                             <div style={this.styles.verticalSeparator}>
                             </div>
                             <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} symbol="diamonds"/>
+                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="diamonds"/>
                             </div>
                         </div>
                     </div>

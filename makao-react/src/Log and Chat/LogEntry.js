@@ -8,9 +8,11 @@ class LogEntry extends React.Component {
         return {
             container: {
                 alignSelf: this.props.left ? 'flex-start' : 'flex-end',
+                display: 'flex',
             },
             cardContainer: {
-                display: 'inline',
+                display: 'flex',
+                alignItems: 'center',
             },
             playerName: {
                 color: blueGrey300,
@@ -21,12 +23,12 @@ class LogEntry extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                {this.props.playerName && <label style={this.styles.playerName}>{this.props.playerName} :</label>}
+                {this.props.playerName && <label style={this.styles.playerName}>{this.props.playerName}:&nbsp;</label>}
                 {this.props.log && <label>{this.props.log}</label>}
                 {this.props.card &&
                 <div style={this.styles.cardContainer}>
                     <label>{this.props.card.stringify().short}&nbsp;</label>
-                    <CardSymbol symbol={this.props.card.symbol} lineHeight={12}/>
+                    <CardSymbol symbol={this.props.card.symbol} containerSize={12} padding={0.01}/>
                 </div>
                 }
             </div>
