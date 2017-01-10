@@ -1,7 +1,5 @@
 import React from 'react';
-import Radium from 'radium';
 import CardComponent from '../Card/CardComponent';
-import {blueGrey200} from 'material-ui/styles/colors';
 import {getCardWidth, getCardBorderRadius} from '../Card/common';
 
 class Logo extends React.Component {
@@ -29,9 +27,9 @@ class Logo extends React.Component {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100%',
                 width: this.offset + getCardWidth(this.props.cardHeight),
-            },
+                height: '100%',
+            }
         }
     }
 
@@ -53,10 +51,10 @@ class Logo extends React.Component {
         );
     }
 }
-export default Radium(Logo);
+export default Logo;
 
 Logo.defaultProps = {
-    cardHeight: 300,
+    cardHeight: 80,
     cardNumber: 4,
 };
 

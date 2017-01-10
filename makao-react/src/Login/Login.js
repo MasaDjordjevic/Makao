@@ -5,6 +5,7 @@ import Logo from './Logo';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import {grey400, grey500} from 'material-ui/styles/colors';
 
 class Login extends React.Component {
     constructor(props) {
@@ -21,24 +22,14 @@ class Login extends React.Component {
                 width: '100vw',
                 height: '100vh',
                 display: 'flex',
-                justifyContent: 'space-around',
+                flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center',
-                '@media(max-width: 950px)': {
-                    flexDirection: 'column',
-                },
-
             },
             logo: {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '',
-                '@media(max-width: 950px)': {
-                    marginTop: 100,
-                },
-                '@media(max-height: 750px)': {
-                    display: 'none',
-                }
             },
             tabs: {
                 background: '#fafafa',
@@ -53,6 +44,21 @@ class Login extends React.Component {
                 height: this.state.heights[this.state.index % 2],
                 overflow: 'hidden',
                 transition: 'all 0.5s'
+            },
+            title: {
+                fontSize: '70px',
+                color: grey500,
+                marginLeft: 90,
+                fontWeight: 300,
+                fontFamily: 'Roboto Condensed'
+            },
+            logoWrapper: {
+                height: 100,
+                width: 309.13,
+                marginBottom: '1%',
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
             }
         }
     }
@@ -66,7 +72,10 @@ class Login extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <Logo style={this.styles.logo}/>
+                <div style={this.styles.logoWrapper}>
+                    <Logo style={this.styles.logo}/>
+                    <label style={this.styles.title}>MAKAO</label>
+                </div>
                 <Tabs contentContainerStyle={{padding: '5% 10% 7% 10%'}}
                       onChange={this.handleChange}
                       style={this.styles.tabs}>
