@@ -32,9 +32,6 @@ class Login extends React.Component {
                 alignItems: 'center',
             },
             tabs: {
-                background: '#fafafa',
-                border: '1px solid #ebebeb',
-                boxShadow: 'rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px',
             },
             form: {
                 display: 'flex',
@@ -55,11 +52,12 @@ class Login extends React.Component {
             logoWrapper: {
                 height: 100,
                 width: 375,
-                marginBottom: '1%',
+                marginBottom: '7%',
                 display: 'flex',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-
+            },
+            wrapper: {
                 backgroundColor: 'rgb(250, 250, 250)',
                 border: '1px solid #ebebeb',
                 boxShadow: 'rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px',
@@ -76,6 +74,7 @@ class Login extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
+                <div style={this.styles.wrapper}>
                 <div style={this.styles.logoWrapper}>
                     <Logo style={this.styles.logo}/>
                     <label style={this.styles.title}>MAKAO</label>
@@ -90,6 +89,7 @@ class Login extends React.Component {
                         <SignupForm style={this.styles.form}/>
                     </Tab>
                 </Tabs>
+                </div>
             </div>
         )
             ;
