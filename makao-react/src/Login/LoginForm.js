@@ -4,28 +4,64 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 class LoginForm extends React.Component {
+    constructor(){
+        super();
+        this.state= {
+            emailError: "",
+            passwordError: "",
+            email: "",
+            password: "",
+        };
+
+        this.handleLoginClick = this.handleLoginClick.bind(this);
+    }
+
+    handleLoginClick() {
+        if(!this.state.email){
+            this.setState({emailError: "This field is required."})
+        }
+        if(!this.state.password){
+            this.setState({passwordError: "This field is required."})
+        }
+    }
+
+    handleInputChange(prop, val){
+        let obj = {};
+        obj[prop] = val;
+        if(val){
+            obj[prop+"Error"] = "";
+        }
+        this.setState(obj);
+    }
+
     get styles() {
         return {
-            container: {
-            }
+            container: {}
         }
     }
 
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-
                 <TextField
+                    value={this.state.email}
                     floatingLabelText="Email"
-                /><br />
+                    errorText={this.state.emailError}
+                    autoFocus
+                    onChange={(e, v) => this.handleInputChange('email', v)}/>
+                <br />
                 <TextField
+                    value={this.state.password}
                     floatingLabelText="Password"
                     type="password"
-                /><br />
+                    errorText={this.state.passwordError}
+                    onChange={(e, v) => this.handleInputChange('password', v)}/>
+                <br />
 
-
-                <RaisedButton label="log in" fullWidth={true} primary={true}/>
-
+                <RaisedButton label="log in"
+                              fullWidth={true}
+                              primary={true}
+                              onClick={this.handleLoginClick}/>
             </div>
         );
     }
