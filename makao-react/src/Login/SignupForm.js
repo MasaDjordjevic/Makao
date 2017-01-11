@@ -44,12 +44,22 @@ class SignupForm extends React.Component {
         let inputs = this.state.inputs;
         let notRequired = this.state.notRequired;
         let errors = this.state.errors;
+        let errNo = 0;
         Object.keys(inputs).forEach(function(key,index) {
             if (!inputs[key] && !notRequired[key]) {
+                errNo++;
                 errors[key] = "This field is required.";
             }
         });
+        if(inputs.confirmPassword && inputs.password != inputs.confirmPassword){
+            errNo++;
+            errors.confirmPassword = "Must be same as password."
+        }
         this.setState({errors: errors});
+
+        if(errNo == 0){
+            console.log(inputs);
+        }
     }
 
     get styles() {
