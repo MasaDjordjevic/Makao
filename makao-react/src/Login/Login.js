@@ -12,7 +12,7 @@ class Login extends React.Component {
         super(props);
         this.state = {
             index: 0,
-            heights: [220.46, 406.46], //-88.37
+            heights: [220.46, 345], //-88.37
         };
     }
 
