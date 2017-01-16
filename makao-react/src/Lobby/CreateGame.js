@@ -70,9 +70,9 @@ class CreateGame extends React.Component {
     getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
-                return 'Rules';
+                return <RulesSetter onChange={this.handleRuleChange} />;
             case 1:
-                return 'Friends';
+                return <p>Firends</p>;
             default:
                 return 'You\'re a long way from home sonny jim!';
         }
@@ -147,7 +147,7 @@ class CreateGame extends React.Component {
                     </Step>
                 </Stepper>
                 <div >
-                    <p>{this.getStepContent(stepIndex)}</p>
+                    {this.getStepContent(stepIndex)}
                     {this.getStepOptions(stepIndex)}
                 </div>
             </div>
