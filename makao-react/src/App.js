@@ -6,6 +6,7 @@ import CardSet from "./Card/CardSet";
 import Game from "./Game/Game";
 import Main from "./Gameplay/Main";
 import Login from "./Login/Login";
+import Lobby from "./Lobby/Lobby";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from './MainMuiTheme';
@@ -42,13 +43,22 @@ class App extends Component {
             new Card("hearts", "12"),
         ];
     }
-    get style(){
+    get styles(){
         return {
-            height: "100vh",
-            display: "flex",
-            justifyContent: "space-around",
-            alignContent:"space-around",
-            backgroundColor: "#ECEFF1"
+            app: {
+                height: "100vh",
+                display: "flex",
+                justifyContent: "space-around",
+                alignContent:"space-around",
+                backgroundColor: "#ECEFF1"
+            },
+            container: {
+                display: 'flex',
+                flexDirection: 'column',
+
+                width: '100%',
+            }
+
         };
     }
     /*
@@ -61,16 +71,16 @@ class App extends Component {
     */
   render() {
     return (
-        <div className="App" style={this.style}>
+        <div className="App" style={this.styles.app}>
             <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet"/>
             <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,400,600" rel="stylesheet"/>
             <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-            <div>
+            <div style={this.styles.container}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
-                 <Login/>
+                 <Lobby/>
 
                 </MuiThemeProvider>
             </div>
