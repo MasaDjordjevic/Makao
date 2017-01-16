@@ -72,7 +72,7 @@ class CreateGame extends React.Component {
             case 0:
                 return <RulesSetter onChange={this.handleRuleChange} />;
             case 1:
-                return <p>Firends</p>;
+                return <FriendPicker onPick={this.handleFriendPick} />;
             default:
                 return 'You\'re a long way from home sonny jim!';
         }
