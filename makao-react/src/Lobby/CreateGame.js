@@ -86,6 +86,7 @@ class CreateGame extends React.Component {
                         label="Create game"
                         onTouchTap={this.handleCreateGame}
                         primary={true}
+                        style={this.styles.buttonMargin}
                     />
                     <FlatButton
                         label="Play with friends"
@@ -99,6 +100,7 @@ class CreateGame extends React.Component {
                         label="Back"
                         disabled={stepIndex === 0}
                         onTouchTap={this.handlePrev}
+                        style={this.styles.buttonMargin}
                     />
                     <RaisedButton
                         label="Play with friends"
@@ -124,7 +126,7 @@ class CreateGame extends React.Component {
 
             },
             buttonMargin: {
-                marginLeft: 10,
+                marginLeft: 16,
             }
         }
     }
