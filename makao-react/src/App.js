@@ -80,8 +80,7 @@ class App extends Component {
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
             <div style={this.styles.container}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
-                 <Lobby/>
-
+                    <Main/>
                 </MuiThemeProvider>
             </div>
         </div>

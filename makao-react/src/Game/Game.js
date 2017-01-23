@@ -9,6 +9,7 @@ import Opponents from './Opponents';
 import _ from 'lodash';
 import GlobalVariables from '../Gameplay/GlobalVariables';
 import UserInfo from './UserInfo';
+import Scores from './Scores';
 
 class Game extends React.Component {
     constructor() {
@@ -20,7 +21,7 @@ class Game extends React.Component {
                 {id: 3, name: 'Nikolica', cardNumber: '5'},
                 {id: 4, name: 'Nemanja', cardNumber: '7'},
                 {id: 5, name: 'Darko', cardNumber: '8'},
-                {id: 5, name: 'Darko', cardNumber: '8'},
+                {id: 5, name: 'Marko', cardNumber: '8'},
             ],
             playerOnMoveId: 1,
             myCards: [
@@ -54,11 +55,47 @@ class Game extends React.Component {
                 new Card("hearts", "12"),
             ],
             pile: [],
+            scores: [
+                [
+                    {id:1, score: -10},
+                    {id:2, score: 15},
+                    {id:3, score: 20},
+                    {id:4, score: 7},
+                    {id:5, score: 4},
+                ],
+                [
+                    {id:1, score: 17},
+                    {id:2, score: 12},
+                    {id:3, score: 3},
+                    {id:4, score: -10},
+                    {id:5, score: 2},
+                ],
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+            ]
         };
 
 
         this.handleDraw = this.handleDraw.bind(this);
 
+    }
+    get players(){
+        return _.keyBy(this.state.players, 'id');
+    }
+    get scores(){
+        let scores = this.state.scores;
+        const players = this.players;
+        scores.map((round, i)=> round.map((playerScore, _)=>{
+            let pS = playerScore;
+            pS.name = players[pS.id].name;
+            return pS
+        }));
+        return scores;
     }
 
     playMove(playerId, card) {
@@ -180,7 +217,9 @@ class Game extends React.Component {
                                onClick={() => this.handleDraw()}/>
                     </div>
                     <div style={this.styles.userContainer}>
-                        <div style={this.styles.spacer}></div>
+                        <div style={this.styles.spacer}>
+                            <Scores scores={this.scores}/>
+                        </div>
                         <div style={this.styles.myCards}>
                             <CardSet
                                 onClick={(card) => this.handleCardClick(card)}
