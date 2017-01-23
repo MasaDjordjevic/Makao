@@ -8,6 +8,7 @@
   "dependencies": {
     "lodash": "^4.17.2",
     "material-ui": "^0.16.6",
+    "radium": "^0.18.1",
     "react": "^15.4.1",
     "react-animate-on-change": "^0.2.1",
     "react-dom": "^15.4.1",
