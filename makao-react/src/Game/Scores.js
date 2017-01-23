@@ -22,17 +22,16 @@ class Scores extends React.Component {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
+                backgroundColor: 'white',
+                marginTop: 12.5
             },
-            table: {
-                // borderCollapse: 'collapse',
-                // borderSpacing: 0,
-            },
+            table: {},
             thead: {
                 // borderBottom: '1px solid rgb(224, 224, 224)',
             },
             th: {
                 ...col, ...{
-                    overflow: 'visible',
+                    // overflow: 'visible',
                 }
             },
             tbody: {},
@@ -44,7 +43,7 @@ class Scores extends React.Component {
             },
             toggleCol: {
                 ...col, ...{
-                    width: 6,
+                    width: 5
                 }
             },
             toggle: {},
@@ -53,41 +52,49 @@ class Scores extends React.Component {
             },
             scoresRow: {
                 height: 30,
+            },
+            colNarrow: {
+                ...col, ...{
+                    width: 5,
+                }
             }
         }
     }
-    handleAddChange(){
+
+    handleAddChange() {
         //alert("change");
     }
+
     render() {
         const players = this.props.scores.map((round, i) => round.map((a, b) => a.name))[0];
 
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <Table style={this.styles.table}>
-                    <TableHeader style={this.styles.thead}
-                                 displaySelectAll={false}
-                                 adjustForCheckbox={false}
-                                 enableSelectAll={false}>
+                <Table style={this.styles.table}
+                       fixedHeader={true}>
+                    <TableHeader
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                        enableSelectAll={false}>
                         <TableRow style={this.styles.scoresRow}>
-                            <TableHeaderColumn colSpan={players.length - 1}
+                            <TableHeaderColumn colSpan={players.length}
                                                style={{...this.styles.th, ...this.styles.textLeft}}>
                                 Scores
                             </TableHeaderColumn>
-                            <TableHeaderColumn colSpan={2}
-                                               style={this.styles.toggleCol}>
+                            <TableHeaderColumn style={this.styles.toggleCol}>
                                 <DefaultTooltip tooltip="Add scores through rounds" tooltipPosition="bottom-left">
                                     <Toggle
                                         defaultToggled={true}
                                         style={this.styles.toggle}
-                                        onToggle={()=>this.handleAddChange()}
+                                        onToggle={() => this.handleAddChange()}
                                     />
                                 </DefaultTooltip>
                             </TableHeaderColumn>
                         </TableRow>
                         <TableRow style={this.styles.tr}>
                             <TableHeaderColumn
-                                style={this.styles.th}>
+                                style={{...this.styles.th, ...this.styles.colNarrow}}>
+                                &nbsp;
                             </TableHeaderColumn>
                             {
                                 players.map((p, i) =>
@@ -101,15 +108,16 @@ class Scores extends React.Component {
                             }
                         </TableRow>
                     </TableHeader>
-                    <TableBody style={this.styles.tbody}
-                               displayRowCheckbox={false}
+                    <TableBody displayRowCheckbox={false}
                                deselectOnClickaway={false}
                                showRowHover={false}
                                stripedRows={false}>
                         {
                             this.props.scores.map((round, i) =>
                                 <TableRow key={i} style={{...this.styles.tr, ...this.styles.textLeft}}>
-                                    <TableRowColumn style={this.styles.td}>{i}</TableRowColumn>
+                                    <TableRowColumn style={{...this.styles.td, ...this.styles.colNarrow}}>
+                                        {i}
+                                    </TableRowColumn>
                                     {
                                         round.map((s, j) =>
                                             <TableRowColumn key={j}

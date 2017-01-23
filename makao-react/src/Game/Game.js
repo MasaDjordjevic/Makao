@@ -57,8 +57,8 @@ class Game extends React.Component {
             pile: [],
             scores: [
                 [
-                    {id:1, score: -10},
-                    {id:2, score: 15},
+                    {id:1, score: -100},
+                    {id:2, score: 150},
                     {id:3, score: 20},
                     {id:4, score: 7},
                     {id:5, score: 4},
