@@ -24,6 +24,16 @@ class RulesSetter extends React.Component {
                 key: 'playerNumberMax',
                 text:'Maksimalan broj igraca',
                 defaultValue: 8,
+            },
+            {
+                key: 'deckNumber',
+                text: 'Broj spilova',
+                defaultValue: 2,
+            },
+            {
+                key: 'rankFilter',
+                text: 'Rank filter',
+                defaultValue: 2,
             }
         ];
         let keys =  {};

@@ -83,7 +83,7 @@ class CreateGame extends React.Component {
             case 0:
                 return <div style={this.styles.navigation}>
                     <RaisedButton
-                        label="Create game"
+                        label="Create public game"
                         onTouchTap={this.handleCreateGame}
                         primary={true}
                         style={this.styles.buttonMargin}
@@ -103,7 +103,13 @@ class CreateGame extends React.Component {
                         style={this.styles.buttonMargin}
                     />
                     <RaisedButton
-                        label="Play with friends"
+                        label="Public"
+                        primary={true}
+                        onTouchTap={this.handlePlayWithFriends}
+                        style={this.styles.buttonMargin}
+                    />
+                    <RaisedButton
+                        label="Private"
                         primary={true}
                         onTouchTap={this.handlePlayWithFriends}
                         style={this.styles.buttonMargin}
