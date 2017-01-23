@@ -76,6 +76,24 @@ class Game extends React.Component {
                     {id:3, score: 4},
                     {id:4, score: 8},
                     {id:5, score: -10},
+                ], [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ], [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ], [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
                 ],
             ]
         };
@@ -175,6 +193,11 @@ class Game extends React.Component {
             },
             spacer: {
                 flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                width: '100%',
             },
             userInfo:{
                 marginTop: '5%',
@@ -218,7 +241,7 @@ class Game extends React.Component {
                     </div>
                     <div style={this.styles.userContainer}>
                         <div style={this.styles.spacer}>
-                            <Scores scores={this.scores}/>
+                            <Scores scores={this.scores} style={{height:this.props.dimensions.userCardsHeight}}/>
                         </div>
                         <div style={this.styles.myCards}>
                             <CardSet
