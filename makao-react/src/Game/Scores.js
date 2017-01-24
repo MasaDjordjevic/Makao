@@ -21,9 +21,8 @@ class Scores extends React.Component {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: 'flex-end',
                 backgroundColor: 'white',
-                marginTop: 12.5
             },
             table: {},
             thead: {

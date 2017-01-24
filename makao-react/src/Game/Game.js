@@ -199,6 +199,9 @@ class Game extends React.Component {
                 alignItems: 'center',
                 width: '100%',
             },
+            scores: {
+                alignSelf: 'flex-end',
+            },
             userInfo:{
                 marginTop: '5%',
             }
@@ -240,7 +243,7 @@ class Game extends React.Component {
                                onClick={() => this.handleDraw()}/>
                     </div>
                     <div style={this.styles.userContainer}>
-                        <div style={this.styles.spacer}>
+                        <div style={{...this.styles.spacer, ...this.styles.scores}}>
                             <Scores scores={this.scores} style={{height:this.props.dimensions.userCardsHeight}}/>
                         </div>
                         <div style={this.styles.myCards}>
