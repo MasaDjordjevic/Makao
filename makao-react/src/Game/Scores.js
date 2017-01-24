@@ -1,6 +1,14 @@
 import React from 'react';
 import DefaultTooltip from '../DefaultTooltip';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableFooter,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn
+} from 'material-ui/Table';
 import Toggle from 'material-ui/Toggle';
 
 class Scores extends React.Component {
@@ -22,9 +30,10 @@ class Scores extends React.Component {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
-                backgroundColor: 'white',
             },
-            table: {},
+            table: {
+                overflow: 'visible',
+            },
             thead: {
                 // borderBottom: '1px solid rgb(224, 224, 224)',
             },
@@ -33,19 +42,25 @@ class Scores extends React.Component {
                     // overflow: 'visible',
                 }
             },
-            tbody: {},
+            tbody: {
+                overflow: 'visible'
+            },
             tr: {
-                height: 25
+                height: 25,
+                overflow: 'visible'
             },
             td: {
-                ...col, ...{}
+                ...col, ...{
+                    overflow: 'visible'
+                }
             },
             toggleCol: {
                 ...col, ...{
                     width: 5
                 }
             },
-            toggle: {},
+            toggle: {
+            },
             textLeft: {
                 textAlign: 'left'
             },
@@ -56,6 +71,23 @@ class Scores extends React.Component {
                 ...col, ...{
                     width: 5,
                 }
+            },
+            footer: {
+                height: 15,
+            },
+            scores: {
+                color: 'rgb(158, 158, 158)',
+            },
+            nameCol: {
+
+            },
+            superHeader: {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: '6px 8px',
+                boxSizing: 'border-box',
+                backgroundColor: 'white',
             }
         }
     }
@@ -69,27 +101,23 @@ class Scores extends React.Component {
 
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
+                <div style={this.styles.superHeader}>
+                    <span style={this.styles.scores}>Scores</span>
+                    <DefaultTooltip tooltip="Add scores through rounds" tooltipPosition="bottom-left" style={{width: ''}}>
+                        <Toggle
+                            defaultToggled={true}
+                            style={this.styles.toggle}
+                            onToggle={() => this.handleAddChange()}
+                        />
+                    </DefaultTooltip>
+                </div>
                 <Table style={this.styles.table}
-                       fixedHeader={true}>
+                       fixedHeader={true}
+                       fixedFooter={false}>
                     <TableHeader
                         displaySelectAll={false}
                         adjustForCheckbox={false}
                         enableSelectAll={false}>
-                        <TableRow style={this.styles.scoresRow}>
-                            <TableHeaderColumn colSpan={players.length}
-                                               style={{...this.styles.th, ...this.styles.textLeft}}>
-                                Scores
-                            </TableHeaderColumn>
-                            <TableHeaderColumn style={this.styles.toggleCol}>
-                                <DefaultTooltip tooltip="Add scores through rounds" tooltipPosition="bottom-left">
-                                    <Toggle
-                                        defaultToggled={true}
-                                        style={this.styles.toggle}
-                                        onToggle={() => this.handleAddChange()}
-                                    />
-                                </DefaultTooltip>
-                            </TableHeaderColumn>
-                        </TableRow>
                         <TableRow style={this.styles.tr}>
                             <TableHeaderColumn
                                 style={{...this.styles.th, ...this.styles.colNarrow}}>
@@ -98,7 +126,7 @@ class Scores extends React.Component {
                             {
                                 players.map((p, i) =>
                                     <TableHeaderColumn key={i}
-                                                       style={this.styles.th}>
+                                                    style={{...this.styles.th, ...this.styles.nameCol}}>
                                         <DefaultTooltip tooltip={p} tooltipPosition="top-left">
                                             {p.charAt(0)}
                                         </DefaultTooltip>
@@ -111,6 +139,7 @@ class Scores extends React.Component {
                                deselectOnClickaway={false}
                                showRowHover={false}
                                stripedRows={false}>
+
                         {
                             this.props.scores.map((round, i) =>
                                 <TableRow key={i} style={{...this.styles.tr, ...this.styles.textLeft}}>
@@ -125,12 +154,14 @@ class Scores extends React.Component {
                                             </TableRowColumn>
                                         )
                                     }
-
-
                                 </TableRow>
                             )
                         }
                     </TableBody>
+                    <TableFooter adjustForCheckbox={false}>
+                        <TableRow style={this.styles.footer}>
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </div>
         );
