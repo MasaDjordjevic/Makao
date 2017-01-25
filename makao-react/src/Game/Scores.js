@@ -20,7 +20,6 @@ class Scores extends React.Component {
         this.state = {
             addMode: true,
         };
-
     }
 
     get styles() {
@@ -40,6 +39,8 @@ class Scores extends React.Component {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
+                boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
+                borderRadius: '2px',
             },
             tableWrapper: {
                 overflow: 'visible',
