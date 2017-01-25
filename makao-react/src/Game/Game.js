@@ -76,25 +76,64 @@ class Game extends React.Component {
                     {id:3, score: 4},
                     {id:4, score: 8},
                     {id:5, score: -10},
-                ], [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
-                ], [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
-                ], [
+                ],
+
+                [
                     {id:1, score: 5},
                     {id:2, score: 2},
                     {id:3, score: 4},
                     {id:4, score: 8},
                     {id:5, score: -10},
                 ],
+
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+
+                [
+                    {id:1, score: 5},
+                    {id:2, score: 2},
+                    {id:3, score: 4},
+                    {id:4, score: 8},
+                    {id:5, score: -10},
+                ],
+
             ]
         };
 
@@ -244,7 +283,8 @@ class Game extends React.Component {
                     </div>
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
-                            <Scores scores={this.scores} style={{height:this.props.dimensions.userCardsHeight}}/>
+                            <Scores scores={this.scores}
+                                    height={this.props.dimensions.userCardsHeight}/>
                         </div>
                         <div style={this.styles.myCards}>
                             <CardSet

@@ -10,11 +10,21 @@ import {
     TableRowColumn
 } from 'material-ui/Table';
 import Toggle from 'material-ui/Toggle';
+import {grey400, grey300, grey500} from 'material-ui/styles/colors'
+import _ from 'lodash';
 
 class Scores extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            addMode: true,
+        };
+
+    }
+
     get styles() {
         const columnWidth = 20;
-        const columnHeight = 2;
         const columnPadding = 5;
         const col = {
             paddingTop: 1,
@@ -31,57 +41,33 @@ class Scores extends React.Component {
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
             },
-            table: {
+            tableWrapper: {
                 overflow: 'visible',
-            },
-            thead: {
-                // borderBottom: '1px solid rgb(224, 224, 224)',
-            },
-            th: {
-                ...col, ...{
-                    // overflow: 'visible',
-                }
-            },
-            tbody: {
-                overflow: 'visible'
             },
             tr: {
                 height: 25,
-                overflow: 'visible'
+            },
+            th: {
+                ...col, ...{}
             },
             td: {
-                ...col, ...{
-                    overflow: 'visible'
-                }
-            },
-            toggleCol: {
-                ...col, ...{
-                    width: 5
-                }
-            },
-            toggle: {
-            },
-            textLeft: {
-                textAlign: 'left'
-            },
-            scoresRow: {
-                height: 30,
+                ...col, ...{}
             },
             colNarrow: {
                 ...col, ...{
                     width: 5,
+                    color: grey400
                 }
             },
             footer: {
                 height: 15,
             },
             scores: {
-                color: 'rgb(158, 158, 158)',
-            },
-            nameCol: {
-
+                color: grey500,
+                fontWeight: 300,
             },
             superHeader: {
+                height: this.headerHeight,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -92,28 +78,85 @@ class Scores extends React.Component {
         }
     }
 
+    get headerHeight(){
+        return 25+12;
+    }
+
+    componentDidMount() {
+         var tableElement = document.getElementsByClassName('table')[1].parentElement;
+         tableElement.scrollTop = tableElement.scrollHeight;
+    }
+
     handleAddChange() {
-        //alert("change");
+        this.setState({addMode: !this.state.addMode});
+    }
+
+    getScores() {
+        let scrs = [...this.props.scores];
+        if (!this.state.addMode) {
+            return scrs;
+        }
+
+        //nije mi jasno zasto moram da pravim novi niz
+        //tj. kad menjam scrs menjam i this.props.scores a nzm zasto
+        let retVal = [];
+        scrs.map((round, i) => {
+            let r = [];
+            round.map((s, j) => {
+                let prevScore = i == 0 ? 0 : _.find(retVal[i - 1], {id: s.id}).score;
+                r.push({id: s.id, score: s.score + prevScore});
+            });
+            retVal.push(r);
+        });
+        return retVal;
+
+        /*
+         let retVal = [];
+         _.forEach(scrs, function(round, i){
+         let r = [];
+         _.forEach(round, function(s, j){
+         let prevScore = i==0 ? 0 : _.find(scrs[i-1], {id: s.id}).score;
+         let newS = {id: s.id, score: s.score + prevScore};
+         r.push(newS);
+         });
+         retVal.push(r);
+         });
+         return retVal;*/
+        /*
+         const scr =  scrs.slice().map((round, i) => {
+         let r = round.slice().map((s, j)=> {
+         let prevScore = i==0 ? 0 : _.find(scrs[i-1], {id: s.id}).score;
+         s.score += prevScore;
+         return s;
+         } );
+         console.log(r);
+         return r;
+         });
+         return scr;
+         */
     }
 
     render() {
-        const players = this.props.scores.map((round, i) => round.map((a, b) => a.name))[0];
-
+        const players = this.props.scores.slice().map((round, i) => round.map((a, b) => a.name))[0];
+        const scores = this.getScores();
+        const tableHeight = this.props.height - this.headerHeight - 12.5;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.superHeader}>
                     <span style={this.styles.scores}>Scores</span>
-                    <DefaultTooltip tooltip="Add scores through rounds" tooltipPosition="bottom-left" style={{width: ''}}>
+                    <DefaultTooltip tooltip="Add scores through rounds" tooltipPosition="bottom-left"
+                                    style={{width: ''}}>
                         <Toggle
                             defaultToggled={true}
-                            style={this.styles.toggle}
                             onToggle={() => this.handleAddChange()}
                         />
                     </DefaultTooltip>
                 </div>
-                <Table style={this.styles.table}
-                       fixedHeader={true}
-                       fixedFooter={false}>
+                <Table className="table"
+                       style={this.styles.table}
+                       fixedFooter={false}
+                       wrapperStyle={this.styles.tableWrapper}
+                       height={tableHeight + 'px'}>
                     <TableHeader
                         displaySelectAll={false}
                         adjustForCheckbox={false}
@@ -126,7 +169,7 @@ class Scores extends React.Component {
                             {
                                 players.map((p, i) =>
                                     <TableHeaderColumn key={i}
-                                                    style={{...this.styles.th, ...this.styles.nameCol}}>
+                                                       style={this.styles.th}>
                                         <DefaultTooltip tooltip={p} tooltipPosition="top-left">
                                             {p.charAt(0)}
                                         </DefaultTooltip>
@@ -141,8 +184,8 @@ class Scores extends React.Component {
                                stripedRows={false}>
 
                         {
-                            this.props.scores.map((round, i) =>
-                                <TableRow key={i} style={{...this.styles.tr, ...this.styles.textLeft}}>
+                            scores.map((round, i) =>
+                                <TableRow key={i} style={this.styles.tr}>
                                     <TableRowColumn style={{...this.styles.td, ...this.styles.colNarrow}}>
                                         {i}
                                     </TableRowColumn>
