@@ -5,7 +5,7 @@ import Logo from './Logo';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import {grey400, grey500} from 'material-ui/styles/colors';
+import {grey500} from 'material-ui/styles/colors';
 
 class Login extends React.Component {
     constructor(props) {

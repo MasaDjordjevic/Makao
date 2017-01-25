@@ -10,7 +10,7 @@ import {
     TableRowColumn
 } from 'material-ui/Table';
 import Toggle from 'material-ui/Toggle';
-import {grey400, grey300, grey500} from 'material-ui/styles/colors'
+import {grey400, grey500} from 'material-ui/styles/colors'
 import _ from 'lodash';
 
 class Scores extends React.Component {
@@ -80,13 +80,13 @@ class Scores extends React.Component {
         }
     }
 
-    get headerHeight(){
-        return 25+12;
+    get headerHeight() {
+        return 25 + 12;
     }
 
     componentDidMount() {
-         var tableElement = document.getElementsByClassName('table')[1].parentElement;
-         tableElement.scrollTop = tableElement.scrollHeight;
+        var tableElement = document.getElementsByClassName('table')[1].parentElement;
+        tableElement.scrollTop = tableElement.scrollHeight;
     }
 
     handleAddChange() {
@@ -101,29 +101,29 @@ class Scores extends React.Component {
 
         //nije mi jasno zasto moram da pravim novi niz
         //tj. kad menjam scrs menjam i this.props.scores a nzm zasto
+        /* let retVal = [];
+         scrs.map((round, i) => {
+         let r = [];
+         round.map((s, j) => {
+         let prevScore = i == 0 ? 0 : _.find(retVal[i - 1], {id: s.id}).score;
+         r.push({id: s.id, score: s.score + prevScore});
+         });
+         retVal.push(r);
+         });
+         return retVal;
+         */
+
         let retVal = [];
-        scrs.map((round, i) => {
+        _.forEach(scrs, function (round, i) {
             let r = [];
-            round.map((s, j) => {
-                let prevScore = i == 0 ? 0 : _.find(retVal[i - 1], {id: s.id}).score;
-                r.push({id: s.id, score: s.score + prevScore});
+            _.forEach(round, function (s, j) {
+                let prevScore = i === 0 ? 0 : _.find(retVal[i - 1], {id: s.id}).score;
+                let newS = {id: s.id, score: s.score + prevScore};
+                r.push(newS);
             });
             retVal.push(r);
         });
         return retVal;
-
-        /*
-         let retVal = [];
-         _.forEach(scrs, function(round, i){
-         let r = [];
-         _.forEach(round, function(s, j){
-         let prevScore = i==0 ? 0 : _.find(scrs[i-1], {id: s.id}).score;
-         let newS = {id: s.id, score: s.score + prevScore};
-         r.push(newS);
-         });
-         retVal.push(r);
-         });
-         return retVal;*/
         /*
          const scr =  scrs.slice().map((round, i) => {
          let r = round.slice().map((s, j)=> {

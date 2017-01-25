@@ -3,8 +3,7 @@
  */
 import {
     teal900,cyan500, cyan700,
-    pinkA200,
-    grey100, grey300, grey400, grey500,
+    grey100, grey300, grey500,
     blueGrey200,
     white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';

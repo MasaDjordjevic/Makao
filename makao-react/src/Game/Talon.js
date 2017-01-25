@@ -16,7 +16,7 @@ class Talon extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.props.card != nextProps.card){
+        if(this.props.card !== nextProps.card){
             this.setState({animate: true});
         }else {
             this.setState({animate: false});

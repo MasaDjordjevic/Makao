@@ -33,14 +33,10 @@ class CardSymbol extends React.Component {
     }
 
     render() {
-        let width, height;
-        const size = this.props.containerSize;
         const color = isBlack(this.props.symbol) ? blackColor : redColor;
         let symbol;
         switch (this.props.symbol) {
             case "spades":
-                width = 37;
-                height = 39;
                 symbol = <svg viewBox="0 0 18.6 19.5" style={this.styles.svg}>
                     <g>
                         <path fill={color}
@@ -50,8 +46,6 @@ class CardSymbol extends React.Component {
                 </svg>;
                 break;
             case "diamonds":
-                width = 37;
-                height = 44;
                 symbol =
                     <svg  viewBox="0 0 18.2 21.7" style={this.styles.svg}>
                         <g>
@@ -60,9 +54,6 @@ class CardSymbol extends React.Component {
                     </svg>;
                 break;
             case "clubs":
-                width = 36;
-                height = 37;
-
                 symbol = <svg viewBox="0 0 18.2 19.1" style={this.styles.svg}>
                     <g>
                         <path fill={color}
@@ -72,8 +63,6 @@ class CardSymbol extends React.Component {
                 </svg>;
                 break;
             case "hearts":
-                width = 36;
-                height = 34;
                 symbol =
                     <svg viewBox="0 0 18.2 17" style={this.styles.svg}>
                         <path fill={color}

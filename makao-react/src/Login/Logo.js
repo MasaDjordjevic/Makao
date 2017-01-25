@@ -1,6 +1,6 @@
 import React from 'react';
 import CardComponent from '../Card/CardComponent';
-import {getCardWidth, getCardBorderRadius} from '../Card/common';
+import {getCardWidth} from '../Card/common';
 
 class Logo extends React.Component {
 

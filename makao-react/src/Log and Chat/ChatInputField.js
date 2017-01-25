@@ -5,7 +5,6 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import Send from 'material-ui/svg-icons/content/send';
-import {blueGrey300} from 'material-ui/styles/colors';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();

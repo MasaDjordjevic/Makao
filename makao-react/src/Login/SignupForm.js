@@ -51,13 +51,13 @@ class SignupForm extends React.Component {
                 errors[key] = "This field is required.";
             }
         });
-        if(inputs.confirmPassword && inputs.password != inputs.confirmPassword){
+        if(inputs.confirmPassword && inputs.password !== inputs.confirmPassword){
             errNo++;
             errors.confirmPassword = "Must be same as password."
         }
         this.setState({errors: errors});
 
-        if(errNo == 0){
+        if(errNo === 0){
             console.log(inputs);
         }
     }

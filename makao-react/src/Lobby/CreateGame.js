@@ -115,6 +115,8 @@ class CreateGame extends React.Component {
                         style={this.styles.buttonMargin}
                     />
                 </div>;
+            default:
+                return null;
 
         }
     }
