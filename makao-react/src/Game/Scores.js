@@ -32,7 +32,8 @@ class Scores extends React.Component {
             paddingRight: columnPadding,
             width: columnWidth,
             height: '',
-            textAlign: 'center'
+            textAlign: 'center',
+            textOverflow: 'clip'
         };
         return {
             container: {
