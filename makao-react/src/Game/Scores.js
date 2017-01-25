@@ -139,7 +139,8 @@ class Scores extends React.Component {
     render() {
         const players = this.props.scores.slice().map((round, i) => round.map((a, b) => a.name))[0];
         const scores = this.getScores();
-        const tableHeight = this.props.height - this.headerHeight - 12.5;
+        //26.67 je visina hedera tabele, mng mi je zao zbog ovoga :'(
+        const tableHeight = this.props.height - this.headerHeight - 26.67;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.superHeader}>
