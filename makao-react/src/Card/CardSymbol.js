@@ -11,7 +11,7 @@ class CardSymbol extends React.Component {
                 lineHeight: containerSize + 'px',
                 textAlign: 'center',
                 boxSizing: 'border-box',
-                padding: containerSize*0.25,
+                padding: containerSize * 0.25,
                 margin: 0,
             },
             svg: {
@@ -47,7 +47,7 @@ class CardSymbol extends React.Component {
                 break;
             case "diamonds":
                 symbol =
-                    <svg  viewBox="0 0 18.2 21.7" style={this.styles.svg}>
+                    <svg viewBox="0 0 18.2 21.7" style={this.styles.svg}>
                         <g>
                             <polygon fill={color} points="9.1,0 0,10.8 9.1,21.7 18.2,10.8"/>
                         </g>

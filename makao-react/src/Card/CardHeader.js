@@ -6,7 +6,17 @@ import Radium from 'radium';
 import {font} from './common';
 import Card from './Card';
 import CardSymbol from './CardSymbol';
-import {teal50, blueGrey50, red50, yellow50, orange50, amber50, deepOrange50, lime50, lightGreen50} from 'material-ui/styles/colors'
+import {
+    teal50,
+    blueGrey50,
+    red50,
+    yellow50,
+    orange50,
+    amber50,
+    deepOrange50,
+    lime50,
+    lightGreen50
+} from 'material-ui/styles/colors'
 import {isBlack} from './common';
 
 class CardHeader extends React.Component {
@@ -23,8 +33,6 @@ class CardHeader extends React.Component {
         const circleStyle = {
             display: "block",
             position: "absolute",
-            width: this.circleSize,
-            height: this.circleSize,
             border: "none",
             borderRadius: "50%",
             boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
@@ -59,14 +67,17 @@ class CardHeader extends React.Component {
             headerCircleStyle: {
                 ...circleStyle, ...{
                     left: signPadding,
-                    backgroundColor: "white",
+                    backgroundColor: this.props.card.jackSymbol ?
+                        (isBlack(this.props.card.symbol) ? blueGrey50 : red50) : 'white',
+
                 }
             },
             headerCircleRight: {
                 ...circleStyle, ...{
-                    display: this.props.card.jackSymbol ? 'absolute' : 'none',
+                    display: this.props.card.jackSymbol ? 'flex' : 'none',
                     right: signPadding,
-                    backgroundColor: isBlack(this.props.card.jackSymbol) ? blueGrey50 : red50,
+                    backgroundColor: "white",
+
                 }
             }
         }
@@ -84,7 +95,7 @@ class CardHeader extends React.Component {
                     <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
                 </div>
                 <div style={this.styles.headerCircleRight}>
-                    <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
+                    <CardSymbol containerSize={this.circleSize * 1.2} symbol={this.props.card.jackSymbol || 'spades'}/>
                 </div>
             </div>
         );

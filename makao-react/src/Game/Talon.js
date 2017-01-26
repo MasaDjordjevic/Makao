@@ -8,17 +8,18 @@ import styles from './talon.css';
 import Card from '../Card/Card';
 
 class Talon extends React.Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             animate: false,
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        if(this.props.card !== nextProps.card){
+    componentWillReceiveProps(nextProps) {
+        if (this.props.card !== nextProps.card &&
+            (nextProps.card.number != 12 || nextProps.card.jackSybol != null)) {
             this.setState({animate: true});
-        }else {
+        } else {
             this.setState({animate: false});
         }
     }

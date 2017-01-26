@@ -56,11 +56,13 @@ class Game extends React.Component {
                 new Card("hearts", "12"),
             ],
             pile: [],
+            jackPlayed: false
 
         };
 
 
         this.handleDraw = this.handleDraw.bind(this);
+        this.handleJackSignPicked = this.handleJackSignPicked.bind(this);
 
     }
 
@@ -72,14 +74,25 @@ class Game extends React.Component {
         return playerCards;
     }
 
+    handleJackSignPicked(sign) {
+        const pile = this.state.pile.slice();
+        pile[pile.length - 1].jackSymbol = sign;
+        this.setState({
+            pile: pile,
+            jackPlayed: false,
+        });
 
+        //obavesti ostale o potezu
+    }
 
     playMove(playerId, card) {
+        const jackPlayed = playerId === GlobalVariables.userId && card.number === "12";
         if (playerId === GlobalVariables.userId) {
             const myCards = this.state.myCards.slice();
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
                 myCards: myCards,
+                jackPlayed: jackPlayed,
             })
         }
         const players = this.state.playerCards.slice();
@@ -89,8 +102,11 @@ class Game extends React.Component {
         this.setState({
             playerCards: players,
             pile: pile,
-        })
+        });
 
+        if (!jackPlayed) {
+            //obavesti ostale o potezu
+        }
     }
 
     handleDraw() {
@@ -165,7 +181,8 @@ class Game extends React.Component {
             userInfo: {
                 marginTop: '5%',
             },
-            jackSignPicker:{
+            jackSignPicker: {
+                display: this.state.jackPlayed ? 'flex' : 'none',
                 width: getCardWidth(this.props.dimensions.talon),
                 position: 'absolute',
                 left: 0,
@@ -207,7 +224,8 @@ class Game extends React.Component {
                         <Talon cardHeight={this.props.dimensions.talon}
                                card={this.state.pile.slice(-1)[0]}
                                onClick={() => this.handleDraw()}/>
-                        <JackSignPicer style={this.styles.jackSignPicker}/>
+                        <JackSignPicer style={this.styles.jackSignPicker}
+                                       onPick={this.handleJackSignPicked}/>
                     </div>
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>

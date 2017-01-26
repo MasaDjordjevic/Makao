@@ -18,8 +18,8 @@ class JackSignPicker extends React.Component {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 alignItems: 'center',
-                height: this.props.circleSize*1.3,
-                bottom: '-' + (this.props.circleSize*1.7) + 'px',
+                height: this.props.circleSize * 1.3,
+                bottom: '-' + (this.props.circleSize * 1.7) + 'px',
             },
             cardSymbol: {
                 display: "block",
@@ -66,5 +66,6 @@ JackSignPicker.defaultProps = {
 };
 
 JackSignPicker.propTypes = {
-    circleSize: React.PropTypes.number
+    circleSize: React.PropTypes.number,
+    onPick: React.PropTypes.func,
 };
