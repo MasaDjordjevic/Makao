@@ -6,10 +6,8 @@ import CardSet from '../Card/CardSet';
 import TimerProgress from './TimerProgress';
 import {blueGrey200} from 'material-ui/styles/colors';
 import GlobalVariables from '../Gameplay/GlobalVariables';
+import {toRad} from "../util/util";
 
-Number.prototype.toRad = function () {
-    return this * Math.PI / 180;
-};
 
 class Opponents extends React.Component {
 
@@ -34,8 +32,8 @@ class Opponents extends React.Component {
 
         }
 
-        const top = 50 - 50 * Math.sin(angle.toRad()) + '%';
-        const leftNum = Math.round(50 - 50 * Math.cos(angle.toRad()));
+        const top = 50 - 50 * Math.sin(toRad(angle)) + '%';
+        const leftNum = Math.round(50 - 50 * Math.cos(toRad(angle)));
         const left = leftNum > 50 ? 'calc(' + leftNum + '% - ' + this.elementWidth + 'px)' :
             leftNum === 50 ? 'calc(' + leftNum + '% - ' + this.elementWidth / 2 + 'px)' : leftNum + '%';
 

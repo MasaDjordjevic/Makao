@@ -26,3 +26,7 @@ export function getScrollbarWidth() {
 
     return widthNoScroll - widthWithScroll;
 }
+
+export function toRad(num) {
+    return num * Math.PI / 180;
+}
