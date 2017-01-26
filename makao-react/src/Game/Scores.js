@@ -183,7 +183,7 @@ class Scores extends React.Component {
 
     get scores() {
         let scores = this.state.scores;
-        const players = GlobalVariables.players;
+        const players = GlobalVariables.playersById;
         scores.map((round, i) => round.map((playerScore, _) => {
             let pS = playerScore;
             pS.name = players[pS.id].name;

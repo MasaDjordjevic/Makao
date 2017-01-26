@@ -1,7 +1,7 @@
 import React from 'react';
-
+import _ from 'lodash';
 class GlobalVariables extends React.Component {
-    constructor(){
+    constructor() {
         super();
         this.userId = 1;
         this.userName = 'Masa';
@@ -13,8 +13,8 @@ class GlobalVariables extends React.Component {
             {id: 3, name: 'Nikolica'},
             {id: 4, name: 'Nemanja'},
             {id: 5, name: 'Darko'},
-            {id: 5, name: 'Marko'},
         ];
+        this.playersById = _.keyBy(this.players, 'id');
     }
 }
 export default (new GlobalVariables);

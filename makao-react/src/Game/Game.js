@@ -15,13 +15,12 @@ class Game extends React.Component {
     constructor() {
         super();
         this.state = {
-            players: [
-                {id: 1, name: 'Masa', cardNumber: '10'},
-                {id: 2, name: 'Jajac', cardNumber: '13'},
-                {id: 3, name: 'Nikolica', cardNumber: '5'},
-                {id: 4, name: 'Nemanja', cardNumber: '7'},
-                {id: 5, name: 'Darko', cardNumber: '8'},
-                {id: 5, name: 'Marko', cardNumber: '8'},
+            playerCards: [
+                {id: 1, cardNumber: '10'},
+                {id: 2, cardNumber: '13'},
+                {id: 3, cardNumber: '5'},
+                {id: 4, cardNumber: '7'},
+                {id: 5, cardNumber: '8'},
             ],
             playerOnMoveId: 1,
             myCards: [
@@ -64,8 +63,13 @@ class Game extends React.Component {
     }
 
     get players() {
-        return _.keyBy(this.state.players, 'id');
+        const playersById = GlobalVariables.playersById;
+        let playerCards = this.state.playerCards.slice();
+        playerCards.map((pc, i) => pc.name = playersById[pc.id].name);
+
+        return playerCards;
     }
+
 
 
     playMove(playerId, card) {
@@ -76,12 +80,12 @@ class Game extends React.Component {
                 myCards: myCards,
             })
         }
-        const players = this.state.players.slice();
+        const players = this.state.playerCards.slice();
         players.find((player) => player.id === playerId).cardNumber--;
         const pile = this.state.pile.slice();
         pile.push(card);
         this.setState({
-            players: players,
+            playerCards: players,
             pile: pile,
         })
 
@@ -180,7 +184,7 @@ class Game extends React.Component {
     }
 
     render() {
-        const players = this.state.players.slice();
+        const players = this.players;
         const playersWithoutUser = _.remove(players, (p) => p.id !== GlobalVariables.userId);
         return (
             <div style={this.styles.container}>
