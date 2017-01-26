@@ -224,7 +224,7 @@ class Game extends React.Component {
                                card={this.state.pile.slice(-1)[0]}
                                onClick={() => this.handleDraw()}/>
                         {
-                            this.state.jackPlayed ||
+                            this.state.jackPlayed &&
                             <JackSignPicer style={this.styles.jackSignPicker}
                                            onPick={this.handleJackSignPicked}/>
                         }
