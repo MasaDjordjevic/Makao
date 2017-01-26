@@ -182,7 +182,6 @@ class Game extends React.Component {
                 marginTop: '5%',
             },
             jackSignPicker: {
-                display: this.state.jackPlayed ? 'flex' : 'none',
                 width: getCardWidth(this.props.dimensions.talon),
                 position: 'absolute',
                 left: 0,
@@ -224,8 +223,11 @@ class Game extends React.Component {
                         <Talon cardHeight={this.props.dimensions.talon}
                                card={this.state.pile.slice(-1)[0]}
                                onClick={() => this.handleDraw()}/>
-                        <JackSignPicer style={this.styles.jackSignPicker}
-                                       onPick={this.handleJackSignPicked}/>
+                        {
+                            this.state.jackPlayed ||
+                            <JackSignPicer style={this.styles.jackSignPicker}
+                                           onPick={this.handleJackSignPicked}/>
+                        }
                     </div>
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>

@@ -74,7 +74,6 @@ class CardHeader extends React.Component {
             },
             headerCircleRight: {
                 ...circleStyle, ...{
-                    display: this.props.card.jackSymbol ? 'flex' : 'none',
                     right: signPadding,
                     backgroundColor: "white",
 
@@ -94,9 +93,14 @@ class CardHeader extends React.Component {
                 <div style={this.styles.headerCircleStyle}>
                     <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
                 </div>
-                <div style={this.styles.headerCircleRight}>
-                    <CardSymbol containerSize={this.circleSize * 1.2} symbol={this.props.card.jackSymbol || 'spades'}/>
-                </div>
+                {
+                    this.props.card.jackSymbol &&
+                    <div style={this.styles.headerCircleRight}>
+                        <CardSymbol containerSize={this.circleSize * 1.2}
+                                    symbol={this.props.card.jackSymbol || 'spades'}/>
+                    </div>
+                }
+
             </div>
         );
     }
