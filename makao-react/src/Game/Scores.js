@@ -182,7 +182,7 @@ class Scores extends React.Component {
     }
 
     get scores() {
-        let scores = this.state.scores;
+        let scores = JSON.parse(JSON.stringify(this.state.scores));
         const players = GlobalVariables.playersById;
         scores.map((round, i) => round.map((playerScore, _) => {
             let pS = playerScore;
@@ -195,49 +195,16 @@ class Scores extends React.Component {
     getScores() {
         //score are given for each round
         //return them if addMode is off
-        let scrs = [...this.scores];
+        let scrs = JSON.parse(JSON.stringify(this.scores));
         if (!this.state.addMode) {
             return scrs;
         }
 
-        //nije mi jasno zasto moram da pravim novi niz
-        //tj. kad menjam scrs menjam i this.props.scores a nzm zasto
-        /* let retVal = [];
-         scrs.map((round, i) => {
-         let r = [];
-         round.map((s, j) => {
-         let prevScore = i == 0 ? 0 : _.find(retVal[i - 1], {id: s.id}).score;
-         r.push({id: s.id, score: s.score + prevScore});
-         });
-         retVal.push(r);
-         });
-         return retVal;
-         */
-
-        //if addMode add score to previous round
-        let retVal = [];
-        _.forEach(scrs, function (round, i) {
-            let r = [];
-            _.forEach(round, function (s, j) {
-                let prevScore = i === 0 ? 0 : _.find(retVal[i - 1], {id: s.id}).score;
-                let newS = {id: s.id, score: s.score + prevScore};
-                r.push(newS);
-            });
-            retVal.push(r);
-        });
-        return retVal;
-        /*
-         const scr =  scrs.slice().map((round, i) => {
-         let r = round.slice().map((s, j)=> {
-         let prevScore = i==0 ? 0 : _.find(scrs[i-1], {id: s.id}).score;
-         s.score += prevScore;
-         return s;
-         } );
-         console.log(r);
-         return r;
-         });
-         return scr;
-         */
+        return scrs.map((round, i) =>
+            round.map((s, j) => {
+                s.score += i == 0 ? 0 : _.find(scrs[i - 1], {id: s.id}).score;
+                return s;
+            }));
     }
 
     render() {
