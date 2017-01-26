@@ -4,8 +4,10 @@
 import React from 'react';
 import Radium from 'radium';
 import {font} from './common';
+import Card from './Card';
 import CardSymbol from './CardSymbol';
-
+import {teal50, blueGrey50, red50, yellow50, orange50, amber50, deepOrange50, lime50, lightGreen50} from 'material-ui/styles/colors'
+import {isBlack} from './common';
 
 class CardHeader extends React.Component {
     get circleSize() {
@@ -18,6 +20,16 @@ class CardHeader extends React.Component {
         if (cardHeight < 160) {
             signPadding = cardHeight / 16;
         }
+        const circleStyle = {
+            display: "block",
+            position: "absolute",
+            width: this.circleSize,
+            height: this.circleSize,
+            border: "none",
+            borderRadius: "50%",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+            textAlign: 'center'
+        };
         return {
             headerTextContainerStyle: {
                 display: "flex",
@@ -45,17 +57,18 @@ class CardHeader extends React.Component {
             },
 
             headerCircleStyle: {
-                display: "block",
-                position: "absolute",
-                width: this.circleSize,
-                height: this.circleSize,
-                left: signPadding,
-                border: "none",
-                borderRadius: "50%",
-                backgroundColor: "white",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-                textAlign: 'center'
+                ...circleStyle, ...{
+                    left: signPadding,
+                    backgroundColor: "white",
+                }
             },
+            headerCircleRight: {
+                ...circleStyle, ...{
+                    display: this.props.card.jackSymbol ? 'absolute' : 'none',
+                    right: signPadding,
+                    backgroundColor: isBlack(this.props.card.jackSymbol) ? blueGrey50 : red50,
+                }
+            }
         }
     }
 
@@ -70,12 +83,16 @@ class CardHeader extends React.Component {
                 <div style={this.styles.headerCircleStyle}>
                     <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
                 </div>
+                <div style={this.styles.headerCircleRight}>
+                    <CardSymbol containerSize={this.circleSize} symbol={this.props.card.symbol}/>
+                </div>
             </div>
         );
     }
 }
 
 CardHeader.propTypes = {
+    card: React.PropTypes.instanceOf(Card),
     cardHeight: React.PropTypes.number.isRequired,
     offset: React.PropTypes.number,
 };

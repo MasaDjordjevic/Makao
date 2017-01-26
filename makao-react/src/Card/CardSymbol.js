@@ -74,7 +74,7 @@ class CardSymbol extends React.Component {
         }
 
         return (
-            <div style={this.styles.container}>
+            <div style={{...this.props.style, ...this.styles.container}}>
                 {symbol}
             </div>
         );

@@ -2,9 +2,10 @@
  * Created by Masa on 22-Dec-16.
  */
 export default class Card {
-    constructor(sym, num) {
+    constructor(sym, num, jackSybol = null) {
         this.symbol = sym;
         this.number = num;
+        this.jackSymbol = jackSybol;
     }
 
     stringify() {

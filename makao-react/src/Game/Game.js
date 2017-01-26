@@ -10,6 +10,8 @@ import _ from 'lodash';
 import GlobalVariables from '../Gameplay/GlobalVariables';
 import UserInfo from './UserInfo';
 import ScoresWrapper from './ScoresWrapper';
+import JackSignPicer from './JackSignPicker';
+import {getCardWidth} from '../Card/common';
 
 class Game extends React.Component {
     constructor() {
@@ -124,7 +126,8 @@ class Game extends React.Component {
                 marginBottom: talonMargin + '%',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'flex-end',
+                position: 'relative',
             },
             userCardsTalon: {
                 position: 'absolute',
@@ -161,7 +164,13 @@ class Game extends React.Component {
             },
             userInfo: {
                 marginTop: '5%',
+            },
+            jackSignPicker:{
+                width: getCardWidth(this.props.dimensions.talon),
+                position: 'absolute',
+                left: 0,
             }
+
 
         }
     }
@@ -198,6 +207,7 @@ class Game extends React.Component {
                         <Talon cardHeight={this.props.dimensions.talon}
                                card={this.state.pile.slice(-1)[0]}
                                onClick={() => this.handleDraw()}/>
+                        <JackSignPicer style={this.styles.jackSignPicker}/>
                     </div>
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
