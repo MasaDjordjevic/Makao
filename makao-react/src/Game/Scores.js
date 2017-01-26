@@ -13,6 +13,8 @@ import Toggle from 'material-ui/Toggle';
 import {grey400, teal900} from 'material-ui/styles/colors'
 import _ from 'lodash';
 import {getScrollbarWidth} from "../util/util";
+import {columnWidth, columnPadding, getScoresWidth} from "./common";
+import GlobalVariables from "../Gameplay/GlobalVariables";
 
 class Scores extends React.Component {
     constructor() {
@@ -20,12 +22,90 @@ class Scores extends React.Component {
 
         this.state = {
             addMode: true,
+            scores: [
+                [
+                    {id: 1, score: -100},
+                    {id: 2, score: 150},
+                    {id: 3, score: 20},
+                    {id: 4, score: 7},
+                    {id: 5, score: 4},
+                ],
+                [
+                    {id: 1, score: 17},
+                    {id: 2, score: 12},
+                    {id: 3, score: 3},
+                    {id: 4, score: -10},
+                    {id: 5, score: 2},
+                ],
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+            ]
         };
     }
 
     get styles() {
-        const columnWidth = 20;
-        const columnPadding = 5;
         const col = {
             paddingTop: 1,
             paddingBottom: 1,
@@ -38,7 +118,7 @@ class Scores extends React.Component {
         };
         return {
             container: {
-                width: (this.props.scores[0].length + 1) * (columnWidth + 2 * columnPadding) * 1.2,
+                width: getScoresWidth(this.state.scores[0].length),
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
@@ -53,20 +133,16 @@ class Scores extends React.Component {
                 height: 25,
             },
             th: {
-                ...col, ...{
-
-                }
+                ...col, ...{}
             },
             td: {
-                ...col, ...{
-
-                }
+                ...col, ...{}
             },
             colNarrow: {
                 ...col, ...{
-                        width: 5,
-                        color: grey400
-                    }
+                    width: 5,
+                    color: grey400
+                }
             },
             footer: {
                 height: 15,
@@ -105,10 +181,21 @@ class Scores extends React.Component {
         this.setState({addMode: !this.state.addMode});
     }
 
+    get scores() {
+        let scores = this.state.scores;
+        const players = GlobalVariables.players;
+        scores.map((round, i) => round.map((playerScore, _) => {
+            let pS = playerScore;
+            pS.name = players[pS.id].name;
+            return pS
+        }));
+        return scores;
+    }
+
     getScores() {
         //score are given for each round
         //return them if addMode is off
-        let scrs = [...this.props.scores];
+        let scrs = [...this.scores];
         if (!this.state.addMode) {
             return scrs;
         }
@@ -154,7 +241,7 @@ class Scores extends React.Component {
     }
 
     render() {
-        const players = this.props.scores.slice().map((round, i) => round.map((a, b) => a.name))[0];
+        const players = GlobalVariables.players.slice().map((player, i) => player.name);
         const scores = this.getScores();
         //26.67 je visina hedera tabele, mng mi je zao zbog ovoga :'(
         const tableHeight = this.props.height - this.headerHeight - 26.67;
@@ -233,6 +320,5 @@ export default Scores;
 Scores.defaultProps = {};
 
 Scores.propTypes = {
-    scores: React.PropTypes.array.isRequired,
     height: React.PropTypes.number.isRequired,
 };

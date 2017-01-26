@@ -3,6 +3,8 @@
  */
 import React from 'react';
 import Game from './Game';
+import GlobalVariables from "../Gameplay/GlobalVariables";
+import {getScoresWidth} from "./common";
 
 export default class GameResizeHandler extends React.Component {
     constructor() {
@@ -25,7 +27,8 @@ export default class GameResizeHandler extends React.Component {
     handleResize() {
         const w = document.documentElement.clientWidth;
         const h = document.documentElement.clientHeight;
-
+        const playerNum = GlobalVariables.players.length;
+        const scoresWidth = getScoresWidth(playerNum);
         let dimensions = {
             userCardsWidth: 700,
             userCardsHeight: 250,
@@ -38,7 +41,7 @@ export default class GameResizeHandler extends React.Component {
             dimensions.talon = w * 270 / 1000;
             dimensions.opponents = w * 15 / 100;
         }
-        if (w < 1350) {
+        if (w < 1350 / 252 * scoresWidth) {
             dimensions.showScores = false;
         }
         if (w < 550) {

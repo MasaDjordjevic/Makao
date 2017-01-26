@@ -73,6 +73,5 @@ ScoresWrapper.defaultProps = {
 
 ScoresWrapper.propTypes = {
     showScores: React.PropTypes.bool,
-    scores: React.PropTypes.array.isRequired,
     height: React.PropTypes.number.isRequired,
 };

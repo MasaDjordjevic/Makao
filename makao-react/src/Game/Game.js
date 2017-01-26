@@ -55,86 +55,7 @@ class Game extends React.Component {
                 new Card("hearts", "12"),
             ],
             pile: [],
-            scores: [
-                [
-                    {id: 1, score: -100},
-                    {id: 2, score: 150},
-                    {id: 3, score: 20},
-                    {id: 4, score: 7},
-                    {id: 5, score: 4},
-                ],
-                [
-                    {id: 1, score: 17},
-                    {id: 2, score: 12},
-                    {id: 3, score: 3},
-                    {id: 4, score: -10},
-                    {id: 5, score: 2},
-                ],
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
 
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-            ]
         };
 
 
@@ -146,16 +67,6 @@ class Game extends React.Component {
         return _.keyBy(this.state.players, 'id');
     }
 
-    get scores() {
-        let scores = this.state.scores;
-        const players = this.players;
-        scores.map((round, i) => round.map((playerScore, _) => {
-            let pS = playerScore;
-            pS.name = players[pS.id].name;
-            return pS
-        }));
-        return scores;
-    }
 
     playMove(playerId, card) {
         if (playerId === GlobalVariables.userId) {
