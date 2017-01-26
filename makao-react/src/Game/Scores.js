@@ -232,4 +232,7 @@ export default Scores;
 
 Scores.defaultProps = {};
 
-Scores.propTypes = {};
+Scores.propTypes = {
+    scores: React.PropTypes.array.isRequired,
+    height: React.PropTypes.number.isRequired,
+};

@@ -67,6 +67,12 @@ class ScoresWrapper extends React.Component {
 }
 export default ScoresWrapper;
 
-ScoresWrapper.defaultProps = {};
+ScoresWrapper.defaultProps = {
+    showScores: false,
+};
 
-ScoresWrapper.propTypes = {};
+ScoresWrapper.propTypes = {
+    showScores: React.PropTypes.bool,
+    scores: React.PropTypes.array.isRequired,
+    height: React.PropTypes.number.isRequired,
+};
