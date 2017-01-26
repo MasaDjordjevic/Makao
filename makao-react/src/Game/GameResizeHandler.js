@@ -4,8 +4,8 @@
 import React from 'react';
 import Game from './Game';
 
-export default class GameResizeHandler extends React.Component{
-    constructor(){
+export default class GameResizeHandler extends React.Component {
+    constructor() {
         super();
 
         this.state = {
@@ -14,6 +14,7 @@ export default class GameResizeHandler extends React.Component{
                 userCardsHeight: 250,
                 talon: 270,
                 opponents: 150,
+                showScores: true,
             }
         };
 
@@ -30,11 +31,15 @@ export default class GameResizeHandler extends React.Component{
             userCardsHeight: 250,
             talon: 270,
             opponents: 150,
+            showScores: true,
         };
         if (w < 1000) {
             dimensions.userCardsWidth = w * 7 / 10;
             dimensions.talon = w * 270 / 1000;
             dimensions.opponents = w * 15 / 100;
+        }
+        if (w < 1350) {
+            dimensions.showScores = false;
         }
         if (w < 550) {
             dimensions.userCardsWidth = w * 0.95;
@@ -59,8 +64,8 @@ export default class GameResizeHandler extends React.Component{
         window.removeEventListener("resize", this.handleResize);
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <Game dimensions={this.state.dimensions}/>
         );
     }

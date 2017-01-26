@@ -48,44 +48,32 @@ class Scores extends React.Component {
             },
             tableWrapper: {
                 overflow: 'visible',
-            }
-            ,
+            },
             tr: {
                 height: 25,
-            }
-            ,
+            },
             th: {
-                ...
-                    col,
-                ...
-                    {}
-            }
-            ,
+                ...col, ...{
+
+                }
+            },
             td: {
-                ...
-                    col,
-                ...
-                    {}
-            }
-            ,
+                ...col, ...{
+
+                }
+            },
             colNarrow: {
-                ...
-                    col,
-                ...
-                    {
+                ...col, ...{
                         width: 5,
                         color: grey400
                     }
-            }
-            ,
+            },
             footer: {
                 height: 15,
-            }
-            ,
+            },
             scores: {
                 color: teal900,
-            }
-            ,
+            },
             superHeader: {
                 height: this.headerHeight,
                 display: 'flex',

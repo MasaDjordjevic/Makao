@@ -1,14 +1,19 @@
 import React from 'react';
 import Scores from './Scores';
 import Timeline from 'material-ui/svg-icons/action/timeline';
-import FontIcon from 'material-ui/FontIcon';
 
 class ScoresWrapper extends React.Component {
     constructor() {
         super();
+
         this.state = {
+            hover: false,
             showScores: false,
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({showScores: nextProps.showScores});
     }
 
     get styles() {
@@ -18,7 +23,7 @@ class ScoresWrapper extends React.Component {
                 position: 'relative',
             },
             showIcon: {
-                display: this.state.showScores ? 'none' : 'flex',
+                display: this.state.hover ? 'none' : 'flex',
                 width: boxSize,
                 height: boxSize,
                 boxSizing: 'content-box',
@@ -29,7 +34,7 @@ class ScoresWrapper extends React.Component {
             },
             scoresContainer: {
                 position: 'absolute',
-                display: this.state.showScores ? 'flex' : 'none',
+                display: this.state.hover || this.state.showScores ? 'flex' : 'none',
                 bottom: 0,
                 left: 0,
                 zIndex: 10,
@@ -39,7 +44,9 @@ class ScoresWrapper extends React.Component {
     }
 
     handleHover() {
-        this.setState({showScores: !this.state.showScores});
+        if (this.state.showScores)
+            return;
+        this.setState({hover: !this.state.hover});
     }
 
     render() {
