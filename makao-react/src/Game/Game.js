@@ -240,6 +240,7 @@ class Game extends React.Component {
             },
             scores: {
                 alignSelf: 'flex-end',
+                justifyContent: 'flex-start'
             },
             userInfo:{
                 marginTop: '5%',

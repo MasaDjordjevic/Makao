@@ -10,8 +10,9 @@ import {
     TableRowColumn
 } from 'material-ui/Table';
 import Toggle from 'material-ui/Toggle';
-import {grey400, grey500} from 'material-ui/styles/colors'
+import {grey400, teal900} from 'material-ui/styles/colors'
 import _ from 'lodash';
+import {getScrollbarWidth} from "../util/util";
 
 class Scores extends React.Component {
     constructor() {
@@ -37,37 +38,54 @@ class Scores extends React.Component {
         };
         return {
             container: {
+                width: (this.props.scores[0].length + 1) * (columnWidth + 2 * columnPadding) * 1.2,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
                 boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
                 borderRadius: '2px',
+                backgroundColor: 'white',
             },
             tableWrapper: {
                 overflow: 'visible',
-            },
+            }
+            ,
             tr: {
                 height: 25,
-            },
+            }
+            ,
             th: {
-                ...col, ...{}
-            },
+                ...
+                    col,
+                ...
+                    {}
+            }
+            ,
             td: {
-                ...col, ...{}
-            },
+                ...
+                    col,
+                ...
+                    {}
+            }
+            ,
             colNarrow: {
-                ...col, ...{
-                    width: 5,
-                    color: grey400
-                }
-            },
+                ...
+                    col,
+                ...
+                    {
+                        width: 5,
+                        color: grey400
+                    }
+            }
+            ,
             footer: {
                 height: 15,
-            },
+            }
+            ,
             scores: {
-                color: grey500,
-                fontWeight: 300,
-            },
+                color: teal900,
+            }
+            ,
             superHeader: {
                 height: this.headerHeight,
                 display: 'flex',
@@ -75,7 +93,6 @@ class Scores extends React.Component {
                 justifyContent: 'space-between',
                 padding: '6px 8px',
                 boxSizing: 'border-box',
-                backgroundColor: 'white',
             }
         }
     }
@@ -84,9 +101,17 @@ class Scores extends React.Component {
         return 25 + 12;
     }
 
+
+
     componentDidMount() {
+        //scroll to bottom
         var tableElement = document.getElementsByClassName('table')[1].parentElement;
         tableElement.scrollTop = tableElement.scrollHeight;
+
+        //adds margin to header where there is a scroll
+        if (tableElement.scrollHeight > tableElement.clientHeight) {
+            tableElement.parentElement.firstChild.style.marginRight = getScrollbarWidth() + 'px';
+        }
     }
 
     handleAddChange() {
@@ -94,6 +119,8 @@ class Scores extends React.Component {
     }
 
     getScores() {
+        //score are given for each round
+        //return them if addMode is off
         let scrs = [...this.props.scores];
         if (!this.state.addMode) {
             return scrs;
@@ -113,6 +140,7 @@ class Scores extends React.Component {
          return retVal;
          */
 
+        //if addMode add score to previous round
         let retVal = [];
         _.forEach(scrs, function (round, i) {
             let r = [];
