@@ -41,7 +41,7 @@ export default class GameResizeHandler extends React.Component {
             dimensions.talon = w * 270 / 1000;
             dimensions.opponents = w * 15 / 100;
         }
-        if (w < 1350 / 252 * scoresWidth) {
+        if (w < 1350 / 216 * scoresWidth) {
             dimensions.showScores = false;
         }
         if (w < 550) {
