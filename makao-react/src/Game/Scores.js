@@ -101,9 +101,7 @@ class Scores extends React.Component {
         return 25 + 12;
     }
 
-
-
-    componentDidMount() {
+    componentWillUpdate() {
         //scroll to bottom
         var tableElement = document.getElementsByClassName('table')[1].parentElement;
         tableElement.scrollTop = tableElement.scrollHeight;
@@ -113,6 +111,7 @@ class Scores extends React.Component {
             tableElement.parentElement.firstChild.style.marginRight = getScrollbarWidth() + 'px';
         }
     }
+
 
     handleAddChange() {
         this.setState({addMode: !this.state.addMode});

@@ -9,7 +9,7 @@ import Opponents from './Opponents';
 import _ from 'lodash';
 import GlobalVariables from '../Gameplay/GlobalVariables';
 import UserInfo from './UserInfo';
-import Scores from './Scores';
+import ScoresWrapper from './ScoresWrapper';
 
 class Game extends React.Component {
     constructor() {
@@ -57,81 +57,81 @@ class Game extends React.Component {
             pile: [],
             scores: [
                 [
-                    {id:1, score: -100},
-                    {id:2, score: 150},
-                    {id:3, score: 20},
-                    {id:4, score: 7},
-                    {id:5, score: 4},
+                    {id: 1, score: -100},
+                    {id: 2, score: 150},
+                    {id: 3, score: 20},
+                    {id: 4, score: 7},
+                    {id: 5, score: 4},
                 ],
                 [
-                    {id:1, score: 17},
-                    {id:2, score: 12},
-                    {id:3, score: 3},
-                    {id:4, score: -10},
-                    {id:5, score: 2},
+                    {id: 1, score: 17},
+                    {id: 2, score: 12},
+                    {id: 3, score: 3},
+                    {id: 4, score: -10},
+                    {id: 5, score: 2},
                 ],
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
-                ],
-
-                [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
                 [
-                    {id:1, score: 5},
-                    {id:2, score: 2},
-                    {id:3, score: 4},
-                    {id:4, score: 8},
-                    {id:5, score: -10},
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
+                ],
+
+                [
+                    {id: 1, score: 5},
+                    {id: 2, score: 2},
+                    {id: 3, score: 4},
+                    {id: 4, score: 8},
+                    {id: 5, score: -10},
                 ],
 
             ]
@@ -141,13 +141,15 @@ class Game extends React.Component {
         this.handleDraw = this.handleDraw.bind(this);
 
     }
-    get players(){
+
+    get players() {
         return _.keyBy(this.state.players, 'id');
     }
-    get scores(){
+
+    get scores() {
         let scores = this.state.scores;
         const players = this.players;
-        scores.map((round, i)=> round.map((playerScore, _)=>{
+        scores.map((round, i) => round.map((playerScore, _) => {
             let pS = playerScore;
             pS.name = players[pS.id].name;
             return pS
@@ -242,7 +244,7 @@ class Game extends React.Component {
                 alignSelf: 'flex-end',
                 justifyContent: 'flex-start'
             },
-            userInfo:{
+            userInfo: {
                 marginTop: '5%',
             }
 
@@ -284,8 +286,8 @@ class Game extends React.Component {
                     </div>
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
-                            <Scores scores={this.scores}
-                                    height={this.props.dimensions.userCardsHeight}/>
+                            <ScoresWrapper scores={this.scores}
+                                           height={this.props.dimensions.userCardsHeight}/>
                         </div>
                         <div style={this.styles.myCards}>
                             <CardSet
