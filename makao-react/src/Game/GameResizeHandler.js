@@ -57,9 +57,6 @@ export default class GameResizeHandler extends React.Component {
 
     componentDidMount() {
         window.addEventListener("resize", this.handleResize);
-    }
-
-    componentWillMount() {
         this.handleResize();
     }
 
