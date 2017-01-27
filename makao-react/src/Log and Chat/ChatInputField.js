@@ -6,8 +6,6 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import Send from 'material-ui/svg-icons/content/send';
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 export default class ChatInputField extends React.Component {
 
     constructor(props) {

@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: path.join(__dirname, 'src', 'app-client.js'),
@@ -19,11 +18,6 @@ module.exports = {
           presets: ['es2015', 'react'],
           plugins: ['transform-object-rest-spread']
         }
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader"),
-        include: path.join(__dirname, 'src')
       }
     ]
   },
@@ -33,7 +27,6 @@ module.exports = {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       }
     }),
-    new ExtractTextPlugin("../css/styles.css"),
     new webpack.OldWatchingPlugin(),
 
     new webpack.optimize.DedupePlugin(),
@@ -45,8 +38,5 @@ module.exports = {
       beautify: false,
       dead_code: true
     })
-  ],
-  devServer: {
-    contentBase: path.join(__dirname, 'src', 'public', 'js')
-  }
+  ]
 }
