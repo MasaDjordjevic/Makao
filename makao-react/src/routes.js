@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import {Route} from 'react-router';
-import Main from 'Gameplay/Main';
+import Main from './Gameplay/Main';
 import Login from './Login/Login';
-import App from './App';
+import App from './App/App';
 import Lobby from './Lobby/Lobby';
 
 export default (
