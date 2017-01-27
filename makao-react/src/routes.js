@@ -3,10 +3,10 @@
  */
 import React from 'react';
 import {Route} from 'react-router';
-import Main from './Gameplay/Main';
-import Login from './Login/Login';
-import App from './App/App';
-import Lobby from './Lobby/Lobby';
+import Main from './components/Gameplay/Main';
+import Login from './components/Login/Login';
+import App from './components/App/App';
+import Lobby from './components/Lobby/Lobby';
 
 export default (
     <Route component={App}>

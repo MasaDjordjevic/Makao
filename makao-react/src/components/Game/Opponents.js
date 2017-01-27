@@ -6,7 +6,7 @@ import CardSet from '../Card/CardSet';
 import TimerProgress from './TimerProgress';
 import {blueGrey200} from 'material-ui/styles/colors';
 import GlobalVariables from '../Gameplay/GlobalVariables';
-import {toRad} from "../util/util";
+import {toRad} from "../../util/util";
 
 
 class Opponents extends React.Component {

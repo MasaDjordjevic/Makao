@@ -12,7 +12,7 @@ import {
 import Toggle from 'material-ui/Toggle';
 import {grey400, teal900} from 'material-ui/styles/colors'
 import _ from 'lodash';
-import {getScrollbarWidth} from "../util/util";
+import {getScrollbarWidth} from "../../util/util";
 import {columnWidth, columnPadding, getScoresWidth} from "./common";
 import GlobalVariables from "../Gameplay/GlobalVariables";
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppRoutes from './AppRoutes/AppRoutes';
+import AppRoutes from './components/AppRoutes/AppRoutes';
 
 window.onload = function() {
   ReactDOM.render(<AppRoutes/>, document.getElementById('root'));

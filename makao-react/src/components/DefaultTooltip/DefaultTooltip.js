@@ -4,7 +4,7 @@
 import React from 'react';
 import Tooltip from 'material-ui/internal/Tooltip';
 import transitions from 'material-ui/styles/transitions';
-import mainMuiTheme from '../MainMuiTheme';
+import mainMuiTheme from '../../MainMuiTheme';
 
 
 function getStyles(props) {

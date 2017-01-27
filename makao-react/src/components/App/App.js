@@ -9,7 +9,7 @@ import Login from "../Login/Login";
 import Lobby from "../Lobby/Lobby";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import mainMuiTheme from '../MainMuiTheme';
+import mainMuiTheme from '../../MainMuiTheme';
 
 
 class App extends Component {
