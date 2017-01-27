@@ -27,7 +27,7 @@ module.exports = {
         'NODE_ENV': JSON.stringify('development')
       }
     }),
-    new webpack.OldWatchingPlugin(),
+    new webpack.OldWatchingPlugin()/*,
 
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -37,6 +37,6 @@ module.exports = {
       sourcemap: false,
       beautify: false,
       dead_code: true
-    })
+    })*/
   ]
 }
