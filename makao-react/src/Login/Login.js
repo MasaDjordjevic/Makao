@@ -69,7 +69,7 @@ class Login extends React.Component {
         }
     }
 
-    handleChange = (value) => {
+    handleChange(value) {
         this.setState({
             index: this.state.index + 1,
         });
