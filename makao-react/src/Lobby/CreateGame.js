@@ -49,18 +49,18 @@ class CreateGame extends React.Component {
         this.setState({friends:picked});
     }
 
-    handleGoto = (step) => {
+    handleGoto(step) {
         this.setState({stepIndex: step});
     };
 
-    handleNext = () => {
+    handleNext() {
         const stepIndex = this.state.stepIndex;
         if (stepIndex < 2) {
             this.setState({stepIndex: stepIndex + 1});
         }
     };
 
-    handlePrev = () => {
+    handlePrev() {
         const stepIndex = this.state.stepIndex;
         if (stepIndex > 0) {
             this.setState({stepIndex: stepIndex - 1});

@@ -38,8 +38,9 @@ function getStyles(props) {
 
 class DefaultTooltip extends React.Component{
 
-
-    state = {
+  constructor(){
+    super();
+    this.state = {
         hovered: false,
         isKeyboardFocused: false,
         // Not to be confonded with the touch property.
@@ -47,6 +48,7 @@ class DefaultTooltip extends React.Component{
         touch: false,
         tooltipShown: false,
     };
+  }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.disabled) {
@@ -64,21 +66,21 @@ class DefaultTooltip extends React.Component{
         if (this.props.tooltip) this.setState({tooltipShown: false});
     }
 
-    handleBlur = (event) => {
+    handleBlur(event) {
         this.hideTooltip();
         if (this.props.onBlur) {
             this.props.onBlur(event);
         }
     };
 
-    handleFocus = (event) => {
+    handleFocus(event) {
         this.showTooltip();
         if (this.props.onFocus) {
             this.props.onFocus(event);
         }
     };
 
-    handleMouseLeave = (event) => {
+    handleMouseLeave(event) {
         if (!this.state.isKeyboardFocused) {
             this.hideTooltip();
         }
@@ -88,12 +90,12 @@ class DefaultTooltip extends React.Component{
         }
     };
 
-    handleMouseOut = (event) => {
+    handleMouseOut(event) {
         if (this.props.disabled) this.hideTooltip();
         if (this.props.onMouseOut) this.props.onMouseOut(event);
     };
 
-    handleMouseEnter = (event) => {
+    handleMouseEnter(event) {
         this.showTooltip();
 
         // Cancel hover styles for touch devices
@@ -105,7 +107,7 @@ class DefaultTooltip extends React.Component{
         }
     };
 
-    handleTouchStart = (event) => {
+    handleTouchStart(event) {
         this.setState({touch: true});
 
         if (this.props.onTouchStart) {

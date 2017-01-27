@@ -18,7 +18,7 @@ export default class ChatInputField extends React.Component {
         };
     }
 
-    handleChange = (event, value) => {
+    handleChange(event, value) {
         if (value.charCodeAt(value.length - 1) === 10) { //enter (znam da je ruzno)
             this.sendMessage(value);
         } else {
@@ -26,7 +26,7 @@ export default class ChatInputField extends React.Component {
         }
     };
 
-    handleClick = () => {
+    handleClick() {
         this.sendMessage(document.getElementById('chat-input').value);
     };
 
