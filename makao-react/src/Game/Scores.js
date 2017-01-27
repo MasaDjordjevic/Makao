@@ -1,5 +1,5 @@
 import React from 'react';
-import DefaultTooltip from '../DefaultTooltip';
+import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import {
     Table,
     TableBody,

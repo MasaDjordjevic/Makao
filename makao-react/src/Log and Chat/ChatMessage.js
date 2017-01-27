@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-import DefaultTooltip from '../DefaultTooltip';
+import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import {blueGrey300, teal800} from 'material-ui/styles/colors';
 
 class ChatMessage extends React.Component {
