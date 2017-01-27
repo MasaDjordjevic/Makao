@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import './App.css';
-import Card from './Card/Card';
-import CardComponent from "./Card/CardComponent";
-import CardSet from "./Card/CardSet";
-import Game from "./Game/Game";
-import Main from "./Gameplay/Main";
-import Login from "./Login/Login";
-import Lobby from "./Lobby/Lobby";
+//import './App.css';
+import Card from '../Card/Card';
+import CardComponent from "../Card/CardComponent";
+import CardSet from "../Card/CardSet";
+import Game from "../Game/Game";
+import Main from "../Gameplay/Main";
+import Login from "../Login/Login";
+import Lobby from "../Lobby/Lobby";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import mainMuiTheme from './MainMuiTheme';
+import mainMuiTheme from '../MainMuiTheme';
 
 
 class App extends Component {
@@ -80,7 +80,7 @@ class App extends Component {
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
             <div style={this.styles.container}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
-                    <Main />
+                    {this.props.children}
                 </MuiThemeProvider>
             </div>
         </div>
