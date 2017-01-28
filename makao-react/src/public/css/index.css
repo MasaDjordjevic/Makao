@@ -1,0 +1,16 @@
+body {
+	margin: 0;
+}
+
+.talon{
+    display: block;
+}
+.talonLarge{
+    animation:zoom-out 0.8s ease-in
+}
+@keyframes zoom-out{
+    0%,from {
+        transform:scale(1.2);
+    }
+    100%,to { }
+}
