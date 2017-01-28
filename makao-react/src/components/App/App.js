@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 //import './App.css';
 import Card from '../Card/Card';
 import CardComponent from "../Card/CardComponent";
@@ -13,7 +13,7 @@ import mainMuiTheme from '../../MainMuiTheme';
 
 
 class App extends Component {
-    get testCards(){
+    get testCards() {
         return [
             new Card("spades", "2"),
             new Card("spades", "7"),
@@ -43,24 +43,19 @@ class App extends Component {
             new Card("hearts", "12"),
         ];
     }
-    get styles(){
+
+    get styles() {
         return {
             app: {
                 height: "100vh",
                 display: "flex",
                 justifyContent: "space-around",
-                alignContent:"space-around",
+                alignContent: "space-around",
                 backgroundColor: "#ECEFF1"
             },
-            container: {
-                display: 'flex',
-                flexDirection: 'column',
-
-                width: '100%',
-            }
-
         };
     }
+
     /*
      {this.testCards.map((card, i)=>
      <CardComponent
@@ -68,38 +63,29 @@ class App extends Component {
      key={i.toString()}
      cardHeight={310}/>
      )}
-    */
-  render() {
-    return (
-        <div className="App" style={this.styles.app}>
-            <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet"/>
-            <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" />
-            <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,400,600" rel="stylesheet"/>
-            <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400" rel="stylesheet" />
-            <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet" />
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-            <div style={this.styles.container}>
+     */
+    render() {
+        return (
+            <div className="App" style={this.styles.app}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     {this.props.children}
                 </MuiThemeProvider>
             </div>
-        </div>
 
 
-/*
-       <div className="App" styles={this.styles}>
-           <CardSet width={500} cards={this.testCards.splice(5)} cardNumber={5} sort />
-           <CardSet width={500} cards={this.testCards.splice(7)} cardNumber={5} sort />
-           <CardSet width={500} cards={this.testCards.splice(2)} cardNumber={5} />
-           <CardSet width={500} cards={this.testCards} cardNumber={5} />
-           <CardSet width={500} back cardNumber={5} />
+            /*
+             <div className="App" styles={this.styles}>
+             <CardSet width={500} cards={this.testCards.splice(5)} cardNumber={5} sort />
+             <CardSet width={500} cards={this.testCards.splice(7)} cardNumber={5} sort />
+             <CardSet width={500} cards={this.testCards.splice(2)} cardNumber={5} />
+             <CardSet width={500} cards={this.testCards} cardNumber={5} />
+             <CardSet width={500} back cardNumber={5} />
 
-       </div>
-*/
-    );
-  }
+             </div>
+             */
+        );
+    }
 }
-
 
 
 export default App;
