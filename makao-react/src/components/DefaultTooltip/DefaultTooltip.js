@@ -48,6 +48,16 @@ class DefaultTooltip extends React.Component{
         touch: false,
         tooltipShown: false,
     };
+
+
+    this.showTooltip = this.showTooltip.bind(this);
+    this.hideTooltip = this.hideTooltip.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
   }
 
     componentWillReceiveProps(nextProps) {
