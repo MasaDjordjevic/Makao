@@ -22,6 +22,24 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(logger('combined'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/test', function(req, res){
+    let t = {
+        name: 'traa',
+        no: 12
+    };
+    res.send(t);
+});
+
+app.post('/test2', function (req, res) {
+    debugger;
+    console.log(req);
+    let email = req.body.email;
+    let password = req.body.password;
+    //console.log("LOGIN: " + email + " " + password);
+
+    res.send({res: "dobio sam email: " + email + ", pass: " + password});
+});
+
 app.use(function(req, res) {
   match(
     { routes: routes, location: req.url },
@@ -49,6 +67,8 @@ app.use(function(req, res) {
     }
   );
 });
+
+
 
 app.listen(1337, function() {
   console.log('Listening on port 1337.');

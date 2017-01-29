@@ -27,9 +27,32 @@ class LoginForm extends React.Component {
             this.setState({passwordError: "This field is required."})
         }
 
+        let params = {email: this.state.email, password: this.state.password};
         if(errNo === 0){
-            console.log({email: this.state.email, password: this.state.password});
+            console.log(params);
         }
+
+        fetch('/test', {
+            method: 'get'
+        }).then(function(response) {
+            return response.json();
+        }).then(function (data) {
+            console.log(data);
+        }).catch(function(err) {
+            // Error :(
+        });
+
+        fetch('/test2', {
+            method: 'post',
+            body: JSON.stringify(params)
+        }).then(function(response) {
+            return response.json();
+        }).then(function (data) {
+            console.log(data);
+        }).catch(function(err) {
+            // Error :(
+        });
+
     }
 
     handleInputChange(prop, val){
