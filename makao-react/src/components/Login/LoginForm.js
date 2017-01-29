@@ -43,7 +43,11 @@ class LoginForm extends React.Component {
         });
 
         fetch('/test2', {
-            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
             body: JSON.stringify(params)
         }).then(function(response) {
             return response.json();

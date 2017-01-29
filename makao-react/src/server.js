@@ -8,7 +8,7 @@ import { match, RouterContext } from 'react-router';
 import routes from './routes';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import bodyParser from 'body-parser';
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
 // user agent is not known.
 global.navigator = global.navigator || {};
@@ -21,6 +21,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('combined'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
 app.get('/test', function(req, res){
     let t = {
@@ -31,11 +32,8 @@ app.get('/test', function(req, res){
 });
 
 app.post('/test2', function (req, res) {
-    debugger;
-    console.log(req);
     let email = req.body.email;
     let password = req.body.password;
-    //console.log("LOGIN: " + email + " " + password);
 
     res.send({res: "dobio sam email: " + email + ", pass: " + password});
 });
