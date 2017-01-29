@@ -15,7 +15,8 @@ class LoginStore{
     }
 
     onLoginFail(jqXhr){
-        this.response = jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText;
+        console.log(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
+        this.response = "doslo je do greske";
     }
 }
 

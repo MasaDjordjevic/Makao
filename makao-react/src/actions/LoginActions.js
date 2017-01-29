@@ -24,7 +24,6 @@ class LoginActions {
         }).then((data) => {
             this.actions.loginSuccess(data);
         }).catch((err) => {
-            debugger;
             this.actions.loginFail(err);
         });
     }

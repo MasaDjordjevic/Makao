@@ -21,7 +21,6 @@ class LoginForm extends React.Component {
     }
 
     onChange(res) {
-        debugger;
         this.setState({loginResponse: res.response});
     }
 
