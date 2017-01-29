@@ -14,6 +14,8 @@ class Login extends React.Component {
             index: 0,
             heights: [220.46, 345], //-88.37
         };
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     get styles() {
