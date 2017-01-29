@@ -4,6 +4,8 @@ import TimerProgress from './TimerProgress';
 import {blueGrey300} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import FastForward from 'material-ui/svg-icons/av/fast-forward';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 class UserInfo extends React.Component {
     get styles() {
