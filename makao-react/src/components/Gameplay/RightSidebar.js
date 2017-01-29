@@ -7,7 +7,7 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import {teal900} from 'material-ui/styles/colors';
 
-//import LogAndChat from '../Log and Chat/LogAndChat';
+import LogAndChat from '../Log and Chat/LogAndChat';
 
 class RightSidebar extends React.Component {
     constructor() {
@@ -72,10 +72,10 @@ class RightSidebar extends React.Component {
         return (
             <div style={this.styles.container} id="right-sidebar">
                 {
-                    // this.state.show &&
-                    // <LogAndChat
-                    //     chatMessages={this.props.chatMessages}
-                    //     onNewChatMessage={(m) => this.props.onNewChatMessage(m)}/>
+                     this.state.show &&
+                     <LogAndChat
+                        chatMessages={this.props.chatMessages}
+                        onNewChatMessage={(m) => this.props.onNewChatMessage(m)}/>
                 }
                 <div>
                     <Checkbox
