@@ -15,7 +15,7 @@ class LoginStore{
     }
 
     onLoginFail(jqXhr){
-        console.log(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
+        this.response = jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText;
     }
 }
 
