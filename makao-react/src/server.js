@@ -35,8 +35,7 @@ app.post('/test2', function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
 
-   // res.send({res: "dobio sam email: " + email + ", pass: " + password});
-    res.send("test");
+    res.send({res: "dobio sam email: " + email + ", pass: " + password});
 });
 
 app.use(function(req, res) {
