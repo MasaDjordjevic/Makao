@@ -1,69 +1,62 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import LoginActions from '../../actions/LoginActions';
+import LoginStore from '../../stores/LoginStore';
+import Snackbar from 'material-ui/Snackbar';
 
 class LoginForm extends React.Component {
-    constructor(){
+    constructor() {
         super();
-        this.state= {
+        this.state = {
             emailError: "",
             passwordError: "",
             email: "",
             password: "",
+            loginResponse: LoginStore.getState().response,
         };
 
+        this.onChange = this.onChange.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
+    }
+
+    onChange(res) {
+        debugger;
+        this.setState({loginResponse: res.response});
+    }
+
+    componentDidMount() {
+        LoginStore.listen(this.onChange);
+    }
+
+    componentWillUnmount() {
+        LoginStore.unlisten(this.onChange());
     }
 
     handleLoginClick() {
         let errNo = 0;
-        if(!this.state.email){
+        if (!this.state.email) {
             errNo++;
             this.setState({emailError: "This field is required."})
         }
-        if(!this.state.password){
+        if (!this.state.password) {
             errNo++;
             this.setState({passwordError: "This field is required."})
         }
 
         let params = {email: this.state.email, password: this.state.password};
-        if(errNo === 0){
+        if (errNo === 0) {
             console.log(params);
         }
 
-        fetch('/test', {
-            method: 'get'
-        }).then(function(response) {
-            return response.json();
-        }).then(function (data) {
-            console.log(data);
-        }).catch(function(err) {
-            // Error :(
-        });
-
-        fetch('/test2', {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(params)
-        }).then(function(response) {
-            return response.json();
-        }).then(function (data) {
-            console.log(data);
-        }).catch(function(err) {
-            // Error :(
-        });
-
+        LoginActions.login(params);
     }
 
-    handleInputChange(prop, val){
+    handleInputChange(prop, val) {
         let obj = {};
         obj[prop] = val;
-        if(val){
-            obj[prop+"Error"] = "";
+        if (val) {
+            obj[prop + "Error"] = "";
         }
         this.setState(obj);
     }
@@ -96,6 +89,15 @@ class LoginForm extends React.Component {
                               fullWidth={true}
                               primary={true}
                               onClick={this.handleLoginClick}/>
+
+
+                <Snackbar
+                    open={this.state.loginResponse !== ""}
+                    message={this.state.loginResponse}
+                    autoHideDuration={4000}
+                />
+
+
             </div>
         );
     }
