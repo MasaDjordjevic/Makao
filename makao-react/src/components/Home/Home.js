@@ -7,10 +7,11 @@ import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import StyleIcon from 'material-ui/svg-icons/Image/style';
 import CreateIcon from 'material-ui/svg-icons/content/create';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import {white, teal700, teal800, teal900} from 'material-ui/styles/colors';
+import {white, teal700, teal800, teal900, green400,green500,green600, grey500} from 'material-ui/styles/colors';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import {Link} from 'react-router';
 import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class Home extends React.Component {
@@ -44,6 +45,39 @@ class Home extends React.Component {
         }
     }
 
+    handleLogout(){
+        alert("logout");
+    }
+
+    handleRequestAccept(friendId){
+       alert("Req acc friend: " + friendId);
+    }
+
+    renderFriendRequest(friendName, friendId) {
+        return (
+            <MenuItem primaryText={
+                <div>
+                    <span>Friend request from&nbsp;
+                        <Link to={"/users:"+ friendId} style={{color: 'black'}}>
+                            <b>{friendName}</b>
+                        </Link>
+                    </span>
+                    <div>
+                        <FlatButton label="Accept" labelStyle={{color: green600}} onClick={() => this.handleRequestAccept(friendId)} />
+                        <FlatButton label="Ignore" labelStyle={{color: grey500}}/>
+                    </div>
+                </div>
+
+            }
+                      rightIcon={<PersonAdd />}
+            />
+        );
+    }
+
+    renderGameRequest(friendName, gameId) {
+
+    }
+
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -59,7 +93,8 @@ class Home extends React.Component {
                             targetOrigin={this.styles.notificationMenuPosition}
                         >
                             <MenuItem primaryText="Change profile" leftIcon={<CreateIcon />}/>
-                            <MenuItem primaryText="Go to lobby" leftIcon={<StyleIcon />}/>
+                            <MenuItem primaryText="Go to lobby" leftIcon={<StyleIcon />}
+                                      containerElement={<Link to="/lobby"/>}/>
                             <MenuItem primaryText="Add a friend" leftIcon={<PersonAdd />}/>
                         </IconMenu>
                     }
@@ -77,15 +112,16 @@ class Home extends React.Component {
                                         </IconButton>}
                                     anchorOrigin={this.styles.notificationMenuPosition}
                                     targetOrigin={this.styles.notificationMenuPosition}
+                                    width={300}
                                 >
-                                    <MenuItem primaryText="Refresh"/>
+                                    {this.renderFriendRequest("Darko", 2)}
                                     <MenuItem primaryText="Send feedback"/>
                                     <MenuItem primaryText="Settings"/>
                                     <MenuItem primaryText="Help"/>
                                     <MenuItem primaryText="Sign out"/>
                                 </IconMenu>
                             </Badge>
-                            <FlatButton style={this.styles.logout} label="Logout"/>
+                            <FlatButton style={this.styles.logout} label="Logout" onClick={this.handleLogout}/>
                         </div>
                     }
                 />

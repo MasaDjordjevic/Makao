@@ -4,7 +4,7 @@
 import {
     teal900,cyan500, cyan700,
     grey100, grey300, grey500,
-    blueGrey200, amber400,
+    blueGrey200, amber400, amber500, amber600, amber700,
    white, darkBlack, fullBlack,
 
 } from 'material-ui/styles/colors';
@@ -23,7 +23,7 @@ export default {
         primary1Color: teal900,
         primary2Color: cyan700,
         primary3Color: blueGrey200,
-        accent1Color: amber400,
+        accent1Color: amber600,
         accent2Color: grey100,
         accent3Color: grey500,
         textColor: darkBlack,
@@ -41,4 +41,7 @@ export default {
         textColor: fade(teal900, 0.7),
         selectedTextColor: teal900,
     },
+    menuItem: {
+        hoverColor: fade(darkBlack, 0.05),
+    }
 };
