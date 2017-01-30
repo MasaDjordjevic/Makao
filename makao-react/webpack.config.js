@@ -1,13 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
+let dev = process.env.NODE_ENV !== 'production';
 
 module.exports = {
+  devtool: dev ? "source-map" : null,
   entry: path.join(__dirname, 'src', 'app-client.js'),
   output: {
     path: path.join(__dirname, 'src', 'public', 'js'),
     filename: 'bundle.js'
   },
-  watch: true,
   module: {
     loaders: [
       {
@@ -23,9 +24,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('development')
-      }
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
     new webpack.OldWatchingPlugin()/*,
 
