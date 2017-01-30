@@ -14,14 +14,16 @@ class LoginForm extends React.Component {
             email: "",
             password: "",
             loginResponse: LoginStore.getState().response,
+            showResponse: false,
         };
 
         this.onChange = this.onChange.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
+        this.handleSnackbarClosing = this.handleSnackbarClosing.bind(this);
     }
 
     onChange(res) {
-        this.setState({loginResponse: res.response});
+        this.setState({loginResponse: res.response, showResponse: true});
     }
 
     componentDidMount() {
@@ -66,6 +68,10 @@ class LoginForm extends React.Component {
         }
     }
 
+    handleSnackbarClosing() {
+        this.setState({showResponse: false});
+    }
+
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -91,9 +97,10 @@ class LoginForm extends React.Component {
 
 
                 <Snackbar
-                    open={this.state.loginResponse !== ""}
+                    open={this.state.showResponse}
                     message={this.state.loginResponse}
                     autoHideDuration={4000}
+                    onRequestClose={this.handleSnackbarClosing}
                 />
 
 
