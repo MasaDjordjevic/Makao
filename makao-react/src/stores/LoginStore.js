@@ -7,7 +7,7 @@ import LoginActions from '../actions/LoginActions';
 class LoginStore{
     constructor(){
         this.bindActions(LoginActions);
-        this.response  = "";
+        this.response = "";
     }
 
     onLoginSuccess(data){
