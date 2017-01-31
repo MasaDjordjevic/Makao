@@ -23,18 +23,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(logger('combined'));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(bodyParser.json());
+
+// ovo je za client-sessions package ali ne radi
 app.use(session({
     cookieName: 'session',
-    secret: 'aips2017',
-    duration: 30 * 60 * 1000,
+    secret: 'aips2017jajacmasamitic',
+    duration: 120 * 60 * 1000,
     activeDuration: 5 * 60 * 1000
 }));
 
 app.use(function(req, res, next) {
-    if (req.session & req.session.user) {
+    if (req.session && req.session.user) {
         req.user = user;
-        req.session.user = req.user;
         next();
+    } else if (req.url !== '/') {
+        res.redirect('/');
     } else {
         next();
     }
