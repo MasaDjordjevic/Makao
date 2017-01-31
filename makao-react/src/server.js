@@ -40,9 +40,13 @@ app.use(function(req, res, next) {
     }
 });
 
+app.get('/', function(req, res, next) {
+    if (req.user) {
+        res.redirect('/home');
     } else {
         next();
     }
+});
 
 // POST request on login page
 app.post('/', function(req, res) {

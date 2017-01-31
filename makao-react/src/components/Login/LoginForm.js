@@ -52,6 +52,7 @@ class LoginForm extends React.Component {
 
         let params = { email: this.state.email, password: this.state.password };
 
+        if (!this.state.emailError.length && !this.state.passwordError.length) {
             LoginActions.login(params);
         }
     }
