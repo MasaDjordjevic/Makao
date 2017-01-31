@@ -1,6 +1,7 @@
 import path from 'path';
 import http from 'http';
 import express from 'express';
+import session from 'client-sessions';
 import logger from 'morgan';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -20,54 +21,69 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('combined'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(bodyParser.json());
+app.use(session({
+    cookieName: 'session',
+    secret: 'aips2017',
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000
+}));
 
-app.get('/test', function(req, res){
-    let t = {
-        name: 'traa',
-        no: 12
-    };
-    res.send(t);
+app.use(function(req, res, next) {
+    if (req.session & req.session.user) {
+        req.user = user;
+        req.session.user = req.user;
+        next();
+    } else {
+        next();
+    }
 });
 
-app.post('/test2', function (req, res) {
-    let email = req.body.email;
-    let password = req.body.password;
+    } else {
+        next();
+    }
 
-    res.send({res: "dobio sam email: " + email + ", pass: " + password});
+// POST request on login page
+app.post('/', function(req, res) {
+    if (req.body.email && req.body.password) {
+        req.session.user = req.body.email;
+        res.status(200).send({ redirect: '/home' });
+    } else {
+        res.status(200).send({ msg: "Invalid credentials." });
+    }
 });
 
 app.use(function(req, res) {
-  match(
-    { routes: routes, location: req.url },
-    function(err, redirectLocation, renderProps) {
+    match(
+        { routes: routes, location: req.url },
+        function(err, redirectLocation, renderProps) {
 
-      if (err) {
-        return res.status(500).send(err.message);
-      }
+            if (err) {
+                return res.status(500).send(err.message);
+            }
 
-      if (redirectLocation) {
-        return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-      }
+            if (redirectLocation) {
+                return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+            }
 
-      const muiTheme = getMuiTheme({ userAgent: req.headers['user-agent'] });
-      let markup;
-      if (renderProps) {
-        markup = ReactDOM.renderToString(
-          <MuiThemeProvider muiTheme={muiTheme}>
-            <RouterContext {...renderProps}/>
-          </MuiThemeProvider>
-          );
-      }
+            const muiTheme = getMuiTheme({ userAgent: req.headers['user-agent'] });
+            let markup;
+            if (renderProps) {
+                markup = ReactDOM.renderToString(
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <RouterContext {...renderProps}/>
+                    </MuiThemeProvider>
+                );
+            }
 
-      return res.render('index', { markup });
-    }
-  );
+            return res.render('index', { markup });
+        }
+    );
 });
 
 
 
 app.listen(1337, function() {
-  console.log('Listening on port 1337.');
+    console.log('Listening on port 1337.');
 });

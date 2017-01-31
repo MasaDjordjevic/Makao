@@ -12,19 +12,18 @@ class LoginActions {
     }
 
     login(params) {
-        fetch('/test2', {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+        fetch('/', {
+            headers: { 'Content-Type': 'application/json' },
             method: "POST",
             body: JSON.stringify(params)
-        }).then((response) => {
-            return response.json();
+        }).then((res) => {
+            return res.json();
         }).then((data) => {
-            this.actions.loginSuccess(data);
-        }).catch((err) => {
-            this.actions.loginFail(err);
+            if (data.redirect) {
+                this.actions.loginSuccess(data.redirect);
+            } else {
+                this.actions.loginFail(data.msg);
+            }
         });
     }
 }

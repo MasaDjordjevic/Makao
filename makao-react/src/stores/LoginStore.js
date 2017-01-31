@@ -7,16 +7,18 @@ import LoginActions from '../actions/LoginActions';
 class LoginStore{
     constructor(){
         this.bindActions(LoginActions);
-        this.response = "";
+        this.type = '';
+        this.payload = '';
     }
 
-    onLoginSuccess(data){
-        this.response = data.res;
+    onLoginFail(msg){
+        this.type = 'fail';
+        this.payload = 'Failed: ' + msg;
     }
 
-    onLoginFail(jqXhr){
-        console.log(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
-        this.response = "doslo je do greske";
+    onLoginSuccess(redirect) {
+        this.type = 'success';
+        this.payload = redirect;
     }
 }
 

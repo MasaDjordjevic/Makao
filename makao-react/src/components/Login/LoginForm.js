@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import LoginActions from '../../actions/LoginActions';
@@ -13,7 +14,7 @@ class LoginForm extends React.Component {
             passwordError: "",
             email: "",
             password: "",
-            loginResponse: LoginStore.getState().response,
+            loginResponse: LoginStore.getState(),
             showResponse: false,
         };
 
@@ -23,7 +24,11 @@ class LoginForm extends React.Component {
     }
 
     onChange(res) {
-        this.setState({loginResponse: res.response, showResponse: true});
+        if (this.state.loginResponse.type == 'fail') {
+            this.setState({loginResponse: res.payload, showResponse: true});
+        } else if (this.state.loginResponse.type == 'success') {
+            browserHistory.push(res.payload);
+        }
     }
 
     componentDidMount() {
@@ -31,26 +36,24 @@ class LoginForm extends React.Component {
     }
 
     componentWillUnmount() {
-        LoginStore.unlisten(this.onChange());
+        LoginStore.unlisten(this.onChange);
     }
 
     handleLoginClick() {
-        let errNo = 0;
+        this.setState({emailError: "", passwordError: ""});
+
         if (!this.state.email) {
-            errNo++;
             this.setState({emailError: "This field is required."})
         }
+
         if (!this.state.password) {
-            errNo++;
             this.setState({passwordError: "This field is required."})
         }
 
-        let params = {email: this.state.email, password: this.state.password};
-        if (errNo === 0) {
-            console.log(params);
-        }
+        let params = { email: this.state.email, password: this.state.password };
 
-        LoginActions.login(params);
+            LoginActions.login(params);
+        }
     }
 
     handleInputChange(prop, val) {
@@ -98,7 +101,7 @@ class LoginForm extends React.Component {
 
                 <Snackbar
                     open={this.state.showResponse}
-                    message={this.state.loginResponse}
+                    message={this.state.loginResponse.payload}
                     autoHideDuration={4000}
                     onRequestClose={this.handleSnackbarClosing}
                 />
