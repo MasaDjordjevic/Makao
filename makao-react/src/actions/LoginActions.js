@@ -13,6 +13,7 @@ class LoginActions {
 
     login(params) {
         fetch('/', {
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             method: "POST",
             body: JSON.stringify(params)
@@ -27,4 +28,5 @@ class LoginActions {
         });
     }
 }
+
 export default alt.createActions(LoginActions);

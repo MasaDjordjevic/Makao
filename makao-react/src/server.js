@@ -24,7 +24,6 @@ app.use(logger('combined'));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(bodyParser.json());
 
-// ovo je za client-sessions package ali ne radi
 app.use(session({
     cookieName: 'session',
     secret: 'aips2017jajacmasamitic',
@@ -34,20 +33,18 @@ app.use(session({
 
 app.use(function(req, res, next) {
     if (req.session && req.session.user) {
-        req.user = user;
-        next();
-    } else if (req.url !== '/') {
-        res.redirect('/');
+        req.user = req.session.user;
+        if (req.url === '/') {
+            res.redirect('/home');
+        } else {
+            next();
+        }
     } else {
-        next();
-    }
-});
-
-app.get('/', function(req, res, next) {
-    if (req.user) {
-        res.redirect('/home');
-    } else {
-        next();
+        if (req.url !== '/') {
+            res.redirect('/');
+        } else {
+            next();
+        }
     }
 });
 
@@ -59,6 +56,11 @@ app.post('/', function(req, res) {
     } else {
         res.status(200).send({ msg: "Invalid credentials." });
     }
+});
+
+app.get('/logout', function(req, res) {
+    req.session.reset();
+    res.redirect('/');
 });
 
 app.use(function(req, res) {
