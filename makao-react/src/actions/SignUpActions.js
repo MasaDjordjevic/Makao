@@ -1,18 +1,15 @@
-/**
- * Created by Masa on 29-Jan-17.
- */
 import alt from '../alt';
 
-class LoginActions {
+class SignUpActions {
     constructor() {
         this.generateActions(
-            'loginSuccess',
-            'loginFail'
+            'signUpSuccess',
+            'signUpFail'
         );
     }
 
-    login(params) {
-        fetch('/login', {
+    signUp(params) {
+        fetch('/signup', {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             method: "POST",
@@ -21,12 +18,12 @@ class LoginActions {
             return res.json();
         }).then((data) => {
             if (data.redirect) {
-                this.actions.loginSuccess(data.redirect);
+                this.actions.signUpSuccess(data.redirect);
             } else {
-                this.actions.loginFail(data.msg);
+                this.actions.signUpFail(data.msg);
             }
         });
     }
 }
 
-export default alt.createActions(LoginActions);
+export default alt.createActions(SignUpActions);

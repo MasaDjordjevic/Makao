@@ -33,28 +33,38 @@ app.use(session({
 
 app.use(function(req, res, next) {
     if (req.session && req.session.user) {
-        req.user = req.session.user;
         if (req.url === '/') {
             res.redirect('/home');
         } else {
             next();
         }
     } else {
-        if (req.url !== '/') {
-            res.redirect('/');
-        } else {
+        let allowed = ['/', '/login', '/signup'];
+        if (allowed.indexOf(req.url) !== -1) {
             next();
+        } else {
+            res.redirect('/');
         }
     }
 });
 
-// POST request on login page
-app.post('/', function(req, res) {
+// POST login request
+app.post('/login', function(req, res) {
     if (req.body.email && req.body.password) {
         req.session.user = req.body.email;
         res.status(200).send({ redirect: '/home' });
     } else {
         res.status(200).send({ msg: "Invalid credentials." });
+    }
+});
+
+// POST signup request
+app.post('/signup', function(req, res) {
+    if (req.body.password === req.body.confirmPassword) {
+        req.session.user = req.body.email;
+        res.status(200).send({ redirect: '/home' });
+    } else {
+        res.status(200).send({ msg: "Passwords fields don't match."});
     }
 });
 

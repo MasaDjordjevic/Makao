@@ -41,18 +41,21 @@ class LoginForm extends React.Component {
 
     handleLoginClick() {
         this.setState({emailError: "", passwordError: ""});
+        let errNo = 0;
 
         if (!this.state.email) {
-            this.setState({emailError: "This field is required."})
+            this.setState({emailError: "This field is required."});
+            errNo++;
         }
 
         if (!this.state.password) {
             this.setState({passwordError: "This field is required."})
+            errNo++;
         }
 
         let params = { email: this.state.email, password: this.state.password };
 
-        if (!this.state.emailError.length && !this.state.passwordError.length) {
+        if (errNo === 0) {
             LoginActions.login(params);
         }
     }

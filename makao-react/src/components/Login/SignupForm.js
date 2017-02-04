@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import SignUpActions from '../../actions/SignUpActions';
+import SignUpStore from '../../stores/SignUpStore';
 
 class SignupForm extends React.Component {
 
@@ -25,13 +27,32 @@ class SignupForm extends React.Component {
             texts: texts,
             errors: {...keys},
             notRequired: notRequired,
+            signUpState: SignUpStore.getState()
         };
+
+        this.onChange = this.onChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSignupClick = this.handleSignupClick.bind(this);
     }
 
+    onChange(res) {
+        if (this.state.signUpResponse.type == 'fail') {
+            this.setState({signUpResponse: res.payload, showResponse: true});
+        } else if (this.state.signUpResponse.type == 'success') {
+            browserHistory.push(res.payload);
+        }
+    }
+
+    componentDidMount() {
+        SignUpStore.listen(this.onChange);
+    }
+
+    componentWillUnmount() {
+        SignUpStore.unlisten(this.onChange);
+    }
+
     handleInputChange(prop, val) {
-        let inputs= this.state.inputs;
+        let inputs = this.state.inputs;
         inputs[prop] = val;
         let errors = this.state.errors;
         if (val) {
@@ -51,14 +72,14 @@ class SignupForm extends React.Component {
                 errors[key] = "This field is required.";
             }
         });
-        if(inputs.confirmPassword && inputs.password !== inputs.confirmPassword){
+        if (inputs.confirmPassword && inputs.password !== inputs.confirmPassword) {
             errNo++;
             errors.confirmPassword = "Must be same as password."
         }
         this.setState({errors: errors});
 
-        if(errNo === 0){
-            console.log(inputs);
+        if (errNo === 0) {
+            SignUpActions.signUp(this.state.inputs);
         }
     }
 
