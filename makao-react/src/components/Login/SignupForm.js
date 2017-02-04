@@ -1,8 +1,10 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import SignUpActions from '../../actions/SignUpActions';
 import SignUpStore from '../../stores/SignUpStore';
+import Snackbar from 'material-ui/Snackbar';
 
 class SignupForm extends React.Component {
 
@@ -27,17 +29,22 @@ class SignupForm extends React.Component {
             texts: texts,
             errors: {...keys},
             notRequired: notRequired,
-            signUpState: SignUpStore.getState()
+            signUpResponse: SignUpStore.getState(),
+            showResponse: false
         };
 
         this.onChange = this.onChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSignupClick = this.handleSignupClick.bind(this);
+        this.handleSnackbarClosing = this.handleSnackbarClosing.bind(this);
     }
 
     onChange(res) {
         if (this.state.signUpResponse.type == 'fail') {
-            this.setState({signUpResponse: res.payload, showResponse: true});
+            this.setState({
+                signUpResponse: SignUpStore.getState(),
+                showResponse: true
+            });
         } else if (this.state.signUpResponse.type == 'success') {
             browserHistory.push(res.payload);
         }
@@ -89,6 +96,10 @@ class SignupForm extends React.Component {
         }
     }
 
+    handleSnackbarClosing() {
+        this.setState({showResponse: false});
+    }
+
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -107,6 +118,13 @@ class SignupForm extends React.Component {
                               fullWidth={true}
                               primary={true}
                               onClick={this.handleSignupClick}/>
+
+                <Snackbar
+                    open={this.state.showResponse}
+                    message={this.state.signUpResponse.payload}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleSnackbarClosing}/>
+
             </div>
         );
     }

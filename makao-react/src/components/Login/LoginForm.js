@@ -25,7 +25,10 @@ class LoginForm extends React.Component {
 
     onChange(res) {
         if (this.state.loginResponse.type == 'fail') {
-            this.setState({loginResponse: res.payload, showResponse: true});
+            this.setState({
+                loginResponse: LoginStore.getState(),
+                showResponse: true
+            });
         } else if (this.state.loginResponse.type == 'success') {
             browserHistory.push(res.payload);
         }
@@ -107,9 +110,7 @@ class LoginForm extends React.Component {
                     open={this.state.showResponse}
                     message={this.state.loginResponse.payload}
                     autoHideDuration={4000}
-                    onRequestClose={this.handleSnackbarClosing}
-                />
-
+                    onRequestClose={this.handleSnackbarClosing}/>
 
             </div>
         );
