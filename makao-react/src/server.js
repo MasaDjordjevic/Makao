@@ -68,9 +68,9 @@ app.post('/signup', function(req, res) {
     }
 });
 
-app.get('/logout', function(req, res) {
+app.post('/logout', function(req, res) {
     req.session.reset();
-    res.redirect('/');
+    res.status(200).send();
 });
 
 app.use(function(req, res) {

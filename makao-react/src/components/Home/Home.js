@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
@@ -45,8 +46,13 @@ class Home extends React.Component {
         }
     }
 
-    handleLogout(){
-        alert("logout");
+    handleLogout() {
+        fetch('/logout', {
+            credentials: 'include',
+            method: 'POST'
+        }).then((res) => {
+            browserHistory.push('/');
+        });
     }
 
     handleRequestAccept(friendId){
