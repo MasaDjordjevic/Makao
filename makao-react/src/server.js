@@ -2,7 +2,7 @@ import path from 'path';
 import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
-import session from 'client-sessions';
+import session from 'express-session';
 import logger from 'morgan';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -35,10 +35,9 @@ app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(bodyParser.json());
 
 app.use(session({
-    cookieName: 'session',
     secret: 'aips2017jajacmasamitic',
-    duration: 120 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000
+    resave: true,
+    saveUninitialized: false
 }));
 
 // insert some users if none exist in database

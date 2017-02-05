@@ -16,7 +16,7 @@
   "dependencies": {
     "alt": "^0.17.8",
     "body-parser": "^1.16.0",
-    "client-sessions": "^0.7.0",
+    "express-session": "^1.15.0",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
@@ -32,7 +32,7 @@
     "react-motion-ui-pack": "^0.10.2",
     "react-router": "^3.0.2",
     "react-splitter-layout": "^0.1.2",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
   },
   "scripts": {
     "start": "nodemon --inspect ./src/server.js --exec babel-node",
