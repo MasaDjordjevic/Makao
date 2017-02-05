@@ -1,18 +1,21 @@
-import path from 'path';
-import http from 'http';
+import bodyParser from 'body-parser';
 import express from 'express';
-import mongoose from 'mongoose';
-import session from 'express-session';
+import expressSession from 'express-session';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import http from 'http';
 import logger from 'morgan';
+import mongoose from 'mongoose';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from './routes';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import bodyParser from 'body-parser';
+import redis from 'redis';
+import redisConnect from 'connect-redis';
 
 import User from './models/user'
+
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
 // user agent is not known.
 global.navigator = global.navigator || {};
@@ -20,11 +23,20 @@ global.navigator.userAgent = global.navigator.userAgent || 'all';
 
 let app = express();
 
-// change promises used to native ES6 promises
+// change promises used to native ES6 promises and connect to mongodb
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/makao');
 mongoose.connection.on('error', function() {
     console.log('Error: Could not connect to MongoDB. Did you forget to run "mongod"?');
+});
+
+// everything needed to make a redis store used for sessions
+let redisStore = redisConnect(expressSession);
+let redisClient = redis.createClient();
+let sessionStore = new redisStore({
+    host: 'localhost',
+    port: 6379,
+    client: redisClient
 });
 
 app.set('view engine', 'ejs');
@@ -34,7 +46,9 @@ app.use(logger('combined'));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(bodyParser.json());
 
-app.use(session({
+// using express-sessions package with the created redis store
+app.use(expressSession({
+    store: sessionStore,
     secret: 'aips2017jajacmasamitic',
     resave: true,
     saveUninitialized: false
@@ -57,7 +71,7 @@ User.count({}, function(err, count) {
 });
 
 app.use(function(req, res, next) {
-    if (req.session && req.session.user) {
+    if (req.session && req.session.key) {
         if (req.url === '/') {
             res.redirect('/home');
         } else {
@@ -83,7 +97,7 @@ app.post('/login', function(req, res) {
                 if (!valid) {
                     res.status(200).send({ msg: "Incorrect password." });
                 } else {
-                    req.session.user = req.body.email;
+                    req.session.key = req.body.email;
                     res.status(200).send({ redirect: '/home' });
                 }
             });
@@ -104,15 +118,16 @@ app.post('/signup', function(req, res) {
             password: req.body.password
         });
         user.save(function(err) {
-            req.session.user = req.body.email;
+            req.session.key = req.body.email;
             res.status(200).send({ redirect: '/home' });
         });
     }
 });
 
 app.post('/logout', function(req, res) {
-    req.session.reset();
-    res.status(200).send();
+    req.session.destroy(function(err) {
+        res.status(200).send();
+    });
 });
 
 app.use(function(req, res) {
