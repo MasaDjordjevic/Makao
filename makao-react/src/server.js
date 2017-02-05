@@ -44,9 +44,12 @@ app.use(session({
 User.count({}, function(err, count) {
     if (count === 0) {
         var users = [
-            new User({ username: "jajac", email: "jajac", password: "jajac" }),
-            new User({ username: "masa", email: "masa", password: "masa" }),
-            new User({ username: "mitic", email: "mitic", password: "mitic" }),
+            new User({ _id: 1, username: "jajac", email: "jajac", password: "jajac",
+                friends: [{id: 2, username: 'masa'}, {id: 3, username: 'mitic'}]}),
+            new User({ _id: 2, username: "masa", email: "masa", password: "masa",
+                friends: [{id: 1, username: 'jajac'}]}),
+            new User({ _id: 3, username: "mitic", email: "mitic", password: "mitic",
+                friends: [{id: 2, username: 'masa'}]})
         ]
 
         users.map(x => x.save());
