@@ -5,6 +5,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import http from 'http';
 import logger from 'morgan';
 import mongoose from 'mongoose';
+import mongooseAutoIncrement from 'mongoose-auto-increment';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import path from 'path';
 import React from 'react';
@@ -14,7 +15,7 @@ import routes from './routes';
 import redis from 'redis';
 import redisConnect from 'connect-redis';
 
-import User from './models/user'
+import User from './models/user';
 
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
 // user agent is not known.
@@ -31,12 +32,12 @@ mongoose.connection.on('error', function() {
 });
 
 // everything needed to make a redis store used for sessions
-let redisStore = redisConnect(expressSession);
-let redisClient = redis.createClient();
-let sessionStore = new redisStore({
+let rStore = redisConnect(expressSession);
+let rSessionClient = redis.createClient();
+let rSessionStore = new rStore({
     host: 'localhost',
     port: 6379,
-    client: redisClient
+    client: rSessionClient
 });
 
 app.set('view engine', 'ejs');
@@ -48,7 +49,7 @@ app.use(bodyParser.json());
 
 // using express-sessions package with the created redis store
 app.use(expressSession({
-    store: sessionStore,
+    store: rSessionStore,
     secret: 'aips2017jajacmasamitic',
     resave: true,
     saveUninitialized: false
@@ -58,15 +59,20 @@ app.use(expressSession({
 User.count({}, function(err, count) {
     if (count === 0) {
         var users = [
-            new User({ _id: 1, username: "jajac", email: "jajac", password: "jajac",
+            new User({ username: "jajac", email: "jajac", password: "jajac",
                 friends: [{id: 2, username: 'masa'}, {id: 3, username: 'mitic'}]}),
-            new User({ _id: 2, username: "masa", email: "masa", password: "masa",
+            new User({ username: "masa", email: "masa", password: "masa",
                 friends: [{id: 1, username: 'jajac'}]}),
-            new User({ _id: 3, username: "mitic", email: "mitic", password: "mitic",
+            new User({ username: "mitic", email: "mitic", password: "mitic",
                 friends: [{id: 2, username: 'masa'}]})
         ]
 
-        users.map(x => x.save());
+        users[0].resetCount(function(err, nextCount){});
+
+        // users.map(x => x.save());
+        users[0].save();
+        users[1].save();
+        users[2].save();
     }
 });
 
@@ -78,7 +84,7 @@ app.use(function(req, res, next) {
             next();
         }
     } else {
-        let allowed = ['/', '/login', '/signup'];
+        var allowed = ['/', '/login', '/signup'];
         if (allowed.indexOf(req.url) !== -1) {
             next();
         } else {
@@ -97,7 +103,12 @@ app.post('/login', function(req, res) {
                 if (!valid) {
                     res.status(200).send({ msg: "Incorrect password." });
                 } else {
-                    req.session.key = req.body.email;
+                    user = {
+                        id: user._id,
+                        username: user.username,
+                        email: user.email
+                    };
+                    req.session.key = user;
                     res.status(200).send({ redirect: '/home' });
                 }
             });
@@ -108,17 +119,22 @@ app.post('/login', function(req, res) {
 // POST signup request
 app.post('/signup', function(req, res) {
     if (!req.body.password || !req.body.confirmPassword) {
-        res.status(200).send({ msg: 'Password missing.' });
+        res.status(200).send({ success: false, msg: 'Password missing.' });
     } else if (req.body.password !== req.body.confirmPassword) {
-        res.status(200).send({ msg: 'Passwords do not match.' });
+        res.status(200).send({ success: false, msg: 'Passwords do not match.' });
     } else {
-        var user = new User ({
+        var user = new User({
             username: req.body.username,
             email: req.body.email,
             password: req.body.password
         });
         user.save(function(err) {
-            req.session.key = req.body.email;
+            user = {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            };
+            req.session.key = user;
             res.status(200).send({ redirect: '/home' });
         });
     }

@@ -24,6 +24,7 @@
     "lodash": "^4.17.2",
     "material-ui": "^0.16.6",
     "mongoose": "^4.8.1",
+    "mongoose-auto-increment": "^5.0.1",
     "mongoose-bcrypt": "^1.4.2",
     "morgan": "^1.7.0",
     "radium": "^0.18.1",
