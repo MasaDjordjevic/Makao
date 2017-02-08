@@ -4,7 +4,7 @@ class GlobalVariables extends React.Component {
     constructor() {
         super();
         this.userId = 1;
-        this.userName = 'Masa';
+        this.username = 'Masa';
         this.handLength = 5;
 
         this.players = [
@@ -15,6 +15,13 @@ class GlobalVariables extends React.Component {
             {id: 5, name: 'Darko'},
         ];
         this.playersById = _.keyBy(this.players, 'id');
+
+        this.initialize = this.initialize.bind(this);
+    }
+
+    initialize(user) {
+        this.usedId = user.id;
+        this.username = user.username;
     }
 }
 export default (new GlobalVariables);

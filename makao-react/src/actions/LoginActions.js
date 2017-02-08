@@ -6,12 +6,11 @@ import alt from '../alt';
 class LoginActions {
     constructor() {
         this.generateActions(
-            'loginSuccess',
-            'loginFail'
+            'login'
         );
     }
 
-    login(params) {
+    tryLogin(params) {
         fetch('/login', {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -20,11 +19,7 @@ class LoginActions {
         }).then((res) => {
             return res.json();
         }).then((data) => {
-            if (data.redirect) {
-                this.actions.loginSuccess(data.redirect);
-            } else {
-                this.actions.loginFail(data.msg);
-            }
+            this.actions.login(data);
         });
     }
 }

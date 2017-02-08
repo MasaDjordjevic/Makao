@@ -4,21 +4,21 @@
 import alt from '../alt';
 import LoginActions from '../actions/LoginActions';
 
-class LoginStore{
-    constructor(){
+class LoginStore {
+    constructor() {
         this.bindActions(LoginActions);
-        this.type = '';
-        this.payload = '';
+        this.success = false;
+        this.user = {};
+        this.msg = ' ';
     }
 
-    onLoginFail(msg){
-        this.type = 'fail';
-        this.payload = 'Failed: ' + msg;
-    }
-
-    onLoginSuccess(redirect) {
-        this.type = 'success';
-        this.payload = redirect;
+    onLogin(data){
+        this.success = data.success;
+        this.user = data.user;
+        this.msg = data.msg;
+        if (!this.msg) {
+            this.msg = ' ';
+        }
     }
 }
 

@@ -97,11 +97,11 @@ app.use(function(req, res, next) {
 app.post('/login', function(req, res) {
     User.findOne({ 'email': req.body.email }, function(err, user) {
         if (!user) {
-            res.status(200).send({ msg: "User doesn't exist." });
+            res.status(200).send({ success: false, msg: "User doesn't exist." });
         } else {
             user.verifyPassword(req.body.password, function(err, valid) {
                 if (!valid) {
-                    res.status(200).send({ msg: "Incorrect password." });
+                    res.status(200).send({ success: false, msg: "Incorrect password." });
                 } else {
                     user = {
                         id: user._id,
@@ -109,7 +109,7 @@ app.post('/login', function(req, res) {
                         email: user.email
                     };
                     req.session.key = user;
-                    res.status(200).send({ redirect: '/home' });
+                    res.status(200).send({ success: true, user: user});
                 }
             });
         }

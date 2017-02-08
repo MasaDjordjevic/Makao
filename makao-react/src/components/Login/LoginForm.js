@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import LoginActions from '../../actions/LoginActions';
 import LoginStore from '../../stores/LoginStore';
 import Snackbar from 'material-ui/Snackbar';
+import GlobalVariables from '../Gameplay/GlobalVariables'
 
 class LoginForm extends React.Component {
     constructor() {
@@ -23,14 +24,13 @@ class LoginForm extends React.Component {
         this.handleSnackbarClosing = this.handleSnackbarClosing.bind(this);
     }
 
-    onChange(res) {
-        if (this.state.loginResponse.type == 'fail') {
-            this.setState({
-                loginResponse: LoginStore.getState(),
-                showResponse: true
-            });
-        } else if (this.state.loginResponse.type == 'success') {
-            browserHistory.push(res.payload);
+    onChange() {
+        this.setState({ loginResponse: LoginStore.getState() });
+        if (!this.state.loginResponse.success) {
+            this.setState({ showResponse: true });
+        } else {
+            GlobalVariables.initialize(this.state.loginResponse.user);
+            browserHistory.push('/home');
         }
     }
 
@@ -59,7 +59,7 @@ class LoginForm extends React.Component {
         let params = { email: this.state.email, password: this.state.password };
 
         if (errNo === 0) {
-            LoginActions.login(params);
+            LoginActions.tryLogin(params);
         }
     }
 
@@ -108,7 +108,7 @@ class LoginForm extends React.Component {
 
                 <Snackbar
                     open={this.state.showResponse}
-                    message={this.state.loginResponse.payload}
+                    message={this.state.loginResponse.msg}
                     autoHideDuration={4000}
                     onRequestClose={this.handleSnackbarClosing}/>
 

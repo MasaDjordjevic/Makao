@@ -17,7 +17,7 @@ class UserInfo extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'flex-start',
             },
-            userName: {
+            username: {
                 color: blueGrey300,
                 fontFamily: 'Roboto, sans-serif',
                 marginTop: '2%',
@@ -65,7 +65,7 @@ class UserInfo extends React.Component {
                                style={this.styles.timer}
                                onTimeExpiration={this.handleTimeExpiration}/>
                 }
-                <span style={this.styles.userName}>{GlobalValues.userName}</span>
+                <span style={this.styles.username}>{GlobalValues.username}</span>
             </div>
         );
     }

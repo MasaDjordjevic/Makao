@@ -15,7 +15,7 @@ class ChatMessage extends React.Component {
                 color: this.props.mine ? teal800 : 'black',
                 marginTop: '3%'
             },
-            userName: {
+            username: {
                 color: blueGrey300,
             }
 
@@ -30,7 +30,7 @@ class ChatMessage extends React.Component {
 
                         {
                             !this.props.mine &&
-                                <label style={this.styles.userName}>{this.props.message.userName}: </label>
+                                <label style={this.styles.username}>{this.props.message.username}: </label>
                         }
                         <label>{this.props.message.message}</label>
 

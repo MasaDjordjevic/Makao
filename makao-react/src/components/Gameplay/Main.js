@@ -19,25 +19,25 @@ class Main extends React.Component {
             chatMessages: [
                 {
                     userId: 3,
-                    userName: "Nemanja",
+                    username: "Nemanja",
                     time: "2:45",
                     message: "zdravo"
                 },
                 {
                     userId: 2,
-                    userName: "Darko",
+                    username: "Darko",
                     time: "1:50",
                     message: "poz"
                 },
                 {
                     userId: 1,
-                    userName: "Nikolica",
+                    username: "Nikolica",
                     time: "2:35",
                     message: "poruka"
                 },
                 {
                     userId: 4,
-                    userName: "Jajac",
+                    username: "Jajac",
                     time: "2:38",
                     message: "13"
                 },
@@ -51,7 +51,7 @@ class Main extends React.Component {
         const time = new Date();
         const newMessage = {
             userId: id ? id : GlobalVariables.userId,
-            userName: name ? name : GlobalVariables.userName,
+            username: name ? name : GlobalVariables.username,
             time: time.getHours() + ":" + time.getMinutes(),
             message: message,
         };

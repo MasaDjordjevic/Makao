@@ -21,7 +21,7 @@ class Home extends React.Component {
             container: {
                 width: '100%',
             },
-            userName: {
+            username: {
                 cursor: 'pointer',
             },
             notifications: {
@@ -88,7 +88,7 @@ class Home extends React.Component {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar
-                    title={<span style={this.styles.userName}>{GlobalVariables.userName}</span>}
+                    title={<span style={this.styles.username}>{GlobalVariables.username}</span>}
                     iconElementLeft={
                         <IconMenu
                             iconButtonElement={
