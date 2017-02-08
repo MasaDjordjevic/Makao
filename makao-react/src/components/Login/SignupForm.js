@@ -2,9 +2,10 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import SignUpActions from '../../actions/SignUpActions';
-import SignUpStore from '../../stores/SignUpStore';
+import SignupActions from '../../actions/SignupActions';
+import SignupStore from '../../stores/SignupStore';
 import Snackbar from 'material-ui/Snackbar';
+import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class SignupForm extends React.Component {
 
@@ -29,7 +30,7 @@ class SignupForm extends React.Component {
             texts: texts,
             errors: {...keys},
             notRequired: notRequired,
-            signUpResponse: SignUpStore.getState(),
+            signupResponse: SignupStore.getState(),
             showResponse: false
         };
 
@@ -39,23 +40,22 @@ class SignupForm extends React.Component {
         this.handleSnackbarClosing = this.handleSnackbarClosing.bind(this);
     }
 
-    onChange(res) {
-        if (this.state.signUpResponse.type == 'fail') {
-            this.setState({
-                signUpResponse: SignUpStore.getState(),
-                showResponse: true
-            });
-        } else if (this.state.signUpResponse.type == 'success') {
-            browserHistory.push(res.payload);
+    onChange() {
+        this.setState({ signupResponse: SignupStore.getState() });
+        if (!this.state.signupResponse.success) {
+            this.setState({ showResponse: true });
+        } else {
+            GlobalVariables.initialize(this.state.signupResponse.user);
+            browserHistory.push('/home');
         }
     }
 
     componentDidMount() {
-        SignUpStore.listen(this.onChange);
+        SignupStore.listen(this.onChange);
     }
 
     componentWillUnmount() {
-        SignUpStore.unlisten(this.onChange);
+        SignupStore.unlisten(this.onChange);
     }
 
     handleInputChange(prop, val) {
@@ -86,7 +86,7 @@ class SignupForm extends React.Component {
         this.setState({errors: errors});
 
         if (errNo === 0) {
-            SignUpActions.signUp(this.state.inputs);
+            SignupActions.trySignup(this.state.inputs);
         }
     }
 
@@ -121,7 +121,7 @@ class SignupForm extends React.Component {
 
                 <Snackbar
                     open={this.state.showResponse}
-                    message={this.state.signUpResponse.payload}
+                    message={this.state.signupResponse.msg}
                     autoHideDuration={4000}
                     onRequestClose={this.handleSnackbarClosing}/>
 

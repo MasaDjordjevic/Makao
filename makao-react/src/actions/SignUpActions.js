@@ -1,14 +1,13 @@
 import alt from '../alt';
 
-class SignUpActions {
+class SignupActions {
     constructor() {
         this.generateActions(
-            'signUpSuccess',
-            'signUpFail'
+            'signup'
         );
     }
 
-    signUp(params) {
+    trySignup(params) {
         fetch('/signup', {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -17,13 +16,9 @@ class SignUpActions {
         }).then((res) => {
             return res.json();
         }).then((data) => {
-            if (data.redirect) {
-                this.actions.signUpSuccess(data.redirect);
-            } else {
-                this.actions.signUpFail(data.msg);
-            }
+            this.actions.signup(data);
         });
     }
 }
 
-export default alt.createActions(SignUpActions);
+export default alt.createActions(SignupActions);

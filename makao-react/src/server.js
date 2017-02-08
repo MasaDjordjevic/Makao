@@ -118,9 +118,18 @@ app.post('/login', function(req, res) {
 
 // POST signup request
 app.post('/signup', function(req, res) {
-    if (!req.body.password || !req.body.confirmPassword) {
-        res.status(200).send({ success: false, msg: 'Password missing.' });
-    } else if (req.body.password !== req.body.confirmPassword) {
+    User.findOne({username: req.body.username}, function(err, user) {
+        if (user) {
+            res.status(200).send({ success: false, msg: "Username already in use." });
+        }
+    });
+    User.findOne({email: req.body.email}, function(err, user) {
+        if (user) {
+            res.status(200).send({ success: false, msg: "Email already in use." });
+        }
+    });
+
+    if (req.body.password !== req.body.confirmPassword) {
         res.status(200).send({ success: false, msg: 'Passwords do not match.' });
     } else {
         var user = new User({
@@ -135,7 +144,7 @@ app.post('/signup', function(req, res) {
                 email: user.email
             };
             req.session.key = user;
-            res.status(200).send({ redirect: '/home' });
+            res.status(200).send({ success: true, user: user });
         });
     }
 });

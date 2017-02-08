@@ -1,22 +1,22 @@
 import alt from '../alt';
-import SignUpActions from '../actions/SignUpActions';
+import SignupActions from '../actions/SignupActions';
 
-class SignUpStore{
-    constructor(){
-        this.bindActions(SignUpActions);
-        this.type = '';
-        this.payload = '';
+class SignupStore {
+    constructor() {
+        this.bindActions(SignupActions);
+        this.success = false;
+        this.user = {};
+        this.msg = ' ';
     }
 
-    onSignUpFail(msg){
-        this.type = 'fail';
-        this.payload = 'Failed: ' + msg;
-    }
-
-    onSignUpSuccess(redirect) {
-        this.type = 'success';
-        this.payload = redirect;
+    onSignup(data) {
+        this.success = data.success;
+        this.msg = data.msg;
+        this.user = data.user;
+        if (!this.msg) {
+            this.msg = ' ';
+        }
     }
 }
 
-export default alt.createStore(SignUpStore);
+export default alt.createStore(SignupStore);

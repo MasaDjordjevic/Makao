@@ -12,7 +12,7 @@ class LoginStore {
         this.msg = ' ';
     }
 
-    onLogin(data){
+    onLogin(data) {
         this.success = data.success;
         this.user = data.user;
         this.msg = data.msg;
