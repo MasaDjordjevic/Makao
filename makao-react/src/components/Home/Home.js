@@ -5,7 +5,7 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
-import StyleIcon from 'material-ui/svg-icons/Image/style';
+import StyleIcon from 'material-ui/svg-icons/image/style';
 import CreateIcon from 'material-ui/svg-icons/content/create';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import {white, teal700, teal800, teal900, green400,green500,green600, grey500} from 'material-ui/styles/colors';

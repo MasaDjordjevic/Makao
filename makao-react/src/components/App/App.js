@@ -7,6 +7,7 @@ import Game from "../Game/Game";
 import Main from "../Gameplay/Main";
 import Login from "../Login/Login";
 import Lobby from "../Lobby/Lobby";
+import Home from "../Home/Home";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
@@ -68,7 +69,7 @@ class App extends Component {
         return (
             <div className="App" style={this.styles.app}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
-                    <Lobby/>
+                    <Home />
                 </MuiThemeProvider>
             </div>
 
