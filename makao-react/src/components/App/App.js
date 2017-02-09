@@ -68,7 +68,7 @@ class App extends Component {
         return (
             <div className="App" style={this.styles.app}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
-                    {this.props.children}
+                    <Lobby/>
                 </MuiThemeProvider>
             </div>
 

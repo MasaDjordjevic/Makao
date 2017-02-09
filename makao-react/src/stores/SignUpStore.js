@@ -1,5 +1,5 @@
 import alt from '../alt';
-import SignupActions from '../actions/SignupActions';
+import SignupActions from '../actions/SignUpActions';
 
 class SignupStore {
     constructor() {
