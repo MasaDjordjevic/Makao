@@ -2,8 +2,8 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import SignupActions from '../../actions/SignUpActions';
-import SignupStore from '../../stores/SignUpStore';
+import SignupActions from '../../actions/SignupActions';
+import SignupStore from '../../stores/SignupStore';
 import Snackbar from 'material-ui/Snackbar';
 import GlobalVariables from '../Gameplay/GlobalVariables';
 
