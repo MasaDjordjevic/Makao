@@ -15,8 +15,8 @@ function getStyles(props) {
             boxSizing: 'border-box',
             overflow: 'visible',
             transition: transitions.easeOut(),
-            width: '100%',
-            height: '100%',
+            //width: '100%',
+            //height: '100%',
         },
         tooltip: {
             boxSizing: 'border-box',
