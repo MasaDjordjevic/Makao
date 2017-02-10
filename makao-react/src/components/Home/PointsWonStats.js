@@ -6,8 +6,7 @@ class PointsWonStats extends React.Component {
         super();
 
         this.state = {
-            timeSpentLastWeek: [15, 20, 25, 17, 12, 20, 5],
-            timeSpentAverage: 18,
+            pointsWonLastWeek: [100, 250, 240, 10, 800, 410, 170],
         }
     }
 
@@ -31,27 +30,17 @@ class PointsWonStats extends React.Component {
         const data = {
             labels: this.getLabels(),
             datasets: [{
-                label: 'Sales',
+                label: 'Points won last week',
                 type:'line',
-                data: this.getAverageData(),
+                data: this.state.pointsWonLastWeek,
                 fill: false,
-                borderColor: '#EC932F',
+                //borderColor: '#EC932F',
                 backgroundColor: '#EC932F',
                 pointBorderColor: '#EC932F',
                 pointBackgroundColor: '#EC932F',
                 pointHoverBackgroundColor: '#EC932F',
                 pointHoverBorderColor: '#EC932F',
-                yAxisID: 'y-axis-2'
-            },{
-                type: 'bar',
-                label: 'Visitor',
-                data: this.state.timeSpentLastWeek,
-                fill: false,
-                backgroundColor: '#71B37C',
-                borderColor: '#71B37C',
-                hoverBackgroundColor: '#71B37C',
-                hoverBorderColor: '#71B37C',
-                yAxisID: 'y-axis-1'
+                yAxisID: 'y-axis'
             }]
         };
 
@@ -82,27 +71,14 @@ class PointsWonStats extends React.Component {
                         type: 'linear',
                         display: true,
                         position: 'left',
-                        id: 'y-axis-1',
+                        id: 'y-axis',
                         gridLines: {
                             display: false
                         },
                         labels: {
                             show: true
                         }
-                    },
-                    {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        id: 'y-axis-2',
-                        gridLines: {
-                            display: false
-                        },
-                        labels: {
-                            show: true
-                        }
-                    }
-                ]
+                    }]
             }
         };
 
@@ -113,6 +89,8 @@ class PointsWonStats extends React.Component {
                     data={data}
                     options={options}
                 />
+
+
             </div>
         );
     }

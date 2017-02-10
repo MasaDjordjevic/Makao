@@ -1,5 +1,12 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
+import {blackColor, redColor} from '../Card/common';
+import {
+    amber400, amber500, amber600, amber700,amber800,
+    orange400, orange500, orange600, orange700,
+    teal900
+
+} from 'material-ui/styles/colors';
 
 class TimeSpentStats extends React.Component {
     constructor() {
@@ -28,28 +35,31 @@ class TimeSpentStats extends React.Component {
     }
 
     render() {
+        const barColor = blackColor; //'#71B37C';
+        const lineColor = orange500; //'#EC932F';
         const data = {
             labels: this.getLabels(),
             datasets: [{
-                label: 'Average',
+                label: 'Average time spent',
                 type:'line',
                 data: this.getAverageData(),
                 fill: false,
-                borderColor: '#EC932F',
-                backgroundColor: '#EC932F',
-                pointBorderColor: '#EC932F',
-                pointBackgroundColor: '#EC932F',
-                pointHoverBackgroundColor: '#EC932F',
-                pointHoverBorderColor: '#EC932F',
+                borderColor: lineColor,
+                backgroundColor: lineColor,
+                pointBorderColor: lineColor,
+                pointBackgroundColor: lineColor,
+                pointHoverBackgroundColor: lineColor,
+                pointHoverBorderColor: lineColor,
             },{
                 type: 'bar',
-                label: 'Last week',
+                label: 'Time spent last week',
                 data: this.state.timeSpentLastWeek,
                 fill: false,
-                backgroundColor: '#71B37C',
-                borderColor: '#71B37C',
-                hoverBackgroundColor: '#71B37C',
-                hoverBorderColor: '#71B37C',
+                backgroundColor: barColor,
+                //borderColor: '#71B37C',
+                borderWidth: 1,
+                hoverBackgroundColor: barColor,
+                hoverBorderColor: barColor,
                 yAxisID: 'y-axis'
             }]
         };
@@ -98,6 +108,7 @@ class TimeSpentStats extends React.Component {
                     data={data}
                     options={options}
                 />
+
             </div>
         );
     }

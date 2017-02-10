@@ -10,6 +10,8 @@ import {
 } from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
+import {blackColor} from './components/Card/common';
+
 
 /**
  *  Light Theme is the default theme used in material-ui. It is guaranteed to
@@ -35,6 +37,9 @@ export default {
         pickerHeaderColor: cyan500,
         clockCircleColor: fade(darkBlack, 0.07),
         shadowColor: fullBlack,
+    },
+    appBar: {
+        color: blackColor,
     },
     tabs: {
         backgroundColor: 'rgba(0,0,0,0)',
