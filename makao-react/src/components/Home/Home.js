@@ -4,6 +4,7 @@ import TimeSpentStats from './TimeSpentStats';
 import PointsWonStats from './PointsWonStats';
 import {blackColor} from '../Card/common';
 import {orange500} from 'material-ui/styles/colors';
+import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 
 class Home extends React.Component {
     get styles() {
@@ -11,7 +12,11 @@ class Home extends React.Component {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            borderShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
+            borderRadius: '3%',
         };
+        const totalPointsSize = 160;
+        const gamesLeftSize = 100;
         return {
             container: {
                 width: '100%',
@@ -38,30 +43,31 @@ class Home extends React.Component {
             },
             totalPoints: {
                 ...centerDiv, ...{
-                    width: 200,
-                    height: 200,
+                    width: totalPointsSize,
+                    height: totalPointsSize,
                     backgroundColor: blackColor,
+
                 }
             },
             gamesLeft: {
                 ...centerDiv, ...{
-                    width: 200,
-                    height: 200,
+                    width: gamesLeftSize,
+                    height: gamesLeftSize,
                     backgroundColor: orange500,
                 }
             },
-            charts: {
-
-            },
+            charts: {},
             stats: {
                 height: 500,
                 marginLeft: '2%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-around'
+                justifyContent: 'space-around',
+                alignItems: 'center'
             },
-            white: {
-                color: 'white'
+            text: {
+                color: 'white',
+                fontSize: 45
             }
         }
     }
@@ -76,12 +82,17 @@ class Home extends React.Component {
                         <PointsWonStats style={this.styles.pointsStats}/>
                     </div>
                     <div style={this.styles.stats}>
-                        <div style={this.styles.totalPoints}>
-                            <span style={this.styles.white}>260</span>
-                        </div>
-                        <div style={this.styles.gamesLeft}>
-                            <span style={this.styles.white}>3</span>
-                        </div>
+                        <DefaultTooltip tooltip="Total points won" tooltipPosition="top-right">
+                            <div style={this.styles.totalPoints}>
+                                <span style={this.styles.text}>260</span>
+                            </div>
+                        </DefaultTooltip>
+                        <DefaultTooltip tooltip="Games left" tooltipPosition="top-right">
+                            <div style={this.styles.gamesLeft}>
+                                <span style={this.styles.text}>3</span>
+                            </div>
+                        </DefaultTooltip>
+
                     </div>
                 </div>
             </div>
