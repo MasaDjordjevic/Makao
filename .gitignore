@@ -17,3 +17,6 @@ makao-react/npm-debug.log
 
 #bundle
 makao-react/src/public/js
+
+#database
+db/
