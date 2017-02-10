@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 //import './App.css';
+import { Router, Route, Link, browserHistory } from 'react-router'
 import Card from '../Card/Card';
 import CardComponent from "../Card/CardComponent";
 import CardSet from "../Card/CardSet";
@@ -12,6 +13,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
 
+import routes from '../../routes';
 
 class App extends Component {
     get testCards() {
@@ -69,7 +71,8 @@ class App extends Component {
         return (
             <div className="App" style={this.styles.app}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
-                    <Home />
+                    <Router history={browserHistory}
+                            routes={routes} />
                 </MuiThemeProvider>
             </div>
 
