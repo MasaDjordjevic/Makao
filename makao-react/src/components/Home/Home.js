@@ -5,6 +5,8 @@ import PointsWonStats from './PointsWonStats';
 import {blackColor} from '../Card/common';
 import {orange500} from 'material-ui/styles/colors';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
+import Leaderboards from './Leaderboards';
+
 
 class Home extends React.Component {
     get styles() {
@@ -94,6 +96,7 @@ class Home extends React.Component {
                         </DefaultTooltip>
 
                     </div>
+                    <Leaderboards/>
                 </div>
             </div>
         );
