@@ -32,6 +32,7 @@ class PlayGame extends React.Component {
             },
             tabs: {
                 height: 500,
+                marginTop: 12,
             },
             dialogStyle: {
                 width: '70%',

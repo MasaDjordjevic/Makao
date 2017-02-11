@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
 
 class RulesSetter extends React.Component {
     constructor(){
@@ -71,6 +72,11 @@ class RulesSetter extends React.Component {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                height: 48
+            },
+            checkbox: {
+                marginLeft: 'auto',
+                width: 'inherit',
             }
         }
     }
@@ -93,6 +99,12 @@ class RulesSetter extends React.Component {
                     </div>
                     )
                 }
+                <div style={this.styles.optionContainer}>
+                    <span>Private&nbsp;</span>
+                    <Checkbox style={this.styles.checkbox}
+                    onCheck={(e, v) => this.handleInputChange('private', v)}/>
+                </div>
+
 
             </div>
         );
