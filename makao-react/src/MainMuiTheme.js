@@ -4,9 +4,8 @@
 import {
     teal900,cyan500, cyan700,
     grey100, grey300, grey500,
-    blueGrey200, amber400, amber500, amber600, amber700,
+    blueGrey200,  amber600,
    white, darkBlack, fullBlack,
-
 } from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';

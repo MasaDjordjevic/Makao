@@ -6,17 +6,7 @@ import Radium from 'radium';
 import {font} from './common';
 import Card from './Card';
 import CardSymbol from './CardSymbol';
-import {
-    teal50,
-    blueGrey50,
-    red50,
-    yellow50,
-    orange50,
-    amber50,
-    deepOrange50,
-    lime50,
-    lightGreen50
-} from 'material-ui/styles/colors'
+import { blueGrey50, red50} from 'material-ui/styles/colors'
 import {isBlack} from './common';
 
 class CardHeader extends React.Component {

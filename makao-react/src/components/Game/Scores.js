@@ -202,7 +202,7 @@ class Scores extends React.Component {
 
         return scrs.map((round, i) =>
             round.map((s, j) => {
-                s.score += i == 0 ? 0 : _.find(scrs[i - 1], {id: s.id}).score;
+                s.score += i === 0 ? 0 : _.find(scrs[i - 1], {id: s.id}).score;
                 return s;
             }));
     }

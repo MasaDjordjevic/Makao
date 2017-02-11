@@ -1,5 +1,4 @@
 import React from 'react';
-import Radium from 'radium';
 import CardSymbol from '../Card/CardSymbol';
 
 class JackSignPicker extends React.Component {
@@ -47,7 +46,7 @@ class JackSignPicker extends React.Component {
                              onMouseEnter={() => this.handleHover(sign)}
                              onClick={() => this.props.onPick(sign)}>
                             <CardSymbol
-                                containerSize={this.state.hover == sign ? circleSize * 1.3 : circleSize}
+                                containerSize={this.state.hover === sign ? circleSize * 1.3 : circleSize}
                                 style={this.styles.cardSymbol}
                                 symbol={sign}
                             />

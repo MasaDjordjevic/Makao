@@ -17,7 +17,7 @@ class Talon extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.card !== nextProps.card &&
-            (nextProps.card.number != 12 || nextProps.card.jackSybol != null)) {
+            (nextProps.card.number !== '12' || nextProps.card.jackSymbol !== null)) {
             this.setState({animate: true});
         } else {
             this.setState({animate: false});

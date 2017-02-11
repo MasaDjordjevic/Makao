@@ -1,12 +1,7 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
-import {blackColor, redColor} from '../Card/common';
-import {
-    amber400, amber500, amber600, amber700,amber800,
-    orange400, orange500, orange600, orange700,
-    teal900
-
-} from 'material-ui/styles/colors';
+import {blackColor} from '../Card/common';
+import {orange500} from 'material-ui/styles/colors';
 
 class TimeSpentStats extends React.Component {
     constructor() {
