@@ -6,6 +6,7 @@ import {blackColor} from '../Card/common';
 import {orange500} from 'material-ui/styles/colors';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
+import RaisedButton from 'material-ui/RaisedButton';
 
 
 class Home extends React.Component {
@@ -19,6 +20,7 @@ class Home extends React.Component {
         };
         const totalPointsSize = 160;
         const gamesLeftSize = 100;
+        const playButtonSize = 100;
         return {
             container: {
                 width: '100%',
@@ -70,6 +72,11 @@ class Home extends React.Component {
             text: {
                 color: 'white',
                 fontSize: 45
+            },
+            playButton: {
+                width: playButtonSize,
+                height: playButtonSize,
+                margin: '240px 0 0 180px',
             }
         }
     }
@@ -96,6 +103,7 @@ class Home extends React.Component {
                         </DefaultTooltip>
 
                     </div>
+                    <RaisedButton label="PLAY" style={this.styles.playButton}/>
                     <Leaderboards/>
                 </div>
             </div>
