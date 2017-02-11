@@ -1,6 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import RulesSetter from './RulesSetter';
+import RulesSetter from './Rules';
 
 class CreateGame extends React.Component {
     constructor() {

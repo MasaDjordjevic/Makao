@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 
+
 class RulesSetter extends React.Component {
     constructor(){
         super();
@@ -49,24 +50,43 @@ class RulesSetter extends React.Component {
 
     }
 
+    componentWillMount(){
+        if(this.props.rules && this.props.onChange) {
+            console.log('[RulesSetter] Error: rules and onChange set, can\'t be both' );
+        }
+        if(this.props.rules){
+            const values = Object.assign({}, this.state.values);
+            const rules = this.props.rules;
+            Object.keys(rules).forEach(function(key,index) {
+                values[key] = rules[key];
+            });
+            this.setState({values: values});
+        }
+    }
+
     componentDidMount(){
-        this.props.onChange(this.state.values);
+        this.props.onChange && this.props.onChange(this.state.values);
     }
 
     handleInputChange(prop, val) {
         let values= this.state.values;
         values[prop] = +val;
         this.setState({values: values});
-        this.props.onChange(values);
+        this.props && this.props.onChange(values);
     }
 
     get styles() {
+        const numWidth = 50;
         return {
             container: {
                 paddingLeft: 16
             },
             numberInput: {
-                width: 50
+                width: numWidth
+            },
+            span: {
+                width: numWidth,
+                textAlign: 'center',
             },
             optionContainer: {
                 display: 'flex',
@@ -81,7 +101,25 @@ class RulesSetter extends React.Component {
         }
     }
 
+    renderTextfield(input){
+        return (
+            <TextField
+                id={input.key}
+                style={this.styles.numberInput}
+                type="number"
+                onChange={(e, v) => this.handleInputChange(input.key, v)}
+                defaultValue={this.state.values[input.key]}
+            />
+        )
+    }
+
+    renderSpan(input){
+        return (<span  style={this.styles.span}>{this.state.values[input.key]}</span>);
+    }
+
     render() {
+        const rules = !!this.props.rules;
+
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 {
@@ -89,20 +127,16 @@ class RulesSetter extends React.Component {
                     <div style={this.styles.optionContainer}
                          key={input.key}>
                         <span>{input.text} &nbsp;</span>
-                        <TextField
-                            id={input.key}
-                            style={this.styles.numberInput}
-                            type="number"
-                            onChange={(e, v) => this.handleInputChange(input.key, v)}
-                            defaultValue={input.defaultValue}
-                        />
+                        {rules ? this.renderSpan(input) : this.renderTextfield(input)}
                     </div>
                     )
                 }
                 <div style={this.styles.optionContainer}>
                     <span>Private&nbsp;</span>
                     <Checkbox style={this.styles.checkbox}
-                    onCheck={(e, v) => this.handleInputChange('private', v)}/>
+                    onCheck={(e, v) => this.handleInputChange('private', v)}
+                    disabled={rules}
+                    checked={!!this.state.values.private}/>
                 </div>
 
 
@@ -114,4 +148,7 @@ export default RulesSetter;
 
 RulesSetter.defaultProps = {};
 
-RulesSetter.propTypes = {};
+RulesSetter.propTypes = {
+    onChange: React.PropTypes.func,
+    rules: React.PropTypes.object,
+};
