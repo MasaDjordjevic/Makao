@@ -34,12 +34,12 @@ let rSessionStore = new rStore({
     client: rSessionClient
 });
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 app.use(logger('combined'));
-app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(bodyParser.json());
+// app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'build')));
+}
 
 // using express-sessions package with the created redis store
 app.use(expressSession({
