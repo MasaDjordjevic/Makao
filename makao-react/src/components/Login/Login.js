@@ -5,7 +5,7 @@ import Logo from './Logo';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import {grey500} from 'material-ui/styles/colors';
+import {grey500, teal900} from 'material-ui/styles/colors';
 
 class Login extends React.Component {
     constructor(props) {
@@ -87,7 +87,8 @@ class Login extends React.Component {
                 </div>
                 <Tabs contentContainerStyle={{padding: '5% 10% 7% 10%'}}
                       onChange={this.handleChange}
-                      style={this.styles.tabs}>
+                      style={this.styles.tabs}
+                      inkBarStyle={{backgroundColor: teal900}}>
                     <Tab label="LOG IN">
                         <LoginForm style={this.styles.form}/>
                     </Tab>
