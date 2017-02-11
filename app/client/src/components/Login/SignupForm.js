@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
@@ -11,25 +12,25 @@ class SignupForm extends React.Component {
 
     constructor() {
         super();
-        //Ovde se podesavaju svi inputi (key, text, notRequired)
+        //Ovde se podesavaju svi inputi (key, text, required)
         const inputs = [
-            {key: 'username', text: 'Username'},
-            {key: 'email', text: 'Email'},
-            {key: 'password', text: 'Password'},
-            {key: 'confirmPassword', text:'Confirm password'}
+            {key: 'username', text: 'Username', required: true},
+            {key: 'email', text: 'Email', required: true},
+            {key: 'password', text: 'Password', required: true},
+            {key: 'confirmPassword', text:'Confirm password', required: true}
         ];
 
         let keys =  {};
-        inputs.map((input, _) => keys[input.key] = "");
+        _.forEach(inputs, (input) => keys[input.key] = "");
         let texts = [];
-        inputs.map((input, i) => texts[i] = input.text);
-        let notRequired = {};
-        inputs.map((input, i) => {input.notRequired && (notRequired[input.key] = true)});
+        _.forEach(inputs, (input, i) => texts[i] = input.text);
+        let required = {};
+        _.forEach(inputs, (input) => {input.required && (required[input.key] = true)});
         this.state = {
             inputs: keys,
             texts: texts,
             errors: {...keys},
-            notRequired: notRequired,
+            required: required,
             signupResponse: SignupStore.getState(),
             showResponse: false
         };
@@ -70,11 +71,11 @@ class SignupForm extends React.Component {
 
     handleSignupClick() {
         let inputs = this.state.inputs;
-        let notRequired = this.state.notRequired;
+        let required = this.state.required;
         let errors = this.state.errors;
         let errNo = 0;
         Object.keys(inputs).forEach(function(key,index) {
-            if (!inputs[key] && !notRequired[key]) {
+            if (!inputs[key] && required[key]) {
                 errNo++;
                 errors[key] = "This field is required.";
             }
