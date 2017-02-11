@@ -93,15 +93,17 @@ class FriendPicker extends React.Component {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
+                padding: '0 16px',
             },
             search: {
-                marginLeft: 16,
+                width: '100%'
             },
             list: {
                 overflowY: 'auto'
             },
             lists: {
                 display: 'flex',
+                justifyContent: 'space-between'
             }
         }
     }
@@ -149,6 +151,7 @@ class FriendPicker extends React.Component {
                                     primaryText={user.firstName + " " + user.lastName}
                                     leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
                                     onClick={() => this.handleRemove(user.id)}
+                                    disabled={!this.props.removable}
                                 />
                             )
                         }

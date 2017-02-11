@@ -31,10 +31,16 @@ class GameInitialiser extends React.Component {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
             },
-            friendPicker: {
+            section: {
                 minWidth: 450,
                 backgroundColor: 'white',
                 boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
+            },
+            title: {
+                padding: '4px 16px 0px',
+                fontSize: '22px',
+                lineHeight: '32px',
+                fontWeight: 400,
             }
         }
     }
@@ -43,9 +49,14 @@ class GameInitialiser extends React.Component {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.playersContainer}>
-                    <FriendPicker onPick={this.handleFriendInvite}
-                                  style={this.styles.friendPicker}/>
-                    <Lobby style={this.styles.friendPicker}/>
+                    <div style={this.styles.section}>
+                        <h3 style={this.styles.title}>Invite friends</h3>
+                        <FriendPicker onPick={this.handleFriendInvite}/>
+                    </div>
+                    <div style={this.styles.section}>
+                        <h3 style={this.styles.title}>Lobby</h3>
+                        <Lobby />
+                    </div>
                 </div>
                 <RaisedButton onClick={this.props.onGameStart} label="Start game"/>
             </div>

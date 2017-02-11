@@ -49,7 +49,8 @@ class Lobby extends React.Component {
                         this.state.users.map((user, i) =>
                             <ListItem key={user.id}
                                       primaryText={user.firstName + " " + user.lastName}
-                                      rightIcon={user.ready ? <DoneIcon /> : <HourglassIcon />}/>
+                                      rightIcon={user.ready ? <DoneIcon /> : <HourglassIcon />}
+                                      disabled={true}/>
                         )
                     }
                 </List>
