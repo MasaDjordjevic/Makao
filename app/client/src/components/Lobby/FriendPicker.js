@@ -78,10 +78,11 @@ class FriendPicker extends React.Component {
     handlePick(id) {
         const picked = [id, ...this.state.pickedFriends];
         this.setState({pickedFriends: picked});
-        this.props.onPick(picked);
+        this.props.onPick(id);
     }
 
     handleRemove(id) {
+        if(!this.props.removable) return;
         let pickedFriends = this.state.pickedFriends.slice();
         pickedFriends = _.without(pickedFriends, id);
         this.setState({pickedFriends: pickedFriends});
@@ -91,7 +92,7 @@ class FriendPicker extends React.Component {
         return {
             container: {
                 display: 'flex',
-                justifyContent: 'space-between'
+                flexDirection: 'column',
             },
             search: {
                 marginLeft: 16,
@@ -99,9 +100,8 @@ class FriendPicker extends React.Component {
             list: {
                 overflowY: 'auto'
             },
-            friends: {
+            lists: {
                 display: 'flex',
-                flexDirection: 'column',
             }
         }
     }
@@ -120,26 +120,12 @@ class FriendPicker extends React.Component {
         });
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-
-                <List style={this.styles.list}>
-                    <Subheader>Picked</Subheader>
-                    {
-                        pickedFriends.map((user, i) =>
-                            <ListItem
-                                key={user.id}
-                                primaryText={user.firstName + " " + user.lastName}
-                                leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
-                                onClick={() => this.handleRemove(user.id)}
-                            />
-                        )
-                    }
-                </List>
-                <div style={this.styles.friends}>
-                    <TextField
-                        key="search"
-                        onChange={(e, v) => this.handleSearch(v)}
-                        hintText="search"
-                        style={this.styles.search}/>
+                <TextField
+                    key="search"
+                    onChange={(e, v) => this.handleSearch(v)}
+                    hintText="search"
+                    style={this.styles.search}/>
+                <div style={this.styles.lists}>
                     <List style={this.styles.list}>
                         <Subheader>Friends</Subheader>
 
@@ -154,6 +140,19 @@ class FriendPicker extends React.Component {
                             )
                         }
                     </List>
+                    <List style={this.styles.list}>
+                        <Subheader>Invited</Subheader>
+                        {
+                            pickedFriends.map((user, i) =>
+                                <ListItem
+                                    key={user.id}
+                                    primaryText={user.firstName + " " + user.lastName}
+                                    leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
+                                    onClick={() => this.handleRemove(user.id)}
+                                />
+                            )
+                        }
+                    </List>
                 </div>
             </div>
         );
@@ -161,6 +160,11 @@ class FriendPicker extends React.Component {
 }
 export default FriendPicker;
 
-FriendPicker.defaultProps = {};
+FriendPicker.defaultProps = {
+    removable: false,
+};
 
-FriendPicker.propTypes = {};
+FriendPicker.propTypes = {
+    onPick: React.PropTypes.func,
+    removable: React.PropTypes.bool,
+};

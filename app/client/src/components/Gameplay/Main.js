@@ -6,16 +6,24 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
 
-
 import GameResizeHandler from '../Game/GameResizeHandler';
+import GameInitialiser from './GameInitialiser';
 import RightSidebar from './RightSidebar';
 
 
 class Main extends React.Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            gameStarted: false,
+        };
 
+
+        this.handleGameStart = this.handleGameStart.bind(this);
+    }
+
+    handleGameStart(){
+        this.setState({gameStarted: true});
     }
 
     get styles() {
@@ -46,7 +54,7 @@ class Main extends React.Component {
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
-                            <GameResizeHandler/>
+                            {this.state.gameStarted ? <GameResizeHandler/> : <GameInitialiser onGameStart={this.handleGameStart}/>}
                         </div>
                         <RightSidebar  />
                     </div>
