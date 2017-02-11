@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
-//import './App.css';
-import { Router, Route, Link, browserHistory } from 'react-router'
+import './App.css';
+import { Router, browserHistory } from 'react-router'
 import Card from '../Card/Card';
-import CardComponent from "../Card/CardComponent";
-import CardSet from "../Card/CardSet";
-import Game from "../Game/Game";
-import Main from "../Gameplay/Main";
-import Login from "../Login/Login";
-import Lobby from "../Lobby/Lobby";
-import Home from "../Home/Home";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';

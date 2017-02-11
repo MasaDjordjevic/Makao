@@ -1,6 +1,6 @@
 import React from 'react';
 import CreateGame from './CreateGame';
-import JoinGame from './JoinGame';
+// import JoinGame from './JoinGame';
 
 class Lobby extends React.Component {
 

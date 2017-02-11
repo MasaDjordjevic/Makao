@@ -1,17 +1,11 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import expressSession from 'express-session';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import http from 'http';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 import mongooseAutoIncrement from 'mongoose-auto-increment';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import path from 'path';
-import React from 'react';
-import ReactDOM from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
-import routes from './routes';
 import redis from 'redis';
 import redisConnect from 'connect-redis';
 
@@ -155,36 +149,6 @@ app.post('/logout', function(req, res) {
     });
 });
 
-app.use(function(req, res) {
-    match(
-        { routes: routes, location: req.url },
-        function(err, redirectLocation, renderProps) {
-
-            if (err) {
-                return res.status(500).send(err.message);
-            }
-
-            if (redirectLocation) {
-                return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-            }
-
-            const muiTheme = getMuiTheme({ userAgent: req.headers['user-agent'] });
-            let markup;
-            if (renderProps) {
-                markup = ReactDOM.renderToString(
-                    <MuiThemeProvider muiTheme={muiTheme}>
-                        <RouterContext {...renderProps}/>
-                    </MuiThemeProvider>
-                );
-            }
-
-            return res.render('index', { markup });
-        }
-    );
-});
-
-
-
-app.listen(1337, function() {
-    console.log('Listening on port 1337.');
+app.listen(3001, function() {
+    console.log('Server listening on port 3001.');
 });
