@@ -10,54 +10,12 @@ import mainMuiTheme from '../../MainMuiTheme';
 import GameResizeHandler from '../Game/GameResizeHandler';
 import RightSidebar from './RightSidebar';
 
-import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class Main extends React.Component {
     constructor() {
         super();
-        this.state = {
-            chatMessages: [
-                {
-                    userId: 3,
-                    username: "Nemanja",
-                    time: "2:45",
-                    message: "zdravo"
-                },
-                {
-                    userId: 2,
-                    username: "Darko",
-                    time: "1:50",
-                    message: "poz"
-                },
-                {
-                    userId: 1,
-                    username: "Nikolica",
-                    time: "2:35",
-                    message: "poruka"
-                },
-                {
-                    userId: 4,
-                    username: "Jajac",
-                    time: "2:38",
-                    message: "13"
-                },
-            ]
-        };
+        this.state = {};
 
-        this.handleNewMessage = this.handleNewMessage.bind(this);
-    }
-
-    handleNewMessage(message, id, name) {
-        const time = new Date();
-        const newMessage = {
-            userId: id ? id : GlobalVariables.userId,
-            username: name ? name : GlobalVariables.username,
-            time: time.getHours() + ":" + time.getMinutes(),
-            message: message,
-        };
-        const chatMessages = [...this.state.chatMessages, newMessage];
-        this.setState({chatMessages: chatMessages});
-        document.getElementById('chat-input').value = null;
     }
 
     get styles() {
@@ -90,8 +48,7 @@ class Main extends React.Component {
                         <div style={this.styles.game}>
                             <GameResizeHandler/>
                         </div>
-                        <RightSidebar chatMessages={this.state.chatMessages}
-                                      onNewChatMessage={(m)=>this.handleNewMessage(m)} />
+                        <RightSidebar  />
                     </div>
 
                 </MuiThemeProvider>

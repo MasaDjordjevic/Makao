@@ -6,8 +6,9 @@ import ChatMessage from './ChatMessage';
 import ReactDOM from 'react-dom'
 import GlobalVariables from '../Gameplay/GlobalVariables';
 
-class Chat extends React.Component{
-    componentWillUpdate(){
+class Chat extends React.Component {
+
+    componentWillUpdate() {
         const node = ReactDOM.findDOMNode(this).parentElement;
         this.scrollHeight = node.scrollHeight;
         this.scrollTop = node.scrollTop;
@@ -18,7 +19,7 @@ class Chat extends React.Component{
         node.scrollTop = this.scrollTop + (node.scrollHeight - this.scrollHeight);
     }
 
-    get styles(){
+    get styles() {
         return {
             container: {
                 display: 'flex',
@@ -34,23 +35,23 @@ class Chat extends React.Component{
         }
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.messagesContainer}>
-                {
-                    this.props.messages.map((message, index)=>
-                        <ChatMessage key={index} message={message} mine={GlobalVariables.userId === message.userId}/>
-                    )
-                }
+                    {
+                        this.props.messages.map((message, index) =>
+                            <ChatMessage key={index} message={message}
+                                         mine={GlobalVariables.userId === message.userId}/>
+                        )
+                    }
                 </div>
             </div>
         );
     }
 }
 
-Chat.defaultProps = {
-};
+Chat.defaultProps = {};
 
 Chat.PropTypes = {
     messages: React.PropTypes.array.isRequired,

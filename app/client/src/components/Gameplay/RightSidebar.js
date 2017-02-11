@@ -73,9 +73,7 @@ class RightSidebar extends React.Component {
             <div style={this.styles.container} id="right-sidebar">
                 {
                      this.state.show &&
-                     <LogAndChat
-                        chatMessages={this.props.chatMessages}
-                        onNewChatMessage={(m) => this.props.onNewChatMessage(m)}/>
+                     <LogAndChat />
                 }
                 <div>
                     <Checkbox
@@ -96,6 +94,4 @@ class RightSidebar extends React.Component {
 export default RightSidebar;
 
 RightSidebar.defaultProps = {
-    chatMessages: React.PropTypes.array,
-    onNewChatMessage: React.PropTypes.func,
 };
