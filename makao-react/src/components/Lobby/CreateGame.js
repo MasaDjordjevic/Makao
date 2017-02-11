@@ -126,6 +126,7 @@ class CreateGame extends React.Component {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
+                height: '100%'
             },
             navigation: {
                 marginTop: 12,
@@ -135,6 +136,12 @@ class CreateGame extends React.Component {
             },
             buttonMargin: {
                 marginLeft: 16,
+            },
+            stepContent: {
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
             }
         }
     }
@@ -156,7 +163,7 @@ class CreateGame extends React.Component {
                         </StepButton>
                     </Step>
                 </Stepper>
-                <div >
+                <div style={this.styles.stepContent}>
                     {this.getStepContent(stepIndex)}
                     {this.getStepOptions(stepIndex)}
                 </div>

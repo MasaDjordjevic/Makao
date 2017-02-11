@@ -37,6 +37,31 @@ class FriendPicker extends React.Component {
                     firstName: 'Milica',
                     lastName: 'Nikolic'
                 },
+                {
+                    id: 1223,
+                    firstName: 'Marko',
+                    lastName: 'Petrovic'
+                },
+                {
+                    id: 78235,
+                    firstName: 'Kristina',
+                    lastName: 'Stefanovic'
+                },
+                {
+                    id: 15378,
+                    firstName: 'Darko',
+                    lastName: 'Jovanovic'
+                },
+                {
+                    id: 4546,
+                    firstName: 'Filip',
+                    lastName: 'Markovic'
+                },
+                {
+                    id: 525,
+                    firstName: 'Milica',
+                    lastName: 'Nikolic'
+                },
             ],
             pickedFriends: [],
         };
@@ -64,9 +89,19 @@ class FriendPicker extends React.Component {
 
     get styles() {
         return {
-            container: {},
+            container: {
+                display: 'flex',
+                justifyContent: 'space-between'
+            },
             search: {
                 marginLeft: 16,
+            },
+            list: {
+                overflowY: 'auto'
+            },
+            friends: {
+                display: 'flex',
+                flexDirection: 'column',
             }
         }
     }
@@ -85,12 +120,8 @@ class FriendPicker extends React.Component {
         });
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <TextField
-                    key="search"
-                    onChange={(e, v) => this.handleSearch(v)}
-                    hintText="search"
-                    style={this.styles.search}/>
-                <List>
+
+                <List style={this.styles.list}>
                     <Subheader>Picked</Subheader>
                     {
                         pickedFriends.map((user, i) =>
@@ -102,19 +133,28 @@ class FriendPicker extends React.Component {
                             />
                         )
                     }
-                    <Subheader>Friends</Subheader>
-
-                    {
-                        friends.map((user, i) =>
-                            <ListItem
-                                key={user.id}
-                                primaryText={user.firstName + " " + user.lastName}
-                                leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
-                                onClick={() => this.handlePick(user.id)}
-                            />
-                        )
-                    }
                 </List>
+                <div style={this.styles.friends}>
+                    <TextField
+                        key="search"
+                        onChange={(e, v) => this.handleSearch(v)}
+                        hintText="search"
+                        style={this.styles.search}/>
+                    <List style={this.styles.list}>
+                        <Subheader>Friends</Subheader>
+
+                        {
+                            friends.map((user, i) =>
+                                <ListItem
+                                    key={user.id}
+                                    primaryText={user.firstName + " " + user.lastName}
+                                    leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
+                                    onClick={() => this.handlePick(user.id)}
+                                />
+                            )
+                        }
+                    </List>
+                </div>
             </div>
         );
     }

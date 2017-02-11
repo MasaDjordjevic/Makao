@@ -31,21 +31,19 @@ class PlayGame extends React.Component {
                 height: playButtonSize,
             },
             tabs: {
-                height: '70%',
-            },
-            dialogBody:{
-                maxHeight: '70%',
-                height: '70%',
+                height: 500,
             },
             dialogStyle: {
-                width: '80%',
-                maxWidth: 'none',
-                maxHeight: '70%',
-                height: '70%',
+                width: '70%',
+                maxWidth: 600,
+
                 position: 'absolute',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)'
+            },
+            height100: {
+                height: '100%',
             }
         }
     }
@@ -63,15 +61,15 @@ class PlayGame extends React.Component {
                     contentStyle={this.styles.dialogStyle}
                     open={this.state.dialogOpen}
                     onRequestClose={this.handleClose}
-                    bodyStyle={this.styles.dialogBody}
                     autoScrollBodyContent={true}
                 >
-                    <Tabs style={this.styles.tabs}>
+                    <Tabs contentContainerStyle={this.styles.tabs}
+                          tabTemplateStyle={this.styles.height100}>
                         <Tab label="Join game">
-                            <JoinGame/>
+                            <JoinGame />
                         </Tab>
-                        <Tab label="Create game">
-                            <CreateGame/>
+                        <Tab label="Create game" >
+                            <CreateGame />
                         </Tab>
                     </Tabs>
                 </Dialog>
