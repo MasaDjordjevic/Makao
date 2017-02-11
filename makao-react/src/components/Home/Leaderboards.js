@@ -4,25 +4,36 @@ import PublicIcon from 'material-ui/svg-icons/social/public';
 import GroupIcon from 'material-ui/svg-icons/social/group';
 import {List, ListItem} from 'material-ui/List';
 import DefultTooltip from '../DefaultTooltip/DefaultTooltip';
-import {grey400,teal800}    from 'material-ui/styles/colors';
+import {grey400, teal800}    from 'material-ui/styles/colors';
+import GlobalVariables from '../Gameplay/GlobalVariables';
+import {Link} from 'react-router';
 
 class Leaderboards extends React.Component {
     constructor() {
         super();
         this.state = {
+            myPosition: {
+                friends: 3,
+                global: 39,
+            },
             friendsLeaderboard: [
-                {firstName: 'Marko', lastname: 'Petrovic'},
-                {firstName: 'Darko', lastname: 'Markovic'},
-                {firstName: 'Igor', lastname: 'Nikolic'},
-                {firstName: 'Petar', lastname: 'Zivic'},
-                {firstName: 'Filip', lastname: 'Stojanovic'},
+                {id: '1', firstName: 'Marko', lastname: 'Petrovic'},
+                {id: '2', firstName: 'Darko', lastname: 'Markovic'},
+                {id: '3', firstName: 'Igor', lastname: 'Nikolic'},
+                {id: '4', firstName: 'Petar', lastname: 'Zivic'},
+                {id: '5', firstName: 'Filip', lastname: 'Stojanovic'},
+                {id: '6', firstName: 'Marko', lastname: 'Petrovic'},
+                {id: '7', firstName: 'Darko', lastname: 'Markovic'},
+                {id: '8', firstName: 'Igor', lastname: 'Nikolic'},
+                {id: '9', firstName: 'Petar', lastname: 'Zivic'},
+                {id: '10', firstName: 'Filip', lastname: 'Stojanovic'},
             ],
             globalLeaderboard: [
-                {firstName: 'Milica', lastname: 'Petrovic', friend: false},
-                {firstName: 'Tijana', lastname: 'Markovic', friend: true},
-                {firstName: 'Kristina', lastname: 'Nikolic', friend: false},
-                {firstName: 'Ana', lastname: 'Zivic', friend: false},
-                {firstName: 'Marina', lastname: 'Stojanovic', friend: true},
+                {id: '21', firstName: 'Milica', lastname: 'Petrovic', friend: false},
+                {id: '22', firstName: 'Tijana', lastname: 'Markovic', friend: true},
+                {id: '23', firstName: 'Kristina', lastname: 'Nikolic', friend: false},
+                {id: '24', firstName: 'Ana', lastname: 'Zivic', friend: false},
+                {id: '25', firstName: 'Marina', lastname: 'Stojanovic', friend: true},
             ],
         }
     }
@@ -36,27 +47,60 @@ class Leaderboards extends React.Component {
         }
     }
 
-    getFriendAttributes(user){
+    //return object with props for users that have friend attribute (friends of the user)
+    getFriendAttributes(user) {
         return user.friend ? {
                 style: {fontWeight: 600},
                 rightIcon: <GroupIcon color={grey400}/>
             } : {};
     }
 
-    renderList(userArray, floatRight) {
+    get myScoreAttributes() {
+        return {
+            style: {
+                fontWeight: 600,
+                color: teal800
+            }
+        }
+    }
 
+    renderMyScoreAttributes(i, userPosition) {
+        return i === userPosition ? this.myScoreAttributes : {};
+    }
+
+    renderMyPosition(position) {
+        if (position <= this.props.numberOfUsersInBoards) return;
         return (
             <List>
-                {
-                    userArray.map((user, i) =>
-                        <ListItem key={i}
-                                  primaryText={(i + 1).toString() + ". " + user.firstName + " " + user.lastname}
-                                  {...this.getFriendAttributes(user)} />
-                    )
-                }
+                <Link to={"/users:" + GlobalVariables.userId}>
+                    <ListItem
+                        primaryText={position + ". " + GlobalVariables.username + " " + GlobalVariables.userLastName}
+                        {...this.myScoreAttributes}/>
+                </Link>
             </List>
         )
     }
+
+    renderList(userArray, userPosition) {
+        return (
+            <div>
+                <List style={{height: 240, overflow: 'auto'}}>
+                    {
+                        userArray.map((user, i) =>
+                            <Link to={"/users:" + user.id} key={user.id}>
+                                <ListItem
+                                    primaryText={(i + 1).toString() + ". " + user.firstName + " " + user.lastname}
+                                    {...this.getFriendAttributes(user)}
+                                    {...this.renderMyScoreAttributes(i, userPosition)}/>
+                            </Link>
+                        )
+                    }
+                </List>
+                {this.renderMyPosition(userPosition)}
+            </div>
+        )
+    }
+
 
     render() {
         return (
@@ -67,14 +111,14 @@ class Leaderboards extends React.Component {
                             <DefultTooltip tooltip="friends" tooltipPosition="top-center">
                                 <GroupIcon color={teal800}/>
                             </DefultTooltip>}>
-                        {this.renderList(this.state.friendsLeaderboard)}
+                        {this.renderList(this.state.friendsLeaderboard, this.state.myPosition.friends)}
                     </Tab>
                     <Tab
                         icon={
                             <DefultTooltip tooltip="global" tooltipPosition="top-center">
-                                <PublicIcon color={teal800} />
+                                <PublicIcon color={teal800}/>
                             </DefultTooltip>}>
-                        {this.renderList(this.state.globalLeaderboard, true)}
+                        {this.renderList(this.state.globalLeaderboard, this.state.myPosition.global)}
                     </Tab>
                 </Tabs>
             </div>
@@ -83,6 +127,10 @@ class Leaderboards extends React.Component {
 }
 export default Leaderboards;
 
-Leaderboards.defaultProps = {};
+Leaderboards.defaultProps = {
+    numberOfUsersInBoards: 10
+};
 
-Leaderboards.propTypes = {};
+Leaderboards.propTypes = {
+    numberOfUsersInBoards: React.PropTypes.number,
+};

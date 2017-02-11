@@ -4,7 +4,8 @@ class GlobalVariables extends React.Component {
     constructor() {
         super();
         this.userId = 1;
-        this.username = 'Masa';
+        this.username = 'Masa'; //TODO odvoji u jedan objekat ili odbaci lastname
+        this.userLastName = 'Djordjevic';
         this.handLength = 5;
 
         this.players = [

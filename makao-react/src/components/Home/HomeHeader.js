@@ -64,7 +64,7 @@ class HomeHeader extends React.Component {
             <MenuItem primaryText={
                 <div>
                     <span>Friend request from&nbsp;
-                        <Link to={"/users:"+ friendId} style={{color: 'black'}}>
+                        <Link to={"/users:"+ friendId} >
                             <b>{friendName}</b>
                         </Link>
                     </span>
