@@ -89,7 +89,10 @@ class HomeHeader extends React.Component {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar
-                    title={<span style={this.styles.username}>{GlobalVariables.username}</span>}
+                    title={
+                        <Link to={"/users:"+ GlobalVariables.userId}>
+                            <span style={this.styles.username}>{GlobalVariables.username}</span>
+                        </Link>}
                     iconElementLeft={
                         <IconMenu
                             iconButtonElement={
