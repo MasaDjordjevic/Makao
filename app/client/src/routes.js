@@ -10,6 +10,7 @@ import Lobby from './components/Lobby/Lobby';
 import Home from './components/Home/Home';
 import Auth from './Auth';
 import EnsureAuthContainer from './components/EnsureAuthContainer/EnsureAuthContainer';
+import PageNotFound from './components/PageNotFound';
 
 export default (
     <Route component={App}>
@@ -20,6 +21,7 @@ export default (
                 callback(null, Login);
             }
         }} />
+        <Route path="/notFound" component={PageNotFound} />
         <Route component={EnsureAuthContainer}>
             <Route path="/game" component={Main} />
             <Route path="/lobby" component={Lobby} />
