@@ -14,15 +14,14 @@ import PageNotFound from './components/PageNotFound';
 
 export default (
     <Route component={App}>
-        <Route path="/" getComponent={(location, callback) => {
+        <Route path="/" component={Login} onEnter={(nextState, replace) => {
             if (Auth.isUserAuthenticated()) {
-                callback(null, Home);
-            } else {
-                callback(null, Login);
+                replace('/home');
             }
         }} />
         <Route path="/notFound" component={PageNotFound} />
         <Route component={EnsureAuthContainer}>
+            <Route path="/home" component={Home} />
             <Route path="/game" component={Main} />
             <Route path="/lobby" component={Lobby} />
             <Route path='/logout' onEnter={(nextState, replace) => {

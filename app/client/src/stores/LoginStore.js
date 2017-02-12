@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 29-Jan-17.
- */
 import alt from '../alt';
 import LoginActions from '../actions/LoginActions';
 import Auth from '../Auth';
