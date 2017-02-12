@@ -2,7 +2,7 @@
  * Created by Masa on 24-Jan-17.
  */
 import React from 'react';
-import {Route} from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 import Main from './components/Gameplay/Main';
 import Login from './components/Login/Login';
 import App from './components/App/App';
@@ -13,21 +13,21 @@ import EnsureAuthContainer from './components/EnsureAuthContainer/EnsureAuthCont
 import PageNotFound from './components/PageNotFound';
 
 export default (
-    <Route component={App}>
-        <Route path="/" component={Login} onEnter={(nextState, replace) => {
+    <Route path='/' component={App}>
+        <IndexRoute component={Login} onEnter={(nextState, replace) => {
             if (Auth.isUserAuthenticated()) {
-                replace('/home');
+                replace('home');
             }
         }} />
-        <Route path="/notFound" component={PageNotFound} />
         <Route component={EnsureAuthContainer}>
-            <Route path="/home" component={Home} />
-            <Route path="/game" component={Main} />
-            <Route path="/lobby" component={Lobby} />
-            <Route path='/logout' onEnter={(nextState, replace) => {
+            <Route path="home" component={Home} />
+            <Route path="game" component={Main} />
+            <Route path="lobby" component={Lobby} />
+            <Route path='logout' onEnter={(nextState, replace) => {
                 Auth.deauthenticateUser();
                 replace('/');
             }} />
         </Route>
+            <Route path="*" component={PageNotFound} />
     </Route>
 )
