@@ -4,12 +4,12 @@
 import {
     teal900,cyan500, cyan700,
     grey100, grey300, grey500,
-    blueGrey200,  amber600,
+    blueGrey200,
    white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
-import {blackColor} from './components/Card/common';
+import {blackColor, redColor} from './components/Card/common';
 
 
 /**
@@ -24,7 +24,7 @@ export default {
         primary1Color: teal900,
         primary2Color: cyan700,
         primary3Color: blueGrey200,
-        accent1Color: amber600,
+        accent1Color: redColor,
         accent2Color: grey100,
         accent3Color: grey500,
         textColor: darkBlack,

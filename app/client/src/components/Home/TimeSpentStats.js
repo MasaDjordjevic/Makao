@@ -1,7 +1,6 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
-import {blackColor} from '../Card/common';
-import {orange500} from 'material-ui/styles/colors';
+import {blackColor, redColor} from '../Card/common';
 
 class TimeSpentStats extends React.Component {
     constructor() {
@@ -31,7 +30,7 @@ class TimeSpentStats extends React.Component {
 
     render() {
         const barColor = blackColor; //'#71B37C';
-        const lineColor = orange500; //'#EC932F';
+        const lineColor = redColor; //orange500; //'#EC932F';
         const data = {
             labels: this.getLabels(),
             datasets: [{
