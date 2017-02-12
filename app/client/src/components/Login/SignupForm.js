@@ -47,7 +47,7 @@ class SignupForm extends React.Component {
             this.setState({ showResponse: true });
         } else {
             GlobalVariables.initialize(this.state.signupResponse.user);
-            browserHistory.push('/');
+            browserHistory.push('/home');
         }
     }
 

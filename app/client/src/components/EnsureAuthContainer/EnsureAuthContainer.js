@@ -1,15 +1,18 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import Auth from '../../Auth';
 
 class EnsureAuthContainer extends React.Component {
     componentDidMount() {
-        if (!localStorage.getItem('jwt')) {
+        if (!Auth.isUserAuthenticated()) {
             browserHistory.push('/');
+        } else {
+
         }
     }
 
     render() {
-        if (localStorage.getItem('jwt')) {
+        if (Auth.isUserAuthenticated()) {
             return this.props.children;
         } else {
             return null;

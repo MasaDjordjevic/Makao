@@ -30,7 +30,7 @@ class LoginForm extends React.Component {
             this.setState({ showResponse: true });
         } else {
             GlobalVariables.initialize(this.state.loginResponse.user);
-            browserHistory.push('/');
+            browserHistory.push('/home');
         }
     }
 

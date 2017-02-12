@@ -1,5 +1,6 @@
 import alt from '../alt';
 import SignupActions from '../actions/SignUpActions';
+import Auth from '../Auth';
 
 class SignupStore {
     constructor() {
@@ -11,10 +12,13 @@ class SignupStore {
 
     onSignup(data) {
         this.success = data.success;
-        this.msg = data.msg;
-        this.user = data.user;
-        if (!this.msg) {
-            this.msg = ' ';
+        this.message = data.message;
+        if (!this.message) {
+            this.message = ' ';
+        }
+        if (this.success) {
+            this.user = data.user;
+            Auth.authenticateUser(data.token);
         }
     }
 }
