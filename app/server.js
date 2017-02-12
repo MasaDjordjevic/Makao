@@ -46,7 +46,7 @@ passport.use('local-login', localLoginStrategy);
 passport.use('local-signup', localSignupStrategy);
 
 // insert some users if none exist in database
-User.count({}, function(err, count) {
+User.count({}, (err, count) => {
     if (count === 0) {
         var users = [
             new User({ username: "jajac", email: "jajac", password: "jajac" }),
@@ -72,6 +72,6 @@ app.use('/auth', authRoutes);
 // all other requests have to go through authCheck before forwarding to handler
 app.use('/', authCheck, appRoutes);
 
-app.listen(3001, function() {
+app.listen(3001, () => {
     console.log('Server listening on port 3001.');
 });
