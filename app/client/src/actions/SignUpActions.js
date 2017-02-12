@@ -8,7 +8,7 @@ class SignupActions {
     }
 
     trySignup(params) {
-        fetch('/signup', {
+        fetch('/auth/signup', {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             method: "POST",

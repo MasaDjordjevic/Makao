@@ -3,21 +3,25 @@
  */
 import alt from '../alt';
 import LoginActions from '../actions/LoginActions';
+import Auth from '../Auth';
 
 class LoginStore {
     constructor() {
         this.bindActions(LoginActions);
         this.success = false;
         this.user = {};
-        this.msg = ' ';
+        this.message = ' ';
     }
 
     onLogin(data) {
         this.success = data.success;
-        this.user = data.user;
-        this.msg = data.msg;
-        if (!this.msg) {
-            this.msg = ' ';
+        this.message = data.message;
+        if (!this.message) {
+            this.message = ' ';
+        }
+        if (this.success) {
+            this.user = data.user;
+            Auth.authenticateUser(data.token);
         }
     }
 }

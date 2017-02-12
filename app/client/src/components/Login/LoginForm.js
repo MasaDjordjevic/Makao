@@ -30,7 +30,7 @@ class LoginForm extends React.Component {
             this.setState({ showResponse: true });
         } else {
             GlobalVariables.initialize(this.state.loginResponse.user);
-            browserHistory.push('/home');
+            browserHistory.push('/');
         }
     }
 
@@ -108,7 +108,7 @@ class LoginForm extends React.Component {
 
                 <Snackbar
                     open={this.state.showResponse}
-                    message={this.state.loginResponse.msg}
+                    message={this.state.loginResponse.message}
                     autoHideDuration={4000}
                     onRequestClose={this.handleSnackbarClosing}/>
 

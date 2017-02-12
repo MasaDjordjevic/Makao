@@ -11,7 +11,7 @@ class LoginActions {
     }
 
     tryLogin(params) {
-        fetch('/login', {
+        fetch('/auth/login', {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             method: "POST",
