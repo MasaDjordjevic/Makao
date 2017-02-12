@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import Auth from '../../Auth';
 
 class EnsureAuthContainer extends React.Component {
+
     componentDidMount() {
         if (!Auth.isUserAuthenticated()) {
             browserHistory.push('/');
