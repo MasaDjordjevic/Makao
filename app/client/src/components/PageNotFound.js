@@ -12,15 +12,15 @@ class PageNotFound extends React.Component {
         return {
             container: {
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
             },
-            four0four:{
+            four0four: {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                width: 3.6*width,
+                width: 3.6 * width,
             },
             zero: {
                 height: height,
@@ -44,6 +44,13 @@ class PageNotFound extends React.Component {
                 color: blackColor,
                 fontSize: '240px',
                 fontFamily: 'Dosis'
+            },
+            message: {
+                padding: '16px',
+            },
+            messageText: {
+                color: blackColor,
+                fontSize: '24px',
             }
 
         }
@@ -61,6 +68,9 @@ class PageNotFound extends React.Component {
                         </div>
                     </div>
                     <span style={this.styles.four}>4</span>
+                </div>
+                <div style={this.styles.message}>
+                    <span style={this.styles.messageText}>Sorry. We couldn't find that page :(</span>
                 </div>
             </div>
         );
