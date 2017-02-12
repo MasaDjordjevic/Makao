@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
@@ -44,15 +43,6 @@ class HomeHeader extends React.Component {
                 horizontal: 'left', vertical: 'top'
             }
         }
-    }
-
-    handleLogout() {
-        fetch('/logout', {
-            credentials: 'include',
-            method: 'POST'
-        }).then((res) => {
-            browserHistory.push('/');
-        });
     }
 
     handleRequestAccept(friendId){
@@ -131,7 +121,9 @@ class HomeHeader extends React.Component {
                                     <MenuItem primaryText="Sign out"/>
                                 </IconMenu>
                             </Badge>
-                            <FlatButton style={this.styles.logout} label="Logout" onClick={this.handleLogout}/>
+                            <Link to='/logout'>
+                                <FlatButton style={this.styles.logout} label="Logout"/>
+                            </Link>
                         </div>
                     }
                 />
