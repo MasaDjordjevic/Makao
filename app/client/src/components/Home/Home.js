@@ -2,8 +2,7 @@ import React from 'react';
 import HomeHeader from './HomeHeader';
 import TimeSpentStats from './TimeSpentStats';
 import PointsWonStats from './PointsWonStats';
-import {blackColor} from '../Card/common';
-import {orange500} from 'material-ui/styles/colors';
+import {blackColor, redColor} from '../Card/common';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
 import PlayGame from '../Lobby/PlayGame';
@@ -55,7 +54,7 @@ class Home extends React.Component {
                 ...centerDiv, ...{
                     width: gamesLeftSize,
                     height: gamesLeftSize,
-                    backgroundColor: orange500,
+                    backgroundColor: redColor, //orange500,
                 }
             },
             charts: {},

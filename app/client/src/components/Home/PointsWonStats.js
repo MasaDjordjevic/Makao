@@ -1,5 +1,6 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
+import {redColor} from '../Card/common';
 
 class PointsWonStats extends React.Component {
     constructor() {
@@ -27,6 +28,7 @@ class PointsWonStats extends React.Component {
     }
 
     render() {
+        const mainColor = redColor;// '#EC932F';
         const data = {
             labels: this.getLabels(),
             datasets: [{
@@ -34,12 +36,11 @@ class PointsWonStats extends React.Component {
                 type:'line',
                 data: this.state.pointsWonLastWeek,
                 fill: false,
-                //borderColor: '#EC932F',
-                backgroundColor: '#EC932F',
-                pointBorderColor: '#EC932F',
-                pointBackgroundColor: '#EC932F',
-                pointHoverBackgroundColor: '#EC932F',
-                pointHoverBorderColor: '#EC932F',
+                backgroundColor: mainColor,
+                pointBorderColor: mainColor,
+                pointBackgroundColor: mainColor,
+                pointHoverBackgroundColor: mainColor,
+                pointHoverBorderColor: mainColor,
                 yAxisID: 'y-axis'
             }]
         };
