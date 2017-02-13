@@ -4,10 +4,9 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import HourglassIcon from 'material-ui/svg-icons/action/hourglass-empty';
 import DoneIcon from 'material-ui/svg-icons/action/done';
+import PersonIcon from 'material-ui/svg-icons/social/person-outline';
 
 class Lobby extends React.Component {
-
-
     get styles() {
         return {
             container: {
@@ -16,7 +15,9 @@ class Lobby extends React.Component {
         }
     }
 
+
     render() {
+
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <List>
@@ -24,7 +25,7 @@ class Lobby extends React.Component {
                         this.props.users.map((user, i) =>
                             <ListItem key={user.username}
                                       primaryText={user.username}
-                                      rightIcon={user.ready ? <DoneIcon /> : <HourglassIcon />}
+                                      rightIcon={this.props.gameCreatorUsername === user.username ? <PersonIcon /> :  user.ready ? <DoneIcon /> : <HourglassIcon /> }
                                       disabled={true}/>
                         )
                     }
@@ -39,4 +40,5 @@ Lobby.defaultProps = {};
 
 Lobby.propTypes = {
     users: React.PropTypes.array,
+    gameCreatorUsername: React.PropTypes.string,
 };

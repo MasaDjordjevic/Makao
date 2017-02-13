@@ -15,7 +15,7 @@ class GameInitialiser extends React.Component {
 
         this.state = {
             me: AuthStore.getState().user,
-            creatorId: 1,
+            creatorUsername: 'masa',
             rules: {
                 gameLimit: 150,
                 timeLimit: 30,
@@ -110,6 +110,8 @@ class GameInitialiser extends React.Component {
     }
 
     render() {
+        const myGame = AuthStore.getState().user.username === this.state.creatorUsername;
+
         const inviteFriends = <div style={this.styles.section}>
             <h3 style={this.styles.title}>Invite friends</h3>
             <FriendPicker onPick={this.handleFriendInvite}/>
@@ -127,8 +129,8 @@ class GameInitialiser extends React.Component {
                     }
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Lobby</h3>
-                        <Lobby users={this.state.users}/>
-                        <RaisedButton primary={true} label="ready" onClick={this.handleReady}/>
+                        <Lobby users={this.state.users} gameCreatorUsername={this.state.creatorUsername}/>
+                        {!myGame && <RaisedButton primary={true} label="ready" onClick={this.handleReady}/> }
                     </div>
                 </div>
                 <RaisedButton onClick={this.props.onGameStart} label="Start game"/>
