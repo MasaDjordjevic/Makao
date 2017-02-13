@@ -77,7 +77,7 @@ const server = app.listen(3001, () => {
 });
 
 const io = require('socket.io')(server);
-let lobbySocket = require('./routes/sockets/lobbySocket');
-let chatSocket = require('./routes/sockets/chatSocket');
+let lobbySocket = require('./sockets/lobbySocket');
+let chatSocket = require('./sockets/chatSocket');
 io.of('/lobby').on('connection', lobbySocket);
 io.of('/chat').on('connection', chatSocket);
