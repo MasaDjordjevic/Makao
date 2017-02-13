@@ -21,7 +21,7 @@ class GlobalVariables extends React.Component {
     }
 
     initialize(user) {
-        this.usedId = user.id;
+        this.userId = user.id;
         this.username = user.username;
     }
 }
