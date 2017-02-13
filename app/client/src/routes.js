@@ -23,10 +23,6 @@ export default (
             <Route path="home" component={Home} />
             <Route path="game" component={Main} />
             <Route path="lobby" component={Lobby} />
-            <Route path='logout' onEnter={(nextState, replace) => {
-                Auth.deauthenticateUser();
-                replace('/');
-            }} />
         </Route>
             <Route path="*" component={PageNotFound} />
     </Route>

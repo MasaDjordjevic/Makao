@@ -3,8 +3,8 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import SignupActions from '../../actions/SignUpActions';
-import SignupStore from '../../stores/SignUpStore';
+import AuthActions from '../../actions/AuthActions';
+import AuthStore from '../../stores/AuthStore';
 import Snackbar from 'material-ui/Snackbar';
 
 class SignupForm extends React.Component {
@@ -30,7 +30,7 @@ class SignupForm extends React.Component {
             texts: texts,
             errors: {...keys},
             required: required,
-            signupResponse: SignupStore.getState(),
+            signupResponse: AuthStore.getState(),
             showResponse: false
         };
 
@@ -41,7 +41,7 @@ class SignupForm extends React.Component {
     }
 
     onChange() {
-        this.setState({ signupResponse: SignupStore.getState() });
+        this.setState({ signupResponse: AuthStore.getState() });
         if (!this.state.signupResponse.success) {
             this.setState({ showResponse: true });
         } else {
@@ -50,11 +50,11 @@ class SignupForm extends React.Component {
     }
 
     componentDidMount() {
-        SignupStore.listen(this.onChange);
+        AuthStore.listen(this.onChange);
     }
 
     componentWillUnmount() {
-        SignupStore.unlisten(this.onChange);
+        AuthStore.unlisten(this.onChange);
     }
 
     handleInputChange(prop, val) {
@@ -85,7 +85,7 @@ class SignupForm extends React.Component {
         this.setState({errors: errors});
 
         if (errNo === 0) {
-            SignupActions.trySignup(this.state.inputs);
+            AuthActions.trySignup(this.state.inputs);
         }
     }
 

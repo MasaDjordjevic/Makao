@@ -39,12 +39,11 @@ var SignupStrategy = new Strategy(
             }
 
             var payload = { sub: user._id };
-            var data = { username: user.username };
 
             // create a JSON web token
             var token = jwt.sign(payload, 'aips2017jajacmasamitic');
 
-            return done(null, token, data);
+            return done(null, token);
         });
     }
 );

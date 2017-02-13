@@ -61,7 +61,7 @@ router.post('/login', (req, res, next) => {
 
     // if inputs are valid, we use the passport strategy
     // to auth the user by sending him a JSON web token
-    passport.authenticate('local-login', (err, token, userData) => {
+    passport.authenticate('local-login', (err, token) => {
         if (err) {
             return res.status(400).json({
                 success: false,
@@ -72,8 +72,7 @@ router.post('/login', (req, res, next) => {
         return res.status(200).json({
             success: true,
             message: "Successful login!",
-            token,
-            user: userData
+            token
         });
     })(req, res, next);
 });
@@ -93,7 +92,7 @@ router.post('/signup', (req, res, next) => {
 
     // if inputs are valid, we use the passport strategy
     // to signup and auth the user by sending him a JSON web token
-    passport.authenticate('local-signup', (err, token, userData) => {
+    passport.authenticate('local-signup', (err, token) => {
         if (err) {
             return res.status(400).json({
                 success: false,
@@ -104,8 +103,7 @@ router.post('/signup', (req, res, next) => {
         return res.status(200).json({
             success: true,
             message: "Successful signup!",
-            token,
-            user: userData
+            token
         });
     })(req, res, next);
 });

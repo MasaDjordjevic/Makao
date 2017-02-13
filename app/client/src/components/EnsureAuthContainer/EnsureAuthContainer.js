@@ -1,16 +1,18 @@
+import _ from 'lodash';
 import React from 'react';
 import { browserHistory } from 'react-router';
 import Auth from '../../Auth';
-import GlobalVariables from '../Gameplay/GlobalVariables';
+import AuthActions from '../../actions/AuthActions';
+import AuthStore from '../../stores/AuthStore';
 
 class EnsureAuthContainer extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (!Auth.isUserAuthenticated()) {
             browserHistory.push('/');
         } else {
-            if (!GlobalVariables.isSet()) {
-                GlobalVariables.initialize();
+            if (_.isEmpty(AuthStore.getState().user)) {
+                AuthActions.getUserData();
             }
         }
     }

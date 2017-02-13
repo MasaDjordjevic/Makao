@@ -37,9 +37,8 @@ var LoginStrategy = new Strategy(
 
                 // create a JSON web token
                 var token = jwt.sign(payload, 'aips2017jajacmasamitic');
-                var data = { username: user.username };
 
-                return done(null, token, data);
+                return done(null, token);
             });
         });
     }

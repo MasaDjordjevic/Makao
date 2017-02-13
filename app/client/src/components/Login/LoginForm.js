@@ -2,8 +2,8 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import LoginActions from '../../actions/LoginActions';
-import LoginStore from '../../stores/LoginStore';
+import AuthActions from '../../actions/AuthActions';
+import AuthStore from '../../stores/AuthStore';
 import Snackbar from 'material-ui/Snackbar';
 
 class LoginForm extends React.Component {
@@ -14,7 +14,7 @@ class LoginForm extends React.Component {
             passwordError: "",
             email: "",
             password: "",
-            loginResponse: LoginStore.getState(),
+            loginResponse: AuthStore.getState(),
             showResponse: false,
         };
 
@@ -24,7 +24,7 @@ class LoginForm extends React.Component {
     }
 
     onChange() {
-        this.setState({ loginResponse: LoginStore.getState() });
+        this.setState({ loginResponse: AuthStore.getState() });
         if (!this.state.loginResponse.success) {
             this.setState({ showResponse: true });
         } else {
@@ -33,11 +33,11 @@ class LoginForm extends React.Component {
     }
 
     componentDidMount() {
-        LoginStore.listen(this.onChange);
+        AuthStore.listen(this.onChange);
     }
 
     componentWillUnmount() {
-        LoginStore.unlisten(this.onChange);
+        AuthStore.unlisten(this.onChange);
     }
 
     handleLoginClick() {
@@ -57,7 +57,7 @@ class LoginForm extends React.Component {
         let params = { email: this.state.email, password: this.state.password };
 
         if (errNo === 0) {
-            LoginActions.tryLogin(params);
+            AuthActions.tryLogin(params);
         }
     }
 

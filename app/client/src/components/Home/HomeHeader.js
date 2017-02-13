@@ -11,10 +11,32 @@ import {white, green600, grey500} from 'material-ui/styles/colors';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import {Link} from 'react-router';
-import GlobalVariables from '../Gameplay/GlobalVariables';
+import { Link, browserHistory } from 'react-router';
+import AuthStore from '../../stores/AuthStore';
+import AuthActions from '../../actions/AuthActions';
 
 class HomeHeader extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            user: AuthStore.getState().user
+        }
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange() {
+        this.setState({ user: AuthStore.getState().user });
+    }
+
+    componentDidMount() {
+        AuthStore.listen(this.onChange);
+    }
+
+    componentWillUnmount() {
+        AuthStore.unlisten(this.onChange);
+    }
+
     get styles() {
         return {
             container: {
@@ -70,6 +92,11 @@ class HomeHeader extends React.Component {
         );
     }
 
+    handleLogout() {
+        AuthActions.logout();
+        browserHistory.push('/');
+    }
+
     renderGameRequest(friendName, gameId) {
 
     }
@@ -80,8 +107,8 @@ class HomeHeader extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar
                     title={
-                        <Link to={"/users:"+ GlobalVariables.userId}>
-                            <span style={this.styles.username}>{GlobalVariables.username}</span>
+                        <Link to={"/users:"+ this.state.user.username}>
+                            <span style={this.styles.username}>{this.state.user.username}</span>
                         </Link>}
                     iconElementLeft={
                         <IconMenu
@@ -121,9 +148,10 @@ class HomeHeader extends React.Component {
                                     <MenuItem primaryText="Sign out"/>
                                 </IconMenu>
                             </Badge>
-                            <Link to='/logout'>
-                                <FlatButton style={this.styles.logout} label="Logout"/>
-                            </Link>
+
+                            <FlatButton style={this.styles.logout}
+                                        label="Logout"
+                                        onClick={this.handleLogout} />
                         </div>
                     }
                 />
