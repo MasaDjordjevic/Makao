@@ -26,6 +26,7 @@ class GameInitialiser extends React.Component {
                 private: 1
             },
             users: [],
+            allUsersReady: false,
         };
 
         this.handleFriendInvite = this.handleFriendInvite.bind(this);
@@ -48,7 +49,7 @@ class GameInitialiser extends React.Component {
         if (usr) {
             usr.ready = false;
         } else {
-            users.push({username: username, ready: false});
+            users.push({username: username, ready: username === this.state.creatorUsername}); //creator of game is always ready
         }
         this.setState({users: users});
     };
@@ -56,7 +57,8 @@ class GameInitialiser extends React.Component {
     handleUserReady = (username) => {
         let users = this.state.users.slice();
         _.find(users, {username: username}).ready = true;
-        this.setState({users: users});
+        const everyUserReady = _.every(users, 'ready');
+        this.setState({users: users, allUsersReady: everyUserReady});
     };
 
     handleReady = () => {
@@ -68,7 +70,7 @@ class GameInitialiser extends React.Component {
     handleSocketInit = (users) => {
         let newUsers = [];
         Object.keys(users).forEach((key, index) => {
-            newUsers.push({username: key, ready: users[key].ready});
+            newUsers.push({username: key, ready: key === this.state.creatorUsername || users[key].ready}); //if user is creator set him ready
         });
 
         this.setState({users: newUsers, me: newUsers[newUsers.length - 1]});
@@ -111,7 +113,7 @@ class GameInitialiser extends React.Component {
 
     render() {
         const myGame = AuthStore.getState().user.username === this.state.creatorUsername;
-
+        const allReady = this.state.allUsersReady;
         const inviteFriends = <div style={this.styles.section}>
             <h3 style={this.styles.title}>Invite friends</h3>
             <FriendPicker onPick={this.handleFriendInvite}/>
@@ -133,7 +135,7 @@ class GameInitialiser extends React.Component {
                         {!myGame && <RaisedButton primary={true} label="ready" onClick={this.handleReady}/> }
                     </div>
                 </div>
-                <RaisedButton onClick={this.props.onGameStart} label="Start game"/>
+                {myGame && <RaisedButton onClick={this.props.onGameStart} label="Start game" primary={allReady} disabled={!allReady}/> }
             </div>
         );
     }
