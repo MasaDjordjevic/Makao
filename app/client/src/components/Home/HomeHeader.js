@@ -102,7 +102,6 @@ class HomeHeader extends React.Component {
     }
 
     render() {
-
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar

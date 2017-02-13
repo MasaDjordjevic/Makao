@@ -4,13 +4,17 @@ import FriendPicker from '../Lobby/FriendPicker';
 import Lobby from '../Lobby/Lobby';
 import RulesSetter from '../Lobby/Rules';
 import GlobalVariables from '../Gameplay/GlobalVariables';
+import _ from 'lodash';
 import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001/lobby');
 
 class GameInitialiser extends React.Component {
     constructor() {
         super();
 
         this.state = {
+            me: -1,
             creatorId: 1,
             rules: {
                 gameLimit: 150,
@@ -20,7 +24,8 @@ class GameInitialiser extends React.Component {
                 deckNumber: 1,
                 rankFilter: 15,
                 private: 1
-            }
+            },
+            users: [],
         };
 
         this.handleFriendInvite = this.handleFriendInvite.bind(this);
@@ -30,8 +35,38 @@ class GameInitialiser extends React.Component {
         console.log("invite friend: " + userId);
     }
 
+    handleUserJoin = (username) => {
+        let users = this.state.users.slice();
+        users.push({username: username, ready: false});
+        this.setState({users: users});
+    };
+
+    handleUserReady = (username) => {
+        let users = this.state.users.slice();
+        _.find(users, {username: username}).ready = true;
+        this.setState({users: users});
+    };
+
+    handleReady = () => {
+        const username = this.state.me.username;
+        this.handleUserReady(username);
+        socket.emit('user:ready', username);
+    };
+
+    handleSocketInit = (users) => {
+        let newUsers = [];
+        Object.keys(users).forEach((key, index)=> {
+            newUsers.push({username: key, ready: users[key].ready});
+        });
+
+        this.setState({users: newUsers, me: newUsers[newUsers.length-1]});
+    };
+
     componentDidMount(){
-        const socket = io('http://localhost:3001/lobby');
+        socket.emit('join', 'user ' + Math.round(Math.random()*10));
+        socket.on('init', this.handleSocketInit);
+        socket.on('user:ready',  this.handleUserReady);
+        socket.on('user:join', this.handleUserJoin);
     }
 
     get styles() {
@@ -79,7 +114,8 @@ class GameInitialiser extends React.Component {
                     }
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Lobby</h3>
-                        <Lobby />
+                        <Lobby users={this.state.users} />
+                        <RaisedButton primary={true} label="ready" onClick={this.handleReady} />
                     </div>
                 </div>
                 <RaisedButton onClick={this.props.onGameStart} label="Start game"/>

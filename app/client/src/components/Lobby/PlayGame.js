@@ -9,7 +9,7 @@ class PlayGame extends React.Component {
     constructor() {
         super();
         this.state = {
-            dialogOpen: true,
+            dialogOpen: false,
         }
     }
 

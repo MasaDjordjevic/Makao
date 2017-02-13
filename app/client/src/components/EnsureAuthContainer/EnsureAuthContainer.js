@@ -6,6 +6,18 @@ import AuthActions from '../../actions/AuthActions';
 import AuthStore from '../../stores/AuthStore';
 
 class EnsureAuthContainer extends React.Component {
+    constructor(){
+        super();
+
+        this.state = {
+            user: {},
+        }
+    }
+
+    onChange = () => {
+        let user = GlobalStore.getState().user;
+        this.setState({user: user});
+    };
 
     componentWillMount() {
         if (!Auth.isUserAuthenticated()) {
@@ -18,6 +30,7 @@ class EnsureAuthContainer extends React.Component {
     }
 
     render() {
+        if (!this.state.user.username) return false;
         if (Auth.isUserAuthenticated()) {
             return this.props.children;
         } else {
