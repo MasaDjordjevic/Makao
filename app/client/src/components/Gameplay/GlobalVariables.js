@@ -3,9 +3,8 @@ import _ from 'lodash';
 class GlobalVariables extends React.Component {
     constructor() {
         super();
-        this.userId = 1;
-        this.username = 'Masa'; //TODO odvoji u jedan objekat ili odbaci lastname
-        this.userLastName = 'Djordjevic';
+        this.userId = '';
+        this.username = '';
         this.handLength = 5;
 
         this.players = [
@@ -20,9 +19,18 @@ class GlobalVariables extends React.Component {
         this.initialize = this.initialize.bind(this);
     }
 
-    initialize(user) {
-        this.userId = user.id;
-        this.username = user.username;
+    isSet() {
+        return !!this.username;
+    }
+
+    initialize() {
+        fetch('/user/data')
+        .then((res) => {
+            return res.json();
+        }).then((user) => {
+            this.usedId = user.id;
+            this.username = user.username;
+        });
     }
 }
 export default (new GlobalVariables());
