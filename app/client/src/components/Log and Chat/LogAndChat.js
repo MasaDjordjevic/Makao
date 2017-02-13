@@ -43,7 +43,7 @@ class LogAndChat extends React.Component {
     }
 
     onNewChatMessage(message){
-        this.handleNewMessage(message, this.state.me.id, this.state.me.username);
+        this.handleNewMessage(message, this.state.me.username);
         socket.emit('send:message', {
             message: message,
             username: this.state.me.username,
