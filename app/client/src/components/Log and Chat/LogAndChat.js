@@ -6,7 +6,8 @@ import Chat from '../Log and Chat/Chat';
 import Log from  '../Log and Chat/Log';
 import ChatInputField from '../Log and Chat/ChatInputField';
 import GlobalVariables from '../Gameplay/GlobalVariables';
-
+import io from 'socket.io-client';
+var socket = io('http://localhost:3001/chat');
 class LogAndChat extends React.Component {
     constructor(){
         super();
@@ -39,10 +40,17 @@ class LogAndChat extends React.Component {
                 },
             ]
         }
+
+        this.handleSocketMessageReceived = this.handleSocketMessageReceived.bind(this);
     }
 
     onNewChatMessage(message){
         this.handleNewMessage(message, GlobalVariables.userId, GlobalVariables.username);
+        socket.emit('send:message', {
+            message: message,
+            userId: GlobalVariables.userId,
+            username: GlobalVariables.username,
+        })
     }
 
     handleNewMessage(message, id, name) {
@@ -56,6 +64,14 @@ class LogAndChat extends React.Component {
         const chatMessages = [...this.state.chatMessages, newMessage];
         this.setState({chatMessages: chatMessages});
         document.getElementById('chat-input').value = null;
+    }
+
+    handleSocketMessageReceived(data){
+        this.handleNewMessage(data.message, data.userId, data.username);
+    }
+
+    componentDidMount(){
+        socket.on('send:message', this.handleSocketMessageReceived);
     }
 
 

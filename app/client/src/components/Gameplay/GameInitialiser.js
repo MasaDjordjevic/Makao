@@ -4,6 +4,7 @@ import FriendPicker from '../Lobby/FriendPicker';
 import Lobby from '../Lobby/Lobby';
 import RulesSetter from '../Lobby/Rules';
 import GlobalVariables from '../Gameplay/GlobalVariables';
+import io from 'socket.io-client';
 
 class GameInitialiser extends React.Component {
     constructor() {
@@ -27,6 +28,10 @@ class GameInitialiser extends React.Component {
 
     handleFriendInvite(userId) {
         console.log("invite friend: " + userId);
+    }
+
+    componentDidMount(){
+        const socket = io('http://localhost:3001/lobby');
     }
 
     get styles() {

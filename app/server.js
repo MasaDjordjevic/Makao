@@ -72,6 +72,12 @@ app.use('/auth', authRoutes);
 // all other requests have to go through authCheck before forwarding to handler
 app.use('/', authCheck, appRoutes);
 
-app.listen(3001, () => {
+const server = app.listen(3001, () => {
     console.log('Server listening on port 3001.');
 });
+
+const io = require('socket.io')(server);
+let lobbySocket = require('./routes/sockets/lobbySocket');
+let chatSocket = require('./routes/sockets/chatSocket');
+io.of('/lobby').on('connection', lobbySocket);
+io.of('/chat').on('connection', chatSocket);
