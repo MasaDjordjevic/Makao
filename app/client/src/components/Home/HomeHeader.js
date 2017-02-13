@@ -13,6 +13,7 @@ import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import {Link} from 'react-router';
 import GlobalVariables from '../Gameplay/GlobalVariables';
+import GlobalStore from '../../stores/GlobalStore';
 
 class HomeHeader extends React.Component {
     get styles() {
@@ -75,13 +76,13 @@ class HomeHeader extends React.Component {
     }
 
     render() {
-
+        const username = GlobalStore.getState().user.username;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar
                     title={
-                        <Link to={"/users:"+ GlobalVariables.userId}>
-                            <span style={this.styles.username}>{GlobalVariables.username}</span>
+                        <Link to={"/users:"+ username}>
+                            <span style={this.styles.username}>{username}</span>
                         </Link>}
                     iconElementLeft={
                         <IconMenu
