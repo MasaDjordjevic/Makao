@@ -1,5 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
+import Auth from '../../Auth';
+
 class GlobalVariables extends React.Component {
     constructor() {
         super();
@@ -24,7 +26,9 @@ class GlobalVariables extends React.Component {
     }
 
     initialize() {
-        fetch('/user/data')
+        fetch('/user/data', {
+            headers: { 'Authorization': 'bearer ' + Auth.getToken() },
+        })
         .then((res) => {
             return res.json();
         }).then((user) => {

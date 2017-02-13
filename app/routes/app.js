@@ -3,9 +3,10 @@ import passport from 'passport';
 
 var router = express.Router();
 
-router.get('/dashboard', (req, res) => {
+router.get('/user/data', (req, res) => {
     res.status(200).json({
-        message: "You're authorized!"
+        id: req.user._id,
+        username: req.user.username
     });
 });
 

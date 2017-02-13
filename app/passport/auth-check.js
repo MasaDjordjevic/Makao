@@ -20,6 +20,8 @@ module.exports = (req, res, next) => {
         User.findById(userId, (err, user) => {
             if (err || !user) {
                 return res.status(401).end();
+            } else {
+                req.user = user;
             }
 
             return next();
