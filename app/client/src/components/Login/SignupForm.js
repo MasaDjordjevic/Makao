@@ -122,7 +122,7 @@ class SignupForm extends React.Component {
 
                 <Snackbar
                     open={this.state.showResponse}
-                    message={this.state.signupResponse.msg}
+                    message={this.state.signupResponse.message}
                     autoHideDuration={4000}
                     onRequestClose={this.handleSnackbarClosing}/>
 

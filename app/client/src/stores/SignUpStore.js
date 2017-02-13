@@ -7,7 +7,7 @@ class SignupStore {
         this.bindActions(SignupActions);
         this.success = false;
         this.user = {};
-        this.msg = ' ';
+        this.message = ' ';
     }
 
     onSignup(data) {

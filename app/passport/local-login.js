@@ -21,7 +21,6 @@ var LoginStrategy = new Strategy(
 
             if (!user) {
                 var error = new Error('Incorrect email or password.');
-                error.name = 'IncorrectCredentialsError';
                 return done(error);
             }
 
@@ -30,8 +29,7 @@ var LoginStrategy = new Strategy(
                 if (err) { return done(err); }
 
                 if (!valid) {
-                    var error = new Error('Incorrect email or password');
-                    error.name = 'IncorrectCredentialsError';
+                    var error = new Error('Incorrect email or password.');
                     return done(error);
                 }
 
