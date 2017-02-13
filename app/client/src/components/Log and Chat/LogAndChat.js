@@ -15,25 +15,21 @@ class LogAndChat extends React.Component {
         this.state= {
             chatMessages: [
                 {
-                    userId: 3,
                     username: "Nemanja",
                     time: "2:45",
                     message: "zdravo"
                 },
                 {
-                    userId: 2,
                     username: "Darko",
                     time: "1:50",
                     message: "poz"
                 },
                 {
-                    userId: 1,
                     username: "Nikolica",
                     time: "2:35",
                     message: "poruka"
                 },
                 {
-                    userId: 4,
                     username: "Jajac",
                     time: "2:38",
                     message: "13"
@@ -53,10 +49,9 @@ class LogAndChat extends React.Component {
         })
     }
 
-    handleNewMessage(message, id, name) {
+    handleNewMessage(message, name) {
         const time = new Date();
         const newMessage = {
-            userId: id ? id : GlobalVariables.userId,
             username: name ? name : GlobalVariables.username,
             time: time.getHours() + ":" + time.getMinutes(),
             message: message,
@@ -67,7 +62,7 @@ class LogAndChat extends React.Component {
     }
 
     handleSocketMessageReceived(data){
-        this.handleNewMessage(data.message, data.userId, data.username);
+        this.handleNewMessage(data.message, data.username);
     }
 
     componentDidMount(){

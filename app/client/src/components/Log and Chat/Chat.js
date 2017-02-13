@@ -42,7 +42,7 @@ class Chat extends React.Component {
                     {
                         this.props.messages.map((message, index) =>
                             <ChatMessage key={index} message={message}
-                                         mine={GlobalVariables.userId === message.userId}/>
+                                         mine={GlobalVariables.username === message.username}/>
                         )
                     }
                 </div>
