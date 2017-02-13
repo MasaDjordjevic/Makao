@@ -4,10 +4,16 @@
 import React from 'react';
 import LogEntry from './LogEntry';
 import Card from '../Card/Card';
-import ReactDOM from 'react-dom'
-import GlobalVariables from '../Gameplay/GlobalVariables';
+import ReactDOM from 'react-dom';
+import AuthStore from '../../stores/AuthStore';
 
 class Log extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            me: AuthStore.getState().user
+        }
+    }
     componentWillUpdate(){
         const node = ReactDOM.findDOMNode(this).parentElement;
         this.scrollHeight = node.scrollHeight;
@@ -43,8 +49,8 @@ class Log extends React.Component {
                     this.props.logs.map((log, index) =>
                         <LogEntry key={index}
                                   log={log.log}
-                                  playerName={log.playerId !== GlobalVariables.userId && log.playerName}
-                                  left={log.playerId !== GlobalVariables.userId}
+                                  playerName={log.playerId !== this.state.me.id && log.playerName}
+                                  left={log.playerId !== this.state.me.id}
                                   card={log.card}/>
                     )
                 }

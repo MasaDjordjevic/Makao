@@ -4,14 +4,15 @@ import PublicIcon from 'material-ui/svg-icons/social/public';
 import GroupIcon from 'material-ui/svg-icons/social/group';
 import {List, ListItem} from 'material-ui/List';
 import DefultTooltip from '../DefaultTooltip/DefaultTooltip';
+import AuthStore from '../../stores/AuthStore';
 import {grey400, teal800}    from 'material-ui/styles/colors';
-import GlobalVariables from '../Gameplay/GlobalVariables';
 import {Link} from 'react-router';
 
 class Leaderboards extends React.Component {
     constructor() {
         super();
         this.state = {
+            me: AuthStore.getState().user,
             myPosition: {
                 friends: 3,
                 global: 39,
@@ -72,9 +73,9 @@ class Leaderboards extends React.Component {
         if (position <= this.props.numberOfUsersInBoards) return;
         return (
             <List>
-                <Link to={"/users:" + GlobalVariables.userId}>
+                <Link to={"/users:" + this.state.me.id}>
                     <ListItem
-                        primaryText={position + ". " + GlobalVariables.username}
+                        primaryText={position + ". " + this.state.me.username}
                         {...this.myScoreAttributes}/>
                 </Link>
             </List>

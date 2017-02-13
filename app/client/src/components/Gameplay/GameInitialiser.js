@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FriendPicker from '../Lobby/FriendPicker';
 import Lobby from '../Lobby/Lobby';
 import RulesSetter from '../Lobby/Rules';
-import GlobalVariables from '../Gameplay/GlobalVariables';
+import AuthStore from '../../stores/AuthStore';
 import _ from 'lodash';
 import io from 'socket.io-client';
 
@@ -14,7 +14,7 @@ class GameInitialiser extends React.Component {
         super();
 
         this.state = {
-            me: -1,
+            me: AuthStore.getState().user,
             creatorId: 1,
             rules: {
                 gameLimit: 150,
@@ -110,7 +110,7 @@ class GameInitialiser extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.playersContainer}>
                     {
-                        this.state.creatorId === GlobalVariables.userId ? inviteFriends : rules
+                        this.state.creatorId === this.state.me.id ? inviteFriends : rules
                     }
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Lobby</h3>

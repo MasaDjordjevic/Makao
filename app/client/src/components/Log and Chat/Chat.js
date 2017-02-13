@@ -3,10 +3,16 @@
  */
 import React from 'react';
 import ChatMessage from './ChatMessage';
-import ReactDOM from 'react-dom'
-import GlobalVariables from '../Gameplay/GlobalVariables';
+import ReactDOM from 'react-dom';
+import AuthStore from '../../stores/AuthStore';
 
 class Chat extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            me: AuthStore.getState().user
+        }
+    }
 
     componentWillUpdate() {
         const node = ReactDOM.findDOMNode(this).parentElement;
@@ -42,7 +48,7 @@ class Chat extends React.Component {
                     {
                         this.props.messages.map((message, index) =>
                             <ChatMessage key={index} message={message}
-                                         mine={GlobalVariables.username === message.username}/>
+                                         mine={this.me.username === message.username}/>
                         )
                     }
                 </div>

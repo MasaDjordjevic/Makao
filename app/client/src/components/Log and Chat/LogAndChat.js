@@ -5,8 +5,7 @@ import Divider from 'material-ui/Divider';
 import Chat from '../Log and Chat/Chat';
 import Log from  '../Log and Chat/Log';
 import ChatInputField from '../Log and Chat/ChatInputField';
-import GlobalVariables from '../Gameplay/GlobalVariables';
-import GlobalStore from '../../stores/GlobalStore';
+import AuthStore from '../../stores/AuthStore';
 
 import io from 'socket.io-client';
 var socket = io('http://localhost:3001/chat');
@@ -15,6 +14,7 @@ class LogAndChat extends React.Component {
         super();
 
         this.state= {
+            me: AuthStore.getState().user,
             chatMessages: [
                 {
                     username: "Nemanja",
@@ -43,17 +43,17 @@ class LogAndChat extends React.Component {
     }
 
     onNewChatMessage(message){
-        this.handleNewMessage(message, GlobalVariables.userId, GlobalVariables.username);
+        this.handleNewMessage(message, this.state.me.id, this.state.me.username);
         socket.emit('send:message', {
             message: message,
-            username: GlobalStore.getState().user.username,
+            username: this.state.me.username,
         })
     }
 
     handleNewMessage(message, name) {
         const time = new Date();
         const newMessage = {
-            username: name ? name : GlobalStore.getState().user.username,
+            username: name ? name : this.state.me.username,
             time: time.getHours() + ":" + time.getMinutes(),
             message: message,
         };

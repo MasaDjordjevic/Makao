@@ -8,33 +8,36 @@ import AuthStore from '../../stores/AuthStore';
 class EnsureAuthContainer extends React.Component {
     constructor(){
         super();
-
         this.state = {
-            user: {},
+            user: AuthStore.getState().user
         }
     }
 
     onChange = () => {
-        let user = GlobalStore.getState().user;
-        this.setState({user: user});
+        this.setState({ user: AuthStore.getState() });
     };
 
-    componentWillMount() {
+    componentDidMount() {
+        AuthStore.listen(this.onChange);
+        // if there's no JWT, redirect
         if (!Auth.isUserAuthenticated()) {
             browserHistory.push('/');
-        } else {
-            if (_.isEmpty(AuthStore.getState().user)) {
-                AuthActions.getUserData();
-            }
+        } // if there is a JWT but no user set, try set it
+        else if (_.isEmpty(AuthStore.getState().user)) {
+            AuthActions.getUserData();
         }
     }
 
+    componentWillUnmount() {
+        AuthStore.unlisten(this.onChange);
+    }
+
     render() {
-        if (!this.state.user.username) return false;
-        if (Auth.isUserAuthenticated()) {
-            return this.props.children;
-        } else {
+        // render nothing if no JWT or empty user
+        if (!Auth.isUserAuthenticated() || _.isEmpty(this.state.user)) {
             return null;
+        } else {
+            return this.props.children;
         }
     }
 }

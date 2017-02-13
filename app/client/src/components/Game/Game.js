@@ -8,6 +8,7 @@ import Talon from './Talon';
 import Opponents from './Opponents';
 import _ from 'lodash';
 import GlobalVariables from '../Gameplay/GlobalVariables';
+import AuthStore from '../../stores/AuthStore';
 import UserInfo from './UserInfo';
 import ScoresWrapper from './ScoresWrapper';
 import JackSignPicer from './JackSignPicker';
@@ -17,6 +18,7 @@ class Game extends React.Component {
     constructor() {
         super();
         this.state = {
+            me: AuthStore.getState().user.id,
             playerCards: [
                 {id: 1, cardNumber: '10'},
                 {id: 2, cardNumber: '13'},
@@ -57,7 +59,6 @@ class Game extends React.Component {
             ],
             pile: [],
             jackPlayed: false
-
         };
 
 
@@ -86,8 +87,8 @@ class Game extends React.Component {
     }
 
     playMove(playerId, card) {
-        const jackPlayed = playerId === GlobalVariables.userId && card.number === "12";
-        if (playerId === GlobalVariables.userId) {
+        const jackPlayed = playerId === this.state.me.id && card.number === "12";
+        if (playerId === this.state.me.id) {
             const myCards = this.state.myCards.slice();
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
@@ -205,12 +206,12 @@ class Game extends React.Component {
      </div>*/
 
     handleCardClick(card) {
-        this.playMove(GlobalVariables.userId, _(this.state.myCards).find(card));
+        this.playMove(this.state.me.id, _(this.state.myCards).find(card));
     }
 
     render() {
         const players = this.players;
-        const playersWithoutUser = _.remove(players, (p) => p.id !== GlobalVariables.userId);
+        const playersWithoutUser = _.remove(players, (p) => p.id !== this.state.me.id);
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>
@@ -244,7 +245,7 @@ class Game extends React.Component {
                         </div>
                         <div style={this.styles.spacer}>
                             <UserInfo style={this.styles.userInfo}
-                                      myMove={this.state.playerOnMoveId === GlobalVariables.userId}/>
+                                      myMove={this.state.playerOnMoveId === this.state.me.id}/>
                         </div>
                     </div>
                 </div>

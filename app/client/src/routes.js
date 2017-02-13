@@ -24,6 +24,6 @@ export default (
             <Route path="game" component={Main} />
             <Route path="lobby" component={Lobby} />
         </Route>
-            <Route path="*" component={PageNotFound} />
+        <Route path="*" component={PageNotFound} />
     </Route>
 )

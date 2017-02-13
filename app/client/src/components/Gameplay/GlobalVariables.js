@@ -1,12 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import Auth from '../../Auth';
 
 class GlobalVariables extends React.Component {
     constructor() {
         super();
-        this.userId = '';
-        this.username = '';
         this.handLength = 5;
 
         this.players = [
@@ -17,24 +14,6 @@ class GlobalVariables extends React.Component {
             {id: 5, name: 'Darko'},
         ];
         this.playersById = _.keyBy(this.players, 'id');
-
-        this.initialize = this.initialize.bind(this);
-    }
-
-    isSet() {
-        return !!this.username;
-    }
-
-    initialize() {
-        fetch('/user/data', {
-            headers: { 'Authorization': 'bearer ' + Auth.getToken() },
-        })
-        .then((res) => {
-            return res.json();
-        }).then((user) => {
-            this.usedId = user.id;
-            this.username = user.username;
-        });
     }
 }
 export default (new GlobalVariables());
