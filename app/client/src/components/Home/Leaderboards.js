@@ -74,7 +74,7 @@ class Leaderboards extends React.Component {
             <List>
                 <Link to={"/users:" + GlobalVariables.userId}>
                     <ListItem
-                        primaryText={position + ". " + GlobalVariables.username + " " + GlobalVariables.userLastName}
+                        primaryText={position + ". " + GlobalVariables.username}
                         {...this.myScoreAttributes}/>
                 </Link>
             </List>

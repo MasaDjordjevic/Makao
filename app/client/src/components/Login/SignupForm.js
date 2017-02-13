@@ -6,7 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import SignupActions from '../../actions/SignUpActions';
 import SignupStore from '../../stores/SignUpStore';
 import Snackbar from 'material-ui/Snackbar';
-import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class SignupForm extends React.Component {
 
@@ -46,7 +45,6 @@ class SignupForm extends React.Component {
         if (!this.state.signupResponse.success) {
             this.setState({ showResponse: true });
         } else {
-            GlobalVariables.initialize(this.state.signupResponse.user);
             browserHistory.push('/home');
         }
     }

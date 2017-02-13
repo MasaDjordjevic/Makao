@@ -1,6 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import Auth from '../../Auth';
+import GlobalVariables from '../Gameplay/GlobalVariables';
 
 class EnsureAuthContainer extends React.Component {
 
@@ -8,7 +9,9 @@ class EnsureAuthContainer extends React.Component {
         if (!Auth.isUserAuthenticated()) {
             browserHistory.push('/');
         } else {
-
+            if (!GlobalVariables.isSet()) {
+                GlobalVariables.initialize();
+            }
         }
     }
 

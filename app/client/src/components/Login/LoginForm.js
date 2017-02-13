@@ -5,7 +5,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import LoginActions from '../../actions/LoginActions';
 import LoginStore from '../../stores/LoginStore';
 import Snackbar from 'material-ui/Snackbar';
-import GlobalVariables from '../Gameplay/GlobalVariables'
 
 class LoginForm extends React.Component {
     constructor() {
@@ -29,7 +28,6 @@ class LoginForm extends React.Component {
         if (!this.state.loginResponse.success) {
             this.setState({ showResponse: true });
         } else {
-            GlobalVariables.initialize(this.state.loginResponse.user);
             browserHistory.push('/home');
         }
     }
