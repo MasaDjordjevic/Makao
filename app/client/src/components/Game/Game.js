@@ -18,7 +18,7 @@ class Game extends React.Component {
     constructor() {
         super();
         this.state = {
-            me: AuthStore.getState().user.id,
+            me: AuthStore.getState().user,
             playerCards: [
                 {id: 1, cardNumber: '10'},
                 {id: 2, cardNumber: '13'},

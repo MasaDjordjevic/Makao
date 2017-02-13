@@ -48,7 +48,7 @@ class Chat extends React.Component {
                     {
                         this.props.messages.map((message, index) =>
                             <ChatMessage key={index} message={message}
-                                         mine={this.me.username === message.username}/>
+                                         mine={this.state.me.username === message.username}/>
                         )
                     }
                 </div>
