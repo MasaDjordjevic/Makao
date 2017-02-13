@@ -35,9 +35,21 @@ class GameInitialiser extends React.Component {
         console.log("invite friend: " + userId);
     }
 
+    handleUserLeft = (username) => {
+        let users = this.state.users.slice();
+        let usr = _.findIndex(users, {username: username});
+        users.splice(usr, 1);
+        this.setState({users: users});
+    };
+
     handleUserJoin = (username) => {
         let users = this.state.users.slice();
-        users.push({username: username, ready: false});
+        var usr = _.find(users, {username: username});
+        if (usr) {
+            usr.ready = false;
+        } else {
+            users.push({username: username, ready: false});
+        }
         this.setState({users: users});
     };
 
@@ -55,18 +67,19 @@ class GameInitialiser extends React.Component {
 
     handleSocketInit = (users) => {
         let newUsers = [];
-        Object.keys(users).forEach((key, index)=> {
+        Object.keys(users).forEach((key, index) => {
             newUsers.push({username: key, ready: users[key].ready});
         });
 
-        this.setState({users: newUsers, me: newUsers[newUsers.length-1]});
+        this.setState({users: newUsers, me: newUsers[newUsers.length - 1]});
     };
 
-    componentDidMount(){
-        socket.emit('join', 'user ' + Math.round(Math.random()*10));
+    componentDidMount() {
+        socket.emit('join', this.state.me.username);
         socket.on('init', this.handleSocketInit);
-        socket.on('user:ready',  this.handleUserReady);
+        socket.on('user:ready', this.handleUserReady);
         socket.on('user:join', this.handleUserJoin);
+        socket.on('user:left', this.handleUserLeft);
     }
 
     get styles() {
@@ -102,9 +115,9 @@ class GameInitialiser extends React.Component {
             <FriendPicker onPick={this.handleFriendInvite}/>
         </div>;
 
-        const rules =  <div style={this.styles.section}>
+        const rules = <div style={this.styles.section}>
             <h3 style={this.styles.title}>Rules</h3>
-            <RulesSetter rules={this.state.rules} />
+            <RulesSetter rules={this.state.rules}/>
         </div>
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -114,8 +127,8 @@ class GameInitialiser extends React.Component {
                     }
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Lobby</h3>
-                        <Lobby users={this.state.users} />
-                        <RaisedButton primary={true} label="ready" onClick={this.handleReady} />
+                        <Lobby users={this.state.users}/>
+                        <RaisedButton primary={true} label="ready" onClick={this.handleReady}/>
                     </div>
                 </div>
                 <RaisedButton onClick={this.props.onGameStart} label="Start game"/>

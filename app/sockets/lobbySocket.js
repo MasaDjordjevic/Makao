@@ -2,11 +2,11 @@ var users = {};
 
 module.exports = function (socket) {
 
-    var username = '';
+    var name = '';
     console.log('user connected to lobbySocket');
 
     socket.on('join', (username) => {
-            username = username;
+            name = username;
             users[username] = {ready: false};
             socket.emit('init', users);
             socket.broadcast.emit('user:join', username);
@@ -22,7 +22,8 @@ module.exports = function (socket) {
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        delete users[username];
+        delete users[name];
+        socket.broadcast.emit('user:left', name);
     })
 
 };
