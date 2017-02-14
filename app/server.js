@@ -6,6 +6,7 @@ import passport from 'passport';
 import path from 'path';
 import redis from 'redis';
 import redisConnect from 'connect-redis';
+import sio from 'socket.io';
 
 // external route handlers
 import authRoutes from './routes/auth';
@@ -23,6 +24,10 @@ import localSignupStrategy from './passport/local-signup';
 
 // authentication check middleware that we will use to secure endpoints
 import authCheck from './passport/auth-check';
+
+// external socket.io event/message handlers
+import lobbySocket from './sockets/lobbySocket';
+import chatSocket from './sockets/chatSocket';
 
 // tell any CSS tooling (such as Material UI) to use all vendor
 // prefixes if the user agent is not known.
@@ -58,10 +63,6 @@ User.count({}, (err, count) => {
     }
 });
 
-// load the authentication check middleware
-// all routes except / will require authentication
-// app.use('/*', authCheck);
-
 app.use((req, res, next) => {
     console.log('REQUEST[' + req.url + '] ' + Date.now());
     next();
@@ -76,8 +77,6 @@ const server = app.listen(3001, () => {
     console.log('Server listening on port 3001.');
 });
 
-const io = require('socket.io')(server);
-let lobbySocket = require('./sockets/lobbySocket');
-let chatSocket = require('./sockets/chatSocket');
+const io = sio(server);
 io.of('/lobby').on('connection', lobbySocket);
 io.of('/chat').on('connection', chatSocket);
