@@ -27,7 +27,7 @@ class CreateGame extends React.Component {
     handleCreateGame() {
         GameActions.createGame(this.state.rules, (status)=> {
             if(status){
-                browserHistory.push('/game:' + AuthStore.getState().getUsername());
+                browserHistory.push('/game/:' + AuthStore.getState().getUsername());
             }else{
                 this.setState({snackbarMessage: 'Kreiranje igre nije uspelo', snackbarOpen: true});
             }

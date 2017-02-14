@@ -21,7 +21,7 @@ export default (
         }} />
         <Route component={EnsureAuthContainer}>
             <Route path="home" component={Home} />
-            <Route path="game:username" component={Main} />
+            <Route path="game/:username" component={Main} />
             <Route path="lobby" component={Lobby} />
         </Route>
         <Route path="*" component={PageNotFound} />
