@@ -21,35 +21,46 @@ exp.test = () => {
 
 ///////////////////////////////////////
 
-function rulesString(creatorUsername) {
+function gameRulesKey(creatorUsername) {
     return 'Game:' + creatorUsername + ':rules';
 }
 
-function stateString(creatorUsername) {
+function gameStateKey(creatorUsername) {
     return 'Game:' + creatorUsername + ':state';
+}
+
+function playerCardsKey(creatorUsername, playerUsername) {
+    return 'Game:' + creatorUsername + ':cards:' + playerUsername;
+}
+
+function lobbyKey(creatorUsername) {
+    return 'Game:' + creatorUsername + ':lobby';
+}
+
+function openStackKey(creatorUsername) {
+    return 'Game:' + creatorUsername + ':openStack';
+}
+
+function drawStackKey(creatorUsername) {
+    return 'Game:' + creatorUsername + ':drawStack';
 }
 
 exp.storeGame = (creatorUsername, rules) => {
     return new Promise((resolve, reject) => {
-        redisCli.set(stateString(creatorUsername), 'lobby', (err, reply) => {
+        redisCli.set(gameStateKey(creatorUsername), 'lobby', (err, reply) => {
             if (err) {
                 reject();
             }
-            redisCli.set(rulesString(creatorUsername), JSON.stringify(rules), (err, reply) => {
-                if (err) {
-                    reject();
-                }
-                resolve();
+            redisCli.set(gameRulesKey(creatorUsername), JSON.stringify(rules), (err, reply) => {
+                err ? reject() : resolve();
             });
         });
     });
-
-
 };
 
 exp.isGameStarted = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.get(stateString(creatorUsername), function (err, reply) {
+        redisCli.get(gameStateKey(creatorUsername), (err, reply) => {
             resolve(reply === 'started'); //TODO mozda neka enumeracija sa ovim stanjima
         });
     });
@@ -57,39 +68,34 @@ exp.isGameStarted = (creatorUsername) => {
 
 exp.getGameState = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.get(stateString(creatorUsername), function (err, reply) {
+        redisCli.get(gameStateKey(creatorUsername), (err, reply) => {
             resolve(reply);
         });
     });
-
 };
 
 exp.setGameState = (creatorUsername, state) => {
-    redisCli.set(stateString(creatorUsername), state);
+    redisCli.set(gameStateKey(creatorUsername), state);
 };
 
 exp.getGameRules = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.get(rulesString(creatorUsername), function (err, reply) {
+        redisCli.get(gameRulesKey(creatorUsername), (err, reply) => {
             resolve(JSON.parse(reply));//
         });
     });
 };
 
-function cardsOfPlayerString(creatorUsername, playerUsername) {
-    return 'Game:' + creatorUsername + ':cards:' + playerUsername;
-}
-
-exp.setCardsOfPlayer = (creatorUsername, playerUsername, cards) => {
+exp.setPlayerCards = (creatorUsername, playerUsername, cards) => {
     let cardsS = cards.map((card) => JSON.stringify(card));
     debugger;
     console.log(cardsS);
-    redisCli.rpush(cardsOfPlayerString(creatorUsername, playerUsername), cardsS);
+    redisCli.rpush(playerCardsKey(creatorUsername, playerUsername), cardsS);
 };
 
-exp.getCardsOfPlayer = (creatorUsername, playerUsername) => {
+exp.getPlayerCards = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.lrange(cardsOfPlayerString(creatorUsername, playerUsername), 0, -1, function (err, reply) {
+        redisCli.lrange(playerCardsKey(creatorUsername, playerUsername), 0, -1, function (err, reply) {
             reply.map((card) => JSON.parse(card));
             resolve(reply);
         });
@@ -104,15 +110,11 @@ exp.addPlayers = (creatorUsername, playersArr) => {
     redisCli.rpush('Game:' + creatorUsername + ':players', playersArr);
 };
 
-function lobbyString(creatorUsername) {
-    return 'Game:' + creatorUsername + ':lobby';
-}
-
 exp.addToLobby = (creatorUsername, playerUsername, ready) => {
     //let pUsaname = playerUsername.toString();
     //let ready = ready.toString();
     return new Promise((resolve, reject) => {
-        redisCli.hmset(lobbyString(creatorUsername), playerUsername, ready, (err, reply) => {
+        redisCli.hmset(lobbyKey(creatorUsername), playerUsername, ready, (err, reply) => {
             err ? reject() : resolve();
         });
     });
@@ -120,7 +122,7 @@ exp.addToLobby = (creatorUsername, playerUsername, ready) => {
 
 exp.removeFromLobby = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.hdel(lobbyString(creatorUsername), playerUsername, (err, reply) => {
+        redisCli.hdel(lobbyKey(creatorUsername), playerUsername, (err, reply) => {
             err ? reject() : resolve();
         });
     });
@@ -128,61 +130,50 @@ exp.removeFromLobby = (creatorUsername, playerUsername) => {
 
 exp.getLobby = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.hgetall(lobbyString(creatorUsername), (err, reply) => {
+        redisCli.hgetall(lobbyKey(creatorUsername), (err, reply) => {
             err ? reject() : resolve(reply);
         });
     });
 };
 
-exp.getUserReadyFromLobby = (creatorUsername, playerUsername) => {
+exp.getPlayerLobbyStatus = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.get(lobbyString(creatorUsername), playerUsername, (err, reply) => {
+        redisCli.get(lobbyKey(creatorUsername), playerUsername, (err, reply) => {
             err ? reject() : resolve(reply);
         });
     });
 };
 
-exp.setUserReadyFromLobby = (creatorUsername, playerUsername, ready) => {
+exp.setPlayerLobbyStatus = (creatorUsername, playerUsername, ready) => {
     return new Promise((resolve, reject) => {
-        redisCli.hmset(lobbyString(creatorUsername), playerUsername, ready, (err, reply) => {
+        redisCli.hmset(lobbyKey(creatorUsername), playerUsername, ready, (err, reply) => {
             err ? reject() : resolve(reply);
         });
     });
 };
-
-
-function openStackString(creatorUsername) {
-    return 'Game:' + creatorUsername + ':openStack';
-}
 
 exp.setOpenStack = (creatorUsername, stack) => {
-    redisCli.rpush(openStackString(creatorUsername), stack);
+    redisCli.rpush(openStackKey(creatorUsername), stack);
 };
 
 exp.getOpenStack = (creatorUsername) => {
     return new Promise((resoleve, reject) => {
-        redisCli.lrange(openStackString(creatorUsername), 0, -1, (err, reply) => {
+        redisCli.lrange(openStackKey(creatorUsername), 0, -1, (err, reply) => {
             resolve(reply);
         });
     });
 };
 
-
-function drawStackString(creatorUsername) {
-    return 'Game:' + creatorUsername + ':drawStack';
-}
-
 exp.setDrawStack = (creatorUsername, stack) => {
-    redisCli.rpush(drawStackString(creatorUsername), stack);
+    redisCli.rpush(drawStackKey(creatorUsername), stack);
 };
 
 exp.getDrawStack = (creatorUsername) => {
     return new Promise((resoleve, reject) => {
-        redisCli.lrange(drawStackString(creatorUsername), 0, -1, (err, reply) => {
+        redisCli.lrange(drawStackKey(creatorUsername), 0, -1, (err, reply) => {
             resolve(reply);
         });
     });
 };
-
 
 module.exports = exp;

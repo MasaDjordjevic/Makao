@@ -5,7 +5,6 @@ import logger from 'morgan';
 import passport from 'passport';
 import path from 'path';
 import redis from 'redis';
-import redisConnect from 'connect-redis';
 import sio from 'socket.io';
 
 // external route handlers
@@ -30,7 +29,7 @@ import authCheck from './passport/auth-check';
 import lobbySocket from './sockets/lobbySocket';
 import chatSocket from './sockets/chatSocket';
 
-//redis api
+// redis api
 import Games from './Redis/Games';
 
 // tell any CSS tooling (such as Material UI) to use all vendor
@@ -66,8 +65,8 @@ app.get('/test', (req, res, next) => {
         new Card("diamonds", "1"),
         new Card("spades", "12"),
         new Card("spades", "13")];
-    Games.setCardsOfPlayer('masa', 'masa', cards);
-    Games.getCardsOfPlayer('masa', 'masa').then((val) => {
+    Games.setPlayerCards('masa', 'masa', cards);
+    Games.getPlayerCards('masa', 'masa').then((val) => {
         console.log('Cards: ' + val);
         res.status(200).json({test: val.map((card)=> JSON.parse(card))});
     })
