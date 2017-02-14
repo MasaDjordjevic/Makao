@@ -8,6 +8,7 @@ class AuthStore {
         this.success = false;
         this.user = {};
         this.message = ' ';
+        this.getUsername = () => {return this.user.username};
     }
 
     onLogin(data) {

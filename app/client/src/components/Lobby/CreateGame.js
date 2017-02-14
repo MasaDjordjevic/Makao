@@ -3,6 +3,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import RulesSetter from './Rules';
 import Snackbar from 'material-ui/Snackbar';
 import GameActions from '../../actions/GameActions';
+import AuthStore from '../../stores/AuthStore';
+import { browserHistory } from 'react-router';
+
 
 class CreateGame extends React.Component {
     constructor() {
@@ -23,8 +26,8 @@ class CreateGame extends React.Component {
 
     handleCreateGame() {
         GameActions.createGame(this.state.rules, (status)=> {
-            if(!status){
-
+            if(status){
+                browserHistory.push('/game:' + AuthStore.getState().getUsername());
             }else{
                 this.setState({snackbarMessage: 'Kreiranje igre nije uspelo', snackbarOpen: true});
             }
