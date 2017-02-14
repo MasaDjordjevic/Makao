@@ -1,27 +1,34 @@
+import Games from '../Redis/Games';
+
 var users = {};
 
 module.exports = function (socket) {
 
     var name = '';
+    var creatorName = '';
     console.log('user connected to lobbySocket');
 
-    socket.on('join', (username) => {
+    socket.on('join', (creatorUsername, username) => {
         name = username;
-        users[username] = {ready: false};
-        socket.emit('init', users);
-        socket.broadcast.emit('user:join', username);
-        console.log(users);
+        creatorName = creatorUsername;
+
+        Games.addToLobby(creatorUsername, username, creatorUsername === username)
+            .then(() => {
+                Games.getLobby(creatorUsername)
+                    .then((users)=>  socket.emit('init', users));
+                socket.broadcast.emit('user:join', username);
+            });
     });
 
     socket.on('user:ready', (username) => {
-        users[username].ready = true;
+        Games.setUserReadyFromLobby(creatorName, username, 'true');
         console.log('user ready: ' + username);
         socket.broadcast.emit('user:ready', username);
     });
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        delete users[name];
+        Games.removeFromLobby(creatorName, name);
         socket.broadcast.emit('user:left', name);
     })
 

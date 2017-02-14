@@ -77,7 +77,7 @@ class GameInitialiser extends React.Component {
     };
 
     componentDidMount() {
-        socket.emit('join', this.state.me.username);
+        socket.emit('join', this.state.creatorUsername,  this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:ready', this.handleUserReady);
         socket.on('user:join', this.handleUserJoin);
