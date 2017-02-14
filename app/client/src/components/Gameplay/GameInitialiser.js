@@ -85,7 +85,8 @@ class GameInitialiser extends React.Component {
 
     componentDidMount() {
         this.setState({creatorUsername: this.props.creatorUsername});
-        socket.emit('join', this.state.creatorUsername,  this.state.me.username);
+        // using props again in emit because state doesn't change immidiately
+        socket.emit('join', this.props.creatorUsername,  this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:ready', this.handleUserReady);
         socket.on('user:join', this.handleUserJoin);

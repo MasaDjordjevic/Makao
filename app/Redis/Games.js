@@ -9,40 +9,40 @@ exp.test = () => {
 
 ///////////////GAME////////////////////
 // id of game is username of its creator
-// Game:id:state = 'lobby' | 'started' | 'finished'
-// Game:id:rules = stringify(rules)
-// Game:id:players = ['username1', 'username2', ...]                        ||
-// Game:id:invites = ['username1', 'username2', ...]|                       ||=> sets
-// Game:id:lobby = {username1:ready1, username2: ready2...} || hash set
-// Game:id:openStack = ['card1', 'card2', ...] //cards == stringify
-// Game:id:drawStack = ['card1', 'card2', ...] //cards == stringify
-// Game:id:cards:username = ['card1, 'card2', ...]
+// game:id:state = 'lobby' | 'started' | 'finished'
+// game:id:rules = stringify(rules)
+// game:id:players = ['username1', 'username2', ...]                        ||
+// game:id:invites = ['username1', 'username2', ...]|                       ||=> sets
+// game:id:lobby = {username1:ready1, username2: ready2...} || hash set
+// game:id:openStack = ['card1', 'card2', ...] //cards == stringify
+// game:id:drawStack = ['card1', 'card2', ...] //cards == stringify
+// game:id:cards:username = ['card1, 'card2', ...]
 //
 
 ///////////////////////////////////////
 
 function gameRulesKey(creatorUsername) {
-    return 'Game:' + creatorUsername + ':rules';
+    return 'game:' + creatorUsername + ':rules';
 }
 
 function gameStateKey(creatorUsername) {
-    return 'Game:' + creatorUsername + ':state';
+    return 'game:' + creatorUsername + ':state';
 }
 
 function playerCardsKey(creatorUsername, playerUsername) {
-    return 'Game:' + creatorUsername + ':cards:' + playerUsername;
+    return 'game:' + creatorUsername + ':cards:' + playerUsername;
 }
 
 function lobbyKey(creatorUsername) {
-    return 'Game:' + creatorUsername + ':lobby';
+    return 'game:' + creatorUsername + ':lobby';
 }
 
 function openStackKey(creatorUsername) {
-    return 'Game:' + creatorUsername + ':openStack';
+    return 'game:' + creatorUsername + ':openStack';
 }
 
 function drawStackKey(creatorUsername) {
-    return 'Game:' + creatorUsername + ':drawStack';
+    return 'game:' + creatorUsername + ':drawStack';
 }
 
 exp.storeGame = (creatorUsername, rules) => {
@@ -103,11 +103,11 @@ exp.getPlayerCards = (creatorUsername, playerUsername) => {
 };
 
 exp.addInvite = (creatorUsername, inviteUsername) => {
-    redisCli.rpush('Game:' + creatorUsername + ':invites', inviteUsername);
+    redisCli.rpush('game:' + creatorUsername + ':invites', inviteUsername);
 };
 
 exp.addPlayers = (creatorUsername, playersArr) => {
-    redisCli.rpush('Game:' + creatorUsername + ':players', playersArr);
+    redisCli.rpush('game:' + creatorUsername + ':players', playersArr);
 };
 
 exp.addToLobby = (creatorUsername, playerUsername, ready) => {

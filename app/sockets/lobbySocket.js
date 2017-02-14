@@ -37,7 +37,4 @@ module.exports = function (socket) {
         socket.leave(creatorName);
         socket.broadcast.emit('user:left', name);
     });
-
-
-
 };

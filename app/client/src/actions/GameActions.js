@@ -2,12 +2,13 @@ import alt from '../alt';
 import Auth from '../Auth';
 
 class GameActions {
-    constructor(){
-    }
 
     createGame(rules, callbackFunction){
-        fetch('/createGame', {
-            headers: {'Content-Type': 'application/json',  'Authorization': 'bearer ' + Auth.getToken()},
+        fetch('/game/create', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + Auth.getToken()
+            },
             method: "POST",
             body: JSON.stringify({rules: rules})
         }).then((res) => {
@@ -18,8 +19,11 @@ class GameActions {
     };
 
     isGameStarted(creatorUsername, callbackFunction) {
-        fetch('/gameState', {
-            headers: {'Content-Type': 'application/json',  'Authorization': 'bearer ' + Auth.getToken()},
+        fetch('/game/state', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + Auth.getToken()
+            },
             method: "POST",
             body: JSON.stringify({creatorUsername: creatorUsername})
         }).then((res) => {
