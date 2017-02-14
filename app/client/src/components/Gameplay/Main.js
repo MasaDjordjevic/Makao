@@ -16,7 +16,7 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameStarted: false,
+            gameStarted: null,
         };
 
 
@@ -60,6 +60,7 @@ class Main extends React.Component {
 
 
     render() {
+        if(this.state.gameStarted === null) return null;
         return (
             <div>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
