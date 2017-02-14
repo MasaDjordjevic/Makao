@@ -14,4 +14,11 @@ router.post('/createGame', (req, res, next) => {
 
 });
 
+router.post('/gameState', (req, res, next) => {
+
+    Games.getGameState(req.body.creatorUsername)
+        .then((state) => res.status(200).json({state: state}))
+        .catch((reason) => res.status(200).json({success: false, reason: reason}));
+});
+
 module.exports = router;

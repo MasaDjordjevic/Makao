@@ -26,10 +26,17 @@ module.exports = function (socket) {
         socket.broadcast.emit('user:ready', username);
     });
 
+    socket.on('game:started', () => {
+        Games.setGameState(creatorName, 'started');
+        socket.broadcast.emit('game:started');
+    });
+
     socket.on('disconnect', () => {
         console.log('user disconnected');
         Games.removeFromLobby(creatorName, name);
         socket.broadcast.emit('user:left', name);
-    })
+    });
+
+
 
 };

@@ -5,6 +5,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
+import GameActions from '../../actions/GameActions';
 
 import GameResizeHandler from '../Game/GameResizeHandler';
 import GameInitialiser from './GameInitialiser';
@@ -19,7 +20,17 @@ class Main extends React.Component {
         };
 
 
+        //
         this.handleGameStart = this.handleGameStart.bind(this);
+    }
+
+
+    componentDidMount(){
+        GameActions.isGameStarted(this.props.params.username.substring(1), (started) => {
+            if(started){
+                this.handleGameStart()
+            }
+        });
     }
 
     handleGameStart(){

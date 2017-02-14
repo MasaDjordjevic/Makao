@@ -36,6 +36,11 @@ class GameInitialiser extends React.Component {
         console.log("invite friend: " + userId);
     }
 
+    handleGameStart = () => {
+       socket.emit('game:started');
+       this.props.onGameStart();
+    };
+
     handleUserLeft = (username) => {
         let users = this.state.users.slice();
         let usr = _.findIndex(users, {username: username});
@@ -82,6 +87,7 @@ class GameInitialiser extends React.Component {
         socket.on('user:ready', this.handleUserReady);
         socket.on('user:join', this.handleUserJoin);
         socket.on('user:left', this.handleUserLeft);
+        socket.on('game:started', this.props.onGameStart);
     }
 
     get styles() {
@@ -135,7 +141,7 @@ class GameInitialiser extends React.Component {
                         {!myGame && <RaisedButton primary={true} label="ready" onClick={this.handleReady}/> }
                     </div>
                 </div>
-                {myGame && <RaisedButton onClick={this.props.onGameStart} label="Start game" primary={allReady} disabled={!allReady}/> }
+                {myGame && <RaisedButton onClick={this.handleGameStart} label="Start game" primary={allReady} disabled={!allReady}/> }
             </div>
         );
     }
