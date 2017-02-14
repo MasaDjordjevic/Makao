@@ -73,7 +73,7 @@ class GameInitialiser extends React.Component {
             newUsers.push({username: key, ready: key === this.state.creatorUsername || users[key].ready}); //if user is creator set him ready
         });
 
-        this.setState({users: newUsers, me: newUsers[newUsers.length - 1]});
+        this.setState({users: newUsers, me: newUsers[newUsers.length - 1], allUsersReady: _.every(newUsers, 'ready')});
     };
 
     componentDidMount() {
