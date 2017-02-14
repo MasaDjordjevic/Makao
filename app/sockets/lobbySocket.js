@@ -6,13 +6,12 @@ module.exports = function (socket) {
     console.log('user connected to lobbySocket');
 
     socket.on('join', (username) => {
-            name = username;
-            users[username] = {ready: false};
-            socket.emit('init', users);
-            socket.broadcast.emit('user:join', username);
-            console.log(users);
-        }
-    );
+        name = username;
+        users[username] = {ready: false};
+        socket.emit('init', users);
+        socket.broadcast.emit('user:join', username);
+        console.log(users);
+    });
 
     socket.on('user:ready', (username) => {
         users[username].ready = true;

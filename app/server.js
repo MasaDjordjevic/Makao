@@ -39,6 +39,9 @@ let app = express();
 // change promises used to native ES6 promises and connect to mongodb
 mongoConnect.connect('mongodb://localhost/makao');
 
+// redis client used for saving game state
+let redisCli = redis.createClient();
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client', 'build')));
 }
