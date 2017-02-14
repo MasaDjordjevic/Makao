@@ -14,6 +14,15 @@ class PlayGame extends React.Component {
     }
 
     handleOpen = () => {
+        fetch('/test', {
+            headers: { 'Content-Type': 'application/json' },
+            method: "GET",
+        }).then((res) => {
+            return res.json();
+        }).then((res) => {
+            var a = res;
+            debugger;
+        });
         this.setState({dialogOpen: true});
     };
 
