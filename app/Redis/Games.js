@@ -29,8 +29,21 @@ function stateString(creatorUsername) {
 }
 
 exp.storeGame = (creatorUsername, rules) => {
-    redisCli.set(stateString(creatorUsername), 'lobby');
-    redisCli.set(rulesString(creatorUsername), JSON.stringify(rules));
+    return new Promise((resolve, reject) => {
+        redisCli.set(stateString(creatorUsername), 'lobby', (err, reply) => {
+            if(err){
+                reject();
+            }
+            redisCli.set(rulesString(creatorUsername), JSON.stringify(rules), (err, reply) => {
+                if(err){
+                    reject();
+                }
+                resolve();
+            });
+        });
+    });
+
+
 };
 
 exp.isGameStarted = (creatorUsername) => {

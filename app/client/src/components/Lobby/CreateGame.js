@@ -1,6 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import RulesSetter from './Rules';
+import GameActions from '../../actions/GameActions';
 
 class CreateGame extends React.Component {
     constructor() {
@@ -17,7 +18,10 @@ class CreateGame extends React.Component {
     }
 
     handleCreateGame() {
-        console.log(this.state.rules);
+        GameActions.createGame(this.state.rules, (status)=> {
+            console.log(status);
+            debugger;
+        });
     }
 
     handleRuleChange(rules) {

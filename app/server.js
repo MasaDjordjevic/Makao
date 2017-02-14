@@ -11,6 +11,7 @@ import sio from 'socket.io';
 // external route handlers
 import authRoutes from './routes/auth';
 import appRoutes from './routes/app';
+import gameRoutes from './routes/game';
 
 // mongodb connection logic
 import mongoConnect from './models/connect';
@@ -104,7 +105,7 @@ app.use((req, res, next) => {
 // forward /auth/* requests to the external route handler (login and signup)
 app.use('/auth', authRoutes);
 // all other requests have to go through authCheck before forwarding to handler
-app.use('/', authCheck, appRoutes);
+app.use('/', authCheck, appRoutes, gameRoutes);
 
 const server = app.listen(3001, () => {
     console.log('Server listening on port 3001.');

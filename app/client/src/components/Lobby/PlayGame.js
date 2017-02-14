@@ -14,6 +14,7 @@ class PlayGame extends React.Component {
     }
 
     handleOpen = () => {
+        /*
         fetch('/test', {
             headers: { 'Content-Type': 'application/json' },
             method: "GET",
@@ -23,6 +24,7 @@ class PlayGame extends React.Component {
             var a = res;
             debugger;
         });
+        */
         this.setState({dialogOpen: true});
     };
 
