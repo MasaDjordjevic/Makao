@@ -1,6 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import RulesSetter from './Rules';
+import Snackbar from 'material-ui/Snackbar';
 import GameActions from '../../actions/GameActions';
 
 class CreateGame extends React.Component {
@@ -10,6 +11,9 @@ class CreateGame extends React.Component {
             stepIndex: 0,
             rules: {},
             friends: [],
+
+            snackbarMessage: '',
+            snackbarOpen: false,
         };
 
         this.handleCreateGame = this.handleCreateGame.bind(this);
@@ -19,8 +23,11 @@ class CreateGame extends React.Component {
 
     handleCreateGame() {
         GameActions.createGame(this.state.rules, (status)=> {
-            console.log(status);
-            debugger;
+            if(!status){
+
+            }else{
+                this.setState({snackbarMessage: 'Kreiranje igre nije uspelo', snackbarOpen: true});
+            }
         });
     }
 
@@ -28,6 +35,9 @@ class CreateGame extends React.Component {
         this.setState({rules: rules});
     }
 
+    handleSnackbarClosing = () => {
+        this.setState({snackbarOpen: false});
+    };
 
     get styles() {
         return {
@@ -56,6 +66,12 @@ class CreateGame extends React.Component {
                         primary={true}
                     />
                 </div>
+
+                <Snackbar
+                    open={this.state.snackbarOpen}
+                    message={this.state.snackbarMessage}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleSnackbarClosing}/>
             </div>
         );
     }
