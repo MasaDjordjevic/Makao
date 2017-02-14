@@ -15,7 +15,7 @@ class GameInitialiser extends React.Component {
 
         this.state = {
             me: AuthStore.getState().user,
-            creatorUsername: 'masa',
+            creatorUsername: '',
             rules: {
                 gameLimit: 150,
                 timeLimit: 30,
@@ -44,6 +44,8 @@ class GameInitialiser extends React.Component {
     handleUserLeft = (username) => {
         let users = this.state.users.slice();
         let usr = _.findIndex(users, {username: username});
+        if(usr < 0)
+            return;
         users.splice(usr, 1);
         this.setState({users: users});
     };
@@ -82,6 +84,7 @@ class GameInitialiser extends React.Component {
     };
 
     componentDidMount() {
+        this.setState({creatorUsername: this.props.creatorUsername});
         socket.emit('join', this.state.creatorUsername,  this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:ready', this.handleUserReady);
