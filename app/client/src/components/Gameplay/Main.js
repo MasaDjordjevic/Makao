@@ -8,7 +8,7 @@ import mainMuiTheme from '../../MainMuiTheme';
 import GameActions from '../../actions/GameActions';
 
 import GameResizeHandler from '../Game/GameResizeHandler';
-import GameInitialiser from './GameInitialiser';
+import GameInitializer from './GameInitializer';
 import RightSidebar from './RightSidebar';
 
 
@@ -64,7 +64,7 @@ class Main extends React.Component {
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
-                            {this.state.gameStarted ? <GameResizeHandler/> : <GameInitialiser creatorUsername={this.props.params.username} onGameStart={this.handleGameStart}/>}
+                            {this.state.gameStarted ? <GameResizeHandler/> : <GameInitializer creatorUsername={this.props.params.username} onGameStart={this.handleGameStart}/>}
                         </div>
                         <RightSidebar  />
                     </div>

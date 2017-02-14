@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001/lobby');
 
-class GameInitialiser extends React.Component {
+class GameInitializer extends React.Component {
     constructor() {
         super();
 
@@ -150,10 +150,10 @@ class GameInitialiser extends React.Component {
         );
     }
 }
-export default GameInitialiser;
+export default GameInitializer;
 
-GameInitialiser.defaultProps = {};
+GameInitializer.defaultProps = {};
 
-GameInitialiser.propTypes = {
+GameInitializer.propTypes = {
     onGameStart: React.PropTypes.func
 };
