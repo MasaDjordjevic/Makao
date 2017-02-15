@@ -66,7 +66,7 @@ class Main extends React.Component {
                         <div style={this.styles.game}>
                             {this.state.gameStarted ? <GameResizeHandler/> : <GameInitializer creatorUsername={this.props.params.username} onGameStart={this.handleGameStart}/>}
                         </div>
-                        <RightSidebar  />
+                        <RightSidebar creatorUsername={this.props.params.username} />
                     </div>
 
                 </MuiThemeProvider>

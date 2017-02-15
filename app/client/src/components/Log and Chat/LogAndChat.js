@@ -10,63 +10,54 @@ import AuthStore from '../../stores/AuthStore';
 import io from 'socket.io-client';
 var socket = io('http://localhost:3001/chat');
 class LogAndChat extends React.Component {
-    constructor(){
+    constructor() {
         super();
 
-        this.state= {
+        this.state = {
             me: AuthStore.getState().user,
-            chatMessages: [
-                {
-                    username: "Nemanja",
-                    time: "2:45",
-                    message: "zdravo"
-                },
-                {
-                    username: "Darko",
-                    time: "1:50",
-                    message: "poz"
-                },
-                {
-                    username: "Nikolica",
-                    time: "2:35",
-                    message: "poruka"
-                },
-                {
-                    username: "Jajac",
-                    time: "2:38",
-                    message: "13"
-                },
-            ]
-        }
+            chatMessages: [],
+        };
 
         this.handleSocketMessageReceived = this.handleSocketMessageReceived.bind(this);
+        this.handleSocketInit = this.handleSocketInit.bind(this);
     }
 
-    onNewChatMessage(message){
-        this.handleNewMessage(message, this.state.me.username);
-        socket.emit('send:message', {
+    padLeft(txt, padLen = 2) {
+        let pad = new Array(1 + padLen).join('0');
+        return (pad + txt).slice(-padLen);
+    }
+
+    onNewChatMessage(message) {
+        const time = new Date();
+        let newMessage = {
             message: message,
             username: this.state.me.username,
-        })
+            time: this.padLeft(time.getHours()) + ":" + this.padLeft(time.getMinutes()),
+        };
+        this.handleNewMessage(newMessage);
+        document.getElementById('chat-input').value = null;
+
+        socket.emit('send:message', newMessage);
     }
 
-    handleNewMessage(message, name) {
-        const time = new Date();
-        const newMessage = {
-            username: name ? name : this.state.me.username,
-            time: time.getHours() + ":" + time.getMinutes(),
-            message: message,
-        };
+    handleNewMessage(newMessage) {
         const chatMessages = [...this.state.chatMessages, newMessage];
         this.setState({chatMessages: chatMessages});
-        document.getElementById('chat-input').value = null;
     }
 
-    handleSocketMessageReceived(data){
-        this.handleNewMessage(data.message, data.username);
+    handleSocketInit(messages) {
+        debugger;
+        const chatMessages = [...this.state.chatMessages, ...messages];
+        this.setState({chatMessages: chatMessages});
     }
 
-    componentDidMount(){
+    handleSocketMessageReceived(data) {
+        this.handleNewMessage(data.message);
+    }
+
+    componentDidMount() {
+        socket.emit('subscribe', this.props.creatorUsername, this.state.me.username);
+        socket.on('init', this.handleSocketInit);
         socket.on('send:message', this.handleSocketMessageReceived);
     }
 
@@ -94,18 +85,18 @@ class LogAndChat extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                    <span style={this.styles.title}>LOG</span>
-                    <Divider />
+                <span style={this.styles.title}>LOG</span>
+                <Divider />
 
-                    <SplitterLayout vertical
-                                    percentage={true}
-                                    primaryMinSize={2} secondaryMinSize={20}>
-                        <Log />
-                        <Chat messages={this.state.chatMessages}
-                              style={this.styles.chat}/>
-                    </SplitterLayout>
+                <SplitterLayout vertical
+                                percentage={true}
+                                primaryMinSize={2} secondaryMinSize={20}>
+                    <Log />
+                    <Chat messages={this.state.chatMessages}
+                          style={this.styles.chat}/>
+                </SplitterLayout>
 
-                    <ChatInputField onEnter={(m) => this.onNewChatMessage(m)}/>
+                <ChatInputField onEnter={(m) => this.onNewChatMessage(m)}/>
             </div>
         );
     }
@@ -114,5 +105,4 @@ export default LogAndChat;
 
 LogAndChat.defaultProps = {};
 
-LogAndChat.propTypes = {
-};
+LogAndChat.propTypes = {};

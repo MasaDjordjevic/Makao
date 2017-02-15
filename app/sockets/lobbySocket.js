@@ -15,7 +15,7 @@ module.exports = function (socket) {
         Games.addToLobby(creatorUsername, username, creatorUsername === username)
             .then(() => {
                 Games.getLobby(creatorUsername)
-                    .then((users)=>  socket.emit('init', users));
+                    .then((users) => socket.emit('init', users));
                 socket.to(creatorUsername).broadcast.emit('user:join', username);
             });
     });
