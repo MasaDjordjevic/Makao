@@ -18,8 +18,8 @@ class LogAndChat extends React.Component {
             chatMessages: [],
         };
 
-        this.handleSocketMessageReceived = this.handleSocketMessageReceived.bind(this);
         this.handleSocketInit = this.handleSocketInit.bind(this);
+        this.handleNewMessage = this.handleNewMessage.bind(this);
     }
 
     padLeft(txt, padLen = 2) {
@@ -50,14 +50,10 @@ class LogAndChat extends React.Component {
         this.setState({chatMessages: chatMessages});
     }
 
-    handleSocketMessageReceived(data) {
-        this.handleNewMessage(data.message);
-    }
-
     componentDidMount() {
         socket.emit('subscribe', this.props.creatorUsername, this.state.me.username);
         socket.on('init', this.handleSocketInit);
-        socket.on('send:message', this.handleSocketMessageReceived);
+        socket.on('send:message', this.handleNewMessage);
     }
 
 
