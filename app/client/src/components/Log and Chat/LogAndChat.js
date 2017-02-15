@@ -46,7 +46,6 @@ class LogAndChat extends React.Component {
     }
 
     handleSocketInit(messages) {
-        debugger;
         const chatMessages = [...this.state.chatMessages, ...messages];
         this.setState({chatMessages: chatMessages});
     }

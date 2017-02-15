@@ -12,56 +12,11 @@ class FriendPicker extends React.Component {
         this.state = {
             search: '',
             friends: [
-                {
-                    id: 123,
-                    firstName: 'Marko',
-                    lastName: 'Petrovic'
-                },
-                {
-                    id: 7825,
-                    firstName: 'Kristina',
-                    lastName: 'Stefanovic'
-                },
-                {
-                    id: 1578,
-                    firstName: 'Darko',
-                    lastName: 'Jovanovic'
-                },
-                {
-                    id: 456,
-                    firstName: 'Filip',
-                    lastName: 'Markovic'
-                },
-                {
-                    id: 25,
-                    firstName: 'Milica',
-                    lastName: 'Nikolic'
-                },
-                {
-                    id: 1223,
-                    firstName: 'Marko',
-                    lastName: 'Petrovic'
-                },
-                {
-                    id: 78235,
-                    firstName: 'Kristina',
-                    lastName: 'Stefanovic'
-                },
-                {
-                    id: 15378,
-                    firstName: 'Darko',
-                    lastName: 'Jovanovic'
-                },
-                {
-                    id: 4546,
-                    firstName: 'Filip',
-                    lastName: 'Markovic'
-                },
-                {
-                    id: 525,
-                    firstName: 'Milica',
-                    lastName: 'Nikolic'
-                },
+                { username: 'Marko'},
+                { username: 'Kristina'},
+                { username: 'Darko'},
+                { username: 'Filip'},
+                { username: 'Milica'},
             ],
             pickedFriends: [],
         };
@@ -75,16 +30,16 @@ class FriendPicker extends React.Component {
         this.setState({search: text});
     }
 
-    handlePick(id) {
-        const picked = [id, ...this.state.pickedFriends];
+    handlePick(username) {
+        const picked = [username, ...this.state.pickedFriends];
         this.setState({pickedFriends: picked});
-        this.props.onPick(id);
+        this.props.onPick(username);
     }
 
-    handleRemove(id) {
+    handleRemove(username) {
         if(!this.props.removable) return;
         let pickedFriends = this.state.pickedFriends.slice();
-        pickedFriends = _.without(pickedFriends, id);
+        pickedFriends = _.without(pickedFriends, username);
         this.setState({pickedFriends: pickedFriends});
     }
 
@@ -110,15 +65,14 @@ class FriendPicker extends React.Component {
 
     render() {
         const searchText = this.state.search.toLowerCase();
-        const pickedIds = this.state.pickedFriends;
+        const picked = this.state.pickedFriends.slice();
 
         const friends = this.state.friends.filter(function (friend) {
-            return pickedIds.indexOf(friend.id) === -1 &&
-                (friend.firstName.toLowerCase().indexOf(searchText) > -1 ||
-                friend.lastName.toLowerCase().indexOf(searchText) > -1);
+            return picked.indexOf(friend.username) === -1 &&
+                friend.username.toLowerCase().indexOf(searchText) > -1;
         });
         const pickedFriends = this.state.friends.filter(function (friend) {
-            return pickedIds.indexOf(friend.id) !== -1;
+            return picked.indexOf(friend.username) !== -1;
         });
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -134,10 +88,10 @@ class FriendPicker extends React.Component {
                         {
                             friends.map((user, i) =>
                                 <ListItem
-                                    key={user.id}
-                                    primaryText={user.firstName + " " + user.lastName}
-                                    leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
-                                    onClick={() => this.handlePick(user.id)}
+                                    key={user.username}
+                                    primaryText={user.username}
+                                    leftAvatar={<Avatar>{user.username.charAt(0)}</Avatar>}
+                                    onClick={() => this.handlePick(user.username)}
                                 />
                             )
                         }
@@ -147,10 +101,10 @@ class FriendPicker extends React.Component {
                         {
                             pickedFriends.map((user, i) =>
                                 <ListItem
-                                    key={user.id}
-                                    primaryText={user.firstName + " " + user.lastName}
-                                    leftAvatar={<Avatar>{user.firstName.charAt(0)}</Avatar>}
-                                    onClick={() => this.handleRemove(user.id)}
+                                    key={user.username}
+                                    primaryText={user.username}
+                                    leftAvatar={<Avatar>{user.username.charAt(0)}</Avatar>}
+                                    onClick={() => this.handleRemove(user.username)}
                                     disabled={!this.props.removable}
                                 />
                             )
