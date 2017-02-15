@@ -59,7 +59,7 @@ app.get('/test', (req, res, next) => {
         console.log('Game rules:' + val);
         //res.status(200).json({test: val});
     });
-    let cards =  [
+    let cards = [
         new Card("spades", "2"),
         new Card("spades", "7"),
         new Card("diamonds", "1"),
@@ -68,12 +68,12 @@ app.get('/test', (req, res, next) => {
     Games.setPlayerCards('masa', 'masa', cards);
     Games.getPlayerCards('masa', 'masa').then((val) => {
         console.log('Cards: ' + val);
-        res.status(200).json({test: val.map((card)=> JSON.parse(card))});
+        res.status(200).json({test: val.map((card) => JSON.parse(card))});
     })
 });
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
+    app.use(express.static(path.join(__dirname, 'client', 'build')));
 }
 app.use(logger('combined'));
 app.use(bodyParser.json());
@@ -87,9 +87,9 @@ passport.use('local-signup', localSignupStrategy);
 User.count({}, (err, count) => {
     if (count === 0) {
         var users = [
-            new User({ username: "jajac", email: "jajac", password: "jajac" }),
-            new User({ username: "masa", email: "masa", password: "masa" }),
-            new User({ username: "mitic", email: "mitic", password: "mitic" })
+            new User({username: "jajac", email: "jajac", password: "jajac"}),
+            new User({username: "masa", email: "masa", password: "masa"}),
+            new User({username: "mitic", email: "mitic", password: "mitic"})
         ]
 
         users.map(x => x.save());

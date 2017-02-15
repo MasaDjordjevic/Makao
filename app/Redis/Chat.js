@@ -19,8 +19,6 @@ exp.getMessages = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.lrange(chatKey(creatorUsername), 0, -1, (err, reply) => {
             err ? reject() : resolve(reply.map((msg) => JSON.parse(msg)));
-
-
         })
     });
 };
