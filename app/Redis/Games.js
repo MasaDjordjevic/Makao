@@ -73,7 +73,7 @@ exp.isGameStarted = (creatorUsername) => {
 exp.getGameState = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.get(gameStateKey(creatorUsername), (err, reply) => {
-            resolve(reply);
+            err ? reject() : resolve(reply);
         });
     });
 };
@@ -85,7 +85,7 @@ exp.setGameState = (creatorUsername, state) => {
 exp.getGameRules = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.get(gameRulesKey(creatorUsername), (err, reply) => {
-            resolve(JSON.parse(reply));//
+            err ? reject() : resolve(JSON.parse(reply));
         });
     });
 };
@@ -106,6 +106,14 @@ exp.getPlayerCards = (creatorUsername, playerUsername) => {
     });
 };
 
+exp.getPlayerCardsNumber = (creatorUsername, playerUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.llen(playerCardsKey(creatorUsername, playerUsername), function (err, reply) {
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
 exp.addInvite = (creatorUsername, inviteUsername) => {
     redisCli.rpush('game:' + creatorUsername + ':invites', inviteUsername);
 };
@@ -113,6 +121,14 @@ exp.addInvite = (creatorUsername, inviteUsername) => {
 exp.addPlayer = (creatorUsername, playerUsername, status) => {
     return new Promise((resolve, reject) => {
         redisCli.hmset(playersKey(creatorUsername), playerUsername, status, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.addPlayers = (playersArray) => {
+    return new Promise((resolve, reject) => {
+        redisCli.hmset(playersArray, (err, reply) => {
             err ? reject() : resolve();
         });
     });
@@ -131,6 +147,22 @@ exp.getPlayers = (creatorUsername) => {
         redisCli.hgetall(playersKey(creatorUsername), (err, reply) => {
             err ? reject() : resolve(reply);
         });
+    });
+};
+
+exp.getPlayersWithStatus = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        exp.getPlayers(creatorUsername)
+            .then((data) => {
+                Object.keys(data).forEach((username, index) =>
+                    exp.getPlayerCardsNumber(creatorUsername, username).then((len) => {
+                        data[username] = {username: username, online: data[username], cardNumber: len};
+                        if (index === Object.keys(data).length - 1) {
+                            resolve(data);
+                        }
+                    })
+                )
+            });
     });
 };
 

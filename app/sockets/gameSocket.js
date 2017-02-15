@@ -11,13 +11,9 @@ module.exports = function(socket) {
         name = username;
         creatorName = creatorUsername;
         socket.join(creatorUsername);
-        Games.addPlayer(creatorUsername, username, JSON.stringify({online:true, cardNumber: 1}))
+        Games.setPlayerStatus(creatorUsername, username, 'online')
             .then(() => {
-                Games.getPlayers(creatorUsername)
-                    .then((data) => {
-                        Object.keys(data).forEach((key, index) => data[key] = JSON.parse(data[key]));
-                        socket.emit('init', data)
-                    });
+                Games.getPlayersWithStatus(creatorUsername).then((data) => socket.emit('init', data));
                 socket.to(creatorUsername).broadcast.emit('user:join', {username: username, online:true, cardNumber: 1});
             });
     });
@@ -35,9 +31,7 @@ module.exports = function(socket) {
 */
     socket.on('disconnect', () => {
         console.log('user disconnected from game');
-        Games.getPlayerStatus(creatorName, name).then((reply)=> {
-            Games.setPlayerStatus(creatorName, name, JSON.stringify({online:false, cardNumber: JSON.parse(reply).cardNumber}));
-        });
+        Games.setPlayerStatus(creatorName, name, 'offline');
         socket.leave(creatorName);
         socket.broadcast.emit('user:left', name);
     });
