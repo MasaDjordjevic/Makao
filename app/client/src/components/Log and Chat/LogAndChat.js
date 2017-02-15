@@ -1,5 +1,5 @@
 import React from 'react';
-import SplitterLayout from '../SplitterLayout/SplitterLayout';
+import SplitterLayout from 'react-splitter-layout';
 import {blueGrey300} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import Chat from '../Log and Chat/Chat';
