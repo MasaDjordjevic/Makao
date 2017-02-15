@@ -15,7 +15,6 @@ class GameInitializer extends React.Component {
 
         this.state = {
             me: AuthStore.getState().user,
-            creatorUsername: '',
             rules: {
                 gameLimit: 150,
                 timeLimit: 30,
@@ -62,7 +61,7 @@ class GameInitializer extends React.Component {
         if (usr) {
             usr.ready = false;
         } else {
-            users.push({username: username, ready: username === this.state.creatorUsername}); //creator of game is always ready
+            users.push({username: username, ready: username === this.props.creatorUsername}); //creator of game is always ready
         }
         this.setState({users: users});
     };
@@ -83,15 +82,13 @@ class GameInitializer extends React.Component {
     handleSocketInit(users) {
         let newUsers = [];
         Object.keys(users).forEach((key, index) => {
-            newUsers.push({username: key, ready: key === this.state.creatorUsername || users[key].ready}); //if user is creator set him ready
+            newUsers.push({username: key, ready: key === this.props.creatorUsername || users[key].ready}); //if user is creator set him ready
         });
 
         this.setState({users: newUsers, me: newUsers[newUsers.length - 1], allUsersReady: _.every(newUsers, 'ready')});
     };
 
     componentDidMount() {
-        this.setState({creatorUsername: this.props.creatorUsername});
-        // using props again in emit because state doesn't change immidiately
         socket.emit('join', this.props.creatorUsername,  this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:ready', this.handleUserReady);
@@ -128,7 +125,7 @@ class GameInitializer extends React.Component {
     }
 
     render() {
-        const myGame = AuthStore.getState().user.username === this.state.creatorUsername;
+        const myGame = AuthStore.getState().user.username === this.props.creatorUsername;
         const allReady = this.state.allUsersReady;
         const inviteFriends = <div style={this.styles.section}>
             <h3 style={this.styles.title}>Invite friends</h3>
@@ -147,7 +144,7 @@ class GameInitializer extends React.Component {
                     }
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Lobby</h3>
-                        <Lobby users={this.state.users} gameCreatorUsername={this.state.creatorUsername}/>
+                        <Lobby users={this.state.users} gameCreatorUsername={this.props.creatorUsername}/>
                         {!myGame && <RaisedButton primary={true} label="ready" onClick={this.handleReady}/> }
                     </div>
                 </div>
