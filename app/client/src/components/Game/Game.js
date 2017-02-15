@@ -13,25 +13,28 @@ import UserInfo from './UserInfo';
 import ScoresWrapper from './ScoresWrapper';
 import JackSignPicer from './JackSignPicker';
 import {getCardWidth} from '../Card/common';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001/game');
 
 class Game extends React.Component {
     constructor() {
         super();
         this.state = {
             me: AuthStore.getState().user,
-            playerCards: [
-                {id: 1, cardNumber: '10'},
-                {id: 2, cardNumber: '13'},
-                {id: 3, cardNumber: '5'},
-                {id: 4, cardNumber: '7'},
-                {id: 5, cardNumber: '8'},
-            ],
+            retreivedPlayers: {
+                'darko': {online: true, cardNumber: '10'},
+                'marko': {online: false, cardNumber: '13'},
+                'kristina': {online: true, cardNumber: '5'},
+                'nikola': {online: false, cardNumber: '7'},
+                'pera': {online: true, cardNumber: '8'},
+            },
+            players: [],
             playerOnMoveId: 1,
             myCards: [
                 new Card("spades", "2"),
                 new Card("spades", "7"),
                 new Card("diamonds", "1"),
-                new Card("spades", "12"),
                 new Card("spades", "13"),
                 new Card("spades", "1"),
                 new Card("diamonds", "2"),
@@ -65,14 +68,10 @@ class Game extends React.Component {
         this.handleDraw = this.handleDraw.bind(this);
         this.handleJackSignPicked = this.handleJackSignPicked.bind(this);
 
-    }
+        this.handleSocketInit = this.handleSocketInit.bind(this);
+        this.handleUserJoin = this.handleUserJoin.bind(this);
+        this.handleUserLeft = this.handleUserLeft.bind(this);
 
-    get players() {
-        const playersById = GlobalVariables.playersById;
-        let playerCards = this.state.playerCards.slice();
-        playerCards.map((pc, i) => pc.name = playersById[pc.id].name);
-
-        return playerCards;
     }
 
     handleJackSignPicked(sign) {
@@ -114,10 +113,31 @@ class Game extends React.Component {
         alert("vucem kartu");
     }
 
+    handleUserJoin(username) {
+        debugger;
+    }
+
+    handleUserLeft(username) {
+        debugger;
+    }
+
+    handleSocketInit(users) {
+        const data = Object.assign({}, this.state.retreivedPlayers);
+        let players = [];
+        Object.keys(data).forEach((username, i) => {
+            players.push({...{username: username}, ...data[username]});
+        });
+        this.setState({players: players});
+    }
+
 
     componentDidMount() {
-        this.playMove(1, this.state.myCards[0]);
-        this.playMove(2, new Card("clubs", "9"));
+        //this.playMove(1, this.state.myCards[0]);
+        //this.playMove(2, new Card("clubs", "9"));
+        socket.emit('join', this.props.creatorUsername,  this.state.me.username);
+        socket.on('init', this.handleSocketInit);
+        socket.on('user:join', this.handleUserJoin);
+        socket.on('user:left', this.handleUserLeft);
     }
 
 
@@ -210,8 +230,8 @@ class Game extends React.Component {
     }
 
     render() {
-        const players = this.players;
-        const playersWithoutUser = _.remove(players, (p) => p.id !== this.state.me.id);
+        const players = this.state.players.slice();
+        const playersWithoutUser = _.remove(players, (p) => p.username !== this.state.me.username);
         return (
             <div style={this.styles.container}>
                 <div style={this.styles.opponents}>

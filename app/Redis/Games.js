@@ -11,8 +11,8 @@ exp.test = () => {
 // id of game is username of its creator
 // game:id:state = 'lobby' | 'started' | 'finished'
 // game:id:rules = stringify(rules)
-// game:id:players = ['username1', 'username2', ...]                        ||
-// game:id:invites = ['username1', 'username2', ...]|                       ||=> sets
+// game:id:players = {username1: online1, username2: online2...}   || hash set
+// game:id:invites = ['username1', 'username2', ...]    ||=> set
 // game:id:lobby = {username1:ready1, username2: ready2...} || hash set
 // game:id:openStack = ['card1', 'card2', ...] //cards == stringify
 // game:id:drawStack = ['card1', 'card2', ...] //cards == stringify
@@ -35,6 +35,10 @@ function playerCardsKey(creatorUsername, playerUsername) {
 
 function lobbyKey(creatorUsername) {
     return 'game:' + creatorUsername + ':lobby';
+}
+
+function playersKey(creatorUsername) {
+    return 'game:' + creatorUsername + ':players';
 }
 
 function openStackKey(creatorUsername) {
@@ -106,13 +110,47 @@ exp.addInvite = (creatorUsername, inviteUsername) => {
     redisCli.rpush('game:' + creatorUsername + ':invites', inviteUsername);
 };
 
-exp.addPlayers = (creatorUsername, playersArr) => {
-    redisCli.rpush('game:' + creatorUsername + ':players', playersArr);
+exp.addPlayer = (creatorUsername, playerUsername, status) => {
+    return new Promise((resolve, reject) => {
+        redisCli.hmset(playersKey(creatorUsername), playerUsername, status, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.removePlayer = (creatorUsername, playerUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.hdel(playersKey(creatorUsername), playerUsername, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.getPlayers = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.hgetall(playersKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
+exp.getPlayerStatus = (creatorUsername, playerUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.get(playersKey(creatorUsername), playerUsername, (err, reply) => {
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
+exp.setPlayerStatus = (creatorUsername, playerUsername, status) => {
+    return new Promise((resolve, reject) => {
+        redisCli.hmset(playersKey(creatorUsername), playerUsername, status, (err, reply) => {
+            err ? reject() : resolve(reply);
+        });
+    });
 };
 
 exp.addToLobby = (creatorUsername, playerUsername, ready) => {
-    //let pUsaname = playerUsername.toString();
-    //let ready = ready.toString();
     return new Promise((resolve, reject) => {
         redisCli.hmset(lobbyKey(creatorUsername), playerUsername, ready, (err, reply) => {
             err ? reject() : resolve();

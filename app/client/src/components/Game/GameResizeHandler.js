@@ -66,7 +66,7 @@ export default class GameResizeHandler extends React.Component {
 
     render() {
         return (
-            <Game dimensions={this.state.dimensions}/>
+            <Game dimensions={this.state.dimensions} creatorUsername={this.props.creatorUsername}/>
         );
     }
 }

@@ -17,7 +17,7 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameStarted: null,
+            gameStarted: true,
         };
 
 
@@ -28,7 +28,7 @@ class Main extends React.Component {
 
     componentDidMount(){
         GameActions.isGameStarted(this.props.params.username, (started) => {
-            this.setState({gameStarted: started});
+           // this.setState({gameStarted: started});
         });
     }
 
@@ -65,7 +65,7 @@ class Main extends React.Component {
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
-                            {this.state.gameStarted ? <GameResizeHandler/> : <GameInitializer creatorUsername={this.props.params.username} onGameStart={this.handleGameStart}/>}
+                            {this.state.gameStarted ? <GameResizeHandler creatorUsername={this.props.params.username} /> : <GameInitializer creatorUsername={this.props.params.username} onGameStart={this.handleGameStart}/>}
                         </div>
                         <RightSidebar creatorUsername={this.props.params.username} />
                     </div>

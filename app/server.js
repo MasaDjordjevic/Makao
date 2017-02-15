@@ -28,6 +28,7 @@ import authCheck from './passport/auth-check';
 // external socket.io event/message handlers
 import lobbySocket from './sockets/lobbySocket';
 import chatSocket from './sockets/chatSocket';
+import gameSocket from './sockets/gameSocket';
 
 // redis api
 import Games from './Redis/Games';
@@ -113,5 +114,6 @@ const server = app.listen(3001, () => {
 const io = sio(server);
 io.of('/lobby').on('connection', lobbySocket);
 io.of('/chat').on('connection', chatSocket);
+io.of('/game').on('connection', gameSocket);
 
 

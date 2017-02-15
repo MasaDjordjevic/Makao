@@ -11,7 +11,7 @@ import {toRad} from "../../util/util";
 
 class Opponents extends React.Component {
 
-    getStyles(i) {
+    getStyles(i, online) {
         const angleDiff = 180 / (this.total + this.total % 2 - 1);
         const startAngle = 180;
         let angle = startAngle - angleDiff * (i + this.total % 2);
@@ -45,6 +45,7 @@ class Opponents extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            opacity: online ? 1 : 0.5
 
         }
     }
@@ -106,12 +107,12 @@ class Opponents extends React.Component {
             <div style={this.styles.container}>
                 {
                     players.map((player, i) =>
-                        <div key={i.toString()} style={this.getStyles(i)}>
+                        <div key={i.toString()} style={this.getStyles(i, player.online)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
                             {this.isOnTurn(player) &&
                                 <TimerProgress length={GlobalVariables.handLength} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
                             }
-                            <span style={this.styles.playerName}>{player.name.toLowerCase()}</span>
+                            <span style={this.styles.playerName}>{player.username.toLowerCase()}</span>
                         </div>
                     )
                 }
