@@ -31,7 +31,7 @@ module.exports = function(socket) {
     });
 */
     socket.on('disconnect', () => {
-        console.log('user disconnected from game');
+        console.log('user disconnected from gameSocket');
         Games.setPlayerStatus(creatorName, name, 'offline');
         socket.leave(creatorName);
         socket.broadcast.emit('user:left', name);

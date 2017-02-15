@@ -6,9 +6,10 @@ import Chat from '../Log and Chat/Chat';
 import Log from  '../Log and Chat/Log';
 import ChatInputField from '../Log and Chat/ChatInputField';
 import AuthStore from '../../stores/AuthStore';
-
 import io from 'socket.io-client';
-var socket = io('http://localhost:3001/chat');
+
+var socket;
+
 class LogAndChat extends React.Component {
     constructor() {
         super();
@@ -51,6 +52,7 @@ class LogAndChat extends React.Component {
     }
 
     componentDidMount() {
+        socket = io('/chat');
         socket.emit('subscribe', this.props.creatorUsername, this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('send:message', this.handleNewMessage);

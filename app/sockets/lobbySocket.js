@@ -53,7 +53,7 @@ module.exports = function (socket) {
     });
 
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('user disconnected from lobbySocket');
         Games.removeFromLobby(creatorName, name);
         socket.leave(creatorName);
         socket.broadcast.emit('user:left', name);

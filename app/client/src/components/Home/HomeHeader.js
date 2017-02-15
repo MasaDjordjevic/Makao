@@ -1,4 +1,5 @@
 import React from 'react';
+import io from 'socket.io-client';
 import AppBar from 'material-ui/AppBar';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
@@ -14,6 +15,8 @@ import FlatButton from 'material-ui/FlatButton';
 import { Link, browserHistory } from 'react-router';
 import AuthStore from '../../stores/AuthStore';
 import AuthActions from '../../actions/AuthActions';
+
+var socket;
 
 class HomeHeader extends React.Component {
     constructor() {
@@ -31,10 +34,12 @@ class HomeHeader extends React.Component {
 
     componentDidMount() {
         AuthStore.listen(this.onChange);
+        socket = io();
     }
 
     componentWillUnmount() {
         AuthStore.unlisten(this.onChange);
+        socket.disconnect();
     }
 
     get styles() {

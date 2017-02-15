@@ -7,7 +7,7 @@ import AuthStore from '../../stores/AuthStore';
 import _ from 'lodash';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001/lobby');
+var socket;
 
 class GameInitializer extends React.Component {
     constructor() {
@@ -89,12 +89,17 @@ class GameInitializer extends React.Component {
     };
 
     componentDidMount() {
+        socket = io('/lobby');
         socket.emit('join', this.props.creatorUsername,  this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:ready', this.handleUserReady);
         socket.on('user:join', this.handleUserJoin);
         socket.on('user:left', this.handleUserLeft);
         socket.on('game:started', this.props.onGameStart);
+    }
+
+    componentWillUnmount() {
+        socket.disconnect();
     }
 
     get styles() {
