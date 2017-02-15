@@ -30,18 +30,24 @@ class GameInitializer extends React.Component {
         };
 
         this.handleFriendInvite = this.handleFriendInvite.bind(this);
+        this.handleGameStart = this.handleGameStart.bind(this);
+        this.handleUserLeft = this.handleUserLeft.bind(this);
+        this.handleUserJoin = this.handleUserJoin.bind(this);
+        this.handleUserReady = this.handleUserReady.bind(this);
+        this.handleReady = this.handleReady.bind(this);
+        this.handleSocketInit = this.handleSocketInit.bind(this);
     }
 
     handleFriendInvite(userId) {
         console.log("invite friend: " + userId);
     }
 
-    handleGameStart = () => {
+    handleGameStart() {
        socket.emit('game:started');
        this.props.onGameStart();
     };
 
-    handleUserLeft = (username) => {
+    handleUserLeft(username) {
         let users = this.state.users.slice();
         let usr = _.findIndex(users, {username: username});
         if(usr < 0)
@@ -50,7 +56,7 @@ class GameInitializer extends React.Component {
         this.setState({users: users});
     };
 
-    handleUserJoin = (username) => {
+    handleUserJoin(username) {
         let users = this.state.users.slice();
         var usr = _.find(users, {username: username});
         if (usr) {
@@ -61,20 +67,20 @@ class GameInitializer extends React.Component {
         this.setState({users: users});
     };
 
-    handleUserReady = (username) => {
+    handleUserReady(username) {
         let users = this.state.users.slice();
         _.find(users, {username: username}).ready = true;
         const everyUserReady = _.every(users, 'ready');
         this.setState({users: users, allUsersReady: everyUserReady});
     };
 
-    handleReady = () => {
+    handleReady() {
         const username = this.state.me.username;
         this.handleUserReady(username);
         socket.emit('user:ready', username);
     };
 
-    handleSocketInit = (users) => {
+    handleSocketInit(users) {
         let newUsers = [];
         Object.keys(users).forEach((key, index) => {
             newUsers.push({username: key, ready: key === this.state.creatorUsername || users[key].ready}); //if user is creator set him ready
