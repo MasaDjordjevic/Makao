@@ -10,6 +10,7 @@ import GameActions from '../../actions/GameActions';
 import GameResizeHandler from '../Game/GameResizeHandler';
 import GameInitializer from './GameInitializer';
 import RightSidebar from './RightSidebar';
+import NoAccess from '../NoAccess';
 
 
 class Main extends React.Component {
@@ -58,7 +59,7 @@ class Main extends React.Component {
 
 
     render() {
-        if(this.state.gameStarted === null) return null;
+        if(this.state.gameStarted === null) return <NoAccess />;
         return (
             <div>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
