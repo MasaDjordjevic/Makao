@@ -16,19 +16,19 @@ module.exports = function (socket) {
             .then(() => {
                 Games.getLobby(creatorUsername)
                     .then((users)=>  socket.emit('init', users));
-                socket.in(creatorUsername).broadcast.emit('user:join', username);
+                socket.to(creatorUsername).broadcast.emit('user:join', username);
             });
     });
 
     socket.on('user:ready', (username) => {
         Games.setPlayerLobbyStatus(creatorName, username, 'true');
         console.log('user ready: ' + username);
-        socket.in(creatorName).broadcast.emit('user:ready', username);
+        socket.to(creatorName).broadcast.emit('user:ready', username);
     });
 
     socket.on('game:started', () => {
         Games.setGameState(creatorName, 'started');
-        socket.in(creatorName).broadcast.emit('game:started');
+        socket.to(creatorName).broadcast.emit('game:started');
     });
 
     socket.on('disconnect', () => {
