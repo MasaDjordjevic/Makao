@@ -7,7 +7,6 @@ import Card from '../Card/Card';
 import Talon from './Talon';
 import Opponents from './Opponents';
 import _ from 'lodash';
-import GlobalVariables from '../Gameplay/GlobalVariables';
 import AuthStore from '../../stores/AuthStore';
 import UserInfo from './UserInfo';
 import ScoresWrapper from './ScoresWrapper';
