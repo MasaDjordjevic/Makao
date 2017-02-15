@@ -112,19 +112,28 @@ class Game extends React.Component {
         alert("vucem kartu");
     }
 
-    handleUserJoin(username) {
-        debugger;
+    handleUserJoin(user) {
+        let users = this.state.players.slice();
+        let usr = _.find(users, (p) => p.username === user.username);
+        if (usr) {
+            usr.online = true;
+        } else {
+            users.push(user);
+        }
+        this.setState({players: users});
     }
 
     handleUserLeft(username) {
-        debugger;
+        let users = this.state.players.slice();
+        let user = _.find(users, (p) => p.username === username);
+        user.online = false;
+        this.setState({players: users});
     }
 
     handleSocketInit(users) {
-        const data = Object.assign({}, this.state.retreivedPlayers);
         let players = [];
-        Object.keys(data).forEach((username, i) => {
-            players.push({...{username: username}, ...data[username]});
+        Object.keys(users).forEach((username, i) => {
+            players.push({...{username: username}, ...users[username]});
         });
         this.setState({players: players});
     }
@@ -134,7 +143,7 @@ class Game extends React.Component {
         //this.playMove(1, this.state.myCards[0]);
         //this.playMove(2, new Card("clubs", "9"));
         socket = io('/game');
-        socket.emit('join', this.props.creatorUsername,  this.state.me.username);
+        socket.emit('join', this.props.creatorUsername, this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:join', this.handleUserJoin);
         socket.on('user:left', this.handleUserLeft);

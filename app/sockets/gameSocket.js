@@ -18,7 +18,7 @@ module.exports = function(socket) {
                         Object.keys(data).forEach((key, index) => data[key] = JSON.parse(data[key]));
                         socket.emit('init', data)
                     });
-                socket.to(creatorUsername).broadcast.emit('user:join', username);
+                socket.to(creatorUsername).broadcast.emit('user:join', {username: username, online:true, cardNumber: 1});
             });
     });
 /*
