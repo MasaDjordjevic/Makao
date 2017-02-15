@@ -126,8 +126,10 @@ class Game extends React.Component {
     handleUserLeft(username) {
         let users = this.state.players.slice();
         let user = _.find(users, (p) => p.username === username);
-        user.online = false;
-        this.setState({players: users});
+        if(user) {
+            user.online = false;
+            this.setState({players: users});
+        }
     }
 
     handleSocketInit(users) {

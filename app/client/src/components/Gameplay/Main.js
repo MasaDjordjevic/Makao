@@ -17,7 +17,7 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameStarted: null,
+            gameStarted: false,
         };
 
 
@@ -28,12 +28,12 @@ class Main extends React.Component {
 
     componentDidMount(){
         GameActions.isGameStarted(this.props.params.username, (started) => {
-            this.setState({gameStarted: started});
+           // this.setState({gameStarted: started});
         });
     }
 
     handleGameStart(){
-        this.setState({gameStarted: true});
+        //this.setState({gameStarted: true});
     }
 
     get styles() {

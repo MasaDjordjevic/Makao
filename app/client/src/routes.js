@@ -11,6 +11,7 @@ import Home from './components/Home/Home';
 import Auth from './Auth';
 import EnsureAuthContainer from './components/EnsureAuthContainer/EnsureAuthContainer';
 import PageNotFound from './components/PageNotFound';
+import Watcher from './components/Watcher';
 
 export default (
     <Route path='/' component={App}>
@@ -22,6 +23,7 @@ export default (
         <Route component={EnsureAuthContainer}>
             <Route path="home" component={Home} />
             <Route path="game/:username" component={Main} />
+            <Route path="game/watch/:username" component={Watcher} />
             <Route path="lobby" component={Lobby} />
         </Route>
         <Route path="*" component={PageNotFound} />

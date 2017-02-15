@@ -1,4 +1,5 @@
 import Games from '../Redis/Games';
+import Gameplay from '../Gameplay/Gameplay';
 
 module.exports = function(socket) {
 
@@ -7,7 +8,7 @@ module.exports = function(socket) {
     console.log('user connected to gameSocket');
 
     socket.on('join', (creatorUsername, username) => {
-        debugger;
+        Gameplay.startGame();
         name = username;
         creatorName = creatorUsername;
         socket.join(creatorUsername);

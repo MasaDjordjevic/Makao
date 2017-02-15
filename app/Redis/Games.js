@@ -144,7 +144,7 @@ exp.removePlayer = (creatorUsername, playerUsername) => {
 
 exp.getPlayers = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.hgetall(playersKey(creatorUsername), (err, reply) => {
+        redisCli.hkeys(playersKey(creatorUsername), (err, reply) => {
             err ? reject() : resolve(reply);
         });
     });
@@ -157,6 +157,22 @@ exp.getPlayersWithStatus = (creatorUsername) => {
                 Object.keys(data).forEach((username, index) =>
                     exp.getPlayerCardsNumber(creatorUsername, username).then((len) => {
                         data[username] = {username: username, online: data[username], cardNumber: len};
+                        if (index === Object.keys(data).length - 1) {
+                            resolve(data);
+                        }
+                    })
+                )
+            });
+    });
+};
+
+exp.getPlayersWithCards = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        exp.getPlayers(creatorUsername)
+            .then((data) => {
+                Object.keys(data).forEach((username, index) =>
+                    exp.getPlayerCards(creatorUsername, username).then((cards) => {
+                        data[username] = {username: username, cards: cards};
                         if (index === Object.keys(data).length - 1) {
                             resolve(data);
                         }
@@ -222,26 +238,52 @@ exp.setPlayerLobbyStatus = (creatorUsername, playerUsername, ready) => {
     });
 };
 
-exp.setOpenStack = (creatorUsername, stack) => {
-    redisCli.rpush(openStackKey(creatorUsername), stack);
+exp.setOpenStack = (creatorUsername, cards) => {
+    return new Promise((resolve, reject) => {
+        let cardsS = cards.map((card) => JSON.stringify(card));
+        redisCli.rpush(openStackKey(creatorUsername), cardsS, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
 };
 
 exp.getOpenStack = (creatorUsername) => {
-    return new Promise((resoleve, reject) => {
+    return new Promise((resolve, reject) => {
         redisCli.lrange(openStackKey(creatorUsername), 0, -1, (err, reply) => {
-            resolve(reply);
+            err ? reject() : resolve(reply.map((card) => JSON.parse(card)));
+        });
+    });
+};
+
+exp.getOpenStackCount = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.llen(openStackKey(creatorUsername), function (err, reply) {
+            err ? reject() : resolve(reply);
         });
     });
 };
 
 exp.setDrawStack = (creatorUsername, stack) => {
-    redisCli.rpush(drawStackKey(creatorUsername), stack);
+    return new Promise((resolve, reject) => {
+        let cardsS = stack.map((card) => JSON.stringify(card));
+        redisCli.rpush(drawStackKey(creatorUsername), cardsS, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
 };
 
 exp.getDrawStack = (creatorUsername) => {
-    return new Promise((resoleve, reject) => {
+    return new Promise((resolve, reject) => {
         redisCli.lrange(drawStackKey(creatorUsername), 0, -1, (err, reply) => {
-            resolve(reply);
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
+exp.getDrawStackCount = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.llen(drawStackKey(creatorUsername), function (err, reply) {
+            err ? reject() : resolve(reply);
         });
     });
 };
