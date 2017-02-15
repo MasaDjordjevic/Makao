@@ -26,6 +26,7 @@ import localSignupStrategy from './passport/local-signup';
 import authCheck from './passport/auth-check';
 
 // external socket.io event/message handlers
+import appSocket from './sockets/appSocket';
 import lobbySocket from './sockets/lobbySocket';
 import chatSocket from './sockets/chatSocket';
 import gameSocket from './sockets/gameSocket';
@@ -112,6 +113,7 @@ const server = app.listen(3001, () => {
 });
 
 const io = sio(server);
+io.on('connection', appSocket);
 io.of('/lobby').on('connection', lobbySocket);
 io.of('/chat').on('connection', chatSocket);
 io.of('/game').on('connection', gameSocket);
