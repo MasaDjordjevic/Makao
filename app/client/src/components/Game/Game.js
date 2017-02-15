@@ -14,7 +14,7 @@ import JackSignPicer from './JackSignPicker';
 import {getCardWidth} from '../Card/common';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001/game');
+var socket;
 
 class Game extends React.Component {
     constructor() {
@@ -133,6 +133,7 @@ class Game extends React.Component {
     componentDidMount() {
         //this.playMove(1, this.state.myCards[0]);
         //this.playMove(2, new Card("clubs", "9"));
+        socket = io('/game');
         socket.emit('join', this.props.creatorUsername,  this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:join', this.handleUserJoin);

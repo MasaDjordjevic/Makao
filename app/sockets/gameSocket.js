@@ -34,7 +34,7 @@ module.exports = function(socket) {
     });
 */
     socket.on('disconnect', () => {
-        console.log('user disconnected from game');
+        console.log('user disconnected from gameSocket');
         Games.getPlayerStatus(creatorName, name).then((reply)=> {
             Games.setPlayerStatus(creatorName, name, JSON.stringify({online:false, cardNumber: JSON.parse(reply).cardNumber}));
         });
