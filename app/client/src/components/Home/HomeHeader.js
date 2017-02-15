@@ -39,6 +39,7 @@ class HomeHeader extends React.Component {
 
     componentWillUnmount() {
         AuthStore.unlisten(this.onChange);
+        socket.disconnect();
     }
 
     get styles() {

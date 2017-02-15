@@ -98,6 +98,10 @@ class GameInitializer extends React.Component {
         socket.on('game:started', this.props.onGameStart);
     }
 
+    componentWillUnmount() {
+        socket.disconnect();
+    }
+
     get styles() {
         return {
             container: {
