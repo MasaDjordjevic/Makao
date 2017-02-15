@@ -17,7 +17,7 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameStarted: true,
+            gameStarted: null,
         };
 
 
@@ -28,7 +28,7 @@ class Main extends React.Component {
 
     componentDidMount(){
         GameActions.isGameStarted(this.props.params.username, (started) => {
-           // this.setState({gameStarted: started});
+            this.setState({gameStarted: started});
         });
     }
 
