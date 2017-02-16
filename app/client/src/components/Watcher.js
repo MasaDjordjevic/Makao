@@ -17,17 +17,17 @@ class Watcher extends React.Component {
         return {
             container: {
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
                 justifyContent: 'space-around',
                 width: '100%',
             },
             general: {
                 display: 'flex',
-                justifyContent: 'space-around',
-                alignItems: 'baseline',
-                width: '100%'
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
             },
             section: {
+                marginTop: 15,
                 padding: '0 16px 20px',
                 backgroundColor: 'white',
                 boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
@@ -60,18 +60,19 @@ class Watcher extends React.Component {
             },
             cardsContainer: {
                 display: 'flex',
-                justifyContent: 'flex-start',
-                flexWrap: 'wrap',
+                flexDirection: 'column',
+                marginLeft: 10,
             },
             card: {
                 display: 'flex',
                 alignItems: 'center',
+                marginRight: 5
             },
             cardsSection: {
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
                 alignItems: 'center',
-                marginLeft: 10
             }
         }
     }
@@ -100,13 +101,25 @@ class Watcher extends React.Component {
                 {
                     cardArray.map((card, index) =>
                         <div style={this.styles.card} key={index}>
-                            <label>{new Card(card.symbol, card.number).stringify().short}&nbsp;</label>
+                            <label>{new Card(card.symbol, card.number).stringify().short}</label>
                             <CardSymbol symbol={card.symbol} containerSize={12} padding={0.01}/>
                         </div>
                     )
                 }
             </div>
         )
+    }
+
+    renderWarnings(data){
+        let playersCards = [];
+        Object.keys(data.players).forEach((user,index)=> {
+            playersCards.push(...data.playersCards[user]);
+        });
+        let stacks = [...data.openStack, ...data.drawStack];
+        let intersection = _.intersection(playersCards, stacks);
+        if(intersection.length > 0){
+            return this.renderCardSection('intersection', intersection);
+        }
     }
 
     render() {
@@ -133,6 +146,9 @@ class Watcher extends React.Component {
                                     )
                                 }
                             </div>
+                        </div>
+                        <div style={this.styles.subsection}>
+                            {this.renderWarnings(data)}
                         </div>
                     </div>
                     <div style={this.styles.section}>
