@@ -10,7 +10,7 @@ function createStack() {
     let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
-    numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number))));
+    numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
     return deck;
 }
 

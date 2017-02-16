@@ -32,7 +32,7 @@ class CardMain extends React.Component {
             justifyContent: "center",
         };
         let mainSection;
-        const num = this.props.card.number;
+        const num = this.props.card.number.toString();
         if (num > 10) {
             mainSection =
                 <div style={mainStyle}>
