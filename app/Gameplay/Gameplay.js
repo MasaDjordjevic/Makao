@@ -11,7 +11,6 @@ function createStack() {
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
     numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number))));
-    debugger;
     return deck;
 }
 
@@ -28,8 +27,6 @@ function getRandomCards(stack, number) {
 
 exp.startGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        debugger;
-
         //kreiraj spilove
         let stack = createStack();
 
@@ -37,7 +34,7 @@ exp.startGame = (creatorUsername) => {
         let openStack = [];
         let talon = getRandomCards(stack, 1)[0];
         openStack.push(talon);
-        Games.setOpenStack(openStack);
+        Games.setOpenStack(creatorUsername, openStack);
 
         //podeli igracima karte
         const cardsPerPlayer = 6;
@@ -46,7 +43,7 @@ exp.startGame = (creatorUsername) => {
             Games.setPlayerCards(creatorUsername, username, cards);
             if (index === players.length - 1) {
                 //stavi ostalo u drawStack
-                Games.setDrawStack(stack).then(() => {
+                Games.setDrawStack(creatorUsername, stack).then(() => {
                     Games.setGameState(creatorUsername, 'started').then(() => resolve());
                 });
             }

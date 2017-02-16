@@ -79,7 +79,11 @@ exp.getGameState = (creatorUsername) => {
 };
 
 exp.setGameState = (creatorUsername, state) => {
-    redisCli.set(gameStateKey(creatorUsername), state);
+    return new Promise((resolve, reject) => {
+        redisCli.set(gameStateKey(creatorUsername), state, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
 };
 
 exp.getGameRules = (creatorUsername) => {
@@ -113,9 +117,12 @@ exp.getPlayerCardsNumber = (creatorUsername, playerUsername) => {
 };
 
 exp.addInvite = (creatorUsername, inviteUsername) => {
-    redisCli.rpush('game:' + creatorUsername + ':invites', inviteUsername);
+    return new Promise((resolve, reject) => {
+        redisCli.rpush('game:' + creatorUsername + ':invites', inviteUsername, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
 };
-
 exp.addPlayer = (creatorUsername, playerUsername, status) => {
     return new Promise((resolve, reject) => {
         redisCli.hmset(playersKey(creatorUsername), playerUsername, status, (err, reply) => {
@@ -282,7 +289,7 @@ exp.setDrawStack = (creatorUsername, stack) => {
 exp.getDrawStack = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.lrange(drawStackKey(creatorUsername), 0, -1, (err, reply) => {
-            err ? reject() : resolve(reply);
+            err ? reject() :  resolve(reply.map((card) => JSON.parse(card)));
         });
     });
 };
