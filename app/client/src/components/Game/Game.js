@@ -92,7 +92,7 @@ class Game extends React.Component {
         let users = this.state.players.slice();
         let usr = _.find(users, (p) => p.username === user.username);
         if (usr) {
-            usr.online = true;
+            usr.online = 'online';
         } else {
             users.push(user);
         }

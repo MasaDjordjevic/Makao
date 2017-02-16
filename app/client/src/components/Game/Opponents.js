@@ -45,7 +45,7 @@ class Opponents extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            opacity: online ? 1 : 0.5
+            opacity: online === 'online' ? 1 : 0.5
 
         }
     }
