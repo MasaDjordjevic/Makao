@@ -21,45 +21,10 @@ class Game extends React.Component {
         super();
         this.state = {
             me: AuthStore.getState().user,
-            retreivedPlayers: {
-                'darko': {online: true, cardNumber: '10'},
-                'marko': {online: false, cardNumber: '13'},
-                'kristina': {online: true, cardNumber: '5'},
-                'nikola': {online: false, cardNumber: '7'},
-                'pera': {online: true, cardNumber: '8'},
-            },
             players: [],
             playerOnMoveId: 1,
-            myCards: [
-                new Card("spades", "2"),
-                new Card("spades", "7"),
-                new Card("diamonds", "1"),
-                new Card("spades", "13"),
-                new Card("spades", "1"),
-                new Card("diamonds", "2"),
-                new Card("diamonds", "13"),
-                new Card("clubs", "1"),
-                new Card("clubs", "2"),
-                new Card("clubs", "10"),
-                new Card("clubs", "14"),
-                new Card("hearts", "3"),
-                new Card("hearts", "12"),
-                new Card("spades", "2"),
-                new Card("spades", "7"),
-                new Card("diamonds", "1"),
-                new Card("spades", "12"),
-                new Card("spades", "13"),
-                new Card("spades", "1"),
-                new Card("diamonds", "2"),
-                new Card("diamonds", "13"),
-                new Card("clubs", "1"),
-                new Card("clubs", "2"),
-                new Card("clubs", "10"),
-                new Card("clubs", "14"),
-                new Card("hearts", "3"),
-                new Card("hearts", "12"),
-            ],
-            pile: [],
+            myCards: [],
+            openStack: [],
             jackPlayed: false
         };
 
@@ -71,22 +36,30 @@ class Game extends React.Component {
         this.handleUserJoin = this.handleUserJoin.bind(this);
         this.handleUserLeft = this.handleUserLeft.bind(this);
 
+        this.handleCardClick = this.handleCardClick.bind(this);
+        this.handleMovePlayed = this.handleMovePlayed.bind(this);
     }
 
     handleJackSignPicked(sign) {
-        const pile = this.state.pile.slice();
-        pile[pile.length - 1].jackSymbol = sign;
+        const pile = this.state.openStack.slice();
+        let card = pile[pile.length - 1];
+        card.jackSymbol = sign;
         this.setState({
-            pile: pile,
+            openStack: pile,
             jackPlayed: false,
         });
 
-        //obavesti ostale o potezu
+        socket.emit('play:move', card);
     }
 
-    playMove(playerId, card) {
-        const jackPlayed = playerId === this.state.me.id && card.number === "12";
-        if (playerId === this.state.me.id) {
+    handleCardClick(card) {
+        this.handleMovePlayed(this.state.me.username, _.find(this.state.myCards, card));
+    }
+
+    handleMovePlayed(username, card) {
+        const jackPlayed = username === this.state.me.username && card.number === "12";
+        const myMove = username === this.state.me.username;
+        if (myMove) {
             const myCards = this.state.myCards.slice();
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
@@ -94,17 +67,20 @@ class Game extends React.Component {
                 jackPlayed: jackPlayed,
             })
         }
-        const players = this.state.playerCards.slice();
-        players.find((player) => player.id === playerId).cardNumber--;
-        const pile = this.state.pile.slice();
+        const players = this.state.players.slice();
+        players.find((player) => player.username === username).cardNumber--;
+        const pile = this.state.openStack.slice();
+        if(typeof(card) !==  typeof(Card)){
+            card = new Card(card);
+        }
         pile.push(card);
         this.setState({
-            playerCards: players,
-            pile: pile,
+            players: players,
+            openStack: pile,
         });
 
-        if (!jackPlayed) {
-            //obavesti ostale o potezu
+        if (!jackPlayed && myMove) {
+            socket.emit('play:move', card);
         }
     }
 
@@ -132,23 +108,27 @@ class Game extends React.Component {
         }
     }
 
-    handleSocketInit(users) {
+    handleSocketInit(data) {
         let players = [];
-        Object.keys(users).forEach((username, i) => {
-            players.push({...{username: username}, ...users[username]});
+        Object.keys(data.players).forEach((username, i) => {
+            players.push({...{username: username}, ...data.players[username]});
         });
-        this.setState({players: players});
+        let pile = [...this.state.openStack, new Card(data.talon)];
+        let cards = data.cards.map((card) => new Card(card));
+        cards = _.sortBy(cards, ['symbol', 'number']);
+        this.setState({players: players, myCards: cards, openStack: pile});
     }
 
 
     componentDidMount() {
-        //this.playMove(1, this.state.myCards[0]);
-        //this.playMove(2, new Card("clubs", "9"));
+        //this.handleMovePlayed(1, this.state.myCards[0]);
+        //this.handleMovePlayed(2, new Card("clubs", "9"));
         socket = io('/game');
         socket.emit('join', this.props.creatorUsername, this.state.me.username);
         socket.on('init', this.handleSocketInit);
         socket.on('user:join', this.handleUserJoin);
         socket.on('user:left', this.handleUserLeft);
+        socket.on('play:move', this.handleMovePlayed);
     }
 
 
@@ -233,12 +213,10 @@ class Game extends React.Component {
      <CardSet width={500} height={310} cardNumber={5} back />
      </div>
      <div>
-     <Talon cardHeight={310} card={this.state.pile.slice(-1)[0]}/>
+     <Talon cardHeight={310} card={this.state.openStack.slice(-1)[0]}/>
      </div>*/
 
-    handleCardClick(card) {
-        this.playMove(this.state.me.id, _(this.state.myCards).find(card));
-    }
+
 
     render() {
         const players = this.state.players.slice();
@@ -253,7 +231,7 @@ class Game extends React.Component {
                 <div style={this.styles.userCardsTalon}>
                     <div style={this.styles.talon}>
                         <Talon cardHeight={this.props.dimensions.talon}
-                               card={this.state.pile.slice(-1)[0]}
+                               card={this.state.openStack.slice(-1)[0]}
                                onClick={() => this.handleDraw()}/>
                         {
                             this.state.jackPlayed &&

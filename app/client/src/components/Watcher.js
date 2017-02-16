@@ -93,8 +93,10 @@ class Watcher extends React.Component {
         })
     }
 
-    renderCardSection(title, cardArray) {
-        cardArray = _.sortBy(cardArray, ['symbol', 'number']);
+    renderCardSection(title, cardArray, sort = false) {
+        if(sort){
+            cardArray = _.sortBy(cardArray, ['symbol', 'number']);
+        }
         return (
             <div style={{...this.styles.section, ...this.styles.cardsSection}} key={title}>
                 <span style={this.styles.title}>{title}</span>
@@ -161,7 +163,7 @@ class Watcher extends React.Component {
                     {this.renderCardSection('draw stack', data.drawStack)}
                     {
                         Object.keys(data.playersCards).map((user, index) =>
-                            this.renderCardSection(user, data.playersCards[user])
+                            this.renderCardSection(user, data.playersCards[user], true)
                         )
                     }
                 </div>
