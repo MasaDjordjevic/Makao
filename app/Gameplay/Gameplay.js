@@ -41,7 +41,7 @@ exp.startGame = (creatorUsername) => {
 
         //podeli igracima karte
         const cardsPerPlayer = 6;
-        Games.getPlayers(creatorUsername).then((players) => players.forEach((username, index) => {
+        Games.getPlayersUsernames(creatorUsername).then((players) => players.forEach((username, index) => {
             let cards = getRandomCards(stack, cardsPerPlayer);
             Games.setPlayerCards(creatorUsername, username, cards);
             if (index === players.length - 1) {

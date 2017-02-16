@@ -144,6 +144,15 @@ exp.removePlayer = (creatorUsername, playerUsername) => {
 
 exp.getPlayers = (creatorUsername) => {
     return new Promise((resolve, reject) => {
+        redisCli.hgetall(playersKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
+
+exp.getPlayersUsernames = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
         redisCli.hkeys(playersKey(creatorUsername), (err, reply) => {
             err ? reject() : resolve(reply);
         });
@@ -172,7 +181,7 @@ exp.getPlayersWithCards = (creatorUsername) => {
             .then((data) => {
                 Object.keys(data).forEach((username, index) =>
                     exp.getPlayerCards(creatorUsername, username).then((cards) => {
-                        data[username] = {username: username, cards: cards};
+                        data[username] = cards;
                         if (index === Object.keys(data).length - 1) {
                             resolve(data);
                         }
