@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 
 
-class RulesSetter extends React.Component {
+class Rules extends React.Component {
     constructor(){
         super();
         const inputs = [
@@ -52,7 +52,7 @@ class RulesSetter extends React.Component {
 
     componentWillMount(){
         if(this.props.rules && this.props.onChange) {
-            console.log('[RulesSetter] Error: rules and onChange set, can\'t be both' );
+            console.log('[Rules] Error: rules and onChange set, can\'t be both' );
         }
         if(this.props.rules){
             const values = Object.assign({}, this.state.values);
@@ -144,11 +144,11 @@ class RulesSetter extends React.Component {
         );
     }
 }
-export default RulesSetter;
+export default Rules;
 
-RulesSetter.defaultProps = {};
+Rules.defaultProps = {};
 
-RulesSetter.propTypes = {
+Rules.propTypes = {
     onChange: React.PropTypes.func,
     rules: React.PropTypes.object,
 };
