@@ -92,8 +92,6 @@ exp.getGameRules = (creatorUsername) => {
 
 exp.setPlayerCards = (creatorUsername, playerUsername, cards) => {
     let cardsS = cards.map((card) => JSON.stringify(card));
-    debugger;
-    console.log(cardsS);
     redisCli.rpush(playerCardsKey(creatorUsername, playerUsername), cardsS);
 };
 
@@ -181,7 +179,7 @@ exp.getPlayersWithCards = (creatorUsername) => {
             .then((data) => {
                 Object.keys(data).forEach((username, index) =>
                     exp.getPlayerCards(creatorUsername, username).then((cards) => {
-                        data[username] = cards;
+                        data[username] = cards.map((card) => JSON.parse(card));
                         if (index === Object.keys(data).length - 1) {
                             resolve(data);
                         }

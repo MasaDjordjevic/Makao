@@ -57,7 +57,7 @@ exp.startGame = (creatorUsername) => {
 exp.getGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         let ret = {};
-        let state = Games.getGameState(creatorUsername)
+        Games.getGameState(creatorUsername)
             .then((data) => {
                 ret.state = data;
                 Games.getGameRules(creatorUsername).then((data) => {
@@ -69,7 +69,7 @@ exp.getGame = (creatorUsername) => {
                             Games.getDrawStack(creatorUsername).then((data) => {
                                 ret.drawStack = data;
                                 Games.getPlayersWithCards(creatorUsername).then((data) => {
-                                    ret.stateplayersCards = data;
+                                    ret.playersCards = data;
                                     resolve(ret);
                                 });
                             });
