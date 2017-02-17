@@ -14,6 +14,10 @@ class LogEntry extends React.Component {
                 display: 'flex',
                 alignItems: 'center',
             },
+            jackSymbolContainer: {
+                display: 'flex',
+                alignItems: 'baseline'
+            },
             playerName: {
                 color: blueGrey300,
             }
@@ -23,12 +27,17 @@ class LogEntry extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                {this.props.playerName && <label style={this.styles.playerName}>{this.props.playerName}:&nbsp;</label>}
-                {this.props.log && <label>{this.props.log}</label>}
+                {this.props.playerName && <span style={this.styles.playerName}>{this.props.playerName}:&nbsp;</span>}
+                {this.props.log && <span>{this.props.log}</span>}
                 {this.props.card &&
                 <div style={this.styles.cardContainer}>
-                    <label>{this.props.card.stringify().short}&nbsp;</label>
+                    <span>{this.props.card.stringify().short}&nbsp;</span>
                     <CardSymbol symbol={this.props.card.symbol} containerSize={12} padding={0.01}/>
+                    {this.props.card.jackSymbol &&
+                    <div style={this.styles.jackSymbolContainer}>
+                        <span>&nbsp;&#65515;&nbsp;</span>
+                        <CardSymbol symbol={this.props.card.jackSymbol} containerSize={12} padding={0.01}/>
+                    </div>}
                 </div>
                 }
             </div>
