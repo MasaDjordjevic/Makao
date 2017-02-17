@@ -39,9 +39,14 @@ class Game extends React.Component {
         this.handleUserLeft = this.handleUserLeft.bind(this);
         this.handleDraw = this.handleDraw.bind(this);
         this.handleGetCards = this.handleGetCards.bind(this);
+        this.handleNewLog = this.handleNewLog.bind(this);
 
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
+    }
+
+    handleNewLog(log){
+        GameActions.addLogEntry(log);
     }
 
     handlePlayerOnMove(username) {
@@ -64,7 +69,6 @@ class Game extends React.Component {
             jackPlayed: false,
         });
 
-        GameActions.addLogEntry({username: this.state.me.username, card: card});
         socket.emit('play:move', card);
     }
 
@@ -98,9 +102,6 @@ class Game extends React.Component {
             openStack: pile,
         });
 
-        if (!jackPlayed) {
-            GameActions.addLogEntry({username: username, card: card});
-        }
 
         if (!jackPlayed && myMove) {
             socket.emit('play:move', card);
@@ -108,7 +109,6 @@ class Game extends React.Component {
     }
 
     handleDrawClick() {
-        GameActions.addLogEntry({username: this.state.me.username, draw: 1});
         socket.emit('play:draw', 1);
     }
 
@@ -122,8 +122,6 @@ class Game extends React.Component {
         let players = this.state.players.slice();
         players.find((player) => player.username === username).cardNumber += cardsNumber;
         this.setState({players: players});
-
-        GameActions.addLogEntry({username: username, draw: cardsNumber});
     }
 
     handleUserJoin(user) {
@@ -167,6 +165,7 @@ class Game extends React.Component {
         socket.on('play:draw', this.handleDraw);
         socket.on('play:get', this.handleGetCards);
         socket.on('play:playerOnMove', this.handlePlayerOnMove);
+        socket.on('log:new', this.handleNewLog);
     }
 
 

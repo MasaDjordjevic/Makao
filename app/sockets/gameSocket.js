@@ -46,15 +46,24 @@ module.exports = function (socket) {
 
     });
 
+    function emitToEveryone(key, value){
+        socket.emit(key, value);
+        socket.to(creatorName).broadcast.emit(key, value);
+    }
+
     function emitPlayerOnMove(username){
-        socket.emit('play:playerOnMove', username);
-        socket.to(creatorName).broadcast.emit('play:playerOnMove', username);
+        emitToEveryone('play:playerOnMove', username);
+    }
+
+    function emitLog(log){
+        emitToEveryone('log:new', log);
     }
 
     socket.on('play:move', (card) => {
-        Gameplay.playMove(creatorName, name, card).then((playerOnMove) => {
+        Gameplay.playMove(creatorName, name, card).then((data) => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
-            emitPlayerOnMove(playerOnMove);
+            emitPlayerOnMove(data.playerOnMove);
+            emitLog(data.log);
         });
     });
 
@@ -67,6 +76,7 @@ module.exports = function (socket) {
            socket.emit('play:get', data.cards);
            socket.to(creatorName).broadcast.emit('play:draw', name, cardsNumber);
            emitPlayerOnMove(data.playerOnMove);
+           emitLog(data.log);
        });
 
     });
@@ -74,6 +84,7 @@ module.exports = function (socket) {
     socket.on('play:pass', () => {
        Gameplay.nextPlayer(creatorName).then((playerOnMove) => {
            emitPlayerOnMove(playerOnMove);
+           emitLog({username: name, message: "pass"});
        });
     });
 

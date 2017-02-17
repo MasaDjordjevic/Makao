@@ -149,10 +149,11 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 //add card to openStack
                 Games.addToOpenStack(creatorUsername, [card]).then(() => {
                     //add log
-                    Games.addLog(creatorUsername, {username: playerUsername, card: card}).then(() => {
+                    let log = {username: playerUsername, card: card};
+                    Games.addLog(creatorUsername, log).then(() => {
                         //determine next player
                         exp.nextPlayer(creatorUsername).then((playerOnMove) => {
-                            resolve(playerOnMove);
+                            resolve({playerOnMove: playerOnMove, log: log});
                         });
                     });
                 });
@@ -168,10 +169,11 @@ exp.draw = (creatorUsername, playerUsername, cardsNumber) => {
             //add that cards to players cards
             Games.addToPlayerCards(creatorUsername, playerUsername, cards).then(() => {
                 //add log
-                Games.addLog(creatorUsername, {username: playerUsername, draw: cardsNumber}).then(() => {
+                let log = {username: playerUsername, draw: cardsNumber};
+                Games.addLog(creatorUsername, log).then(() => {
                     //determine next player
                     exp.nextPlayer(creatorUsername).then((playerOnMove) => {
-                        resolve({playerOnMove: playerOnMove, cards: cards});
+                        resolve({playerOnMove: playerOnMove, cards: cards, log: log});
                     });
                 });
             })
