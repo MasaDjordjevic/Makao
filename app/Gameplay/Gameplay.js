@@ -34,19 +34,21 @@ exp.startGame = (creatorUsername) => {
         let openStack = [];
         let talon = getRandomCards(stack, 1)[0];
         openStack.push(talon);
-        Games.addToOpenStack(creatorUsername, openStack);
+        Games.setOpenStack(creatorUsername, openStack);
+
 
         //podeli igracima karte
         const cardsPerPlayer = 6;
         Games.getPlayersUsernames(creatorUsername).then((players) => players.forEach((username, index) => {
             let cards = getRandomCards(stack, cardsPerPlayer);
-            Games.setPlayerCards(creatorUsername, username, cards);
-            if (index === players.length - 1) {
-                //stavi ostalo u drawStack
-                Games.addToDrawStack(creatorUsername, stack).then(() => {
-                    Games.setGameState(creatorUsername, 'started').then(() => resolve());
-                });
-            }
+            Games.setPlayerCards(creatorUsername, username, cards).then(() => {
+                if (index === players.length - 1) {
+                    //stavi ostalo u drawStack
+                    Games.setDrawStack(creatorUsername, stack).then(() => {
+                        Games.setGameState(creatorUsername, 'started').then(() => resolve());
+                    });
+                }
+            });
         }));
     });
 };

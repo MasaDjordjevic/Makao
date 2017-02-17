@@ -94,7 +94,7 @@ exp.getGameRules = (creatorUsername) => {
     });
 };
 
-exp.setPlayerCards = (creatorUsername, playerUsername, cards) => {
+exp.addToPlayerCards = (creatorUsername, playerUsername, cards) => {
     return new Promise((resolve, reject) => {
         let cardsS = cards.map((card) => JSON.stringify(card));
         redisCli.rpush(playerCardsKey(creatorUsername, playerUsername), cardsS, (err, reply) => {
@@ -114,7 +114,19 @@ exp.getPlayerCards = (creatorUsername, playerUsername) => {
 exp.removePlayerCards = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.del(playerCardsKey(creatorUsername, playerUsername), (err, reply) => {
-            err ? reject() : resolve();
+            err ? reject(err) : resolve();
+        });
+    });
+};
+
+exp.setPlayerCards = (creatorUsername, playerUsername, cards) => {
+    return new Promise((resolve, reject) => {
+        exp.removePlayerCards(creatorUsername, playerUsername).then(() => {
+            exp.addToPlayerCards(creatorUsername, playerUsername, cards).then( () => {
+               resolve();
+            });
+        }).catch((reason) => {
+            reject(reason);
         });
     });
 };
@@ -280,6 +292,16 @@ exp.addToOpenStack = (creatorUsername, cards) => {
     });
 };
 
+
+exp.deleteOpenStack = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.del(openStackKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+
 exp.getOpenStack = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.lrange(openStackKey(creatorUsername), 0, -1, (err, reply) => {
@@ -295,6 +317,18 @@ exp.getOpenStackCount = (creatorUsername) => {
         });
     });
 };
+
+
+exp.setOpenStack = (creatorUsername, cards) => {
+    return new Promise((resolve, reject) => {
+        exp.deleteOpenStack(creatorUsername).then(() => {
+            exp.addToOpenStack(creatorUsername, cards, (err, reply) => {
+                err ? reject() : resolve();
+            });
+        });
+    });
+};
+
 
 exp.peakOpenStack = (creatorUsername) => {
     return new Promise((resolve, reject) => {
@@ -333,6 +367,25 @@ exp.popDrawStack = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.rpop(drawStackKey(creatorUsername), function (err, reply) {
             err ? reject() : resolve(JSON.parse(reply));
+        });
+    });
+};
+
+
+exp.deleteDrawStack = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.del(drawStackKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.setDrawStack = (creatorUsername, cards) => {
+    return new Promise((resolve, reject) => {
+        exp.deleteDrawStack(creatorUsername).then(() => {
+            exp.addToDrawStack(creatorUsername, cards, (err, reply) => {
+                err ? reject() : resolve();
+            });
         });
     });
 };
