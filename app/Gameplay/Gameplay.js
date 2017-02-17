@@ -1,6 +1,6 @@
 import redis from 'redis';
 import Games from '../Redis/Games';
-
+import _ from 'lodash';
 import Card from '../client/src/components/Card/Card';
 
 let redisCli = redis.createClient();
@@ -81,6 +81,27 @@ exp.getGame = (creatorUsername) => {
                     });
                 });
             });
+    });
+};
+
+exp.playMove = (creatorUsername, playerUsername, card) => {
+    return new Promise((resolve, reject) => {
+        //remove card from players cards
+        //ne radi
+        //Games.removeFromPlayersCards(creatorUsername, playerUsername, card).then((cards) => {
+        Games.getPlayerCards(creatorUsername, playerUsername).then((cards) => {
+            _.remove(cards, (c) => c.number === card.number && c.symbol === card.symbol);
+            Games.setPlayerCards(creatorUsername, playerUsername, cards).then(() => {
+                //add card to openStack
+                Games.addToOpenStack(creatorUsername, [card]).then(() => {
+                    //add log
+                    Games.addLog(creatorUsername, {username: playerUsername, card: card}).then(() => {
+                        resolve();
+                    });
+                });
+            });
+
+        });
     });
 };
 

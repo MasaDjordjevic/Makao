@@ -32,22 +32,8 @@ module.exports = function (socket) {
     });
 
     socket.on('play:move', (card) => {
-        //remove card from players cards
-        //ne radi
-        //Games.removeFromPlayersCards(creatorName, name, card).then((cards) => {
-        Games.getPlayerCards(creatorName, name).then((cards) => {
-            _.remove(cards, (c) => c.number === card.number && c.symbol === card.symbol);
-            Games.setPlayerCards(creatorName, name, cards).then(() => {
-                //add card to openStack
-                Games.addToOpenStack(creatorName, [card]).then(() => {
-                    //add log
-                    Games.addLog(creatorName, {username: name, card: card}).then(() => {
-                        //notify others
-                        socket.to(creatorName).broadcast.emit('play:move', name, card);
-                    });
-                });
-            });
-
+        Gameplay.playMove(creatorName, name, card).then(()=>{
+            socket.to(creatorName).broadcast.emit('play:move', name, card);
         });
     });
 
