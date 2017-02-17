@@ -3,10 +3,6 @@ import redis from 'redis';
 let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
-exp.test = () => {
-    redisCli.set('cc', 'dd');
-};
-
 ///////////////GAME////////////////////
 // id of game is username of its creator
 // game:id:state = 'lobby' | 'started' | 'finished'
@@ -47,6 +43,10 @@ function openStackKey(creatorUsername) {
 
 function drawStackKey(creatorUsername) {
     return 'game:' + creatorUsername + ':drawStack';
+}
+
+function invitesKey(creatorUsername) {
+    return 'game:' + creatorUsername + ':invites';
 }
 
 exp.storeGame = (creatorUsername, rules) => {
@@ -107,7 +107,11 @@ exp.getPlayerCards = (creatorUsername, playerUsername) => {
 };
 
 exp.addInvite = (creatorUsername, inviteUsername) => {
-    redisCli.rpush('game:' + creatorUsername + ':invites', inviteUsername);
+    return new Promise((resolve, reject) => {
+        redisCli.rpush(invitesKey(creatorUsername), inviteUsername, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
 };
 
 exp.addPlayer = (creatorUsername, playerUsername, status) => {

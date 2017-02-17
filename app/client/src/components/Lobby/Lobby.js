@@ -1,5 +1,4 @@
 import React from 'react';
-
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import HourglassIcon from 'material-ui/svg-icons/action/hourglass-empty';

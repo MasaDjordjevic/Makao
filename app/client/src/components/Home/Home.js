@@ -79,7 +79,7 @@ class Home extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <HomeHeader />
+                <HomeHeader socket={this.props.socket}/>
                 <div style={this.styles.content}>
                     <div style={this.styles.charts}>
                         <TimeSpentStats style={this.styles.timeStats}/>

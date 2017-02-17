@@ -11,13 +11,7 @@ class FriendPicker extends React.Component {
         super();
         this.state = {
             search: '',
-            friends: [
-                { username: 'Marko'},
-                { username: 'Kristina'},
-                { username: 'Darko'},
-                { username: 'Filip'},
-                { username: 'Milica'},
-            ],
+            friends: [],
             pickedFriends: [],
         };
 
