@@ -22,7 +22,7 @@ class Log extends React.Component {
 
     onChange() {
         let logs = GameStore.getState().logs;
-        logs.map((log) => log.card = new Card(log.card));
+        logs.map((log) => log.card ? log.card = new Card(log.card) : log);
         this.setState({logs: logs});
     }
 
@@ -30,12 +30,9 @@ class Log extends React.Component {
         if (this.props.creatorUsername) {
             GameStore.listen(this.onChange);
             GameActions.getLogs(this.props.creatorUsername);
-        }
-
-        if(this.props.logs){
+        } else if (this.props.logs) {
             this.setState({logs: this.props.logs});
         }
-
     }
 
     componentWillUnmount() {
@@ -72,12 +69,22 @@ class Log extends React.Component {
     }
 
     render() {
+        let logs = JSON.parse(JSON.stringify(this.state.logs));
+        logs.map((log) => log.card ? log.card = new Card(log.card) : log);
+        logs.map((log, index) => {
+            if (!log.message) {
+                log.message = "";
+            }
+            if (log.draw) {
+                log.message += 'draw' + (log.username === this.state.me.username ? '' : 's') + ' ' + (log.draw > 1 ? log.draw : '');
+            }
+        });
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
 
                 <div style={this.styles.logContainer}>
                     {
-                        this.state.logs.map((log, index) =>
+                        logs.map((log, index) =>
                             <LogEntry key={index}
                                       log={log.message}
                                       playerName={(this.props.alwaysDisplayUsername || log.username !== this.state.me.username) && log.username}

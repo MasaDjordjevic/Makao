@@ -135,7 +135,7 @@ class Watcher extends React.Component {
     render() {
         if (!this.state.response) return null;
         const data = Object.assign({}, this.state.response);
-        data.logs.map((log) => log.card = new Card(log.card));
+        data.logs.map((log) => log.card ? log.card = new Card(log.card) : log);
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.general}>

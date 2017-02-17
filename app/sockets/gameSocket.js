@@ -17,7 +17,6 @@ module.exports = function (socket) {
                 return;
             }
 
-            Gameplay.startGame();
             name = username;
             creatorName = creatorUsername;
             socket.join(creatorUsername);
@@ -47,6 +46,18 @@ module.exports = function (socket) {
         Gameplay.playMove(creatorName, name, card).then(() => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
         });
+    });
+
+    socket.on('play:draw', (cardsNumber) => {
+       if(cardsNumber === undefined){
+           cardsNumber = 1;
+       }
+
+       Gameplay.draw(creatorName, name, cardsNumber).then((cards)=> {
+           socket.emit('play:get', cards);
+           socket.to(creatorName).broadcast.emit('play:draw', name, cardsNumber);
+       });
+
     });
 
     socket.on('disconnect', () => {
