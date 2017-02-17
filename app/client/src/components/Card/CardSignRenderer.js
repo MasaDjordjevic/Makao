@@ -6,7 +6,7 @@ import React from 'react';
 
 class CardSignRenderer extends React.Component {
     render() {
-        const type = this.props.type;
+        const type = this.props.type.toString();
         const color = this.props.color;
         var colorOne;
         var colorTwo;

@@ -1,6 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import RulesSetter from './Rules';
+import Rules from './Rules';
 import Snackbar from 'material-ui/Snackbar';
 
 class CreateGame extends React.Component {
@@ -48,7 +48,7 @@ class CreateGame extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <RulesSetter onChange={this.handleRuleChange}/>
+                <Rules onChange={this.handleRuleChange}/>
                 <div style={this.styles.navigation}>
                     <RaisedButton
                         label="Create game"

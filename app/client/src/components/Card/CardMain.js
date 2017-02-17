@@ -25,14 +25,13 @@ class CardMain extends React.Component {
             justifyContent: "center",
         };
         const symbolContainer = {
-            width: '100%',
             display: "flex",
             flexDirection: "row",
             textAlign: 'center',
             justifyContent: "center",
         };
         let mainSection;
-        const num = this.props.card.number;
+        const num = this.props.card.number.toString();
         if (num > 10) {
             mainSection =
                 <div style={mainStyle}>
@@ -45,7 +44,7 @@ class CardMain extends React.Component {
                 </div>
         } else {
 
-            const symbolSize = num === 1 ? cardHeight / 3 : cardHeight / 8;
+            const symbolSize = num === '1' ? cardHeight / 3 : cardHeight / 8;
             const middle = Math.ceil(num / 2);
             var symArr = [];
             for (let i = 0; i < num; i++) {
@@ -55,9 +54,9 @@ class CardMain extends React.Component {
                                         key={i}/>);
             }
             const symUpper = symArr.slice().splice(0, middle);
-            const symBottom = symArr.slice().splice(middle, num);
+            const symBottom = symArr.slice().splice(middle, +num);
 
-            if (num === 2) {
+            if (num === '2') {
                 mainSection =
                     <div style={mainStyle23}>
                         <div style={symbolContainer}>
@@ -67,7 +66,7 @@ class CardMain extends React.Component {
                             {symBottom}
                         </div>
                     </div>
-            } else if (num === 3) {
+            } else if (num === '3') {
                 mainSection =
                     <div style={mainStyle23}>
                         <div style={symbolContainer}>

@@ -2,7 +2,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import FriendPicker from '../Lobby/FriendPicker';
 import Lobby from '../Lobby/Lobby';
-import RulesSetter from '../Lobby/Rules';
+import Rules from '../Lobby/Rules';
 import UserStore from '../../stores/UserStore';
 import GameInitStore from '../../stores/GameInitStore';
 import GameInitActions from '../../actions/GameInitActions';
@@ -115,7 +115,7 @@ class GameInitializer extends React.Component {
 
         const rules = <div style={this.styles.section}>
             <h3 style={this.styles.title}>Rules</h3>
-            <RulesSetter rules={this.state.rules}/>
+            <Rules rules={this.state.rules}/>
         </div>
         return (
             <div style={{...this.styles.container, ...this.props.style}}>

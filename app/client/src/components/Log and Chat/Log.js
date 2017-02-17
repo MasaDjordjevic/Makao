@@ -6,19 +6,47 @@ import LogEntry from './LogEntry';
 import Card from '../Card/Card';
 import ReactDOM from 'react-dom';
 import AuthStore from '../../stores/AuthStore';
+import GameStore from '../../stores/GameStore';
+import GameActions from '../../actions/GameActions';
 
 class Log extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            me: AuthStore.getState().user
+            me: AuthStore.getState().user,
+            logs: [],
+        };
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange() {
+        let logs = GameStore.getState().logs;
+        logs.map((log) => log.card ? log.card = new Card(log.card) : log);
+        this.setState({logs: logs});
+    }
+
+    componentDidMount() {
+        if (this.props.creatorUsername) {
+            GameStore.listen(this.onChange);
+            GameActions.getLogs(this.props.creatorUsername);
+        } else if (this.props.logs) {
+            this.setState({logs: this.props.logs});
         }
     }
-    componentWillUpdate(){
+
+    componentWillUnmount() {
+        if (this.props.creatorUsername) {
+            GameStore.unlisten(this.onChange);
+        }
+    }
+
+    componentWillUpdate() {
         const node = ReactDOM.findDOMNode(this).parentElement;
         this.scrollHeight = node.scrollHeight;
         this.scrollTop = node.scrollTop;
     }
+
 
     componentDidUpdate() {
         const node = ReactDOM.findDOMNode(this).parentElement;
@@ -41,19 +69,29 @@ class Log extends React.Component {
     }
 
     render() {
+        let logs = JSON.parse(JSON.stringify(this.state.logs));
+        logs.map((log) => log.card ? log.card = new Card(log.card) : log);
+        logs.map((log, index) => {
+            if (!log.message) {
+                log.message = "";
+            }
+            if (log.draw) {
+                log.message += 'draw' + (log.username === this.state.me.username ? '' : 's') + ' ' + (log.draw > 1 ? log.draw : '');
+            }
+        });
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
 
                 <div style={this.styles.logContainer}>
-                {
-                    this.props.logs.map((log, index) =>
-                        <LogEntry key={index}
-                                  log={log.log}
-                                  playerName={log.playerId !== this.state.me.id && log.playerName}
-                                  left={log.playerId !== this.state.me.id}
-                                  card={log.card}/>
-                    )
-                }
+                    {
+                        logs.map((log, index) =>
+                            <LogEntry key={index}
+                                      log={log.message}
+                                      playerName={(this.props.alwaysDisplayUsername || log.username !== this.state.me.username) && log.username}
+                                      left={this.props.alwaysDisplayUsername || log.username !== this.state.me.username}
+                                      card={log.card}/>
+                        )
+                    }
                 </div>
             </div>
         );
@@ -64,19 +102,16 @@ export default Log;
 Log.defaultProps = {
     logs: [
         {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
+            username: 'masa',
+            message: '',
             card: new Card('spades', '7'),
         },
         {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
+            username: 'darko',
+            message: 'vuce 3',
         },
         {
-            playerName: 'nikolica',
-            playerId: 3,
+            username: 'nikolica',
             card: new Card('hearts', '12'),
         },
     ],
@@ -84,4 +119,5 @@ Log.defaultProps = {
 
 Log.propTypes = {
     logs: React.PropTypes.array.isRequired,
+    alwaysDisplayUsername: React.PropTypes.bool
 };

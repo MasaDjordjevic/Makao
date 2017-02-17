@@ -1,5 +1,6 @@
 import Games from '../Redis/Games';
 import App from '../Redis/App';
+import Gameplay from '../Gameplay/Gameplay';
 
 module.exports = function (socket, io) {
     var socketUser = socket.decoded_token.name;
@@ -26,6 +27,11 @@ module.exports = function (socket, io) {
     socket.on('game:start', () => {
         Games.setGameState(creatorName, 'started');
         io.to(creatorName).emit('game:started');
+        // ovo je masino bilo na .on('game:started')
+        Gameplay.startGame(creatorName).then(()=> {
+            socket.to(creatorName).broadcast.emit('game:started');
+        });
+        /////////////////
     });
 
     socket.on('user:invite', (username) => {

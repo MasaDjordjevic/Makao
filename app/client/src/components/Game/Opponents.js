@@ -32,7 +32,7 @@ class Opponents extends React.Component {
 
         }
 
-        const top = 50 - 50 * Math.sin(toRad(angle)) + '%';
+        const top = 50 - (Math.abs((50 * Math.sin(toRad(angle))))) + '%';
         const leftNum = Math.round(50 - 50 * Math.cos(toRad(angle)));
         const left = leftNum > 50 ? 'calc(' + leftNum + '% - ' + this.elementWidth + 'px)' :
             leftNum === 50 ? 'calc(' + leftNum + '% - ' + this.elementWidth / 2 + 'px)' : leftNum + '%';
@@ -45,7 +45,7 @@ class Opponents extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            opacity: online ? 1 : 0.5
+            opacity: online === 'online' ? 1 : 0.5
 
         }
     }

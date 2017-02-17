@@ -3,10 +3,17 @@
  */
 export default class Card {
     constructor(sym, num, jackSymbol = null) {
+        if(num === undefined){
+            this.symbol = sym.symbol;
+            this.number = sym.number;
+            this.jackSymbol = sym.jackSymbol || null;
+            return;
+        }
         this.symbol = sym;
         this.number = num;
         this.jackSymbol = jackSymbol;
     }
+
 
     stringify() {
         switch (+this.number) {
@@ -41,3 +48,4 @@ export default class Card {
         }
     }
 };
+
