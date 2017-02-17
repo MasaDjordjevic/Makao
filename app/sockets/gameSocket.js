@@ -9,30 +9,42 @@ module.exports = function (socket) {
     console.log('user connected to gameSocket');
 
     socket.on('join', (creatorUsername, username) => {
-        Gameplay.startGame();
-        name = username;
-        creatorName = creatorUsername;
-        socket.join(creatorUsername);
-        Games.setPlayerStatus(creatorUsername, username, 'online')
-            .then(() => {
-                let sendData = {};
-                Games.getPlayersWithStatus(creatorUsername).then((players) => {
-                    Games.getPlayerCards(creatorUsername, username).then((cards) => {
-                        Games.peakOpenStack(creatorUsername).then((talon) => {
-                            socket.emit('init', {players: players, cards: cards, talon: talon});
+        if (!creatorUsername || !username) {
+            return;
+        }
+        Games.getPlayers(creatorUsername).then((players) => {
+            if (!players[username]) {
+                return;
+            }
+
+            Gameplay.startGame();
+            name = username;
+            creatorName = creatorUsername;
+            socket.join(creatorUsername);
+            Games.setPlayerStatus(creatorUsername, username, 'online')
+                .then(() => {
+                    let sendData = {};
+                    Games.getPlayersWithStatus(creatorUsername).then((players) => {
+                        Games.getPlayerCards(creatorUsername, username).then((cards) => {
+                            Games.peakOpenStack(creatorUsername).then((talon) => {
+                                socket.emit('init', {players: players, cards: cards, talon: talon});
+                            })
                         })
-                    })
+                    });
+                    socket.to(creatorUsername).broadcast.emit('user:join', {
+                        username: username,
+                        online: true,
+                        cardNumber: 1
+                    });
                 });
-                socket.to(creatorUsername).broadcast.emit('user:join', {
-                    username: username,
-                    online: true,
-                    cardNumber: 1
-                });
-            });
+
+        });
+
+
     });
 
     socket.on('play:move', (card) => {
-        Gameplay.playMove(creatorName, name, card).then(()=>{
+        Gameplay.playMove(creatorName, name, card).then(() => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
         });
     });
