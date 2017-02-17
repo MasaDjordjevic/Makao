@@ -174,6 +174,25 @@ exp.addPlayers = (playersArray) => {
     });
 };
 
+exp.removePlayers = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.del(playersKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.setPlayers = (playersArray) => {
+    return new Promise((resolve, reject) => {
+        playersArray[0] = playersKey(playersArray[0]);
+        exp.removePlayers(playersArray[0]).then((err, reply) => {
+            err ? reject() : exp.addPlayers(playersArray).then((err, reply) => {
+                err ? reject() : resolve();
+            })
+        })
+    });
+};
+
 exp.removePlayer = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.hdel(playersKey(creatorUsername), playerUsername, (err, reply) => {
@@ -326,8 +345,8 @@ exp.getOpenStackCount = (creatorUsername) => {
 exp.setOpenStack = (creatorUsername, cards) => {
     return new Promise((resolve, reject) => {
         exp.deleteOpenStack(creatorUsername).then(() => {
-            exp.addToOpenStack(creatorUsername, cards, (err, reply) => {
-                err ? reject() : resolve();
+            exp.addToOpenStack(creatorUsername, cards).then(() => {
+                resolve();
             });
         });
     });
@@ -367,13 +386,17 @@ exp.getDrawStackCount = (creatorUsername) => {
     });
 };
 
-exp.popDrawStack = (creatorUsername) => {
+exp.popDrawStack = (creatorUsername, cardNumber) => {
     return new Promise((resolve, reject) => {
-        redisCli.rpop(drawStackKey(creatorUsername), function (err, reply) {
-            err ? reject() : resolve(JSON.parse(reply));
+        redisCli.lrange(drawStackKey(creatorUsername), 0, cardNumber-1, (err, reply) => {
+            err ? reject() : redisCli.ltrim(drawStackKey(creatorUsername), cardNumber, -1, (err2, reply2) => {
+                err2 ? reject() : resolve(reply.map((card) => JSON.parse(card)));
+            });
         });
     });
 };
+
+
 
 
 exp.deleteDrawStack = (creatorUsername) => {
@@ -387,8 +410,8 @@ exp.deleteDrawStack = (creatorUsername) => {
 exp.setDrawStack = (creatorUsername, cards) => {
     return new Promise((resolve, reject) => {
         exp.deleteDrawStack(creatorUsername).then(() => {
-            exp.addToDrawStack(creatorUsername, cards, (err, reply) => {
-                err ? reject() : resolve();
+            exp.addToDrawStack(creatorUsername, cards).then(() => {
+                resolve();
             });
         });
     });

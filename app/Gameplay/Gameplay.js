@@ -27,6 +27,28 @@ function getRandomCards(stack, number) {
 
 exp.startGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
+        //all ready players from lobby become players of game
+        Games.getLobby(creatorUsername).then((players) => {
+            let readyPlayers = [];
+            readyPlayers.push(creatorUsername);
+            Object.keys(players).forEach((username, index) => {
+                if (players[username] === 'true') {
+                    readyPlayers.push(username);
+                    readyPlayers.push('offline');
+                }
+            });
+            Games.setPlayers(readyPlayers).then(() => {
+                //start the game
+                exp.deal(creatorUsername).then(() => {
+                    resolve();
+                });
+            });
+        });
+    });
+};
+
+exp.deal = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
         Games.removeLogs(creatorUsername);
 
         //kreiraj spilove
@@ -102,6 +124,22 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             });
 
         });
+    });
+};
+
+exp.draw = (creatorUsername, playerUsername, cardsNumber) => {
+    return new Promise((resolve, reject) => {
+        //get and remove cards from draw stack
+        Games.popDrawStack(creatorUsername, cardsNumber).then((cards) => {
+            //add that cards to players cards
+            Games.addToPlayerCards(creatorUsername, playerUsername, cards).then(() => {
+                //add log
+                Games.addLog(creatorUsername, {username: playerUsername, draw: cardsNumber}).then(() => {
+                    resolve(cards);
+                });
+            })
+        });
+
     });
 };
 

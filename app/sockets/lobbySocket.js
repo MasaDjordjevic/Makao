@@ -28,28 +28,9 @@ module.exports = function (socket) {
     });
 
     socket.on('game:started', () => {
-        //all ready players from lobby become players of game
-        Games.getLobby(creatorName).then((players) => {
-            let readyPlayers = [];
-            readyPlayers.push(creatorName);
-            Object.keys(players).forEach((username, index) => {
-                if (players[username] === 'true') {
-                    readyPlayers.push(username);
-                    readyPlayers.push('offline');
-                }
-            });
-            Games.addPlayers(readyPlayers).then(() => {
-                //start the game
-                Gameplay.startGame(creatorName).then(() => {
-                    //notify other players that game has started
-                    socket.to(creatorName).broadcast.emit('game:started');
-                });
-
-
-            });
+        Gameplay.startGame(creatorName).then(()=> {
+            socket.to(creatorName).broadcast.emit('game:started');
         });
-
-
     });
 
     socket.on('disconnect', () => {
