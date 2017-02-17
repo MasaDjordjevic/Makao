@@ -27,6 +27,8 @@ function getRandomCards(stack, number) {
 
 exp.startGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
+        Games.removeLogs(creatorUsername);
+
         //kreiraj spilove
         let stack = createStack();
 
@@ -61,15 +63,18 @@ exp.getGame = (creatorUsername) => {
                 ret.state = data;
                 Games.getGameRules(creatorUsername).then((data) => {
                     ret.rules = data;
-                    Games.getPlayersWithStatus(creatorUsername).then((data) => {
-                        ret.players = data;
-                        Games.getOpenStack(creatorUsername).then((data) => {
-                            ret.openStack = data;
-                            Games.getDrawStack(creatorUsername).then((data) => {
-                                ret.drawStack = data;
-                                Games.getPlayersWithCards(creatorUsername).then((data) => {
-                                    ret.playersCards = data;
-                                    resolve(ret);
+                    Games.getLogs(creatorUsername).then((data) => {
+                        ret.logs = data;
+                        Games.getPlayersWithStatus(creatorUsername).then((data) => {
+                            ret.players = data;
+                            Games.getOpenStack(creatorUsername).then((data) => {
+                                ret.openStack = data;
+                                Games.getDrawStack(creatorUsername).then((data) => {
+                                    ret.drawStack = data;
+                                    Games.getPlayersWithCards(creatorUsername).then((data) => {
+                                        ret.playersCards = data;
+                                        resolve(ret);
+                                    });
                                 });
                             });
                         });

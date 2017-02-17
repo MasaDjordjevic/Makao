@@ -31,33 +31,26 @@ module.exports = function (socket) {
             });
     });
 
-    socket.on('play:move', (card)=> {
+    socket.on('play:move', (card) => {
         //remove card from players cards
+        //ne radi
         //Games.removeFromPlayersCards(creatorName, name, card).then((cards) => {
         Games.getPlayerCards(creatorName, name).then((cards) => {
             _.remove(cards, (c) => c.number === card.number && c.symbol === card.symbol);
             Games.setPlayerCards(creatorName, name, cards).then(() => {
                 //add card to openStack
                 Games.addToOpenStack(creatorName, [card]).then(() => {
+                    //add log
+                    Games.addLog(creatorName, {username: name, card: card}).then(() => {
                         //notify others
                         socket.to(creatorName).broadcast.emit('play:move', name, card);
                     });
                 });
             });
+
         });
     });
-    /*
-     socket.on('user:ready', (username) => {
-     Games.setPlayerLobbyStatus(creatorName, username, 'true');
-     console.log('user ready: ' + username);
-     socket.to(creatorName).broadcast.emit('user:ready', username);
-     });
 
-     socket.on('game:started', () => {
-     Games.setGameState(creatorName, 'started');
-     socket.to(creatorName).broadcast.emit('game:started');
-     });
-     */
     socket.on('disconnect', () => {
         console.log('user disconnected from gameSocket');
         Games.setPlayerStatus(creatorName, name, 'offline');

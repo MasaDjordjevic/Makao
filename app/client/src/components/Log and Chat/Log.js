@@ -6,19 +6,41 @@ import LogEntry from './LogEntry';
 import Card from '../Card/Card';
 import ReactDOM from 'react-dom';
 import AuthStore from '../../stores/AuthStore';
+import GameStore from '../../stores/GameStore';
+import GameActions from '../../actions/GameActions';
 
 class Log extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            me: AuthStore.getState().user
-        }
+            me: AuthStore.getState().user,
+            logs: [],
+        };
+
+        this.onChange = this.onChange.bind(this);
     }
+
+    onChange(){
+        let logs = GameStore.getState().logs;
+        logs.map((log) => log.card = new Card(log.card));
+        this.setState({logs: logs});
+    }
+
+    componentDidMount(){
+        GameStore.listen(this.onChange);
+        GameActions.getLogs(this.props.creatorUsername);
+    }
+
+    componentWillUnmount(){
+        GameStore.unlisten(this.onChange);
+    }
+
     componentWillUpdate(){
         const node = ReactDOM.findDOMNode(this).parentElement;
         this.scrollHeight = node.scrollHeight;
         this.scrollTop = node.scrollTop;
     }
+
 
     componentDidUpdate() {
         const node = ReactDOM.findDOMNode(this).parentElement;
@@ -46,11 +68,11 @@ class Log extends React.Component {
 
                 <div style={this.styles.logContainer}>
                 {
-                    this.props.logs.map((log, index) =>
+                    this.state.logs.map((log, index) =>
                         <LogEntry key={index}
-                                  log={log.log}
-                                  playerName={log.playerId !== this.state.me.id && log.playerName}
-                                  left={log.playerId !== this.state.me.id}
+                                  log={log.message}
+                                  playerName={log.username !== this.state.me.username && log.username}
+                                  left={log.username !== this.state.me.username}
                                   card={log.card}/>
                     )
                 }
@@ -64,19 +86,16 @@ export default Log;
 Log.defaultProps = {
     logs: [
         {
-            playerName: 'masa',
-            playerId: 1,
-            log: '',
+            username: 'masa',
+            message: '',
             card: new Card('spades', '7'),
         },
         {
-            playerName: 'darko',
-            playerId: 2,
-            log: 'vuce 3',
+            username: 'darko',
+            message: 'vuce 3',
         },
         {
-            playerName: 'nikolica',
-            playerId: 3,
+            username: 'nikolica',
             card: new Card('hearts', '12'),
         },
     ],

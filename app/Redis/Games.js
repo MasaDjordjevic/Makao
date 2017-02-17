@@ -17,7 +17,7 @@ exp.test = () => {
 // game:id:openStack = ['card1', 'card2', ...] //cards == stringify
 // game:id:drawStack = ['card1', 'card2', ...] //cards == stringify
 // game:id:cards:username = ['card1, 'card2', ...]
-//
+// game:id:log = ['msg1', 'msg2', ...]
 
 ///////////////////////////////////////
 
@@ -47,6 +47,10 @@ function openStackKey(creatorUsername) {
 
 function drawStackKey(creatorUsername) {
     return 'game:' + creatorUsername + ':drawStack';
+}
+
+function logKey(creatorUsername) {
+    return 'game:' + creatorUsername + ':log';
 }
 
 exp.storeGame = (creatorUsername, rules) => {
@@ -386,6 +390,31 @@ exp.setDrawStack = (creatorUsername, cards) => {
             exp.addToDrawStack(creatorUsername, cards, (err, reply) => {
                 err ? reject() : resolve();
             });
+        });
+    });
+};
+
+
+exp.addLog = (creatorUsername, log) => {
+    return new Promise((resolve, reject) => {
+        redisCli.rpush(logKey(creatorUsername), JSON.stringify(log), (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.getLogs = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.lrange(logKey(creatorUsername), 0, -1, function (err, reply) {
+            err ? reject() : resolve(reply.map((log) => JSON.parse(log)));
+        });
+    });
+};
+
+exp.removeLogs = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.del(logKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve();
         });
     });
 };

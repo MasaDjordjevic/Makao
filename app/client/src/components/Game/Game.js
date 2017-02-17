@@ -13,6 +13,7 @@ import ScoresWrapper from './ScoresWrapper';
 import JackSignPicer from './JackSignPicker';
 import {getCardWidth} from '../Card/common';
 import io from 'socket.io-client';
+import GameActions from '../../actions/GameActions';
 
 var socket;
 
@@ -78,6 +79,10 @@ class Game extends React.Component {
             players: players,
             openStack: pile,
         });
+
+        if(!jackPlayed){
+            GameActions.addLogEntry({username: username, card: card});
+        }
 
         if (!jackPlayed && myMove) {
             socket.emit('play:move', card);
