@@ -20,22 +20,31 @@ class Log extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    onChange(){
+    onChange() {
         let logs = GameStore.getState().logs;
         logs.map((log) => log.card = new Card(log.card));
         this.setState({logs: logs});
     }
 
-    componentDidMount(){
-        GameStore.listen(this.onChange);
-        GameActions.getLogs(this.props.creatorUsername);
+    componentDidMount() {
+        if (this.props.creatorUsername) {
+            GameStore.listen(this.onChange);
+            GameActions.getLogs(this.props.creatorUsername);
+        }
+
+        if(this.props.logs){
+            this.setState({logs: this.props.logs});
+        }
+
     }
 
-    componentWillUnmount(){
-        GameStore.unlisten(this.onChange);
+    componentWillUnmount() {
+        if (this.props.creatorUsername) {
+            GameStore.unlisten(this.onChange);
+        }
     }
 
-    componentWillUpdate(){
+    componentWillUpdate() {
         const node = ReactDOM.findDOMNode(this).parentElement;
         this.scrollHeight = node.scrollHeight;
         this.scrollTop = node.scrollTop;
@@ -67,15 +76,15 @@ class Log extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
 
                 <div style={this.styles.logContainer}>
-                {
-                    this.state.logs.map((log, index) =>
-                        <LogEntry key={index}
-                                  log={log.message}
-                                  playerName={log.username !== this.state.me.username && log.username}
-                                  left={log.username !== this.state.me.username}
-                                  card={log.card}/>
-                    )
-                }
+                    {
+                        this.state.logs.map((log, index) =>
+                            <LogEntry key={index}
+                                      log={log.message}
+                                      playerName={(this.props.alwaysDisplayUsername || log.username !== this.state.me.username) && log.username}
+                                      left={this.props.alwaysDisplayUsername || log.username !== this.state.me.username}
+                                      card={log.card}/>
+                        )
+                    }
                 </div>
             </div>
         );
@@ -103,4 +112,5 @@ Log.defaultProps = {
 
 Log.propTypes = {
     logs: React.PropTypes.array.isRequired,
+    alwaysDisplayUsername: React.PropTypes.bool
 };

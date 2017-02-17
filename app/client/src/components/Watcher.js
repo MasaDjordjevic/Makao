@@ -4,6 +4,7 @@ import Rules from './Lobby/Rules'
 import CardSymbol from './Card/CardSymbol';
 import Card from './Card/Card';
 import _ from 'lodash';
+import Log from './Log and Chat/Log';
 
 class Watcher extends React.Component {
     constructor() {
@@ -73,6 +74,13 @@ class Watcher extends React.Component {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 alignItems: 'center',
+            },
+            log: {
+                padding: '0 .5% 1%',
+                marginLeft: '1%',
+                boxSizing: 'border-box',
+                boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
+                backgroundColor: 'white',
             }
         }
     }
@@ -94,7 +102,7 @@ class Watcher extends React.Component {
     }
 
     renderCardSection(title, cardArray, sort = false) {
-        if(sort){
+        if (sort) {
             cardArray = _.sortBy(cardArray, ['symbol', 'number']);
         }
         return (
@@ -112,14 +120,14 @@ class Watcher extends React.Component {
         )
     }
 
-    renderWarnings(data){
+    renderWarnings(data) {
         let playersCards = [];
-        Object.keys(data.players).forEach((user,index)=> {
+        Object.keys(data.players).forEach((user, index) => {
             playersCards.push(...data.playersCards[user]);
         });
         let stacks = [...data.openStack, ...data.drawStack];
         let intersection = _.intersection(playersCards, stacks);
-        if(intersection.length > 0){
+        if (intersection.length > 0) {
             return this.renderCardSection('intersection', intersection);
         }
     }
@@ -127,6 +135,7 @@ class Watcher extends React.Component {
     render() {
         if (!this.state.response) return null;
         const data = Object.assign({}, this.state.response);
+        data.logs.map((log) => log.card = new Card(log.card));
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.general}>
@@ -166,6 +175,9 @@ class Watcher extends React.Component {
                             this.renderCardSection(user, data.playersCards[user], true)
                         )
                     }
+                </div>
+                <div style={this.styles.log}>
+                    <Log logs={data.logs} alwaysDisplayUsername/>
                 </div>
             </div>
         );
