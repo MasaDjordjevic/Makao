@@ -38,6 +38,12 @@ exp.startGame = (creatorUsername) => {
                 }
             });
             Games.setPlayers(readyPlayers).then(() => {
+                Games.removeLogs(creatorUsername);
+                //set player on move
+                Games.setPlayerOnMove(creatorUsername, creatorUsername);
+                //set hand starter
+                Games.setHandStarter(creatorUsername, creatorUsername);
+
                 //start the game
                 exp.deal(creatorUsername).then(() => {
                     resolve();
@@ -49,7 +55,6 @@ exp.startGame = (creatorUsername) => {
 
 exp.deal = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        Games.removeLogs(creatorUsername);
 
         //kreiraj spilove
         let stack = createStack();
@@ -87,15 +92,21 @@ exp.getGame = (creatorUsername) => {
                     ret.rules = data;
                     Games.getLogs(creatorUsername).then((data) => {
                         ret.logs = data;
-                        Games.getPlayersWithStatus(creatorUsername).then((data) => {
-                            ret.players = data;
-                            Games.getOpenStack(creatorUsername).then((data) => {
-                                ret.openStack = data;
-                                Games.getDrawStack(creatorUsername).then((data) => {
-                                    ret.drawStack = data;
-                                    Games.getPlayersWithCards(creatorUsername).then((data) => {
-                                        ret.playersCards = data;
-                                        resolve(ret);
+                        Games.getPlayerOnMove(creatorUsername).then((data) => {
+                            ret.playerOnMove = data;
+                            Games.getHandStarter(creatorUsername).then((data) => {
+                                ret.handStarter = data;
+                                Games.getPlayersWithStatus(creatorUsername).then((data) => {
+                                    ret.players = data;
+                                    Games.getOpenStack(creatorUsername).then((data) => {
+                                        ret.openStack = data;
+                                        Games.getDrawStack(creatorUsername).then((data) => {
+                                            ret.drawStack = data;
+                                            Games.getPlayersWithCards(creatorUsername).then((data) => {
+                                                ret.playersCards = data;
+                                                resolve(ret);
+                                            });
+                                        });
                                     });
                                 });
                             });
@@ -103,6 +114,27 @@ exp.getGame = (creatorUsername) => {
                     });
                 });
             });
+    });
+};
+
+exp.determineNextPlayer = (creatorUsername, playerUsername, card) => {
+    return new Promise((resolve, reject) => {
+
+    });
+};
+
+exp.nextPlayer = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        Games.getPlayersUsernames(creatorUsername).then((players) => {
+            Games.getPlayerOnMove(creatorUsername).then((curr) => {
+                let currIndex = players.indexOf(curr);
+                let nextIndex = (currIndex + 1) % players.length;
+                let next = players[nextIndex];
+                Games.setPlayerOnMove(creatorUsername, next).then(() => {
+                    resolve(next);
+                })
+            });
+        });
     });
 };
 
@@ -118,11 +150,13 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 Games.addToOpenStack(creatorUsername, [card]).then(() => {
                     //add log
                     Games.addLog(creatorUsername, {username: playerUsername, card: card}).then(() => {
-                        resolve();
+                        //determine next player
+                        exp.nextPlayer(creatorUsername).then((playerOnMove) => {
+                            resolve(playerOnMove);
+                        });
                     });
                 });
             });
-
         });
     });
 };
@@ -135,7 +169,10 @@ exp.draw = (creatorUsername, playerUsername, cardsNumber) => {
             Games.addToPlayerCards(creatorUsername, playerUsername, cards).then(() => {
                 //add log
                 Games.addLog(creatorUsername, {username: playerUsername, draw: cardsNumber}).then(() => {
-                    resolve(cards);
+                    //determine next player
+                    exp.nextPlayer(creatorUsername).then((playerOnMove) => {
+                        resolve({playerOnMove: playerOnMove, cards: cards});
+                    });
                 });
             })
         });

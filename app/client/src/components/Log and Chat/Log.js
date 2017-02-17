@@ -71,7 +71,7 @@ class Log extends React.Component {
     render() {
         let logs = JSON.parse(JSON.stringify(this.state.logs));
         logs.map((log) => log.card ? log.card = new Card(log.card) : log);
-        logs.map((log, index) => {
+        logs.forEach((log, index) => {
             if (!log.message) {
                 log.message = "";
             }
