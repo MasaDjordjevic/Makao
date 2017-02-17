@@ -1,5 +1,4 @@
 import React from 'react';
-import HomeHeader from './HomeHeader';
 import TimeSpentStats from './TimeSpentStats';
 import PointsWonStats from './PointsWonStats';
 import {blackColor, redColor} from '../Card/common';
@@ -79,7 +78,6 @@ class Home extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <HomeHeader socket={this.props.socket}/>
                 <div style={this.styles.content}>
                     <div style={this.styles.charts}>
                         <TimeSpentStats style={this.styles.timeStats}/>

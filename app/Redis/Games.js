@@ -14,6 +14,8 @@ let exp = {}; //da ne pisem svaki put module.exports
 // game:id:drawStack = ['card1', 'card2', ...] //cards == stringify
 // game:id:cards:username = ['card1, 'card2', ...]
 // game:id:log = ['msg1', 'msg2', ...]
+// game:id:playerOnMove = 'username'
+// game:id:handStarter = 'username'
 
 ///////////////////////////////////////
 
@@ -52,6 +54,14 @@ function invitesKey(creatorUsername) {
 
 function logKey(creatorUsername) {
     return 'game:' + creatorUsername + ':log';
+}
+
+function playerOnMoveKey(creatorUsername) {
+    return 'game:' + creatorUsername + ':playerOnMove';
+}
+
+function handStarterKey(creatorUsername) {
+    return 'game:' + creatorUsername + ':handStarter';
 }
 
 exp.storeGame = (creatorUsername, rules) => {
@@ -450,5 +460,38 @@ exp.removeLogs = (creatorUsername) => {
         });
     });
 };
+
+exp.getPlayerOnMove = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.get(playerOnMoveKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
+exp.setPlayerOnMove = (creatorUsername, username) => {
+    return new Promise((resolve, reject) => {
+        redisCli.set(playerOnMoveKey(creatorUsername), username, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.getHandStarter = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.get(handStarterKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve(reply);
+        });
+    });
+};
+
+exp.setHandStarter = (creatorUsername, username) => {
+    return new Promise((resolve, reject) => {
+        redisCli.set(handStarterKey(creatorUsername), username, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
 
 module.exports = exp;

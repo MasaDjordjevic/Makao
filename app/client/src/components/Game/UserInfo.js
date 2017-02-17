@@ -44,10 +44,6 @@ class UserInfo extends React.Component {
         alert("isteklo ti je vreme");
     }
 
-    handleNext(){
-        alert("sledeci");
-    }
-
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -55,7 +51,8 @@ class UserInfo extends React.Component {
                     label="next"
                     labelPosition="before"
                     primary={true}
-                    onClick={this.handleNext}
+                    onClick={this.props.onNext}
+                    disabled={!this.props.myMove}
                     style={this.styles.nextButton}
                     labelStyle={this.styles.nextLabel}
                     icon={<FastForward />}
@@ -76,4 +73,5 @@ UserInfo.defaultProps = {};
 
 UserInfo.propTypes = {
     myMove: React.PropTypes.bool,
+    onNext: React.PropTypes.func,
 };

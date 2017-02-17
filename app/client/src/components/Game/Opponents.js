@@ -65,9 +65,6 @@ class Opponents extends React.Component {
         return this.props.playerHeight / 3 * 4;
     }
 
-    isOnTurn(player) {
-        return player.id === this.props.playerOnMoveId;
-    }
 
     handleTimeExpiration(player){
         return function(){
@@ -109,7 +106,7 @@ class Opponents extends React.Component {
                     players.map((player, i) =>
                         <div key={i.toString()} style={this.getStyles(i, player.online)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
-                            {this.isOnTurn(player) &&
+                            {player.username === this.props.playerOnMove &&
                                 <TimerProgress length={GlobalVariables.handLength} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
                             }
                             <span style={this.styles.playerName}>{player.username.toLowerCase()}</span>
@@ -124,7 +121,7 @@ class Opponents extends React.Component {
 Opponents.propTypes = {
     players: React.PropTypes.array.isRequired,
     playerHeight: React.PropTypes.number,
-    playerOnMoveId: React.PropTypes.number.isRequired,
+    playerOnMove: React.PropTypes.string.isRequired,
 };
 
 export default Opponents;

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import Auth from '../../Auth';
 
 class EnsureAuthContainer extends React.Component {
@@ -11,13 +11,28 @@ class EnsureAuthContainer extends React.Component {
         }
     }
 
+    get styles() {
+        return ({
+                container: {
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                },
+            });
+    }
+
     render() {
         // render nothing if no JWT
         if (!Auth.isUserAuthenticated()) {
             return null;
         } else {
-            // return this.props.children;
-            return this.props.children;
+            return (
+                <div style={this.styles.container}>
+                    <HomeHeader />
+                    {this.props.children}
+                </div>
+            )
         }
     }
 }

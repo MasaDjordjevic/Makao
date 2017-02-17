@@ -145,6 +145,14 @@ class Watcher extends React.Component {
                             <span>{data.state}</span>
                         </div>
                         <div style={this.styles.subsection}>
+                            <span style={this.styles.title}>On move</span>
+                            <span>{data.playerOnMove}</span>
+                        </div>
+                        <div style={this.styles.subsection}>
+                            <span style={this.styles.title}>Hand starter</span>
+                            <span>{data.handStarter}</span>
+                        </div>
+                        <div style={this.styles.subsection}>
                             <span style={this.styles.title}>Players</span>
                             <div style={this.styles.users}>
                                 {

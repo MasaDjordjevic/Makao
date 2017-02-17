@@ -23,23 +23,41 @@ class Game extends React.Component {
         this.state = {
             me: AuthStore.getState().user,
             players: [],
-            playerOnMoveId: 1,
+            playerOnMove: '',
             myCards: [],
             openStack: [],
             jackPlayed: false
         };
 
+        this.handleCardClick = this.handleCardClick.bind(this);
         this.handleDrawClick = this.handleDrawClick.bind(this);
         this.handleJackSignPicked = this.handleJackSignPicked.bind(this);
+        this.handleNext = this.handleNext.bind(this);
 
         this.handleSocketInit = this.handleSocketInit.bind(this);
         this.handleUserJoin = this.handleUserJoin.bind(this);
         this.handleUserLeft = this.handleUserLeft.bind(this);
         this.handleDraw = this.handleDraw.bind(this);
         this.handleGetCards = this.handleGetCards.bind(this);
+        this.handleNewLog = this.handleNewLog.bind(this);
 
-        this.handleCardClick = this.handleCardClick.bind(this);
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
+        this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
+    }
+
+    handleNewLog(log){
+        GameActions.addLogEntry(log);
+    }
+
+    handlePlayerOnMove(username) {
+        this.setState({playerOnMove: username});
+    };
+
+    handleNext() {
+        if (this.state.playerOnMove !== this.state.me.username) {
+            return;
+        }
+        socket.emit('play:pass');
     }
 
     handleJackSignPicked(sign) {
@@ -51,11 +69,13 @@ class Game extends React.Component {
             jackPlayed: false,
         });
 
-        GameActions.addLogEntry({username: this.state.me.username, card: card});
         socket.emit('play:move', card);
     }
 
     handleCardClick(card) {
+        if (this.state.playerOnMove !== this.state.me.username) {
+            return;
+        }
         this.handleMovePlayed(this.state.me.username, _.find(this.state.myCards, card));
     }
 
@@ -73,7 +93,7 @@ class Game extends React.Component {
         const players = this.state.players.slice();
         players.find((player) => player.username === username).cardNumber--;
         const pile = this.state.openStack.slice();
-        if(typeof(card) !==  typeof(Card)){
+        if (typeof(card) !== typeof(Card)) {
             card = new Card(card);
         }
         pile.push(card);
@@ -82,23 +102,19 @@ class Game extends React.Component {
             openStack: pile,
         });
 
-        if(!jackPlayed){
-            GameActions.addLogEntry({username: username, card: card});
-        }
 
         if (!jackPlayed && myMove) {
             socket.emit('play:move', card);
         }
     }
 
-    handleDrawClick(){
-        GameActions.addLogEntry({username: this.state.me.username, draw: 1});
+    handleDrawClick() {
         socket.emit('play:draw', 1);
     }
 
-    handleGetCards(cards){
+    handleGetCards(cards) {
         let myCards = this.state.myCards.slice();
-        myCards = myCards.concat(cards.map((card)=> new Card(card)));
+        myCards = myCards.concat(cards.map((card) => new Card(card)));
         this.setState({myCards: myCards});
     }
 
@@ -106,8 +122,6 @@ class Game extends React.Component {
         let players = this.state.players.slice();
         players.find((player) => player.username === username).cardNumber += cardsNumber;
         this.setState({players: players});
-
-        GameActions.addLogEntry({username: username, draw: cardsNumber});
     }
 
     handleUserJoin(user) {
@@ -124,7 +138,7 @@ class Game extends React.Component {
     handleUserLeft(username) {
         let users = this.state.players.slice();
         let user = _.find(users, (p) => p.username === username);
-        if(user) {
+        if (user) {
             user.online = false;
             this.setState({players: users});
         }
@@ -137,13 +151,11 @@ class Game extends React.Component {
         });
         let pile = [...this.state.openStack, new Card(data.talon)];
         let cards = data.cards.map((card) => new Card(card));
-        this.setState({players: players, myCards: cards, openStack: pile});
+        this.setState({players: players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
     }
 
 
     componentDidMount() {
-        //this.handleMovePlayed(1, this.state.myCards[0]);
-        //this.handleMovePlayed(2, new Card("clubs", "9"));
         socket = io('/game');
         socket.emit('join', this.props.creatorUsername, this.state.me.username);
         socket.on('init', this.handleSocketInit);
@@ -152,6 +164,8 @@ class Game extends React.Component {
         socket.on('play:move', this.handleMovePlayed);
         socket.on('play:draw', this.handleDraw);
         socket.on('play:get', this.handleGetCards);
+        socket.on('play:playerOnMove', this.handlePlayerOnMove);
+        socket.on('log:new', this.handleNewLog);
     }
 
 
@@ -240,7 +254,6 @@ class Game extends React.Component {
      </div>*/
 
 
-
     render() {
         const players = this.state.players.slice();
         const playersWithoutUser = _.remove(players, (p) => p.username !== this.state.me.username);
@@ -251,7 +264,7 @@ class Game extends React.Component {
                 <div style={this.styles.opponents}>
                     <Opponents playerHeight={this.props.dimensions.opponents}
                                players={playersWithoutUser}
-                               playerOnMoveId={this.state.playerOnMoveId}/>
+                               playerOnMove={this.state.playerOnMove}/>
                 </div>
                 <div style={this.styles.userCardsTalon}>
                     <div style={this.styles.talon}>
@@ -279,7 +292,8 @@ class Game extends React.Component {
                         </div>
                         <div style={this.styles.spacer}>
                             <UserInfo style={this.styles.userInfo}
-                                      myMove={this.state.playerOnMoveId === this.state.me.id}/>
+                                      myMove={this.state.playerOnMove === this.state.me.username}
+                                      onNext={this.handleNext}/>
                         </div>
                     </div>
                 </div>

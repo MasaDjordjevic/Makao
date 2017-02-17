@@ -40,8 +40,8 @@ class Main extends React.Component {
 
         return {
             container: {
-                width: '100vw',
-                height: '100vh',
+                width: '100%',
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
@@ -61,7 +61,7 @@ class Main extends React.Component {
     render() {
         if(this.state.gameStarted === null) return <NoAccess />;
         return (
-            <div>
+            <div style={this.styles.container}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
