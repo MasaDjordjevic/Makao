@@ -4,8 +4,7 @@ import AuthStore from '../../stores/AuthStore';
 import io from 'socket.io-client';
 import GameActions from '../../actions/GameActions';
 import Card from '../Card/Card';
-import Game from '../Game/Game';
-import Snackbar from 'material-ui/Snackbar';
+import CorrectMoveWrapper from '../Game/CorrectMoveWrapper';
 
 
 var socket;
@@ -21,7 +20,6 @@ class GameSocketWrapper extends React.Component {
             myCards: [],
             openStack: [],
             jackPlayed: false,
-            snackbarOpen: false,
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -49,10 +47,6 @@ class GameSocketWrapper extends React.Component {
     };
 
     handleNext() {
-        if (this.state.playerOnMove !== this.state.me.username) {
-            this.setState({snackbarOpen:true});
-            return;
-        }
         socket.emit('play:pass');
     }
 
@@ -69,10 +63,6 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleCardClick(card) {
-        if (this.state.playerOnMove !== this.state.me.username) {
-            this.setState({snackbarOpen:true});
-            return;
-        }
         this.handleMovePlayed(this.state.me.username, _.find(this.state.myCards, card));
     }
 
@@ -106,10 +96,6 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleDrawClick() {
-        if (this.state.playerOnMove !== this.state.me.username) {
-            this.setState({snackbarOpen: true});
-            return;
-        }
         socket.emit('play:draw', 1);
     }
 
@@ -179,12 +165,6 @@ class GameSocketWrapper extends React.Component {
         }
     }
 
-    handleRequestClose = () => {
-        this.setState({
-            snackbarOpen: false,
-        });
-    };
-
     render() {
         const players = this.state.players.slice();
         const playersWithoutUser = _.remove(players, (p) => p.username !== this.state.me.username);
@@ -192,7 +172,7 @@ class GameSocketWrapper extends React.Component {
         myCards = _.sortBy(myCards, ['symbol', 'number']);
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <Game dimensions={this.props.dimensions}
+                <CorrectMoveWrapper dimensions={this.props.dimensions}
                       myMove={this.state.playerOnMove === this.state.me.username}
                       opponents={playersWithoutUser}
                       playerOnMove={this.state.playerOnMove}
@@ -203,12 +183,6 @@ class GameSocketWrapper extends React.Component {
                       onCardClick={this.handleCardClick}
                       onJackSignPicked={this.handleJackSignPicked}
                       onNext={this.handleNext} />
-                <Snackbar
-                    open={this.state.snackbarOpen}
-                    message="Not your tourn"
-                    autoHideDuration={4000}
-                    onRequestClose={this.handleRequestClose}
-                />
             </div>
         );
     }

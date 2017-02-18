@@ -135,7 +135,7 @@ Game.PropTypes = {
     playerOnMove: React.PropTypes.string,
     myCards: React.PropTypes.array,
     Talon: React.PropTypes.object,
-    jackPlayed: React.PropTypes.jackPlayed,
+    jackPlayed: React.PropTypes.bool,
     onDrawClick: React.PropTypes.func,
     onCardClick: React.PropTypes.func,
     onJackSignPicked: React.PropTypes.func,
