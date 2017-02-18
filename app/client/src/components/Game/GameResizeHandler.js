@@ -2,7 +2,7 @@
  * Created by Masa on 03-Jan-17.
  */
 import React from 'react';
-import Game from './Game';
+import GameSocketWraper from './GameSocketWrapper';
 import GlobalVariables from "../Gameplay/GlobalVariables";
 import {getScoresWidth} from "./common";
 
@@ -66,7 +66,7 @@ export default class GameResizeHandler extends React.Component {
 
     render() {
         return (
-            <Game dimensions={this.state.dimensions} creatorUsername={this.props.creatorUsername}/>
+            <GameSocketWraper dimensions={this.state.dimensions} creatorUsername={this.props.creatorUsername}/>
         );
     }
 }
