@@ -182,6 +182,11 @@ exp.fixDrawStack = (creatorUsername) => {
                 Games.getOpenStack(creatorUsername).then((openStack) => {
                     let last = openStack.pop();
                     Games.setOpenStack(creatorUsername, [last]).then(() => {
+                        openStack.forEach((card) => { //resetuje sve zace
+                            if(card.jackSymbol){
+                                card.jackSymbol = null;
+                            }
+                        });
                         Games.setDrawStack(creatorUsername, openStack).then(() => {
                             resolve();
                         })
@@ -256,12 +261,12 @@ exp.draw = (creatorUsername, playerUsername) => {
                             Games.peakOpenStack(creatorUsername).then((talon) => {
                                 if (talon.number === '2' && talon.symbol === 'diamonds') { //ako je vuko nakon dvojke karo
                                     offset = 0;
+                                    _.last(cards).mustPlay = true;
                                 }
                                 exp.nextPlayer(creatorUsername, offset).then((playerOnMove) => {
                                     resolve({playerOnMove: playerOnMove, cards: cards, log: log, cardsNumber: num});
                                 });
                             });
-
                         });
                     })
                 });
