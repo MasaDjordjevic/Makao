@@ -25,6 +25,21 @@ function getRandomCards(stack, number) {
     return retCards;
 }
 
+function getTalon(stack) {
+    let retCards = [];
+    let randomCard = null;
+    let randomIndex = -1;
+    do {
+        randomIndex = Math.floor(Math.random() * stack.length);
+        randomCard = stack[randomIndex];
+    } while (randomCard.number === 12 || randomCard.number === 7 || randomCard.number === 8); //do not let some meaningful card be on talon
+
+    stack.splice(randomIndex, 1);
+    retCards.push(randomCard);
+
+    return retCards;
+}
+
 exp.startGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         //all ready players from lobby become players of game
@@ -61,7 +76,7 @@ exp.deal = (creatorUsername) => {
 
         //stavi kartu na talon (openStack)
         let openStack = [];
-        let talon = getRandomCards(stack, 1)[0];
+        let talon = getTalon(stack);
         openStack.push(talon);
         Games.setOpenStack(creatorUsername, openStack);
 
@@ -117,18 +132,81 @@ exp.getGame = (creatorUsername) => {
     });
 };
 
-exp.determineNextPlayer = (creatorUsername, playerUsername, card) => {
+exp.playerHasOnly12 = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
-
+        Games.getPlayerCards(creatorUsername, playerUsername).then((cards) => {
+            const hasOnly12 = _.every(cards, (card) => card.number == 12);
+            resolve(hasOnly12);
+        })
     });
 };
 
-exp.nextPlayer = (creatorUsername) => {
+exp.determineNextPlayer = (creatorUsername, playerUsername, card) => {
+    if (card.number === 1) { //same player
+        return exp.nextPlayer(creatorUsername, playerUsername, 0);
+    }
+    if (card.number === 11) {//ako su mu ostale samo zace
+        exp.playerHasOnly12(creatorUsername, playerUsername).then((reply) => {
+            if (reply) {
+                return exp.nextPlayer(creatorUsername, playerUsername, 0);
+            }
+        });
+    }
+
+
+};
+
+exp.determineDrawCount = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        Games.getPlayersUsernames(creatorUsername).then((players) => {
-            Games.getPlayerOnMove(creatorUsername).then((curr) => {
+        Games.getOpenStack(creatorUsername).then((openStack) => {
+            let last = _.last(openStack);
+            if (last.number === '2' && last.symbol === 'diamonds') { //dvojka karo
+                Games.getDrawStack(creatorUsername).then((drawStack) => {
+                    let num = _.takeRightWhile(drawStack, (card) => card.symbol !== 'diamonds').length + 1; //vuce sve do kocke
+                    resolve(num);
+                });
+            } else if (_.last(openStack).number !== '7') {
+                resolve(1);
+            } else {
+                let sevens = _.takeRightWhile(openStack, (card) => card.number == 7).length;
+                resolve(sevens * 2); //TODO nadji koliko se vuce na sedmicu
+            }
+        })
+    });
+};
+
+exp.fixDrawStack = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        Games.getDrawStackCount(creatorUsername).then((count) => {
+            if (count === 0) {
+                Games.getOpenStack(creatorUsername).then((openStack) => {
+                    let last = openStack.pop();
+                    Games.setOpenStack(creatorUsername, [last]).then(() => {
+                        Games.setDrawStack(creatorUsername, openStack).then(() => {
+                            resolve();
+                        })
+                    });
+                });
+            } else {
+                resolve();
+            }
+        });
+    });
+};
+
+exp.determineConsequences = (creatorUsername, playerUsername, card) => {
+
+};
+
+exp.nextPlayer = (creatorUsername, offset = 1) => {
+    return new Promise((resolve, reject) => {
+        Games.getPlayerOnMove(creatorUsername).then((curr) => {
+            if (offset === 0) {
+                resolve(curr);
+            }
+            Games.getPlayersUsernames(creatorUsername).then((players) => {
                 let currIndex = players.indexOf(curr);
-                let nextIndex = (currIndex + 1) % players.length;
+                let nextIndex = (currIndex + offset) % players.length;
                 let next = players[nextIndex];
                 Games.setPlayerOnMove(creatorUsername, next).then(() => {
                     resolve(next);
@@ -162,23 +240,33 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
     });
 };
 
-exp.draw = (creatorUsername, playerUsername, cardsNumber) => {
+exp.draw = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
-        //get and remove cards from draw stack
-        Games.popDrawStack(creatorUsername, cardsNumber).then((cards) => {
-            //add that cards to players cards
-            Games.addToPlayerCards(creatorUsername, playerUsername, cards).then(() => {
-                //add log
-                let log = {username: playerUsername, draw: cardsNumber};
-                Games.addLog(creatorUsername, log).then(() => {
-                    //determine next player
-                    exp.nextPlayer(creatorUsername).then((playerOnMove) => {
-                        resolve({playerOnMove: playerOnMove, cards: cards, log: log});
-                    });
-                });
-            })
-        });
+        exp.fixDrawStack(creatorUsername).then(() => {
+            exp.determineDrawCount(creatorUsername).then((num) => {
+                //get and remove cards from draw stack
+                Games.popDrawStack(creatorUsername, num).then((cards) => {
+                    //add that cards to players cards
+                    Games.addToPlayerCards(creatorUsername, playerUsername, cards).then(() => {
+                        //add log
+                        let log = {username: playerUsername, draw: num};
+                        Games.addLog(creatorUsername, log).then(() => {
+                            //determine next player
+                            let offset = num > 1 ? 0 : 1;
+                            Games.peakOpenStack(creatorUsername).then((talon) => {
+                                if (talon.number === '2' && talon.symbol === 'diamonds') { //ako je vuko nakon dvojke karo
+                                    offset = 0;
+                                }
+                                exp.nextPlayer(creatorUsername, offset).then((playerOnMove) => {
+                                    resolve({playerOnMove: playerOnMove, cards: cards, log: log, cardsNumber: num});
+                                });
+                            });
 
+                        });
+                    })
+                });
+            });
+        });
     });
 };
 

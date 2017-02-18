@@ -72,9 +72,9 @@ module.exports = function (socket) {
            cardsNumber = 1;
        }
 
-       Gameplay.draw(creatorName, name, cardsNumber).then((data)=> {
+       Gameplay.draw(creatorName, name).then((data)=> {
            socket.emit('play:get', data.cards);
-           socket.to(creatorName).broadcast.emit('play:draw', name, cardsNumber);
+           socket.to(creatorName).broadcast.emit('play:draw', name, data.cardsNumber);
            emitPlayerOnMove(data.playerOnMove);
            emitLog(data.log);
        });
