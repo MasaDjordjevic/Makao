@@ -105,7 +105,6 @@ class Game extends React.Component {
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
                             <ScoresWrapper showScores={this.props.dimensions.showScores}
-                                           scores={this.scores}
                                            height={this.props.dimensions.userCardsHeight}/>
                         </div>
                         <div style={this.styles.myCards}>
