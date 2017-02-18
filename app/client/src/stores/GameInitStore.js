@@ -17,7 +17,14 @@ class GameInitStore {
     }
 
     onInitLobby(lobbyUsers) {
-        this.lobby.concat(lobbyUsers);
+        let lobby = [];
+        Object.keys(lobbyUsers).forEach((usr, i) => {
+            lobby.push({
+                username: usr,
+                ready: lobbyUsers[usr]
+            });
+        });
+        this.lobby = lobby;
     }
 
     onUserReady(readyUsername) {

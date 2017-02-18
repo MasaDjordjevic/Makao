@@ -16,7 +16,6 @@ class Lobby extends React.Component {
 
 
     render() {
-
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <List>
@@ -24,7 +23,7 @@ class Lobby extends React.Component {
                         this.props.users.map((user, i) =>
                             <ListItem key={user.username}
                                       primaryText={user.username}
-                                      rightIcon={this.props.gameCreatorUsername === user.username ? <PersonIcon /> :  user.ready ? <DoneIcon /> : <HourglassIcon /> }
+                                      rightIcon={this.props.gameCreatorUsername === user.username ? <PersonIcon /> :  (user.ready) ? <DoneIcon /> : <HourglassIcon /> }
                                       disabled={true}/>
                         )
                     }

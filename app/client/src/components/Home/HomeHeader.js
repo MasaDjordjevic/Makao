@@ -31,7 +31,11 @@ class HomeHeader extends React.Component {
     }
 
     onChange() {
-        this.setState({ username: UserStore.getState().username });
+        let newUsername = UserStore.getState().username;
+        if (this.state.username.length <= 0 && newUsername.length > 0) {
+            this.setState({ username: UserStore.getState().username });
+            this.props.onUserLoad();
+        }
     }
 
     componentDidMount() {
@@ -43,6 +47,7 @@ class HomeHeader extends React.Component {
             socket.on('authenticated', () => {
                 // request user info from server
                 socket.emit('user:info');
+                socket.emit('user:friends');
                 // update user info when server responds
                 socket.on('user:info', (info) => {
                     UserActions.updateUserInfo(info);
@@ -50,11 +55,11 @@ class HomeHeader extends React.Component {
                 // accept friend request was successful
                 socket.on('friend:added', (newFriend) => {
                     UserActions.updateFriendList(newFriend);
-                })
+                });
                 // ignore friend request was successful
                 socket.on('friend:ignore', () => {
                     alert('ignored!');
-                })
+                });
                 // when a new invite is received
                 socket.on('user:invite', (inviter) => {
                     UserActions.receiveInvite(inviter);

@@ -52,7 +52,7 @@ class GameInitializer extends React.Component {
         socket.on('connect', () => {
             socket.emit('authenticate', { token: Auth.getToken() });
             socket.on('authenticated', () => {
-                socket.emit('join', this.state.game.creatorUsername);
+                socket.emit('join', this.props.creatorUsername);
                 socket.on('init', (lobbyUsers) => {
                     GameInitActions.initLobby(lobbyUsers);
                 });
@@ -115,7 +115,7 @@ class GameInitializer extends React.Component {
 
         const rules = <div style={this.styles.section}>
             <h3 style={this.styles.title}>Rules</h3>
-            <Rules rules={this.state.rules}/>
+            <Rules rules={this.state.game.rules}/>
         </div>
         return (
             <div style={{...this.styles.container, ...this.props.style}}>

@@ -21,7 +21,7 @@ module.exports = function (socket, io) {
     socket.on('user:ready', (username) => {
         Games.setPlayerLobbyStatus(creatorName, socketUser, 'true');
         console.log('user ready: ' + socketUser);
-        socket.to(creatorName).broadcast.emit('user:ready', socketUser);
+        io.to(creatorName).emit('user:ready', socketUser);
     });
 
     socket.on('game:start', () => {

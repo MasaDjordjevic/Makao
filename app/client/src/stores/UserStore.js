@@ -15,7 +15,7 @@ class UserStore {
     }
 
     updateFriendList(newFriend) {
-
+        this.friends.push(newFriend);
     }
 
     receiveInvite(inviter) {

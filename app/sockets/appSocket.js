@@ -1,9 +1,6 @@
-//import mongoose from 'mongoose';
 import Games from '../Redis/Games';
 import App from '../Redis/App';
 import User from '../models/user';
-
-//let User = mongoose.model('User');
 
 module.exports = function (socket) {
     var socketUser = socket.decoded_token.name;

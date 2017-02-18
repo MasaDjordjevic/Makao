@@ -331,9 +331,13 @@ exp.removeFromLobby = (creatorUsername, playerUsername) => {
 };
 
 exp.getLobby = (creatorUsername) => {
-    return _hgetall(lobbyKey(creatorUsername));
+    return _hgetall(lobbyKey(creatorUsername), (reply) => {
+        Object.keys(reply).map((user, i) =>
+            reply[user] = JSON.parse(reply[user])
+        )
+        return reply;
+    });
 };
-
 
 exp.setPlayerLobbyStatus = (creatorUsername, playerUsername, ready) => {
     return _hmset3(lobbyKey(creatorUsername), playerUsername, ready);
