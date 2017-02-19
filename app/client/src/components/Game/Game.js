@@ -117,6 +117,7 @@ class Game extends React.Component {
                         <div style={this.styles.spacer}>
                             <UserInfo style={this.styles.userInfo}
                                       myMove={this.props.myMove}
+                                      enableNext={this.props.enableNext}
                                       onNext={this.props.onNext}/>
                         </div>
                     </div>
@@ -140,6 +141,7 @@ Game.PropTypes = {
     onCardClick: React.PropTypes.func,
     onJackSignPicked: React.PropTypes.func,
     onNext: React.PropTypes.func,
+    enableNext: React.PropTypes.bool,
 
 
 };

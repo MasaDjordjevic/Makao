@@ -9,6 +9,7 @@ class CorrectMoveWrapper extends React.Component {
         this.state = {
             snackbarOpen: false,
             snackbarMessage: '',
+            draw: false,
         };
 
         this.isMyTurn = this.isMyTurn.bind(this);
@@ -36,15 +37,24 @@ class CorrectMoveWrapper extends React.Component {
 
     handleNext() {
         if (this.isMyTurn()) {
+            this.setState({draw: false});
             this.props.onNext();
         }
     }
 
     handleCardClick(card) {
         if (this.isMyTurn()) {
+            let talon = this.props.talon;
+            //na sedmicu moze samo sedmica ako nije vuko
+            if(!this.state.draw && talon.number === 7 && card.number !== 7){
+                this.setState({snackbarOpen: true, snackbarMessage: '7 na 7'});
+                return;
+            }
             //mora da se poklopi broj i znak
             //zaca moze uvek da se baci
-            if (card.number === 12 ||  card.number === this.props.talon.number || card.symbol === this.props.talon.symbol) {
+
+            if (card.number === 12 ||  card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
+                this.setState({draw: false});
                 this.props.onCardClick(card);
             } else {
                 this.setState({snackbarOpen: true, snackbarMessage: 'Wrong card'});
@@ -53,7 +63,8 @@ class CorrectMoveWrapper extends React.Component {
     }
 
     handleDrawClick() {
-        if (this.isMyTurn()) {
+        if (this.isMyTurn() && !this.state.draw) {
+            this.setState({draw:true});
             this.props.onDrawClick();
         }
     }
@@ -70,6 +81,7 @@ class CorrectMoveWrapper extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 <Game dimensions={this.props.dimensions}
                       myMove={this.props.myMove}
+                      enableNext={this.state.draw}
                       opponents={this.props.opponents}
                       playerOnMove={this.props.playerOnMove}
                       myCards={this.props.myCards}
