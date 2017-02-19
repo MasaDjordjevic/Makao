@@ -6,7 +6,6 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import JoinGame from './JoinGame';
 import CreateGame from './CreateGame';
 import UserStore from '../../stores/UserStore';
-import GameInitActions from '../../actions/GameInitActions';
 import Auth from '../../Auth';
 import io from 'socket.io-client';
 
@@ -29,8 +28,12 @@ class PlayGame extends React.Component {
         socket.on('connect', () => {
             socket.emit('authenticate', { token: Auth.getToken() });
             socket.on('authenticated', () => {
+                socket.emit('game:list');
+                socket.on('game:list', (games) => {
+                    alert('games in console!');
+                    console.log(JSON.stringify(games));
+                });
                 socket.on('game:created', (game) => {
-                    GameInitActions.initGame(game);
                     browserHistory.push('/game/' + UserStore.getState().username);
                 });
                 socket.on('game:failed', (reason) => {

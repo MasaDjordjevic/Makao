@@ -1,5 +1,6 @@
 import React from 'react';
-import {Table, TableBody, TableRow, TableRowColumn}  from 'material-ui/Table';
+import {Table, TableBody, TableHeader, TableHeaderColumn,
+        TableRow, TableRowColumn}  from 'material-ui/Table';
 import { browserHistory } from 'react-router';
 
 class JoinGame extends React.Component {
@@ -55,7 +56,7 @@ class JoinGame extends React.Component {
 
     joinGame(selectedRow){
         if(!this.state.games[selectedRow]) return;
-        browserHistory.push('/Lobby:' + this.state.games[selectedRow].id);
+        browserHistory.push('/game/' + this.state.games[selectedRow].creator);
     }
 
     get styles() {
@@ -72,18 +73,22 @@ class JoinGame extends React.Component {
                        fixedHeader={false}
                        selectable={true}
                        onRowSelection={this.joinGame}>
+                    <TableHeader displaySelectAll={false}>
+                        <TableHeaderColumn>Host</TableHeaderColumn>
+                        <TableHeaderColumn>Current</TableHeaderColumn>
+                        <TableHeaderColumn>Min - Max</TableHeaderColumn>
+                    </TableHeader>
                     <TableBody displayRowCheckbox={false}>
-                        {
-                            this.state.games.map((game, i) =>
-                                <TableRow key={game.id} >
-                                    <TableRowColumn>{game.creator}</TableRowColumn>
-                                    <TableRowColumn>{game.rules.playerNumberMin}</TableRowColumn>
-                                    <TableRowColumn>{game.rules.playerNumberMax}</TableRowColumn>
-                                    <TableRowColumn>{game.current}</TableRowColumn>
-                                    <TableRowColumn><span>rules</span></TableRowColumn>
-                                </TableRow>
-                            )
-                        }
+                    {
+                        this.state.games.map((game, i) =>
+                            <TableRow key={game.creator} >
+                                <TableRowColumn>{game.creator}</TableRowColumn>
+                                <TableRowColumn>{game.current}</TableRowColumn>
+                                <TableRowColumn>{game.rules.playerNumberMin} - {game.rules.playerNumberMax}</TableRowColumn>
+                                <TableRowColumn><span>rules</span></TableRowColumn>
+                            </TableRow>
+                        )
+                    }
                     </TableBody>
                 </Table>
             </div>

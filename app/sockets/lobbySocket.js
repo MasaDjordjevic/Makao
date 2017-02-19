@@ -11,11 +11,20 @@ module.exports = function (socket, io) {
         creatorName = creatorUsername;
         socket.join(creatorUsername);
         Games.addToLobby(creatorUsername, socketUser, creatorUsername === socketUser)
-            .then(() => {
-                Games.getLobby(creatorUsername)
-                    .then((users) => socket.emit('init', users));
-                socket.to(creatorUsername).broadcast.emit('user:join', socketUser);
+        .then(() => {
+            Games.getLobby(creatorUsername)
+            .then((users) => {
+                Games.getGameRules(creatorUsername)
+                .then((rules) => {
+                    socket.emit('init', {
+                        creator: creatorUsername,
+                        users: users,
+                        rules: rules
+                    });
+                    socket.to(creatorUsername).broadcast.emit('user:joined', socketUser);
+                });
             });
+        });
     });
 
     socket.on('user:ready', (username) => {

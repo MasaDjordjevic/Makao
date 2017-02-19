@@ -3,8 +3,7 @@ import alt from '../alt';
 class GameInitActions {
     constructor() {
         this.generateActions(
-            'initGame',
-            'initLobby',
+            'initLobbyAndRules',
             'userReady',
             'userJoined',
             'userLeft'

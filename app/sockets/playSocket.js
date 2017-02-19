@@ -4,6 +4,10 @@ module.exports = function (socket) {
     var socketUser = socket.decoded_token.name;
     console.log('user ' + socketUser + ' connected to playSocket');
 
+    socket.on('game:list', () => {
+        Games.getGameList();
+    });
+
     socket.on('game:create', (rules) => {
         let creator = socketUser;
         Games.storeGame(creator, rules)
