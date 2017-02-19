@@ -176,11 +176,12 @@ function _hkeys(key, func) {
 exp.storeGame = (creatorUsername, rules) => {
     return new Promise((resolve, reject) => {
         redisCli.set(gameStateKey(creatorUsername), 'lobby', (err, reply) => {
-            if (err) {
-                reject();
-            }
+            if (err) { reject(); }
             redisCli.set(gameRulesKey(creatorUsername), JSON.stringify(rules), (err, reply) => {
-                err ? reject() : resolve();
+                if (err) { reject(); }
+                redisCli.sadd('games:lobby', creatorUsername, (err, reply) => {
+                    err ? reject() : resolve();
+                });
             });
         });
     });
@@ -440,6 +441,31 @@ exp.getHandStarter = (creatorUsername) => {
 
 exp.setHandStarter = (creatorUsername, username) => {
     return _set(handStarterKey(creatorUsername), username);
+};
+
+exp.getGameList = () => {
+    return new Promise((resolve, reject) => {
+        redisCli.smembers('games:lobby', (err, reply) => {
+            if (err) { reject(err) };
+            let games = [];
+            reply.forEach((creator, index) => {
+                exp.getLobby(creator)
+                .then((users) => {
+                    exp.getGameRules(creator)
+                    .then((rules) => {
+                        games.push({
+                            lobby: users,
+                            rules: rules
+                        });
+                        if (index === reply.length - 1) {
+                            console.log(JSON.stringify(games));
+                            resolve(games);
+                        }
+                    });
+                });
+            });
+        });
+    });
 };
 
 
