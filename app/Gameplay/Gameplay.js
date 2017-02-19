@@ -7,7 +7,7 @@ let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
 function createStack() {
-    let numbers = [1, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14,12, 2];
+    let numbers = [1, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 12, 2];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
     numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
@@ -57,7 +57,7 @@ exp.startGame = (creatorUsername) => {
             let readyPlayers = {};
             Object.keys(players).forEach((username, index) => {
                 if (players[username] === 'true') {
-                    readyPlayers[username] ={
+                    readyPlayers[username] = {
                         online: false,
                     };
                 }
@@ -142,7 +142,7 @@ function fixDrawStack(game) {
         return;
     }
 
-    if(game.openStack.length === 0){
+    if (game.openStack.length === 0) {
         console.log("nema vise karata!!!!");
     }
 
@@ -157,11 +157,11 @@ function fixDrawStack(game) {
 
 function determineConsequences(game, card) {
 
-    if(card.number === '9'){
+    if (card.number === '9') {
         game.direction *= -1;
     }
 
-    if(card.number === '7'){
+    if (card.number === '7') {
         game.sevens++;
     }
 }
@@ -198,7 +198,6 @@ function isTwoDiamonds(game) {
 exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
         NewGames.getGame(creatorUsername).then((game) => {
-            let twoDiamonds = isTwoDiamonds(game);
             //remove card from players
             _.remove(game.players[playerUsername].cards, {number: card.number, symbol: card.symbol}); //not using card object because other properties may not be the same
             //add card to openStack
@@ -208,11 +207,11 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             game.logs.push(log);
 
             let next;
-            if(!twoDiamonds) {
-                //determine next player
-                next = determineNextPlayer(game,playerUsername, card);
+            if (!isTwoDiamonds(game)) {
                 //determine consequences
                 determineConsequences(game, card);
+                //determine next player
+                next = determineNextPlayer(game, playerUsername, card);
             } else {
                 next = nextPlayer(game);
             }
@@ -232,7 +231,7 @@ exp.draw = (creatorUsername, playerUsername) => {
             fixDrawStack(game);
             let drawCount = determineDrawCount(game);
             let cards = game.drawStack.splice(-drawCount, drawCount);
-            if(isTwoDiamonds(game)){
+            if (isTwoDiamonds(game)) {
                 _.last(cards).mustPlay = true;
             }
             game.players[playerUsername].cards = game.players[playerUsername].cards.concat(cards);
