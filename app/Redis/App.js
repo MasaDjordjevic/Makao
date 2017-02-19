@@ -3,8 +3,6 @@ import redis from 'redis';
 let redisCli = redis.createClient();
 let exp = {};
 
-redisCli.flushdb();
-
 function socketKey(username) {
     return 'socket:' + username;
 }

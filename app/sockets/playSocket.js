@@ -1,4 +1,5 @@
 import Games from '../Redis/Games';
+import Gameplay from '../Gameplay/Gameplay';
 
 module.exports = function (socket) {
     var socketUser = socket.decoded_token.name;
@@ -10,7 +11,7 @@ module.exports = function (socket) {
 
     socket.on('game:create', (rules) => {
         let creator = socketUser;
-        Games.storeGame(creator, rules)
+        Gameplay.createGame(creator, rules)
             .then(() => socket.emit('game:created', { creator, rules }))
             .catch((reason) => socket.emit('game:failed', reason));
     });

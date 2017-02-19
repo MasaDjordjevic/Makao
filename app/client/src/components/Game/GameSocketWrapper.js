@@ -1,10 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import AuthStore from '../../stores/AuthStore';
+import UserStore from '../../stores/UserStore';
 import io from 'socket.io-client';
 import GameActions from '../../actions/GameActions';
 import Card from '../Card/Card';
 import CorrectMoveWrapper from '../Game/CorrectMoveWrapper';
+import Auth from '../../Auth';
 
 
 var socket;
@@ -14,7 +15,7 @@ class GameSocketWrapper extends React.Component {
     constructor() {
         super();
         this.state = {
-            me: AuthStore.getState().user,
+            me: UserStore.getState(),
             players: [],
             playerOnMove: '',
             myCards: [],
@@ -141,15 +142,19 @@ class GameSocketWrapper extends React.Component {
 
     componentDidMount() {
         socket = io('/game');
-        socket.emit('join', this.props.creatorUsername, this.state.me.username);
-        socket.on('init', this.handleSocketInit);
-        socket.on('user:join', this.handleUserJoin);
-        socket.on('user:left', this.handleUserLeft);
-        socket.on('play:move', this.handleMovePlayed);
-        socket.on('play:draw', this.handleDraw);
-        socket.on('play:get', this.handleGetCards);
-        socket.on('play:playerOnMove', this.handlePlayerOnMove);
-        socket.on('log:new', this.handleNewLog);
+        socket.emit('authenticate', { token: Auth.getToken() });
+        socket.on('authenticated', () => {
+            socket.emit('join', this.props.creatorUsername, this.state.me.username);
+            socket.on('init', this.handleSocketInit);
+            socket.on('user:join', this.handleUserJoin);
+            socket.on('user:left', this.handleUserLeft);
+            socket.on('play:move', this.handleMovePlayed);
+            socket.on('play:draw', this.handleDraw);
+            socket.on('play:get', this.handleGetCards);
+            socket.on('play:playerOnMove', this.handlePlayerOnMove);
+            socket.on('log:new', this.handleNewLog);
+        });
+        socket.on('unauthorized', () => alert('nope'));
     }
 
 

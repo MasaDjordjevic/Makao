@@ -1,4 +1,4 @@
-import NewGames from '../Redis/NewGames';
+import Games from '../Redis/Games';
 import Gameplay from '../Gameplay/Gameplay';
 
 import _ from 'lodash';
@@ -16,7 +16,7 @@ module.exports = function (socket) {
             return;
         }
 
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
            if(!game.players[username]){
                return;
            }

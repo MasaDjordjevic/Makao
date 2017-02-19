@@ -35,6 +35,8 @@ module.exports = function (socket) {
     });
 
     socket.on('invite:accept', (creatorUsername) => {
+        // TODO redis refactor
+        return;
         let gameState, lobbyCount, gameRules;
         Games.getGameState(creatorUsername)
             .then((state) => gameState = state);
