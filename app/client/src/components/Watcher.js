@@ -123,13 +123,21 @@ class Watcher extends React.Component {
 
     renderWarnings(data) {
         let playersCards = [];
+        let total = 0;
         Object.keys(data.players).forEach((user, index) => {
             playersCards.push(...data.players[user].cards);
+            total += data.players[user].cards.length;
         });
         let stacks = [...data.openStack, ...data.drawStack];
         let intersection = _.intersection(playersCards, stacks);
         if (intersection.length > 0) {
             return this.renderCardSection('intersection', intersection);
+        }
+
+        total += data.openStack.length;
+        total += data.drawStack.length;
+        if(total != 52){
+            return <span>{total}</span>
         }
     }
 

@@ -46,14 +46,14 @@ class CorrectMoveWrapper extends React.Component {
         if (this.isMyTurn()) {
             let talon = this.props.talon;
             //na sedmicu moze samo sedmica ako nije vuko
-            if(!this.state.draw && talon.number === 7 && card.number !== 7){
+            if(!this.state.draw && talon.number === '7' && card.number !== '7'){
                 this.setState({snackbarOpen: true, snackbarMessage: '7 na 7'});
                 return;
             }
             //mora da se poklopi broj i znak
             //zaca moze uvek da se baci
 
-            if (card.number === 12 ||  card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
+            if (card.number === '12' ||  card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
                 this.setState({draw: false});
                 this.props.onCardClick(card);
             } else {
@@ -75,19 +75,25 @@ class CorrectMoveWrapper extends React.Component {
         });
     };
 
+    get canPass(){
+        if(this.props.talon && this.props.talon.number === '1'){
+            return false;
+        }
+        return this.state.draw;
+    }
 
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <Game dimensions={this.props.dimensions}
                       myMove={this.props.myMove}
-                      enableNext={this.state.draw}
+                      enableNext={this.canPass}
                       opponents={this.props.opponents}
                       playerOnMove={this.props.playerOnMove}
                       myCards={this.props.myCards}
                       talon={this.props.talon}
                       jackPlayed={this.props.jackPlayed}
-                      onJackSignPicked={this.props.handleJackSignPicked}
+                      onJackSignPicked={this.props.onJackSignPicked}
                       onDrawClick={this.handleDrawClick}
                       onCardClick={this.handleCardClick}
                       onNext={this.handleNext}/>

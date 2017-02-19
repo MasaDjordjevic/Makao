@@ -105,16 +105,21 @@ function playerHasOnly12(game, playerUsername) {
 }
 
 function determineNextPlayer(game, playerUsername, card) {
-    if (card.number === 1) { //same player
+    if (card.number === '1') { //same player
         return nextPlayer(game, 0);
     }
-    if (card.number === 11) {//ako su mu ostale samo zace
+    if (card.number === '11') {//ako su mu ostale samo zace moze sve da ih baci
         if (playerHasOnly12(game, playerUsername)) {
             return nextPlayer(game, 0);
         }
     }
+    if (card.number === '8') {
+        return nextPlayer(game, 2);
+        return nextPlayer(game, 2);
+    }
 
-
+    return nextPlayer(game);
+    return nextPlayer(game);
 }
 
 function determineDrawCount(game) {
@@ -148,8 +153,10 @@ function fixDrawStack(game) {
     game.openStack = [last];
 }
 
-function determineConsequences(game, playerUsername, card) {
-
+function determineConsequences(game, card) {
+    if(card.number === '9'){
+        game.direction *= -1;
+    }
 }
 
 function nextPlayer(game, offset = 1) {
@@ -187,7 +194,9 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             let log = {username: playerUsername, card: card};
             game.logs.push(log);
             //determine next player
-            let next = nextPlayer(game);
+            let next = determineNextPlayer(game,playerUsername, card);
+            //determine consequences
+            determineConsequences(game, card);
 
             NewGames.setGame(creatorUsername, game).then(() => {
                 resolve({playerOnMove: next, log: log});
@@ -203,7 +212,7 @@ exp.draw = (creatorUsername, playerUsername) => {
             fixDrawStack(game);
             let drawCount = determineDrawCount(game);
             let cards = game.drawStack.splice(-drawCount, drawCount);
-            game.players[playerUsername].cards.concat(cards);
+            game.players[playerUsername].cards = game.players[playerUsername].cards.concat(cards);
             //add log
             let log = {username: playerUsername, draw: drawCount};
             game.logs.push(log);
