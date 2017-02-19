@@ -67,6 +67,7 @@ exp.startGame = (creatorUsername) => {
                 game.playerOnMove = creatorUsername;
                 game.handStarter = creatorUsername;
                 game.direction = 1;
+                game.sevens = 0; //no of sevens played in a row, can not be determinated from openStack because player can draw and then play seven again
                 deal(game);
 
                 NewGames.setGame(creatorUsername, game).then(() => {
@@ -130,7 +131,8 @@ function determineDrawCount(game) {
     } else if (lastCard.number !== '7') {
         return 1;
     } else {
-        let sevens = _.takeRightWhile(game.openStack, (card) => card.number == 7).length;
+        let sevens = game.sevens;
+        game.sevens = 0;
         return sevens * 2; //TODO nadji koliko se vuce na sedmicu
     }
 }
@@ -156,6 +158,10 @@ function fixDrawStack(game) {
 function determineConsequences(game, card) {
     if(card.number === '9'){
         game.direction *= -1;
+    }
+
+    if(card.number === '7'){
+        game.sevens++;
     }
 }
 
@@ -187,7 +193,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
         NewGames.getGame(creatorUsername).then((game) => {
             //remove card from players
-            _.remove(game.players[playerUsername].cards, card);
+            _.remove(game.players[playerUsername].cards, {number: card.number, symbol: card.symbol}); //not using card object because other properties may not be the same
             //add card to openStack
             game.openStack.push(card);
             //add log

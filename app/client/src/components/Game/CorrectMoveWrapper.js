@@ -63,7 +63,7 @@ class CorrectMoveWrapper extends React.Component {
     }
 
     handleDrawClick() {
-        if (this.isMyTurn() && !this.state.draw) {
+        if (this.isMyTurn() && !this.canPass) {
             this.setState({draw:true});
             this.props.onDrawClick();
         }
