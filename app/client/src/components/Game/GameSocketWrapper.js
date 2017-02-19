@@ -132,13 +132,9 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleSocketInit(data) {
-        let players = [];
-        Object.keys(data.players).forEach((username, i) => {
-            players.push({...{username: username}, ...data.players[username]});
-        });
-        let pile = [...this.state.openStack, new Card(data.talon)];
+        let pile = [new Card(data.talon)];
         let cards = data.cards.map((card) => new Card(card));
-        this.setState({players: players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
+        this.setState({players: data.players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
     }
 
 

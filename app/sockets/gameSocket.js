@@ -1,5 +1,6 @@
-import Games from '../Redis/Games';
+import NewGames from '../Redis/NewGames';
 import Gameplay from '../Gameplay/Gameplay';
+
 import _ from 'lodash';
 
 
@@ -14,35 +15,29 @@ module.exports = function (socket) {
         if (!creatorUsername || !username) {
             return;
         }
-        Games.getPlayers(creatorUsername).then((players) => {
-            if (!players[username]) {
-                return;
-            }
+
+        NewGames.getGame(creatorUsername).then((game) => {
+           if(!game.players[username]){
+               return;
+           }
 
             name = username;
             creatorName = creatorUsername;
             socket.join(creatorUsername);
-            Games.setPlayerStatus(creatorUsername, username, 'online')
-                .then(() => {
-                    let sendData = {};
-                    Games.getPlayersWithStatus(creatorUsername).then((players) => {
-                        Games.getPlayerCards(creatorUsername, username).then((cards) => {
-                            Games.peakOpenStack(creatorUsername).then((talon) => {
-                                Games.getPlayerOnMove(creatorUsername).then((playerOnMove) => {
-                                    socket.emit('init', {players: players, cards: cards, talon: talon, playerOnMove: playerOnMove});
-                                });
-                            });
-                        });
-                    });
-                    socket.to(creatorUsername).broadcast.emit('user:join', {
-                        username: username,
-                        online: true,
-                        cardNumber: 1
-                    });
-                });
-
+            Gameplay.setPlayerOnlineStatus(creatorUsername, username, true);
+            let cards = game.players[username].cards.slice();
+            let players = [];
+            Object.keys(game.players).forEach((player) => {
+                players.push({username: player, online: game.players[player].online, cardNumber: game.players[player].cards.length});
+            });
+            let talon = _.last(game.openStack);
+            socket.emit('init', {players: players, cards: cards, talon: talon, playerOnMove: game.playerOnMove});
+            socket.to(creatorUsername).broadcast.emit('user:join', {
+                username: username,
+                online: true,
+                cardNumber: 1
+            });
         });
-
 
     });
 
@@ -67,22 +62,17 @@ module.exports = function (socket) {
         });
     });
 
-    socket.on('play:draw', (cardsNumber) => {
-       if(cardsNumber === undefined){
-           cardsNumber = 1;
-       }
-
+    socket.on('play:draw', () => {
        Gameplay.draw(creatorName, name).then((data)=> {
            socket.emit('play:get', data.cards);
            socket.to(creatorName).broadcast.emit('play:draw', name, data.cardsNumber);
-           emitPlayerOnMove(data.playerOnMove);
            emitLog(data.log);
        });
 
     });
 
     socket.on('play:pass', () => {
-       Gameplay.nextPlayer(creatorName).then((playerOnMove) => {
+       Gameplay.getNextPlayer(creatorName).then((playerOnMove) => {
            emitPlayerOnMove(playerOnMove);
            emitLog({username: name, message: "pass"});
        });
@@ -90,7 +80,7 @@ module.exports = function (socket) {
 
     socket.on('disconnect', () => {
         console.log('user disconnected from gameSocket');
-        Games.setPlayerStatus(creatorName, name, 'offline');
+        Gameplay.setPlayerOnlineStatus(creatorName, name, false);
         socket.leave(creatorName);
         socket.broadcast.emit('user:left', name);
     });
