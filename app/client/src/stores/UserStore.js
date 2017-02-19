@@ -14,8 +14,8 @@ class UserStore {
         this.id = info.id;
     }
 
-    updateFriendList(newFriend) {
-        this.friends.push(newFriend);
+    updateFriendList(friends) {
+        this.friends = this.friends.concat(friends);
     }
 
     receiveInvite(inviter) {

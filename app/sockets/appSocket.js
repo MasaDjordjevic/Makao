@@ -16,6 +16,12 @@ module.exports = function (socket) {
         socket.emit('user:info', userInfo);
     });
 
+    socket.on('user:friends', () => {
+        User.findByUsername(socketUser, (err, user) => {
+            socket.emit('user:friends', user.friends);
+        })
+    });
+
     socket.on('friend:accept', (friendUsername) => {
         User.addFriend(socketUser, friendUsername, (err) => {
             socket.emit('friend:added', friendUsername);

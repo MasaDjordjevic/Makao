@@ -52,6 +52,9 @@ class HomeHeader extends React.Component {
                 socket.on('user:info', (info) => {
                     UserActions.updateUserInfo(info);
                 });
+                socket.on('user:friends', (friends) => {
+                    UserActions.updateFriendList(friends);
+                });
                 // accept friend request was successful
                 socket.on('friend:added', (newFriend) => {
                     UserActions.updateFriendList(newFriend);
@@ -116,7 +119,7 @@ class HomeHeader extends React.Component {
     }
 
     handleRequestAccept(friendUsername) {
-       socket.emit('friend:accept', friendUsername);
+        socket.emit('friend:accept', friendUsername);
     }
 
     handleRequestIgnore(friendUsername) {
