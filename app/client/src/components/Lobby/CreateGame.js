@@ -2,10 +2,6 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Rules from './Rules';
 import Snackbar from 'material-ui/Snackbar';
-import GameActions from '../../actions/GameActions';
-import AuthStore from '../../stores/AuthStore';
-import { browserHistory } from 'react-router';
-
 
 class CreateGame extends React.Component {
     constructor() {
@@ -13,25 +9,16 @@ class CreateGame extends React.Component {
         this.state = {
             stepIndex: 0,
             rules: {},
-            friends: [],
-
             snackbarMessage: '',
             snackbarOpen: false,
         };
 
         this.handleCreateGame = this.handleCreateGame.bind(this);
         this.handleRuleChange = this.handleRuleChange.bind(this);
-
     }
 
     handleCreateGame() {
-        GameActions.createGame(this.state.rules, (status)=> {
-            if (status) {
-                browserHistory.push('/game/' + AuthStore.getState().user.username);
-            } else {
-                this.setState({snackbarMessage: 'Game creation failed.', snackbarOpen: true});
-            }
-        });
+        this.props.onCreate(this.state.rules);
     }
 
     handleRuleChange(rules) {

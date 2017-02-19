@@ -1,36 +1,26 @@
 import _ from 'lodash';
 import React from 'react';
 import {browserHistory} from 'react-router';
-import Auth from '../../Auth';
-import AuthActions from '../../actions/AuthActions';
-import AuthStore from '../../stores/AuthStore';
 import HomeHeader from '../Home/HomeHeader';
+import Auth from '../../Auth';
 
 class EnsureAuthContainer extends React.Component {
     constructor() {
         super();
-        this.state = {
-            user: AuthStore.getState().user
-        }
-    }
+        this.state = { userLoaded: false };
 
-    onChange = () => {
-        this.setState({user: AuthStore.getState()});
-    };
+        this.handleUserLoaded = this.handleUserLoaded.bind(this);
+    }
 
     componentDidMount() {
-        AuthStore.listen(this.onChange);
         // if there's no JWT, redirect
-        if (!Auth.isUserAuthenticated()) {
+        if (!Auth.isUserAuthenticated() && !this.state.userLoaded) {
             browserHistory.push('/');
-        } // if there is a JWT but no user set, try set it
-        else if (_.isEmpty(AuthStore.getState().user)) {
-            AuthActions.getUserData();
         }
     }
 
-    componentWillUnmount() {
-        AuthStore.unlisten(this.onChange);
+    handleUserLoaded() {
+        this.setState({ userLoaded: true });
     }
 
     get styles() {
@@ -44,16 +34,15 @@ class EnsureAuthContainer extends React.Component {
             });
     }
 
-
     render() {
-        // render nothing if no JWT or empty user
-        if (!Auth.isUserAuthenticated() || _.isEmpty(this.state.user)) {
+        // render nothing if no JWT
+        if (!Auth.isUserAuthenticated()) {
             return null;
         } else {
             return (
                 <div style={this.styles.container}>
-                    <HomeHeader />
-                    {this.props.children}
+                    <HomeHeader onUserLoad={this.handleUserLoaded}/>
+                    {this.state.userLoaded && this.props.children}
                 </div>
             )
         }

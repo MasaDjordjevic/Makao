@@ -16,11 +16,10 @@
     "mongoose": "^4.8.1",
     "mongoose-bcrypt": "^1.4.2",
     "morgan": "^1.7.0",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
     "redis": "^2.6.5",
     "socket.io": "^1.7.2",
-    "validator": "^6.2.1",
+    "socketio-auth": "github:scottdupoy/socketio-auth#01fda32",
+    "socketio-jwt": "^4.5.0",
 	"lodash": "^4.17.2"
   },
   "scripts": {

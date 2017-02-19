@@ -1,5 +1,5 @@
 import redis from 'redis';
-import NewGames from '../Redis/NewGames';
+import Games from '../Redis/Games';
 import _ from 'lodash';
 import Card from '../client/src/components/Card/Card';
 
@@ -44,7 +44,7 @@ exp.createGame = (creatorUsername, rules) => {
         game.rules = rules;
         game.status = 'lobby';
         game.logs = [];
-        NewGames.setGame(creatorUsername, game).then(() => {
+        Games.setGame(creatorUsername, game).then(() => {
             resolve();
         })
     });
@@ -53,16 +53,16 @@ exp.createGame = (creatorUsername, rules) => {
 exp.startGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         //all ready players from lobby become players of game
-        NewGames.getLobby(creatorUsername).then((players) => {
+        Games.getLobby(creatorUsername).then((players) => {
             let readyPlayers = {};
             Object.keys(players).forEach((username, index) => {
-                if (players[username] === 'true') {
+                if (players[username] === true) {
                     readyPlayers[username] = {
                         online: false,
                     };
                 }
             });
-            NewGames.getGame(creatorUsername).then((game) => {
+            Games.getGame(creatorUsername).then((game) => {
                 game.players = readyPlayers;
                 game.playerOnMove = creatorUsername;
                 game.handStarter = creatorUsername;
@@ -70,7 +70,7 @@ exp.startGame = (creatorUsername) => {
                 game.sevens = 0; //no of sevens played in a row, can not be determinated from openStack because player can draw and then play seven again
                 deal(game);
 
-                NewGames.setGame(creatorUsername, game).then(() => {
+                Games.setGame(creatorUsername, game).then(() => {
                     resolve();
                 });
             });
@@ -96,7 +96,7 @@ function deal(game) {
 }
 
 exp.getGame = (creatorUsername) => {
-    return NewGames.getGame(creatorUsername);
+    return Games.getGame(creatorUsername);
 };
 
 
@@ -181,9 +181,9 @@ function nextPlayer(game, offset = 1) {
 
 exp.getNextPlayer = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
             let playerOnMove = nextPlayer(game);
-            NewGames.setGame(creatorUsername, game).then(() => {
+            Games.setGame(creatorUsername, game).then(() => {
                 resolve(playerOnMove);
             })
         });
@@ -197,7 +197,7 @@ function isTwoDiamonds(game) {
 
 exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
             //remove card from players
             _.remove(game.players[playerUsername].cards, {number: card.number, symbol: card.symbol}); //not using card object because other properties may not be the same
             //add card to openStack
@@ -217,7 +217,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             }
 
 
-            NewGames.setGame(creatorUsername, game).then(() => {
+            Games.setGame(creatorUsername, game).then(() => {
                 resolve({playerOnMove: next, log: log});
             });
 
@@ -227,7 +227,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
 
 exp.draw = (creatorUsername, playerUsername) => {
     return new Promise((resolve, reject) => {
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
             fixDrawStack(game);
             let drawCount = determineDrawCount(game);
             let cards = game.drawStack.splice(-drawCount, drawCount);
@@ -240,7 +240,7 @@ exp.draw = (creatorUsername, playerUsername) => {
             game.logs.push(log);
 
 
-            NewGames.setGame(creatorUsername, game).then(() => {
+            Games.setGame(creatorUsername, game).then(() => {
                 resolve({cards: cards, log: log, cardsNumber: drawCount});
             });
         });
@@ -249,9 +249,9 @@ exp.draw = (creatorUsername, playerUsername) => {
 
 exp.setPlayerOnlineStatus = (creatorUsername, playerUsername, status) => {
     return new Promise((resolve, reject) => {
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
             game.players[playerUsername].online = status;
-            NewGames.setGame(creatorUsername, game).then(() => {
+            Games.setGame(creatorUsername, game).then(() => {
                 resolve();
             })
         });
@@ -260,16 +260,35 @@ exp.setPlayerOnlineStatus = (creatorUsername, playerUsername, status) => {
 
 exp.getGameStatus = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
             resolve(game ? game.status : 'not created');
+        });
+    });
+};
+
+exp.setGameStatus = (creatorUsername, status) => {
+    return new Promise((resolve, reject) => {
+        Games.getGame(creatorUsername).then((game) => {
+            game.status = status;
+            Games.setGame(creatorUsername, game).then(() => {
+                resolve();
+            })
         });
     });
 };
 
 exp.getLogs = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        NewGames.getGame(creatorUsername).then((game) => {
+        Games.getGame(creatorUsername).then((game) => {
             resolve(game.logs);
+        });
+    });
+};
+
+exp.getGameRules = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        Games.getGame(creatorUsername).then((game) => {
+            resolve(game.rules);
         });
     });
 };

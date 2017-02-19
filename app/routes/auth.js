@@ -1,8 +1,12 @@
 import express from 'express';
 import validator from 'validator';
-import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import { loginAuth, signupAuth } from '../auth-check';
 
 var router = express.Router();
+
+// TODO - add complexity package for password validationResult
+// TODO - add username alphanumeric validation with validator
 
 function validateLoginForm(data) {
     var error = '';
@@ -47,8 +51,6 @@ function validateSignupForm(data) {
 }
 
 // POST login request
-// using passport 'Custom Callback' feature to allow access of
-// req and res objects within the auth callback
 router.post('/login', (req, res, next) => {
     // first we validate the input fields
     var validationResult = validateLoginForm(req.body);
@@ -59,9 +61,9 @@ router.post('/login', (req, res, next) => {
         });
     }
 
-    // if inputs are valid, we use the passport strategy
-    // to auth the user by sending him a JSON web token
-    passport.authenticate('local-login', (err, token) => {
+    // if inputs are valid, we authenticate the user
+    // by sending him a JSON web token (jwt)
+    loginAuth(req.body, (err, user) => {
         if (err) {
             return res.status(400).json({
                 success: false,
@@ -69,12 +71,16 @@ router.post('/login', (req, res, next) => {
             });
         }
 
+        var payload = { sub: user.id, name: user.username };
+        // create a JSON web token
+        var token = jwt.sign(payload, 'aips2017jajacmasamitic');
+
         return res.status(200).json({
             success: true,
             message: "Successful login!",
             token
         });
-    })(req, res, next);
+    })
 });
 
 // POST signup request
@@ -90,9 +96,9 @@ router.post('/signup', (req, res, next) => {
         });
     }
 
-    // if inputs are valid, we use the passport strategy
-    // to signup and auth the user by sending him a JSON web token
-    passport.authenticate('local-signup', (err, token) => {
+    // if inputs are valid, we register the user
+    // and send him a jwt
+    signupAuth(req.body, (err, user) => {
         if (err) {
             return res.status(400).json({
                 success: false,
@@ -100,12 +106,16 @@ router.post('/signup', (req, res, next) => {
             });
         }
 
+        var payload = { sub: user.id, name: user.username };
+        // create a JSON web token
+        var token = jwt.sign(payload, 'aips2017jajacmasamitic');
+
         return res.status(200).json({
             success: true,
             message: "Successful signup!",
             token
         });
-    })(req, res, next);
+    })
 });
 
 module.exports = router;

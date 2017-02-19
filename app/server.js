@@ -2,31 +2,26 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import http from 'http';
 import logger from 'morgan';
-import passport from 'passport';
+import mongoose from 'mongoose';
 import path from 'path';
 import redis from 'redis';
 import sio from 'socket.io';
+//import sioauth from 'socketio-auth';
 
 // external route handlers
 import authRoutes from './routes/auth';
-import appRoutes from './routes/app';
 import gameRoutes from './routes/game';
 
 // mongodb connection logic
 import mongoConnect from './models/connect';
-
-// import User schema for now
 import User from './models/user';
 
-// passport strategies for login and signup
-import localLoginStrategy from './passport/local-login';
-import localSignupStrategy from './passport/local-signup';
-
 // authentication check middleware that we will use to secure endpoints
-import authCheck from './passport/auth-check';
+import authCheck from './auth-check';
 
 // external socket.io event/message handlers
 import appSocket from './sockets/appSocket';
+import playSocket from './sockets/playSocket';
 import lobbySocket from './sockets/lobbySocket';
 import chatSocket from './sockets/chatSocket';
 import gameSocket from './sockets/gameSocket';
@@ -79,43 +74,51 @@ if (process.env.NODE_ENV === 'production') {
 }
 app.use(logger('combined'));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-
-// load passport strategies
-passport.use('local-login', localLoginStrategy);
-passport.use('local-signup', localSignupStrategy);
 
 // insert some users if none exist in database
 User.count({}, (err, count) => {
-    if (count === 0) {
-        var users = [
-            new User({username: "jajac", email: "jajac", password: "jajac"}),
-            new User({username: "masa", email: "masa", password: "masa"}),
-            new User({username: "mitic", email: "mitic", password: "mitic"})
-        ]
+    User.remove({}, () => {});
+    var users = [
+        new User({username: "jajac", email: "jajac", password: "jajac",
+                friends: ['masa', 'mitic', 'pera', 'mika']}),
+        new User({username: "masa", email: "masa", password: "masa",
+                friends: ['jajac', 'mitic', 'mika']}),
+        new User({username: "mitic", email: "mitic", password: "mitic",
+                friends: ['masa', 'pera']}),
+        new User({username: "pera", email: "pera", password: "pera",
+                friends: ['masa', 'mitic']}),
+        new User({username: "mika", email: "mika", password: "mika",
+                friends: ['masa', 'mitic', 'pera']})
+    ]
 
-        users.map(x => x.save());
-    }
-});
-
-app.use((req, res, next) => {
-    console.log('REQUEST[' + req.url + '] ' + Date.now());
-    next();
+    users.map(x => x.save());
 });
 
 // forward /auth/* requests to the external route handler (login and signup)
 app.use('/auth', authRoutes);
 // all other requests have to go through authCheck before forwarding to handler
-app.use('/', authCheck, appRoutes, gameRoutes);
+// app.use('/', authCheck, appRoutes, gameRoutes);
+app.use('/', gameRoutes);
 
 const server = app.listen(3001, () => {
     console.log('Server listening on port 3001.');
 });
 
 const io = sio(server);
-io.on('connection', appSocket);
-io.of('/lobby').on('connection', lobbySocket);
-io.of('/chat').on('connection', chatSocket);
-io.of('/game').on('connection', gameSocket);
 
-
+io.on('connection', authCheck.socketTokenAuth)
+  .on('authenticated', appSocket);
+// passing 'io' to lobbysocket as well for the 'user:invite' message
+io.of('/lobby')
+  .on('connection', authCheck.socketTokenAuth)
+  .on('authenticated', (socket) => lobbySocket(socket, io.of('/lobby')));
+io.of('/chat')
+  .on('connection', authCheck.socketTokenAuth)
+  .on('authenticated', chatSocket);
+io.of('/game')
+  .on('connection', authCheck.socketTokenAuth)
+  .on('authenticated', gameSocket);
+io.of('/play')
+  .on('connection', authCheck.socketTokenAuth)
+  .on('authenticated', playSocket);
+// sioauth(io, { authenticate: authCheck.socketAuth, timeout: 'none' });

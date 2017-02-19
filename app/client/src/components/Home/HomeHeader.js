@@ -13,8 +13,10 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import { Link, browserHistory } from 'react-router';
-import AuthStore from '../../stores/AuthStore';
+import UserStore from '../../stores/UserStore';
+import UserActions from '../../actions/UserActions';
 import AuthActions from '../../actions/AuthActions';
+import Auth from '../../Auth';
 
 var socket;
 
@@ -22,23 +24,67 @@ class HomeHeader extends React.Component {
     constructor() {
         super();
         this.state = {
-            user: AuthStore.getState().user
+            username: UserStore.getState().username
         }
 
         this.onChange = this.onChange.bind(this);
     }
 
     onChange() {
-        this.setState({ user: AuthStore.getState().user });
+        let newUsername = UserStore.getState().username;
+        if (this.state.username.length <= 0 && newUsername.length > 0) {
+            this.setState({ username: UserStore.getState().username });
+            this.props.onUserLoad();
+        }
     }
 
     componentDidMount() {
-        AuthStore.listen(this.onChange);
+        UserStore.listen(this.onChange);
+
         socket = io();
+        socket.on('connect', () => {
+            socket.emit('authenticate', { token: Auth.getToken() });
+            socket.on('authenticated', () => {
+                // request user info from server
+                socket.emit('user:info');
+                socket.emit('user:friends');
+                // update user info when server responds
+                socket.on('user:info', (info) => {
+                    UserActions.updateUserInfo(info);
+                });
+                socket.on('user:friends', (friends) => {
+                    UserActions.updateFriendList(friends);
+                });
+                // accept friend request was successful
+                socket.on('friend:added', (newFriend) => {
+                    UserActions.updateFriendList(newFriend);
+                });
+                // ignore friend request was successful
+                socket.on('friend:ignore', () => {
+                    alert('ignored!');
+                });
+                // when a new invite is received
+                socket.on('user:invite', (inviter) => {
+                    UserActions.receiveInvite(inviter);
+                });
+                // when server allows client's accept
+                socket.on('invite:accept', (creatorUsername) => {
+                    browserHistory.push('/game/' + creatorUsername);
+                });
+                // when server rejects client's accept because
+                // the game is full but it still hasn't started
+                socket.on('invite:reject', (creatorUsername) => {
+                    alert('The lobby is full.');
+                });
+            });
+            socket.on('unauthorized', (msg) => {
+                alert(JSON.stringify(msg.data));
+            });
+        });
     }
 
     componentWillUnmount() {
-        AuthStore.unlisten(this.onChange);
+        UserStore.unlisten(this.onChange);
         socket.disconnect();
     }
 
@@ -72,22 +118,26 @@ class HomeHeader extends React.Component {
         }
     }
 
-    handleRequestAccept(friendId){
-       alert("Req acc friend: " + friendId);
+    handleRequestAccept(friendUsername) {
+        socket.emit('friend:accept', friendUsername);
     }
 
-    renderFriendRequest(friendName, friendId) {
+    handleRequestIgnore(friendUsername) {
+        socket.emit('friend:ignore', friendUsername);
+    }
+
+    renderFriendRequest(friendName) {
         return (
             <MenuItem primaryText={
                 <div>
                     <span>Friend request from&nbsp;
-                        <Link to={"/users:"+ friendId} >
+                        <Link to={"/users/"+ friendName} >
                             <b>{friendName}</b>
                         </Link>
                     </span>
                     <div>
-                        <FlatButton label="Accept" labelStyle={{color: green600}} onClick={() => this.handleRequestAccept(friendId)} />
-                        <FlatButton label="Ignore" labelStyle={{color: grey500}}/>
+                        <FlatButton label="Accept" labelStyle={{color: green600}} onClick={() => this.handleRequestAccept(friendName)} />
+                        <FlatButton label="Ignore" labelStyle={{color: grey500}} onClick={() => this.handleRequestIgnore(friendName)} />
                     </div>
                 </div>
 
@@ -98,6 +148,7 @@ class HomeHeader extends React.Component {
     }
 
     handleLogout() {
+        UserActions.clearUser();
         AuthActions.logout();
         browserHistory.push('/');
     }
@@ -111,8 +162,8 @@ class HomeHeader extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar
                     title={
-                        <Link to={"/users:"+ this.state.user.username}>
-                            <span style={this.styles.username}>{this.state.user.username}</span>
+                        <Link to={"/users/"+ this.state.username}>
+                            <span style={this.styles.username}>{this.state.username}</span>
                         </Link>}
                     iconElementLeft={
                         <IconMenu
@@ -145,7 +196,7 @@ class HomeHeader extends React.Component {
                                     targetOrigin={this.styles.notificationMenuPosition}
                                     width={300}
                                 >
-                                    {this.renderFriendRequest("Darko", 2)}
+                                    {this.renderFriendRequest("Darko")}
                                     <MenuItem primaryText="Send feedback"/>
                                     <MenuItem primaryText="Settings"/>
                                     <MenuItem primaryText="Help"/>

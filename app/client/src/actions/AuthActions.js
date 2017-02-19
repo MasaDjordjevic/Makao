@@ -1,11 +1,9 @@
 import alt from '../alt';
-import Auth from '../Auth';
 
 class AuthActions {
     constructor() {
         this.generateActions(
             'login',
-            'updateUserData',
             'logout'
         );
     }
@@ -32,21 +30,6 @@ class AuthActions {
         }).then((data) => {
             this.actions.login(data);
         });
-    }
-
-    getUserData() {
-        fetch('/user/data', {
-            headers: { 'Authorization': 'bearer ' + Auth.getToken() },
-        }).then((res) => {
-            return res.json();
-        }).then((user) => {
-            this.actions.updateUserData(user);
-        });
-    }
-
-    // just dispatches the action further
-    logout() {
-
     }
 }
 
