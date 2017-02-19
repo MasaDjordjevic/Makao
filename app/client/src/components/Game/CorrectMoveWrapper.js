@@ -63,8 +63,15 @@ class CorrectMoveWrapper extends React.Component {
 
             //ako je bacena dvojka karo, zaca nema efekta
             if(talon.number === '2' && talon.symbol === 'diamonds') {
-                this.setState({jackPlayed: false, draw: false});
-                this.props.onCardClick(card, true);
+                if(this.state.draw){ //moras da kupis
+                    this.setState({jackPlayed: false, draw: false});
+                    this.props.onCardClick(card, true);
+                    return;
+                }else {
+                    this.setState({snackbarOpen: true, snackbarMessage: '2 diamonds, draw'});
+                    return;
+                }
+
             }else {
                 this.setState({jackPlayed: true});
             }
