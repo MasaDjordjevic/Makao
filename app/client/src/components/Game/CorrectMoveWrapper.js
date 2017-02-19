@@ -42,7 +42,9 @@ class CorrectMoveWrapper extends React.Component {
 
     handleCardClick(card) {
         if (this.isMyTurn()) {
-            if (card.number === this.props.talon.number || card.symbol === this.props.talon.symbol) {
+            //mora da se poklopi broj i znak
+            //zaca moze uvek da se baci
+            if (card.number === 12 ||  card.number === this.props.talon.number || card.symbol === this.props.talon.symbol) {
                 this.props.onCardClick(card);
             } else {
                 this.setState({snackbarOpen: true, snackbarMessage: 'Wrong card'});
