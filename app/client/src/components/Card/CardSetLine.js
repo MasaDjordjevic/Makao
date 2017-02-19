@@ -72,7 +72,8 @@ class CardSetLine extends React.Component {
                                 back={this.props.back}
                                 cardHeight={this.props.height}
                                 card={card}
-                                offset={offset}/>
+                                offset={offset}
+                                mark={card && !!card.mustPlay}/>
                             {cardNum}
                         </div>
                     )

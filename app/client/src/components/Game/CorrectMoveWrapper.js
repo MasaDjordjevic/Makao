@@ -10,6 +10,7 @@ class CorrectMoveWrapper extends React.Component {
             snackbarOpen: false,
             snackbarMessage: '',
             draw: false,
+            jackPlayed: false,
         };
 
         this.isMyTurn = this.isMyTurn.bind(this);
@@ -44,16 +45,48 @@ class CorrectMoveWrapper extends React.Component {
 
     handleCardClick(card) {
         if (this.isMyTurn()) {
+
+            let must = _.filter(this.props.myCards, 'mustPlay');
+            if(must.length > 0){
+                let findCard = _.find(must, card);
+                if(!findCard){
+                    this.setState({snackbarOpen: true, snackbarMessage: 'must play'});
+                    return;
+                }else {
+                    this.setState({draw: false});
+                    this.props.onCardClick(card);
+                    return;
+                }
+            }
+
             let talon = this.props.talon;
+
+            //ako je bacena dvojka karo, zaca nema efekta
+            if(talon.number === '2' && talon.symbol === 'diamonds') {
+                if(this.state.draw){ //moras da kupis
+                    this.setState({jackPlayed: false, draw: false});
+                    this.props.onCardClick(card, true);
+                    return;
+                }else {
+                    this.setState({snackbarOpen: true, snackbarMessage: '2 diamonds, draw'});
+                    return;
+                }
+
+            }else {
+                this.setState({jackPlayed: true});
+            }
+
+
+
             //na sedmicu moze samo sedmica ako nije vuko
-            if(!this.state.draw && talon.number === '7' && card.number !== '7'){
+            if (!this.state.draw && talon.number === '7' && card.number !== '7') {
                 this.setState({snackbarOpen: true, snackbarMessage: '7 na 7'});
                 return;
             }
             //mora da se poklopi broj i znak
             //zaca moze uvek da se baci
 
-            if (card.number === '12' ||  card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
+            if (card.number === '12' || card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
                 this.setState({draw: false});
                 this.props.onCardClick(card);
             } else {
@@ -64,7 +97,7 @@ class CorrectMoveWrapper extends React.Component {
 
     handleDrawClick() {
         if (this.isMyTurn() && !this.canPass) {
-            this.setState({draw:true});
+            this.setState({draw: true});
             this.props.onDrawClick();
         }
     }
@@ -75,8 +108,16 @@ class CorrectMoveWrapper extends React.Component {
         });
     };
 
-    get canPass(){
-        if(this.props.talon && this.props.talon.number === '1'){
+    get jackPlayed(){
+        if(!this.state.jackPlayed){
+            return false;
+        }else {
+            return this.props.jackPlayed;
+        }
+    }
+
+    get canPass() {
+        if (this.props.talon && this.props.talon.number === '1') {
             return false;
         }
         return this.state.draw;
@@ -92,7 +133,7 @@ class CorrectMoveWrapper extends React.Component {
                       playerOnMove={this.props.playerOnMove}
                       myCards={this.props.myCards}
                       talon={this.props.talon}
-                      jackPlayed={this.props.jackPlayed}
+                      jackPlayed={this.jackPlayed}
                       onJackSignPicked={this.props.onJackSignPicked}
                       onDrawClick={this.handleDrawClick}
                       onCardClick={this.handleCardClick}

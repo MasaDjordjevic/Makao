@@ -24,7 +24,8 @@ class CardComponent extends React.Component {
                     cardHeight={this.props.cardHeight}
                     card={this.props.card}
                     offset={this.props.offset}
-                    hover={this.props.hover}/>
+                    hover={this.props.hover}
+                    mark={this.props.mark}/>
 
         );
     }
@@ -38,6 +39,7 @@ CardComponent.propTypes = {
     hover: React.PropTypes.any,
     back: React.PropTypes.bool,
     offset: React.PropTypes.number, /*card header symbol offset*/
+    mark: React.PropTypes.bool,
 };
 
 export default Radium(CardComponent);
