@@ -26,15 +26,17 @@ class CardFront extends React.Component {
         const cardWidth = getCardWidth(cardHeight);
         const cardBorderRadius = getCardBorderRadius(cardHeight);
 
-        if (this.props.hover) {
-            var hover = {
-                transform: 'scale(' + cardHoverGrowth + ')',
-                cursor: 'pointer',
-            };
-        }
+        let mark = {
+            transform: 'scale(' + cardHoverGrowth + ')',
+            cursor: 'pointer',
+        };
+
+        let hover = this.props.hover ? mark : null;
+
+        let markObj = this.props.mark ? mark : {};
 
         return {
-            cardStyle: {
+            cardStyle: {...markObj, ...{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -46,7 +48,7 @@ class CardFront extends React.Component {
                 marginRight: "10px",
                 backgroundColor: "white",
                 ':hover': hover,
-            },
+            }},
 
             headerStyle: {
                 width: "103%",
@@ -91,6 +93,7 @@ CardFront.propTypes = {
     hover: React.PropTypes.any,
     card: React.PropTypes.instanceOf(Card),
     offset: React.PropTypes.number,
+    mark: React.PropTypes.bool,
 };
 
 export default Radium(CardFront);

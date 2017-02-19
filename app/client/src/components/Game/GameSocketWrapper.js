@@ -38,7 +38,7 @@ class GameSocketWrapper extends React.Component {
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
     }
 
-    handleNewLog(log){
+    handleNewLog(log) {
         GameActions.addLogEntry(log);
     }
 
@@ -62,12 +62,13 @@ class GameSocketWrapper extends React.Component {
         socket.emit('play:move', card);
     }
 
-    handleCardClick(card) {
-        this.handleMovePlayed(this.state.me.username, _.find(this.state.myCards, card));
+    handleCardClick(card, ignoreJack = false) {
+        this.handleMovePlayed(this.state.me.username, _.find(this.state.myCards, card), ignoreJack);
     }
 
-    handleMovePlayed(username, card) {
-        const jackPlayed = username === this.state.me.username && card.number === "12";
+    handleMovePlayed(username, card, ignoreJack = false) {
+        let jackPlayed = username === this.state.me.username && card.number === "12";
+
         const myMove = username === this.state.me.username;
         if (myMove) {
             const myCards = this.state.myCards.slice();
@@ -90,7 +91,7 @@ class GameSocketWrapper extends React.Component {
         });
 
 
-        if (!jackPlayed && myMove) {
+        if ((ignoreJack || !jackPlayed) && myMove) {
             socket.emit('play:move', card);
         }
     }
@@ -169,16 +170,16 @@ class GameSocketWrapper extends React.Component {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <CorrectMoveWrapper dimensions={this.props.dimensions}
-                      myMove={this.state.playerOnMove === this.state.me.username}
-                      opponents={playersWithoutUser}
-                      playerOnMove={this.state.playerOnMove}
-                      myCards={myCards}
-                      talon={this.state.openStack.slice(-1)[0]}
-                      jackPlayed={this.state.jackPlayed}
-                      onDrawClick={this.handleDrawClick}
-                      onCardClick={this.handleCardClick}
-                      onJackSignPicked={this.handleJackSignPicked}
-                      onNext={this.handleNext} />
+                                    myMove={this.state.playerOnMove === this.state.me.username}
+                                    opponents={playersWithoutUser}
+                                    playerOnMove={this.state.playerOnMove}
+                                    myCards={myCards}
+                                    talon={this.state.openStack.slice(-1)[0]}
+                                    jackPlayed={this.state.jackPlayed}
+                                    onDrawClick={this.handleDrawClick}
+                                    onCardClick={this.handleCardClick}
+                                    onJackSignPicked={this.handleJackSignPicked}
+                                    onNext={this.handleNext}/>
             </div>
         );
     }

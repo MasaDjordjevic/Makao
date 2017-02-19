@@ -7,7 +7,7 @@ let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
 function createStack() {
-    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14];
+    let numbers = [1, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14,12, 2];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
     numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
@@ -156,6 +156,7 @@ function fixDrawStack(game) {
 }
 
 function determineConsequences(game, card) {
+
     if(card.number === '9'){
         game.direction *= -1;
     }
@@ -189,9 +190,15 @@ exp.getNextPlayer = (creatorUsername) => {
     });
 };
 
+function isTwoDiamonds(game) {
+    let talon = _.last(game.openStack);
+    return talon.number === '2' && talon.symbol === 'diamonds';
+}
+
 exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
         NewGames.getGame(creatorUsername).then((game) => {
+            let twoDiamonds = isTwoDiamonds(game);
             //remove card from players
             _.remove(game.players[playerUsername].cards, {number: card.number, symbol: card.symbol}); //not using card object because other properties may not be the same
             //add card to openStack
@@ -199,10 +206,17 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             //add log
             let log = {username: playerUsername, card: card};
             game.logs.push(log);
-            //determine next player
-            let next = determineNextPlayer(game,playerUsername, card);
-            //determine consequences
-            determineConsequences(game, card);
+
+            let next;
+            if(!twoDiamonds) {
+                //determine next player
+                next = determineNextPlayer(game,playerUsername, card);
+                //determine consequences
+                determineConsequences(game, card);
+            } else {
+                next = nextPlayer(game);
+            }
+
 
             NewGames.setGame(creatorUsername, game).then(() => {
                 resolve({playerOnMove: next, log: log});
@@ -218,6 +232,9 @@ exp.draw = (creatorUsername, playerUsername) => {
             fixDrawStack(game);
             let drawCount = determineDrawCount(game);
             let cards = game.drawStack.splice(-drawCount, drawCount);
+            if(isTwoDiamonds(game)){
+                _.last(cards).mustPlay = true;
+            }
             game.players[playerUsername].cards = game.players[playerUsername].cards.concat(cards);
             //add log
             let log = {username: playerUsername, draw: drawCount};
