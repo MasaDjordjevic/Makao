@@ -105,7 +105,6 @@ class Game extends React.Component {
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
                             <ScoresWrapper showScores={this.props.dimensions.showScores}
-                                           scores={this.scores}
                                            height={this.props.dimensions.userCardsHeight}/>
                         </div>
                         <div style={this.styles.myCards}>
@@ -118,6 +117,7 @@ class Game extends React.Component {
                         <div style={this.styles.spacer}>
                             <UserInfo style={this.styles.userInfo}
                                       myMove={this.props.myMove}
+                                      enableNext={this.props.enableNext}
                                       onNext={this.props.onNext}/>
                         </div>
                     </div>
@@ -136,11 +136,12 @@ Game.PropTypes = {
     playerOnMove: React.PropTypes.string,
     myCards: React.PropTypes.array,
     Talon: React.PropTypes.object,
-    jackPlayed: React.PropTypes.jackPlayed,
+    jackPlayed: React.PropTypes.bool,
     onDrawClick: React.PropTypes.func,
     onCardClick: React.PropTypes.func,
     onJackSignPicked: React.PropTypes.func,
     onNext: React.PropTypes.func,
+    enableNext: React.PropTypes.bool,
 
 
 };

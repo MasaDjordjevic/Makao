@@ -20,8 +20,6 @@ class Main extends React.Component {
             gameStarted: null,
         };
 
-
-        //
         this.handleGameStart = this.handleGameStart.bind(this);
     }
 

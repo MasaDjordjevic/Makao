@@ -22,6 +22,9 @@ class Log extends React.Component {
 
     onChange() {
         let logs = GameStore.getState().logs;
+        if(!logs){
+            logs = [];
+        }
         logs.map((log) => log.card ? log.card = new Card(log.card) : log);
         this.setState({logs: logs});
     }

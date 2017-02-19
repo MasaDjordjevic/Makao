@@ -4,7 +4,8 @@ import AuthStore from '../../stores/AuthStore';
 import io from 'socket.io-client';
 import GameActions from '../../actions/GameActions';
 import Card from '../Card/Card';
-import Game from '../Game/Game';
+import CorrectMoveWrapper from '../Game/CorrectMoveWrapper';
+
 
 var socket;
 
@@ -18,7 +19,7 @@ class GameSocketWrapper extends React.Component {
             playerOnMove: '',
             myCards: [],
             openStack: [],
-            jackPlayed: false
+            jackPlayed: false,
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -46,9 +47,6 @@ class GameSocketWrapper extends React.Component {
     };
 
     handleNext() {
-        if (this.state.playerOnMove !== this.state.me.username) {
-            return;
-        }
         socket.emit('play:pass');
     }
 
@@ -65,9 +63,6 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleCardClick(card) {
-        if (this.state.playerOnMove !== this.state.me.username) {
-            return;
-        }
         this.handleMovePlayed(this.state.me.username, _.find(this.state.myCards, card));
     }
 
@@ -101,9 +96,6 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleDrawClick() {
-        if (this.state.playerOnMove !== this.state.me.username) {
-            return;
-        }
         socket.emit('play:draw', 1);
     }
 
@@ -140,13 +132,9 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleSocketInit(data) {
-        let players = [];
-        Object.keys(data.players).forEach((username, i) => {
-            players.push({...{username: username}, ...data.players[username]});
-        });
-        let pile = [...this.state.openStack, new Card(data.talon)];
+        let pile = [new Card(data.talon)];
         let cards = data.cards.map((card) => new Card(card));
-        this.setState({players: players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
+        this.setState({players: data.players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
     }
 
 
@@ -180,7 +168,7 @@ class GameSocketWrapper extends React.Component {
         myCards = _.sortBy(myCards, ['symbol', 'number']);
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <Game dimensions={this.props.dimensions}
+                <CorrectMoveWrapper dimensions={this.props.dimensions}
                       myMove={this.state.playerOnMove === this.state.me.username}
                       opponents={playersWithoutUser}
                       playerOnMove={this.state.playerOnMove}

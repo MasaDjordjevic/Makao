@@ -1,5 +1,5 @@
 import redis from 'redis';
-import Games from '../Redis/Games';
+import NewGames from '../Redis/NewGames';
 import _ from 'lodash';
 import Card from '../client/src/components/Card/Card';
 
@@ -25,27 +25,52 @@ function getRandomCards(stack, number) {
     return retCards;
 }
 
+function getTalon(stack) {
+    let randomCard = null;
+    let randomIndex = -1;
+    do {
+        randomIndex = Math.floor(Math.random() * stack.length);
+        randomCard = stack[randomIndex];
+    } while (randomCard.number === 12 || randomCard.number === 7 || randomCard.number === 8); //do not let some meaningful card be on talon
+
+    stack.splice(randomIndex, 1);
+
+    return randomCard;
+}
+
+exp.createGame = (creatorUsername, rules) => {
+    return new Promise((resolve, reject) => {
+        let game = {};
+        game.rules = rules;
+        game.status = 'lobby';
+        game.logs = [];
+        NewGames.setGame(creatorUsername, game).then(() => {
+            resolve();
+        })
+    });
+};
+
 exp.startGame = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         //all ready players from lobby become players of game
-        Games.getLobby(creatorUsername).then((players) => {
-            let readyPlayers = [];
-            readyPlayers.push(creatorUsername);
+        NewGames.getLobby(creatorUsername).then((players) => {
+            let readyPlayers = {};
             Object.keys(players).forEach((username, index) => {
                 if (players[username] === 'true') {
-                    readyPlayers.push(username);
-                    readyPlayers.push('offline');
+                    readyPlayers[username] ={
+                        online: false,
+                    };
                 }
             });
-            Games.setPlayers(readyPlayers).then(() => {
-                Games.removeLogs(creatorUsername);
-                //set player on move
-                Games.setPlayerOnMove(creatorUsername, creatorUsername);
-                //set hand starter
-                Games.setHandStarter(creatorUsername, creatorUsername);
+            NewGames.getGame(creatorUsername).then((game) => {
+                game.players = readyPlayers;
+                game.playerOnMove = creatorUsername;
+                game.handStarter = creatorUsername;
+                game.direction = 1;
+                game.sevens = 0; //no of sevens played in a row, can not be determinated from openStack because player can draw and then play seven again
+                deal(game);
 
-                //start the game
-                exp.deal(creatorUsername).then(() => {
+                NewGames.setGame(creatorUsername, game).then(() => {
                     resolve();
                 });
             });
@@ -53,132 +78,183 @@ exp.startGame = (creatorUsername) => {
     });
 };
 
-exp.deal = (creatorUsername) => {
-    return new Promise((resolve, reject) => {
+function deal(game) {
+    //kreiraj spilove
+    let stack = createStack();
 
-        //kreiraj spilove
-        let stack = createStack();
+    //stavi kartu na talon (openStack)
+    let talon = getTalon(stack);
+    game.openStack = [talon];
 
-        //stavi kartu na talon (openStack)
-        let openStack = [];
-        let talon = getRandomCards(stack, 1)[0];
-        openStack.push(talon);
-        Games.setOpenStack(creatorUsername, openStack);
-
-
-        //podeli igracima karte
-        const cardsPerPlayer = 6;
-        Games.getPlayersUsernames(creatorUsername).then((players) => players.forEach((username, index) => {
-            let cards = getRandomCards(stack, cardsPerPlayer);
-            Games.setPlayerCards(creatorUsername, username, cards).then(() => {
-                if (index === players.length - 1) {
-                    //stavi ostalo u drawStack
-                    Games.setDrawStack(creatorUsername, stack).then(() => {
-                        Games.setGameState(creatorUsername, 'started').then(() => resolve());
-                    });
-                }
-            });
-        }));
+    //podeli igracima karte
+    const cardsPerPlayer = 6;
+    Object.keys(game.players).forEach((player, index) => {
+        game.players[player].cards = getRandomCards(stack, cardsPerPlayer);
     });
-};
+    game.drawStack = stack;
+    game.status = 'started';
+}
 
 exp.getGame = (creatorUsername) => {
-    return new Promise((resolve, reject) => {
-        let ret = {};
-        Games.getGameState(creatorUsername)
-            .then((data) => {
-                ret.state = data;
-                Games.getGameRules(creatorUsername).then((data) => {
-                    ret.rules = data;
-                    Games.getLogs(creatorUsername).then((data) => {
-                        ret.logs = data;
-                        Games.getPlayerOnMove(creatorUsername).then((data) => {
-                            ret.playerOnMove = data;
-                            Games.getHandStarter(creatorUsername).then((data) => {
-                                ret.handStarter = data;
-                                Games.getPlayersWithStatus(creatorUsername).then((data) => {
-                                    ret.players = data;
-                                    Games.getOpenStack(creatorUsername).then((data) => {
-                                        ret.openStack = data;
-                                        Games.getDrawStack(creatorUsername).then((data) => {
-                                            ret.drawStack = data;
-                                            Games.getPlayersWithCards(creatorUsername).then((data) => {
-                                                ret.playersCards = data;
-                                                resolve(ret);
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-    });
+    return NewGames.getGame(creatorUsername);
 };
 
-exp.determineNextPlayer = (creatorUsername, playerUsername, card) => {
-    return new Promise((resolve, reject) => {
 
-    });
-};
+function playerHasOnly12(game, playerUsername) {
+    let cards = game.players[playerUsername].cards;
+    return _.every(cards, (card) => card.number == 12);
+}
 
-exp.nextPlayer = (creatorUsername) => {
+function determineNextPlayer(game, playerUsername, card) {
+    if (card.number === '1') { //same player
+        return nextPlayer(game, 0);
+    }
+    if (card.number === '11') {//ako su mu ostale samo zace moze sve da ih baci
+        if (playerHasOnly12(game, playerUsername)) {
+            return nextPlayer(game, 0);
+        }
+    }
+    if (card.number === '8') {
+        return nextPlayer(game, 2);
+        return nextPlayer(game, 2);
+    }
+
+    return nextPlayer(game);
+    return nextPlayer(game);
+}
+
+function determineDrawCount(game) {
+    let lastCard = _.last(game.openStack);
+    if (lastCard.number === '2' && lastCard.symbol === 'diamonds') { //dvojka karo
+        let num = _.takeRightWhile(game.drawStack, (card) => card.symbol !== 'diamonds').length + 1; //vuce sve do kocke
+        return num;
+    } else if (lastCard.number !== '7') {
+        return 1;
+    } else {
+        let sevens = game.sevens;
+        game.sevens = 0;
+        return sevens * 2; //TODO nadji koliko se vuce na sedmicu
+    }
+}
+
+function fixDrawStack(game) {
+    if (game.drawStack.length > 0) {
+        return;
+    }
+
+    if(game.openStack.length === 0){
+        console.log("nema vise karata!!!!");
+    }
+
+    //resetuj sve zace
+    game.openStack.forEach((card) => card.jackSymbol = null);
+
+    //ostavi samo poslednu kartu na talonu, ostale prebaci u drawStack
+    let last = game.openStack.pop();
+    game.drawStack = game.openStack.slice();
+    game.openStack = [last];
+}
+
+function determineConsequences(game, card) {
+    if(card.number === '9'){
+        game.direction *= -1;
+    }
+
+    if(card.number === '7'){
+        game.sevens++;
+    }
+}
+
+function nextPlayer(game, offset = 1) {
+    if (offset === 0) {
+        return game.playerOnMove;
+    }
+    offset = offset * game.direction;
+    let players = _.keys(game.players);
+    let currIndex = players.indexOf(game.playerOnMove);
+    let nextIndex = (currIndex + offset) % players.length;
+    let next = players[nextIndex];
+    game.playerOnMove = next;
+    return next;
+}
+
+exp.getNextPlayer = (creatorUsername) => {
     return new Promise((resolve, reject) => {
-        Games.getPlayersUsernames(creatorUsername).then((players) => {
-            Games.getPlayerOnMove(creatorUsername).then((curr) => {
-                let currIndex = players.indexOf(curr);
-                let nextIndex = (currIndex + 1) % players.length;
-                let next = players[nextIndex];
-                Games.setPlayerOnMove(creatorUsername, next).then(() => {
-                    resolve(next);
-                })
-            });
+        NewGames.getGame(creatorUsername).then((game) => {
+            let playerOnMove = nextPlayer(game);
+            NewGames.setGame(creatorUsername, game).then(() => {
+                resolve(playerOnMove);
+            })
         });
     });
 };
 
 exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
-        //remove card from players cards
-        //ne radi
-        //Games.removeFromPlayersCards(creatorUsername, playerUsername, card).then((cards) => {
-        Games.getPlayerCards(creatorUsername, playerUsername).then((cards) => {
-            _.remove(cards, (c) => c.number === card.number && c.symbol === card.symbol);
-            Games.setPlayerCards(creatorUsername, playerUsername, cards).then(() => {
-                //add card to openStack
-                Games.addToOpenStack(creatorUsername, [card]).then(() => {
-                    //add log
-                    let log = {username: playerUsername, card: card};
-                    Games.addLog(creatorUsername, log).then(() => {
-                        //determine next player
-                        exp.nextPlayer(creatorUsername).then((playerOnMove) => {
-                            resolve({playerOnMove: playerOnMove, log: log});
-                        });
-                    });
-                });
+        NewGames.getGame(creatorUsername).then((game) => {
+            //remove card from players
+            _.remove(game.players[playerUsername].cards, {number: card.number, symbol: card.symbol}); //not using card object because other properties may not be the same
+            //add card to openStack
+            game.openStack.push(card);
+            //add log
+            let log = {username: playerUsername, card: card};
+            game.logs.push(log);
+            //determine next player
+            let next = determineNextPlayer(game,playerUsername, card);
+            //determine consequences
+            determineConsequences(game, card);
+
+            NewGames.setGame(creatorUsername, game).then(() => {
+                resolve({playerOnMove: next, log: log});
+            });
+
+        });
+    });
+};
+
+exp.draw = (creatorUsername, playerUsername) => {
+    return new Promise((resolve, reject) => {
+        NewGames.getGame(creatorUsername).then((game) => {
+            fixDrawStack(game);
+            let drawCount = determineDrawCount(game);
+            let cards = game.drawStack.splice(-drawCount, drawCount);
+            game.players[playerUsername].cards = game.players[playerUsername].cards.concat(cards);
+            //add log
+            let log = {username: playerUsername, draw: drawCount};
+            game.logs.push(log);
+
+
+            NewGames.setGame(creatorUsername, game).then(() => {
+                resolve({cards: cards, log: log, cardsNumber: drawCount});
             });
         });
     });
 };
 
-exp.draw = (creatorUsername, playerUsername, cardsNumber) => {
+exp.setPlayerOnlineStatus = (creatorUsername, playerUsername, status) => {
     return new Promise((resolve, reject) => {
-        //get and remove cards from draw stack
-        Games.popDrawStack(creatorUsername, cardsNumber).then((cards) => {
-            //add that cards to players cards
-            Games.addToPlayerCards(creatorUsername, playerUsername, cards).then(() => {
-                //add log
-                let log = {username: playerUsername, draw: cardsNumber};
-                Games.addLog(creatorUsername, log).then(() => {
-                    //determine next player
-                    exp.nextPlayer(creatorUsername).then((playerOnMove) => {
-                        resolve({playerOnMove: playerOnMove, cards: cards, log: log});
-                    });
-                });
+        NewGames.getGame(creatorUsername).then((game) => {
+            game.players[playerUsername].online = status;
+            NewGames.setGame(creatorUsername, game).then(() => {
+                resolve();
             })
         });
+    });
+};
 
+exp.getGameStatus = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        NewGames.getGame(creatorUsername).then((game) => {
+            resolve(game ? game.status : 'not created');
+        });
+    });
+};
+
+exp.getLogs = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        NewGames.getGame(creatorUsername).then((game) => {
+            resolve(game.logs);
+        });
     });
 };
 

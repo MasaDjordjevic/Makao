@@ -52,7 +52,7 @@ class UserInfo extends React.Component {
                     labelPosition="before"
                     primary={true}
                     onClick={this.props.onNext}
-                    disabled={!this.props.myMove}
+                    disabled={!this.props.enableNext}
                     style={this.styles.nextButton}
                     labelStyle={this.styles.nextLabel}
                     icon={<FastForward />}
@@ -74,4 +74,5 @@ UserInfo.defaultProps = {};
 UserInfo.propTypes = {
     myMove: React.PropTypes.bool,
     onNext: React.PropTypes.func,
+    enableNext: React.PropTypes.bool,
 };

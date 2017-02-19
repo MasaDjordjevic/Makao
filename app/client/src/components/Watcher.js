@@ -81,6 +81,7 @@ class Watcher extends React.Component {
                 boxSizing: 'border-box',
                 boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
                 backgroundColor: 'white',
+                overflow: 'auto',
             }
         }
     }
@@ -122,13 +123,21 @@ class Watcher extends React.Component {
 
     renderWarnings(data) {
         let playersCards = [];
+        let total = 0;
         Object.keys(data.players).forEach((user, index) => {
-            playersCards.push(...data.playersCards[user]);
+            playersCards.push(...data.players[user].cards);
+            total += data.players[user].cards.length;
         });
         let stacks = [...data.openStack, ...data.drawStack];
         let intersection = _.intersection(playersCards, stacks);
         if (intersection.length > 0) {
             return this.renderCardSection('intersection', intersection);
+        }
+
+        total += data.openStack.length;
+        total += data.drawStack.length;
+        if(total != 52){
+            return <span>{total}</span>
         }
     }
 
@@ -149,6 +158,10 @@ class Watcher extends React.Component {
                             <span>{data.playerOnMove}</span>
                         </div>
                         <div style={this.styles.subsection}>
+                            <span style={this.styles.title}>Direction</span>
+                            <span>{data.direction}</span>
+                        </div>
+                        <div style={this.styles.subsection}>
                             <span style={this.styles.title}>Hand starter</span>
                             <span>{data.handStarter}</span>
                         </div>
@@ -160,7 +173,7 @@ class Watcher extends React.Component {
                                         <div key={user} style={this.styles.user}>
                                             <span style={this.styles.userProp}>{user}</span>
                                             <span style={this.styles.userProp}>{data.players[user].online}</span>
-                                            <span style={this.styles.userProp}>{data.players[user].cardNumber}</span>
+                                            <span style={this.styles.userProp}>{data.players[user].cards.length}</span>
                                         </div>
                                     )
                                 }
@@ -179,8 +192,8 @@ class Watcher extends React.Component {
                     {this.renderCardSection('open stack', data.openStack)}
                     {this.renderCardSection('draw stack', data.drawStack)}
                     {
-                        Object.keys(data.playersCards).map((user, index) =>
-                            this.renderCardSection(user, data.playersCards[user], true)
+                        Object.keys(data.players).map((user, index) =>
+                            this.renderCardSection(user, data.players[user].cards, true)
                         )
                     }
                 </div>
