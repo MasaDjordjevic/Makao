@@ -117,7 +117,7 @@ io.of('/chat')
   .on('authenticated', chatSocket);
 io.of('/game')
   .on('connection', authCheck.socketTokenAuth)
-  .on('authenticated', gameSocket);
+  .on('authenticated', (socket) => gameSocket(socket, io.of('/game')));
 io.of('/play')
   .on('connection', authCheck.socketTokenAuth)
   .on('authenticated', playSocket);

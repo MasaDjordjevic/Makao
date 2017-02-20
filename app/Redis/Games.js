@@ -8,6 +8,10 @@ function gameKey(creatorUsername) {
     return 'game:' + creatorUsername;
 }
 
+function gameSocketKey(creatorUsername) {
+    return 'game:' + creatorUsername  + ':socket';
+}
+
 function lobbyKey(creatorUsername) {
     return 'game:' + creatorUsername + ':lobby';
 }
@@ -131,6 +135,14 @@ exp.setGame = (creatorUsername, game) => {
 
 exp.getGame = (creatorUsername) => {
     return _get(gameKey(creatorUsername), (game) => JSON.parse(game));
+};
+
+exp.setPlayerSocket = (creatorUsername, playerUsername, socketId) => {
+    return _hmset3(gameSocketKey(creatorUsername), playerUsername, socketId);
+};
+
+exp.getGameSockets = (creatorUsername) => {
+    return _hgetall(gameSocketKey(creatorUsername));
 };
 
 exp.addToLobby = (creatorUsername, playerUsername, ready) => {

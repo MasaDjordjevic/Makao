@@ -7,7 +7,7 @@ let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
 function createStack() {
-    let numbers = [1, 3, 4, 5, 6, 7, 8,  10, 13, 14, 12, 2, 9];
+    let numbers = [1, 3, 4, 5, 6, 7, 8, 10, 13, 14, 12, 2, 9];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
     numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
@@ -44,6 +44,7 @@ exp.createGame = (creatorUsername, rules) => {
         game.rules = rules;
         game.status = 'lobby';
         game.logs = [];
+        game.scores = [];
         Games.setGame(creatorUsername, game).then(() => {
             resolve();
         })
@@ -77,6 +78,13 @@ exp.startGame = (creatorUsername) => {
         });
     });
 };
+
+function nextHand(game){
+    game.direction = 1;
+    let nextStarter = nextHandStarter(game);
+    game.playerOnMove = nextStarter;
+    deal(game);
+}
 
 function deal(game) {
     //kreiraj spilove
@@ -165,16 +173,27 @@ function determineConsequences(game, card) {
     }
 }
 
+function nextHandStarter(game, offset = 1){
+    let next = nextUser(game, game.handStarter, offset);
+    game.handStarter = next;
+    return next;
+}
+
 function nextPlayer(game, offset = 1) {
+    let next = nextUser(game, game.playerOnMove, offset);
+    game.playerOnMove = next;
+    return next;
+}
+
+function nextUser(game, currentUsername, offset = 1) {
     if (offset === 0) {
-        return game.playerOnMove;
+        return currentUsername;
     }
     offset = offset * game.direction;
     let players = _.keys(game.players);
-    let currIndex = players.indexOf(game.playerOnMove);
+    let currIndex = players.indexOf(currentUsername);
     let nextIndex = (currIndex + offset + players.length) % players.length;
     let next = players[nextIndex];
-    game.playerOnMove = next;
     return next;
 }
 
@@ -194,11 +213,54 @@ function isTwoDiamonds(game) {
     return talon.number === '2' && talon.symbol === 'diamonds';
 }
 
-function handEnd(game, playerUsername, logs){
-    if(game.players[playerUsername].cards.length === 0){
-        logs.push({username: playerUsername, win:true});
-
+function setScores(game, playerUsername){
+    let scores = [];
+    // winner
+    let winnerScore;
+    let scoresFactor = 1;
+    let jackNum = _.takeRightWhile(game.openStack, (card) => card.number === '12').length;
+    if (jackNum > 0) {
+        scoresFactor = Math.pow(2, jackNum);
+        winnerScore = -10 * scoresFactor;
+    } else {
+        winnerScore = -10;
     }
+    scores.push({username: playerUsername, score: winnerScore});
+
+    //losers
+    Object.keys(game.players).forEach((username, index) => {
+        if (username === playerUsername) {
+            return;
+        }
+
+        let score = 0;
+        game.players[username].cards.forEach((card, i) => {
+            let cardNum = +card.number;
+            if (cardNum < 10) {
+                score += +card.number;
+            } else if (cardNum === 12) {
+                score += 20;
+            } else {
+                score += 10;
+            }
+        });
+        score*=scoresFactor;
+        scores.push({username: username, score: score});
+    });
+
+    game.scores.push(scores);
+
+    return scores;
+}
+
+function handEnd(game, playerUsername, logs) {
+    if (game.players[playerUsername].cards.length === 0) {
+        logs.push({username: playerUsername, win: true});
+        let scores = setScores(game, playerUsername);
+        nextHand(game);
+        return true;
+    }
+    return false;
 }
 
 exp.playMove = (creatorUsername, playerUsername, card) => {
@@ -211,9 +273,12 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             //add log
             let log = {username: playerUsername, card: card};
             let newLogs = [log];
-            //check if hand is over
-            handEnd(game, playerUsername, newLogs);
             game.logs = game.logs.concat(newLogs);
+            //check if hand is over
+            if(handEnd(game, playerUsername, newLogs)){
+                resolve({newHand: game, log: newLogs});
+            }
+
 
 
             let next;
