@@ -4,13 +4,13 @@
 import React from 'react';
 import ChatMessage from './ChatMessage';
 import ReactDOM from 'react-dom';
-import AuthStore from '../../stores/AuthStore';
+import UserStore from '../../stores/UserStore';
 
 class Chat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            me: AuthStore.getState().user
+            me: UserStore.getState(),
         }
     }
 

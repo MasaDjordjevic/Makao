@@ -5,8 +5,9 @@ import Divider from 'material-ui/Divider';
 import Chat from '../Log and Chat/Chat';
 import Log from  '../Log and Chat/Log';
 import ChatInputField from '../Log and Chat/ChatInputField';
-import AuthStore from '../../stores/AuthStore';
+import UserStore from '../../stores/UserStore';
 import io from 'socket.io-client';
+import Auth from '../../Auth';
 
 var socket;
 
@@ -15,7 +16,7 @@ class LogAndChat extends React.Component {
         super();
 
         this.state = {
-            me: AuthStore.getState().user,
+            me: UserStore.getState(),
             chatMessages: [],
         };
 
@@ -53,9 +54,13 @@ class LogAndChat extends React.Component {
 
     componentDidMount() {
         socket = io('/chat');
-        socket.emit('subscribe', this.props.creatorUsername, this.state.me.username);
-        socket.on('init', this.handleSocketInit);
-        socket.on('send:message', this.handleNewMessage);
+        socket.emit('authenticate', {token: Auth.getToken()});
+        socket.on('authenticated', ()=> {
+            socket.emit('subscribe', this.props.creatorUsername, this.state.me.username);
+            socket.on('init', this.handleSocketInit);
+            socket.on('send:message', this.handleNewMessage);
+        });
+        socket.on('unauthorized', () => alert('nope'));
     }
 
 
