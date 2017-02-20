@@ -45,8 +45,10 @@ exp.createGame = (creatorUsername, rules) => {
         game.status = 'lobby';
         game.logs = [];
         Games.setGame(creatorUsername, game).then(() => {
-            resolve();
-        })
+            Games.addPendingGame(creatorUsername).then(() => {
+                resolve();
+            });
+        });
     });
 };
 
@@ -71,7 +73,11 @@ exp.startGame = (creatorUsername) => {
                 deal(game);
 
                 Games.setGame(creatorUsername, game).then(() => {
-                    resolve();
+                    Games.remPendingGame(creatorUsername).then(() => {
+                        Games.addStartedGame(creatorUsername).then(() => {
+                            resolve();
+                        });
+                    });
                 });
             });
         });
