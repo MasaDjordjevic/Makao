@@ -22,6 +22,7 @@ class Watcher extends React.Component {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 width: '100%',
+                height: '100%',
                 paddingLeft: 10,
                 boxSizing: 'border-box'
             },
@@ -30,6 +31,7 @@ class Watcher extends React.Component {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 alignItems: 'baseline',
+                height: '100%'
             },
             section: {
                 marginTop: 15,
