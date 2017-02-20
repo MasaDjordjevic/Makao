@@ -31,7 +31,7 @@ exp.loginAuth = (data, callback) => {
 
             if (!valid) {
                 let error = new Error('Incorrect password.');
-                return callback(err);
+                return callback(error);
             }
 
             return callback(null, getUserInfo(user));
