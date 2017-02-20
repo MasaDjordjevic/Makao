@@ -35,10 +35,12 @@ module.exports = function (socket, io) {
     // client sends friend request to someone
     socket.on('friend:request:send', (recipient) => {
         User.addFriendRequest(recipient, socketUser, (err) => {
-            socket.emit('friend:request:sent');
-            App.getUserSocket(recipient).then((socketid) => {
-                io.to(socketid).emit('friend:request:received', socketUser);
-            });
+            if (!err) {
+                socket.emit('friend:request:sent');
+                App.getUserSocket(recipient).then((socketid) => {
+                    io.to(socketid).emit('friend:request:received', socketUser);
+                });
+            }
         });
     });
 

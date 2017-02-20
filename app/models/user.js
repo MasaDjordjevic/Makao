@@ -40,13 +40,17 @@ UserSchema.statics.addFriend = function(username, friendUsername, callback) {
     });
 }
 
-UserSchema.statics.addFriendRequest = function(username, requestFrom, callback) {
+UserSchema.statics.addFriendRequest = function(username, sender, callback) {
     this.findByUsername(username, (err, user) => {
-        if (err) { callback(err) };
-        user.friendRequests.push(requestFrom);
+        if (err) { return callback(err) };
+        if (user.friendRequests.indexOf(sender) !== -1) {
+            var error = new Error("Already sent.");
+            return callback(error);
+        }
+        user.friendRequests.push(sender);
         user.save((err) => {
-            if (err) { callback(err) }
-            callback(null);
+            if (err) { return callback(err) }
+            return callback(null);
         });
     });
 }

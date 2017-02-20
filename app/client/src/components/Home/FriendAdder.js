@@ -70,6 +70,7 @@ class FriendAdder extends React.Component {
                                 key={this.props.searchResults}
                                 primaryText={this.props.searchResults}
                                 leftAvatar={<Avatar>{this.props.searchResults.charAt(0)}</Avatar>}
+                                onTouchTap={this.props.onUserSelect(this.props.searchResults)}
                             />
                         </List>
                         :

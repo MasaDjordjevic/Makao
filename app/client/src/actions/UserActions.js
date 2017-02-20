@@ -6,6 +6,7 @@ class UserActions {
             'updateUserData',
             'updateFriendList',
             'removeFriendRequest',
+            'addFriendRequest',
             'receiveInvite',
             'clearUser'
         );
