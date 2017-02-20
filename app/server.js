@@ -80,7 +80,8 @@ User.count({}, (err, count) => {
     User.remove({}, () => {});
     var users = [
         new User({username: "jajac", email: "jajac", password: "jajac",
-                friends: ['masa', 'mitic', 'pera', 'mika']}),
+                friends: ['mitic', 'pera', 'mika'],
+                friendRequests: ['masa']}),
         new User({username: "masa", email: "masa", password: "masa",
                 friends: ['jajac', 'mitic', 'mika']}),
         new User({username: "mitic", email: "mitic", password: "mitic",
