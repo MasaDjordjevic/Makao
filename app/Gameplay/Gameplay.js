@@ -264,7 +264,7 @@ function handEnd(game, playerUsername, logs) {
         logs.push({username: playerUsername, win: true});
         let scores = setScores(game, playerUsername);
         nextHand(game);
-        return true;
+        return scores;
     }
     return false;
 }
@@ -280,9 +280,11 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             let log = {username: playerUsername, card: card};
             let newLogs = [log];
             game.logs = game.logs.concat(newLogs);
+
             //check if hand is over
-            if(handEnd(game, playerUsername, newLogs)){
-                resolve({newHand: game, log: newLogs});
+            let scores = handEnd(game, playerUsername, newLogs);
+            if(scores){
+                resolve({newHand: game, log: newLogs, scores: scores});
             }
 
 

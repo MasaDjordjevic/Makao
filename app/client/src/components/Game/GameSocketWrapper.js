@@ -16,6 +16,7 @@ class GameSocketWrapper extends React.Component {
             myCards: [],
             openStack: [],
             jackPlayed: false,
+            scores: [],
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -28,9 +29,15 @@ class GameSocketWrapper extends React.Component {
         this.handleUserLeft = this.handleUserLeft.bind(this);
         this.handleDraw = this.handleDraw.bind(this);
         this.handleGetCards = this.handleGetCards.bind(this);
+        this.handleNewScore = this.handleNewScore.bind(this);
 
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
+    }
+
+    handleNewScore(score){
+        let scores = [...this.state.scores, score];
+        this.setState({scores: scores});
     }
 
     handlePlayerOnMove(username) {
@@ -126,7 +133,7 @@ class GameSocketWrapper extends React.Component {
     handleSocketInit(data) {
         let pile = [new Card(data.talon)];
         let cards = data.cards.map((card) => new Card(card));
-        this.setState({players: data.players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
+        this.setState({players: data.players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove, scores: data.scores});
     }
 
     componentWillReceiveProps(nextProps){
@@ -140,6 +147,7 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:draw', this.handleDraw);
             socket.on('play:get', this.handleGetCards);
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
+            socket.on('scores:new', this.handleNewScore)
         }
     }
 
@@ -166,6 +174,7 @@ class GameSocketWrapper extends React.Component {
                                     playerOnMove={this.state.playerOnMove}
                                     myCards={myCards}
                                     talon={this.state.openStack.slice(-1)[0]}
+                                    scores={this.state.scores}
                                     jackPlayed={this.state.jackPlayed}
                                     onDrawClick={this.handleDrawClick}
                                     onCardClick={this.handleCardClick}

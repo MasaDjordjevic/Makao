@@ -105,7 +105,8 @@ class Game extends React.Component {
                     <div style={this.styles.userContainer}>
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
                             <ScoresWrapper showScores={this.props.dimensions.showScores}
-                                           height={this.props.dimensions.userCardsHeight}/>
+                                           height={this.props.dimensions.userCardsHeight}
+                                           scores={this.props.scores}/>
                         </div>
                         <div style={this.styles.myCards}>
                             <CardSet
@@ -136,6 +137,7 @@ Game.PropTypes = {
     playerOnMove: React.PropTypes.string,
     myCards: React.PropTypes.array,
     Talon: React.PropTypes.object,
+    scores: React.PropTypes.array,
     jackPlayed: React.PropTypes.bool,
     onDrawClick: React.PropTypes.func,
     onCardClick: React.PropTypes.func,
