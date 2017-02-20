@@ -29,7 +29,7 @@ class LogEntry extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 {this.props.playerName && <span style={this.styles.playerName}>{this.props.playerName}{this.props.win ? '' : ':'}&nbsp;</span>}
                 {this.props.log && <span>{this.props.log}</span>}
-                {this.props.win && <span>WINS</span>}
+                {this.props.win && <span>wins</span>}
                 {this.props.card &&
                 <div style={this.styles.cardContainer}>
                     <span>{this.props.card.stringify().short}&nbsp;</span>

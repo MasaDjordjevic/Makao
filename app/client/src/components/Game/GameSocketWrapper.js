@@ -33,16 +33,12 @@ class GameSocketWrapper extends React.Component {
         this.handleUserLeft = this.handleUserLeft.bind(this);
         this.handleDraw = this.handleDraw.bind(this);
         this.handleGetCards = this.handleGetCards.bind(this);
-        this.handleNewScore = this.handleNewScore.bind(this);
+        this.handleNewHand = this.handleNewHand.bind(this);
 
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
     }
 
-    handleNewScore(score) {
-        let scores = [...this.state.scores, score];
-        this.setState({scores: scores});
-    }
 
     handlePlayerOnMove(username) {
         this.setState({playerOnMove: username});
@@ -142,9 +138,13 @@ class GameSocketWrapper extends React.Component {
             myCards: cards,
             openStack: pile,
             playerOnMove: data.playerOnMove,
-            scores: data.scores,
-            dialogOpen: true
+            scores: data.scores
         });
+    }
+
+    handleNewHand(data){
+        this.handleSocketInit(data);
+        this.setState({dialogOpen: true});
         setTimeout(this.handleClose, 1000);
     }
 
@@ -160,7 +160,7 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:draw', this.handleDraw);
             socket.on('play:get', this.handleGetCards);
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
-            socket.on('scores:new', this.handleNewScore)
+            socket.on('game:newHand', this.handleNewHand);
         }
     }
 

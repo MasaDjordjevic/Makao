@@ -261,9 +261,8 @@ function setScores(game, playerUsername){
     return scores;
 }
 
-function handEnd(game, playerUsername, logs) {
+function handEnd(game, playerUsername) {
     if (game.players[playerUsername].cards.length === 0) {
-        logs.push({username: playerUsername, win: true});
         setScores(game, playerUsername);
         nextHand(game);
         return true;
@@ -280,31 +279,32 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             game.openStack.push(card);
             //add log
             let log = {username: playerUsername, card: card};
-            let newLogs = [log];
-            game.logs = game.logs.concat(newLogs);
+            game.logs.push(log);
 
+
+            let newLogs = [log];
             //check if hand is over
             if(handEnd(game, playerUsername, newLogs)){
-                resolve({newHand: game, log: newLogs, scores: scores});
+                let log ={username: playerUsername, win: true};
+                game.logs.push(log);
+                newLogs.push(log);
+                Games.setGame(creatorUsername, game).then(() => {
+                    resolve({newHand: game, log: newLogs});
+                });
+            }else {
+                let next;
+                if (!isTwoDiamonds(game)) {
+                    //determine consequences
+                    determineConsequences(game, card);
+                    //determine next player
+                    next = determineNextPlayer(game, playerUsername, card);
+                } else {
+                    next = nextPlayer(game);
+                }
+                Games.setGame(creatorUsername, game).then(() => {
+                    resolve({playerOnMove: next, log: newLogs});
+                });
             }
-
-
-
-            let next;
-            if (!isTwoDiamonds(game)) {
-                //determine consequences
-                determineConsequences(game, card);
-                //determine next player
-                next = determineNextPlayer(game, playerUsername, card);
-            } else {
-                next = nextPlayer(game);
-            }
-
-
-            Games.setGame(creatorUsername, game).then(() => {
-                resolve({playerOnMove: next, log: newLogs});
-            });
-
         });
     });
 };
