@@ -37,7 +37,7 @@ module.exports = function (socket, io) {
         Gameplay.setGameStatus(creatorName, 'started');
         // ovo je masino bilo na .on('game:started')
         Gameplay.startGame(creatorName).then(()=> {
-            socket.to(creatorName).broadcast.emit('game:started');
+            io.to(creatorName).emit('game:started');
         });
         /////////////////
     });
