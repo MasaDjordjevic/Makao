@@ -62,6 +62,9 @@ class HomeHeader extends React.Component {
                 socket.on('friend:ignore', (requestUsername) => {
                     UserActions.removeFriendRequest(requestUsername);
                 });
+                socket.on('friend:request:sent', () => {
+                    alert('sent!');
+                });
                 socket.on('user:invite', (inviter) => {
                     UserActions.receiveInvite(inviter);
                 });
