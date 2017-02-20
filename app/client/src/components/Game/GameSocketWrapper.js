@@ -129,10 +129,9 @@ class GameSocketWrapper extends React.Component {
         this.setState({players: data.players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove});
     }
 
-
-    componentDidMount() {
-        let socket = this.props.socket;
-
+    componentWillReceiveProps(nextProps){
+        if(nextProps.socket) {
+            let socket = nextProps.socket;
             socket.emit('join', this.props.creatorUsername, this.state.me.username);
             socket.on('init', this.handleSocketInit);
             socket.on('user:join', this.handleUserJoin);
@@ -141,8 +140,7 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:draw', this.handleDraw);
             socket.on('play:get', this.handleGetCards);
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
-
-
+        }
     }
 
 
