@@ -197,23 +197,13 @@ exp.addInvite = (creatorUsername, inviteUsername) => {
 exp.getGameList = () => {
     return new Promise((resolve, reject) => {
         redisCli.smembers('games:lobby', (err, reply) => {
-            if (err) { reject(err) };
+            if (err) { reject(err); }
             let games = [];
             reply.forEach((creator, index) => {
-                exp.getLobby(creator)
-                .then((users) => {
-                    exp.getGameRules(creator)
-                    .then((rules) => {
-                        games.push({
-                            lobby: users,
-                            rules: rules
-                        });
-                        if (index === reply.length - 1) {
-                            console.log(JSON.stringify(games));
-                            resolve(games);
-                        }
-                    });
-                });
+                games.push(exp.getGame(creator));
+                if (index === reply.length - 1) {
+                    resolve(games);
+                }
             });
         });
     });
