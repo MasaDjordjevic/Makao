@@ -27,12 +27,13 @@ class Log extends React.Component {
         this.setState({logs: logs});
     }
 
-    handleNewLog(log){
-        if(log.card) {
-            log.card = new Card(log.card);
+    handleNewLog(logs){
+        if(!logs){
+            logs = [];
         }
-        let logs = [...this.state.logs, log];
-        this.setState({logs: logs});
+        logs.map((log) => log.card ? log.card = new Card(log.card) : log);
+        let newLog = [...this.state.logs, ...logs];
+        this.setState({logs: newLog});
     }
 
     componentDidMount() {

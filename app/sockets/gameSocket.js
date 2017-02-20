@@ -74,7 +74,7 @@ module.exports = function (socket) {
     socket.on('play:pass', () => {
        Gameplay.getNextPlayer(creatorName).then((playerOnMove) => {
            emitPlayerOnMove(playerOnMove);
-           emitLog({username: name, message: "pass"});
+           emitLog([{username: name, message: "pass"}]);
        });
     });
 

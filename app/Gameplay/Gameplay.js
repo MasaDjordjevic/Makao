@@ -203,6 +203,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             game.openStack.push(card);
             //add log
             let log = {username: playerUsername, card: card};
+            let newLogs = [log];
             game.logs.push(log);
 
             let next;
@@ -217,7 +218,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
 
 
             Games.setGame(creatorUsername, game).then(() => {
-                resolve({playerOnMove: next, log: log});
+                resolve({playerOnMove: next, log: newLogs});
             });
 
         });
@@ -234,6 +235,7 @@ exp.draw = (creatorUsername, playerUsername) => {
             game.players[playerUsername].cards = game.players[playerUsername].cards.concat(cards);
             //add log
             let log = {username: playerUsername, draw: drawCount};
+            let newLogs = [log];
             game.logs.push(log);
 
             if (isTwoDiamonds(game)) {
@@ -241,7 +243,7 @@ exp.draw = (creatorUsername, playerUsername) => {
             }
 
             Games.setGame(creatorUsername, game).then(() => {
-                resolve({cards: cards, log: log, cardsNumber: drawCount});
+                resolve({cards: cards, log: newLogs, cardsNumber: drawCount});
             });
         });
     });
