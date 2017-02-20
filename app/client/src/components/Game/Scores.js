@@ -132,15 +132,19 @@ class Scores extends React.Component {
             return scrs;
         }
 
-        return scrs.map((round, i) =>
+        return scrs.map((round, i) => {
+            round = _.sortBy(round, 'username');
             round.map((s, j) => {
                 s.score += i === 0 ? 0 : _.find(scrs[i - 1], {username: s.username}).score;
                 return s;
-            }));
+            });
+            return round;
+        });
+
     }
 
     render() {
-        const players = this.state.players.slice();
+        const players = this.state.players.slice().sort();
         const scores = this.getScores();
         //26.67 je visina hedera tabele, mng mi je zao zbog ovoga :'(
         const tableHeight = this.props.height - this.headerHeight - 26.67;
