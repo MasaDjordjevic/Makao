@@ -198,9 +198,21 @@ exp.setPlayerLobbyStatus = (creatorUsername, playerUsername, ready) => {
     return _hmset3(lobbyKey(creatorUsername), playerUsername, ready);
 };
 
+exp.delGameInvites = (creatorUsername) => {
+    return _del(invitesKey(creatorUsername));
+}
+
 exp.addInvite = (creatorUsername, inviteUsername) => {
     return new Promise((resolve, reject) => {
-        redisCli.rpush(invitesKey(creatorUsername), inviteUsername, (err, reply) => {
+        redisCli.sadd(invitesKey(creatorUsername), inviteUsername, (err, reply) => {
+            err ? reject() : resolve();
+        });
+    });
+};
+
+exp.remInvite = (creatorUsername, inviteUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.srem(invitesKey(creatorUsername), inviteUsername, (err, reply) => {
             err ? reject() : resolve();
         });
     });
