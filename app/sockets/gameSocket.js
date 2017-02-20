@@ -85,6 +85,7 @@ module.exports = function (socket, io) {
                             cards: cards,
                             talon: talon,
                             playerOnMove: game.playerOnMove,
+                            scores: game.scores,
                         });
                     })
                 });

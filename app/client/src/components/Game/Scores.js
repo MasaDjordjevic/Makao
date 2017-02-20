@@ -21,29 +21,6 @@ class Scores extends React.Component {
 
         this.state = {
             addMode: true,
-            players: ['masa', 'jajac', 'mitic'],
-            scores: [
-                [
-                    {username: 'masa', score: -100},
-                    {username: 'jajac', score: 150},
-                    {username: 'mitic', score: 20},
-                ],
-                [
-                    {username: 'masa', score: 17},
-                    {username: 'jajac', score: 12},
-                    {username: 'mitic', score: 3},
-                ],
-                [
-                    {username: 'masa', score: 5},
-                    {username: 'jajac', score: 2},
-                    {username: 'mitic', score: 4},
-                ],
-                [
-                    {username: 'masa', score: 4},
-                    {username: 'jajac', score: 8},
-                    {username: 'mitic', score: -10},
-                ],
-            ]
         };
     }
 
@@ -60,7 +37,7 @@ class Scores extends React.Component {
         };
         return {
             container: {
-                width: getScoresWidth(this.state.scores[0].length),
+                width: getScoresWidth(this.props.scores && this.props.scores.length ? this.props.scores[0].length : 0),
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
@@ -127,12 +104,15 @@ class Scores extends React.Component {
         //score are given for each round
         //return them if addMode is off
         let scrs = JSON.parse(JSON.stringify(this.props.scores));
+        scrs = scrs.map((round, i) => {
+            round = _.sortBy(round, 'username');
+            return round;
+        });
         if (!this.state.addMode) {
             return scrs;
         }
 
         return scrs.map((round, i) => {
-            round = _.sortBy(round, 'username');
             round.map((s, j) => {
                 s.score += i === 0 ? 0 : _.find(scrs[i - 1], {username: s.username}).score;
                 return s;

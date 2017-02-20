@@ -3,7 +3,8 @@ import _ from 'lodash';
 import UserStore from '../../stores/UserStore';
 import Card from '../Card/Card';
 import CorrectMoveWrapper from '../Game/CorrectMoveWrapper';
-
+import Dialog from 'material-ui/Dialog';
+import {teal900} from 'material-ui/styles/colors';
 
 class GameSocketWrapper extends React.Component {
 
@@ -18,7 +19,8 @@ class GameSocketWrapper extends React.Component {
             jackPlayed: false,
             scores: [],
 
-            socketInit:false
+            socketInit: false,
+            dialogOpen: false,
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -37,7 +39,7 @@ class GameSocketWrapper extends React.Component {
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
     }
 
-    handleNewScore(score){
+    handleNewScore(score) {
         let scores = [...this.state.scores, score];
         this.setState({scores: scores});
     }
@@ -135,11 +137,19 @@ class GameSocketWrapper extends React.Component {
     handleSocketInit(data) {
         let pile = [new Card(data.talon)];
         let cards = data.cards.map((card) => new Card(card));
-        this.setState({players: data.players, myCards: cards, openStack: pile, playerOnMove: data.playerOnMove, scores: data.scores});
+        this.setState({
+            players: data.players,
+            myCards: cards,
+            openStack: pile,
+            playerOnMove: data.playerOnMove,
+            scores: data.scores,
+            dialogOpen: true
+        });
+        setTimeout(this.handleClose, 1000);
     }
 
-    componentWillReceiveProps(nextProps){
-        if(!this.state.socketInit && nextProps.socket) {
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.socketInit && nextProps.socket) {
             this.setState({socketInit: true});
             let socket = nextProps.socket;
             socket.emit('join', this.props.creatorUsername, this.state.me.username);
@@ -154,11 +164,26 @@ class GameSocketWrapper extends React.Component {
         }
     }
 
+
+    handleClose = () => {
+        this.setState({dialogOpen: false});
+    };
+
+
     get styles() {
         return {
             container: {
                 width: '100%',
                 height: '100%',
+            },
+            dialogBody: {
+                textAlign: 'center',
+                fontSize: '36px',
+                fontWeight: 600,
+                color: teal900,
+            },
+            dialogContent: {
+                width: '40%'
             }
         }
     }
@@ -170,6 +195,15 @@ class GameSocketWrapper extends React.Component {
         myCards = _.sortBy(myCards, ['symbol', 'number']);
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
+                <Dialog
+                    modal={false}
+                    open={this.state.dialogOpen}
+                    onRequestClose={this.handleClose}
+                    bodyStyle={this.styles.dialogBody}
+                    contentStyle={this.styles.dialogContent}
+                >
+                    NEW HAND
+                </Dialog>
                 <CorrectMoveWrapper dimensions={this.props.dimensions}
                                     myMove={this.state.playerOnMove === this.state.me.username}
                                     opponents={playersWithoutUser}

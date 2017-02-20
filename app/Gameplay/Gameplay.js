@@ -177,6 +177,8 @@ function determineConsequences(game, card) {
     if (card.number === '7') {
         game.sevens++;
     }
+
+    game.sevens = 0;
 }
 
 function nextHandStarter(game, offset = 1){
@@ -262,9 +264,9 @@ function setScores(game, playerUsername){
 function handEnd(game, playerUsername, logs) {
     if (game.players[playerUsername].cards.length === 0) {
         logs.push({username: playerUsername, win: true});
-        let scores = setScores(game, playerUsername);
+        setScores(game, playerUsername);
         nextHand(game);
-        return scores;
+        return true;
     }
     return false;
 }
@@ -282,8 +284,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             game.logs = game.logs.concat(newLogs);
 
             //check if hand is over
-            let scores = handEnd(game, playerUsername, newLogs);
-            if(scores){
+            if(handEnd(game, playerUsername, newLogs)){
                 resolve({newHand: game, log: newLogs, scores: scores});
             }
 
