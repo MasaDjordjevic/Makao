@@ -13,26 +13,31 @@ import RightSidebar from './RightSidebar';
 import NoAccess from '../NoAccess';
 import Auth from '../../Auth';
 import io from 'socket.io-client';
-var socket;
+
 
 class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameStarted: null,
+            gameStarted: false,
+            socket: null,
         };
 
         this.handleGameStart = this.handleGameStart.bind(this);
+        this.handleAuthenticated = this.handleAuthenticated.bind(this);
     }
 
+    handleAuthenticated(socket){
+        this.setState({socket: socket});
+        // this.setState({gameStarted: started});
+    }
 
     componentDidMount() {
         GameActions.isGameStarted(this.props.params.username, (started) => {
+            let socket;
             socket = io('/game');
             socket.emit('authenticate', {token: Auth.getToken()});
-            socket.on('authenticated', () => {
-                this.setState({gameStarted: started});
-            });
+            socket.on('authenticated', this.handleAuthenticated(socket));
             socket.on('unauthorized', () => alert('nope'));
         });
 
@@ -72,11 +77,11 @@ class Main extends React.Component {
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
                             {this.state.gameStarted ?
-                                <GameResizeHandler creatorUsername={this.props.params.username} socket={socket}/> :
+                                <GameResizeHandler creatorUsername={this.props.params.username} socket={this.state.socket}/> :
                                 <GameInitializer creatorUsername={this.props.params.username}
                                                  onGameStart={this.handleGameStart}/>}
                         </div>
-                        <RightSidebar creatorUsername={this.props.params.username} socket={socket}/>
+                        <RightSidebar creatorUsername={this.props.params.username} socket={this.state.socket}/>
                     </div>
 
                 </MuiThemeProvider>

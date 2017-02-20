@@ -36,11 +36,17 @@ class Log extends React.Component {
         this.setState({logs: newLog});
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.socket) {
+            nextProps.socket.emit('log:get', this.props.creatorUsername);
+            nextProps.socket.on('log:get', this.handleLogsInit);
+            nextProps.socket.on('log:new', this.handleNewLog);
+        }
+    }
+
     componentDidMount() {
         if (this.props.creatorUsername) {
-            this.props.socket.emit('log:get');
-            this.props.socket.on('log:get', this.handleLogsInit);
-            this.props.socket.on('log:new', this.handleNewLog);
+
         } else if (this.props.logs) {
             this.setState({logs: this.props.logs});
         }
