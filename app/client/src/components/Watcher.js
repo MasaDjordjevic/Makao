@@ -5,6 +5,7 @@ import CardSymbol from './Card/CardSymbol';
 import Card from './Card/Card';
 import _ from 'lodash';
 import Log from './Log and Chat/Log';
+import Scores from './Game/Scores';
 
 class Watcher extends React.Component {
     constructor() {
@@ -21,11 +22,14 @@ class Watcher extends React.Component {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 width: '100%',
+                paddingLeft: 10,
+                boxSizing: 'border-box'
             },
             general: {
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-start',
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
             },
             section: {
                 marginTop: 15,
@@ -82,6 +86,7 @@ class Watcher extends React.Component {
                 boxShadow: '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
                 backgroundColor: 'white',
                 overflow: 'auto',
+                minWidth: 170,
             }
         }
     }
@@ -136,7 +141,7 @@ class Watcher extends React.Component {
 
         total += data.openStack.length;
         total += data.drawStack.length;
-        if (total !== 52){
+        if (total !== data.rules.deckNumber*52) {
             return <span>{total}</span>
         }
     }
@@ -151,7 +156,7 @@ class Watcher extends React.Component {
                     <div style={this.styles.section}>
                         <div style={this.styles.subsection}>
                             <span style={this.styles.title}>State</span>
-                            <span>{data.state}</span>
+                            <span>{data.status}</span>
                         </div>
                         <div style={this.styles.subsection}>
                             <span style={this.styles.title}>On move</span>
@@ -186,6 +191,10 @@ class Watcher extends React.Component {
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Rules</h3>
                         <Rules rules={data.rules}/>
+                    </div>
+                    <div>
+                        <Scores height={250}
+                                scores={data.scores}/>
                     </div>
                 </div>
                 <div style={this.styles.cardsContainer}>
