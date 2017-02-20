@@ -126,7 +126,7 @@ class Scores extends React.Component {
     getScores() {
         //score are given for each round
         //return them if addMode is off
-        let scrs = JSON.parse(JSON.stringify(this.state.scores));
+        let scrs = JSON.parse(JSON.stringify(this.props.scores));
         if (!this.state.addMode) {
             return scrs;
         }
@@ -142,8 +142,16 @@ class Scores extends React.Component {
 
     }
 
+    get players(){
+        if(!this.props.scores ||  this.props.scores.length === 0){
+            return [];
+        }else {
+            return this.props.scores[0].map((s)=> s.username).sort();
+        }
+    }
+
     render() {
-        const players = this.state.players.slice().sort();
+        const players = this.players;
         const scores = this.getScores();
         //26.67 je visina hedera tabele, mng mi je zao zbog ovoga :'(
         const tableHeight = this.props.height - this.headerHeight - 26.67;
