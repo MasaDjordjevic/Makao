@@ -21,12 +21,17 @@ exp.loginAuth = (data, callback) => {
     User.findByEmail(email, (err, user) => {
         if (err) { return callback(err); }
 
+        if (!user) {
+            let error = new Error('User with that email does not exist.');
+            return callback(error);
+        }
+
         user.verifyPassword(password, (err, valid) => {
             if (err) { return callback(err); }
 
             if (!valid) {
-                let error = new Error('Incorrect email or password.');
-                return callback(err);
+                let error = new Error('Incorrect password.');
+                return callback(error);
             }
 
             return callback(null, getUserInfo(user));

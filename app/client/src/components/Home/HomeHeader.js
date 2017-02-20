@@ -29,6 +29,7 @@ class HomeHeader extends React.Component {
         super();
         this.state = {
             userdata: UserStore.getState(),
+            gameInvites: [],
             dialogOpen: false,
             searchResults: null,
         };
@@ -40,6 +41,7 @@ class HomeHeader extends React.Component {
 
         this.handleInviteAccept = this.handleInviteAccept.bind(this);
         this.handleInviteIgnore = this.handleInviteIgnore.bind(this);
+        this.handleInviteReceive = this.handleInviteReceive.bind(this);
     }
 
     onChange() {
@@ -75,7 +77,7 @@ class HomeHeader extends React.Component {
                     UserActions.addFriendRequest(sender);
                 });
                 socket.on('user:invite', (inviter) => {
-                    UserActions.receiveInvite(inviter);
+                    this.handleInviteReceive(inviter);
                 });
                 socket.on('invite:accept', (creatorUsername) => {
                     browserHistory.push('/game/' + creatorUsername);
@@ -153,12 +155,27 @@ class HomeHeader extends React.Component {
         socket.emit('friend:ignore', friendUsername);
     }
 
-    handleInviteAccept(firendUsername) {
-        alert('acc');
+    handleInviteReceive(inviter) {
+        let currInvites = this.state.gameInvites;
+        if (currInvites.indexOf(inviter) === -1) {
+            currInvites.push(inviter);
+            this.setState({ gameInvites: currInvites });
+        }
     }
 
-    handleInviteIgnore(friendUsername) {
-        alert('ignore');
+    handleInviteAccept(inviter) {
+        // call handleIgnore to remove invite from list
+        this.handleInviteIgnore(inviter);
+        browserHistory.push('/game/' + inviter);
+    }
+
+    handleInviteIgnore (inviter) {
+        let currInvites = this.state.gameInvites;
+        let index = currInvites.indexOf(inviter);
+        if (index !== -1) {
+            currInvites.splice(index, 1);
+            this.setState({ gameInvites: currInvites });
+        }
     }
 
     renderFriendRequest(friendName, i) {
@@ -221,12 +238,14 @@ class HomeHeader extends React.Component {
     };
 
     get notificationsNum() {
-        return this.state.userdata.friendRequests.length || 0; //TODO dodaj posle i invajtove
+        let totalInvites = this.state.userdata.friendRequests.length;
+        totalInvites += this.state.gameInvites.length;
+        return totalInvites || 0;
     }
 
     render() {
         const friendRequests = this.state.userdata.friendRequests;
-        const gameInvites = ['mitic'];
+        const gameInvites = this.state.gameInvites;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <Dialog

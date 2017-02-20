@@ -30,14 +30,14 @@ module.exports = function (socket, io) {
     socket.on('user:ready', (username) => {
         Games.setPlayerLobbyStatus(creatorName, socketUser, 'true');
         console.log('user ready: ' + socketUser);
-        io.to(creatorName).emit('user:ready', socketUser);
+        io.of('/lobby').to(creatorName).emit('user:ready', socketUser);
     });
 
     socket.on('game:start', () => {
         Gameplay.setGameStatus(creatorName, 'started');
         // ovo je masino bilo na .on('game:started')
         Gameplay.startGame(creatorName).then(()=> {
-            io.to(creatorName).emit('game:started');
+            io.of('/lobby').to(creatorName).emit('game:started');
         });
         /////////////////
     });
@@ -45,8 +45,9 @@ module.exports = function (socket, io) {
     socket.on('user:invite', (username) => {
         Games.addInvite(creatorName, username);
         // find the invited user socketid and send him an invite
-        App.getUserSocket(username)
-            .then((socketid) => io.to(socketid).emit('user:invite', creatorName));
+        App.getUserSocket(username).then((socketid) =>
+            io.to(socketid).emit('user:invite', creatorName)
+        );
     });
 
     socket.on('disconnect', () => {
