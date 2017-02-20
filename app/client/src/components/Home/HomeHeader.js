@@ -236,7 +236,9 @@ class HomeHeader extends React.Component {
     };
 
     get notificationsNum() {
-        return this.state.userdata.friendRequests.length || 0; //TODO dodaj posle i invajtove
+        let totalInvites = this.state.userdata.friendRequests.length;
+        totalInvites += this.state.gameInvites.length;
+        return totalInvites || 0;
     }
 
     render() {
