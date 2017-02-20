@@ -194,6 +194,13 @@ function isTwoDiamonds(game) {
     return talon.number === '2' && talon.symbol === 'diamonds';
 }
 
+function handEnd(game, playerUsername, logs){
+    if(game.players[playerUsername].cards.length === 0){
+        logs.push({username: playerUsername, win:true});
+
+    }
+}
+
 exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
         Games.getGame(creatorUsername).then((game) => {
@@ -204,7 +211,10 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             //add log
             let log = {username: playerUsername, card: card};
             let newLogs = [log];
-            game.logs.push(log);
+            //check if hand is over
+            handEnd(game, playerUsername, newLogs);
+            game.logs = game.logs.concat(newLogs);
+
 
             let next;
             if (!isTwoDiamonds(game)) {

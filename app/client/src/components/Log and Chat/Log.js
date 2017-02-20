@@ -92,7 +92,8 @@ class Log extends React.Component {
                         logs.map((log, index) =>
                             <LogEntry key={index}
                                       log={log.message}
-                                      playerName={(this.props.alwaysDisplayUsername || log.username !== this.state.me.username) && log.username}
+                                      win={log.win}
+                                      playerName={(this.props.alwaysDisplayUsername || log.username !== this.state.me.username || log.win) && log.username}
                                       left={this.props.alwaysDisplayUsername || log.username !== this.state.me.username}
                                       card={log.card}/>
                         )

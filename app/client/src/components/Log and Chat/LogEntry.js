@@ -1,13 +1,13 @@
 import React from 'react';
 import Card from '../Card/Card';
 import CardSymbol from '../Card/CardSymbol';
-import {blueGrey300} from 'material-ui/styles/colors';
+import {blueGrey300, teal900} from 'material-ui/styles/colors';
 
 class LogEntry extends React.Component {
     get styles() {
         return {
             container: {
-                alignSelf: this.props.left ? 'flex-start' : 'flex-end',
+                alignSelf: this.props.win ? 'center' : this.props.left ? 'flex-start' : 'flex-end',
                 display: 'flex',
             },
             cardContainer: {
@@ -19,7 +19,7 @@ class LogEntry extends React.Component {
                 alignItems: 'baseline'
             },
             playerName: {
-                color: blueGrey300,
+                color: this.props.win ? teal900 : blueGrey300,
             }
         }
     }
@@ -27,8 +27,9 @@ class LogEntry extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                {this.props.playerName && <span style={this.styles.playerName}>{this.props.playerName}:&nbsp;</span>}
+                {this.props.playerName && <span style={this.styles.playerName}>{this.props.playerName}{this.props.win ? '' : ':'}&nbsp;</span>}
                 {this.props.log && <span>{this.props.log}</span>}
+                {this.props.win && <span>WINS</span>}
                 {this.props.card &&
                 <div style={this.styles.cardContainer}>
                     <span>{this.props.card.stringify().short}&nbsp;</span>
