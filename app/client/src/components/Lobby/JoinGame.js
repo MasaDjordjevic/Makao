@@ -74,9 +74,11 @@ class JoinGame extends React.Component {
                        selectable={true}
                        onRowSelection={this.joinGame}>
                     <TableHeader displaySelectAll={false}>
-                        <TableHeaderColumn>Host</TableHeaderColumn>
-                        <TableHeaderColumn>Current</TableHeaderColumn>
-                        <TableHeaderColumn>Min - Max</TableHeaderColumn>
+                        <TableRow>
+                            <TableHeaderColumn>Host</TableHeaderColumn>
+                            <TableHeaderColumn>Current</TableHeaderColumn>
+                            <TableHeaderColumn>Min - Max</TableHeaderColumn>
+                        </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                     {
