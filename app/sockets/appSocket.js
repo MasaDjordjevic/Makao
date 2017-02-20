@@ -32,10 +32,6 @@ module.exports = function (socket) {
         });
     });
 
-    socket.on('user:friend:requests', () => {
-        User.findByUsername()
-    });
-
     socket.on('invite:accept', (creatorUsername) => {
         // TODO redis refactor
         return;
