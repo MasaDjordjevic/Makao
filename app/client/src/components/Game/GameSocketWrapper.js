@@ -154,11 +154,6 @@ class GameSocketWrapper extends React.Component {
         }
     }
 
-    componenetDidMount(){
-        let a = this.props;
-    }
-
-
     get styles() {
         return {
             container: {

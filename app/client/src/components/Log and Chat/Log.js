@@ -20,16 +20,16 @@ class Log extends React.Component {
         this.handleLogsInit = this.handleLogsInit.bind(this);
     }
 
-    handleLogsInit(logs){
-        if(!logs){
+    handleLogsInit(logs) {
+        if (!logs) {
             logs = [];
         }
         logs.map((log) => log.card ? log.card = new Card(log.card) : log);
         this.setState({logs: logs});
     }
 
-    handleNewLog(logs){
-        if(!logs){
+    handleNewLog(logs) {
+        if (!logs) {
             logs = [];
         }
         logs.map((log) => log.card ? log.card = new Card(log.card) : log);
@@ -37,8 +37,8 @@ class Log extends React.Component {
         this.setState({logs: newLog});
     }
 
-    componentWillReceiveProps(nextProps){
-        if(!this.state.socketInit && nextProps.socket) {
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.socketInit && nextProps.socket) {
             this.setState({socketInit: true});
             nextProps.socket.emit('log:get', this.props.creatorUsername);
             nextProps.socket.on('log:get', this.handleLogsInit);
@@ -47,9 +47,7 @@ class Log extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.creatorUsername) {
-            let a = 5;
-        } else if (this.props.logs) {
+        if (this.props.logs) {
             this.setState({logs: this.props.logs});
         }
     }

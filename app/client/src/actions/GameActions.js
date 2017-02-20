@@ -18,20 +18,6 @@ class GameActions {
         })
     };
 
-    isGameStarted(creatorUsername, callbackFunction) {
-        fetch('/game/state', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer ' + Auth.getToken()
-            },
-            method: "POST",
-            body: JSON.stringify({creatorUsername: creatorUsername})
-        }).then((res) => {
-            return res.json();
-        }).then((data) => {
-            callbackFunction(data.state ===  'started');
-        })
-    };
 }
 
 export default alt.createActions(GameActions);

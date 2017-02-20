@@ -5,7 +5,6 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
-import GameActions from '../../actions/GameActions';
 
 import GameResizeHandler from '../Game/GameResizeHandler';
 import GameInitializer from './GameInitializer';
@@ -43,7 +42,9 @@ class Main extends React.Component {
     }
 
     handleGameStarted(started){
-        this.setState({gameStarted:started});
+        if(started){
+            this.setState({gameStarted:started});
+        }
     }
 
     handleGameStart() {
