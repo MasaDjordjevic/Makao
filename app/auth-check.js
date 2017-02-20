@@ -48,22 +48,22 @@ exp.signupAuth = (data, callback) => {
             let error = new Error('Email is already in use.');
             return callback(error);
         }
-    });
 
-    User.findByUsername(userData.username, (err, user) => {
-        if (err) { return callback(err); }
+        User.findByUsername(userData.username, (err, user) => {
+            if (err) { return callback(err); }
 
-        if (user) {
-            let error = new Error('Username is already in use.');
-            return callback(error);
-        }
-    });
+            if (user) {
+                let error = new Error('Username is already in use.');
+                return callback(error);
+            }
 
-    let newUser = new User(userData);
-    newUser.save((err) => {
-        if (err) { return callback(err); }
+            let newUser = new User(userData);
+            newUser.save((err) => {
+                if (err) { return callback(err); }
 
-        return callback(null, getUserInfo(newUser));
+                return callback(null, getUserInfo(newUser));
+            });
+        });
     });
 };
 

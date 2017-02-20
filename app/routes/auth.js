@@ -84,8 +84,6 @@ router.post('/login', (req, res, next) => {
 });
 
 // POST signup request
-// using passport 'Custom Callback' feature to allow access of
-// req and res objects within the auth callback
 router.post('/signup', (req, res, next) => {
     // first we validate the input fields
     var validationResult = validateSignupForm(req.body);
