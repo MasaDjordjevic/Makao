@@ -30,7 +30,6 @@ class PlayGame extends React.Component {
             socket.on('authenticated', () => {
                 socket.emit('game:list');
                 socket.on('game:list', (games) => {
-                    alert('games in console!');
                     console.log(JSON.stringify(games));
                 });
                 socket.on('game:created', (game) => {

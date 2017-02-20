@@ -48,6 +48,22 @@ function _del(key) {
     });
 }
 
+function _sadd(key, member) {
+    return new Promise((resolve, reject) => {
+        redisCli.sadd(key, member, (err, reply) => {
+            err ? reject(err) : resolve(reply);
+        });
+    });
+}
+
+function _srem(key, member) {
+    return new Promise((resolve, reject) => {
+        redisCli.srem(key, member, (err, reply) => {
+            err ? reject(err) : resolve(reply);
+        });
+    });
+}
+
 function _addToList(key, values) {
     return new Promise((resolve, reject) => {
         redisCli.rpush(key, values, (err, reply) => {
@@ -133,6 +149,22 @@ exp.setGame = (creatorUsername, game) => {
     return _set(gameKey(creatorUsername), JSON.stringify(game));
 };
 
+exp.addPendingGame = (creatorUsername) => {
+    return _sadd('games:lobby', creatorUsername);
+};
+
+exp.addStartedGame = (creatorUsername) => {
+    return _sadd('games:started', creatorUsername);
+};
+
+exp.remPendingGame = (creatorUsername) => {
+    return _srem('games:lobby', creatorUsername);
+};
+
+exp.remStartedGame = (creatorUsername) => {
+    return _srem('games:started', creatorUsername);
+}
+
 exp.getGame = (creatorUsername) => {
     return _get(gameKey(creatorUsername), (game) => JSON.parse(game));
 };
@@ -177,22 +209,14 @@ exp.addInvite = (creatorUsername, inviteUsername) => {
 exp.getGameList = () => {
     return new Promise((resolve, reject) => {
         redisCli.smembers('games:lobby', (err, reply) => {
-            if (err) { reject(err) };
+            if (err) { reject(err); }
             let games = [];
             reply.forEach((creator, index) => {
-                exp.getLobby(creator)
-                .then((users) => {
-                    exp.getGameRules(creator)
-                    .then((rules) => {
-                        games.push({
-                            lobby: users,
-                            rules: rules
-                        });
-                        if (index === reply.length - 1) {
-                            console.log(JSON.stringify(games));
-                            resolve(games);
-                        }
-                    });
+                exp.getGame(creator).then((game) => {
+                    games.push(game);
+                    if (index === reply.length - 1) {
+                        resolve(games);
+                    }
                 });
             });
         });
