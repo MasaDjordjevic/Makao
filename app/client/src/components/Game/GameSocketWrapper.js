@@ -1,14 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 import UserStore from '../../stores/UserStore';
-import io from 'socket.io-client';
-import GameActions from '../../actions/GameActions';
 import Card from '../Card/Card';
 import CorrectMoveWrapper from '../Game/CorrectMoveWrapper';
-import Auth from '../../Auth';
 
-
-var socket;
 
 class GameSocketWrapper extends React.Component {
 
@@ -33,14 +28,9 @@ class GameSocketWrapper extends React.Component {
         this.handleUserLeft = this.handleUserLeft.bind(this);
         this.handleDraw = this.handleDraw.bind(this);
         this.handleGetCards = this.handleGetCards.bind(this);
-        this.handleNewLog = this.handleNewLog.bind(this);
 
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
-    }
-
-    handleNewLog(log) {
-        GameActions.addLogEntry(log);
     }
 
     handlePlayerOnMove(username) {
@@ -48,7 +38,7 @@ class GameSocketWrapper extends React.Component {
     };
 
     handleNext() {
-        socket.emit('play:pass');
+        this.props.socket.emit('play:pass');
     }
 
     handleJackSignPicked(sign) {
@@ -60,7 +50,7 @@ class GameSocketWrapper extends React.Component {
             jackPlayed: false,
         });
 
-        socket.emit('play:move', card);
+        this.props.socket.emit('play:move', card);
     }
 
     handleCardClick(card, ignoreJack = false) {
@@ -93,12 +83,12 @@ class GameSocketWrapper extends React.Component {
 
 
         if ((ignoreJack || !jackPlayed) && myMove) {
-            socket.emit('play:move', card);
+            this.props.socket.emit('play:move', card);
         }
     }
 
     handleDrawClick() {
-        socket.emit('play:draw', 1);
+        this.props.socket.emit('play:draw', 1);
     }
 
     handleGetCards(cards) {
@@ -141,9 +131,8 @@ class GameSocketWrapper extends React.Component {
 
 
     componentDidMount() {
-        socket = io('/game');
-        socket.emit('authenticate', { token: Auth.getToken() });
-        socket.on('authenticated', () => {
+        let socket = this.props.socket;
+
             socket.emit('join', this.props.creatorUsername, this.state.me.username);
             socket.on('init', this.handleSocketInit);
             socket.on('user:join', this.handleUserJoin);
@@ -152,9 +141,8 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:draw', this.handleDraw);
             socket.on('play:get', this.handleGetCards);
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
-            socket.on('log:new', this.handleNewLog);
-        });
-        socket.on('unauthorized', () => alert('nope'));
+
+
     }
 
 

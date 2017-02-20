@@ -73,7 +73,7 @@ class RightSidebar extends React.Component {
             <div style={this.styles.container} id="right-sidebar">
                 {
                      this.state.show &&
-                     <LogAndChat creatorUsername={this.props.creatorUsername} />
+                     <LogAndChat creatorUsername={this.props.creatorUsername} socket={this.props.socket} />
                 }
                 <div>
                     <Checkbox

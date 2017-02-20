@@ -11,7 +11,9 @@ import GameResizeHandler from '../Game/GameResizeHandler';
 import GameInitializer from './GameInitializer';
 import RightSidebar from './RightSidebar';
 import NoAccess from '../NoAccess';
-
+import Auth from '../../Auth';
+import io from 'socket.io-client';
+var socket;
 
 class Main extends React.Component {
     constructor() {
@@ -24,13 +26,19 @@ class Main extends React.Component {
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
         GameActions.isGameStarted(this.props.params.username, (started) => {
-            this.setState({gameStarted: started});
+            socket = io('/game');
+            socket.emit('authenticate', {token: Auth.getToken()});
+            socket.on('authenticated', () => {
+                this.setState({gameStarted: started});
+            });
+            socket.on('unauthorized', () => alert('nope'));
         });
+
     }
 
-    handleGameStart(){
+    handleGameStart() {
         this.setState({gameStarted: true});
     }
 
@@ -57,15 +65,18 @@ class Main extends React.Component {
 
 
     render() {
-        if(this.state.gameStarted === null) return <NoAccess />;
+        if (this.state.gameStarted === null) return <NoAccess />;
         return (
             <div style={this.styles.container}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
-                            {this.state.gameStarted ? <GameResizeHandler creatorUsername={this.props.params.username} /> : <GameInitializer creatorUsername={this.props.params.username} onGameStart={this.handleGameStart}/>}
+                            {this.state.gameStarted ?
+                                <GameResizeHandler creatorUsername={this.props.params.username} socket={socket}/> :
+                                <GameInitializer creatorUsername={this.props.params.username}
+                                                 onGameStart={this.handleGameStart}/>}
                         </div>
-                        <RightSidebar creatorUsername={this.props.params.username} />
+                        <RightSidebar creatorUsername={this.props.params.username} socket={socket}/>
                     </div>
 
                 </MuiThemeProvider>

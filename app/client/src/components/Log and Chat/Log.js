@@ -5,23 +5,21 @@ import React from 'react';
 import LogEntry from './LogEntry';
 import Card from '../Card/Card';
 import ReactDOM from 'react-dom';
-import AuthStore from '../../stores/AuthStore';
-import GameStore from '../../stores/GameStore';
-import GameActions from '../../actions/GameActions';
+import UserStore from '../../stores/UserStore';
 
 class Log extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            me: AuthStore.getState().user,
+            me: UserStore.getState(),
             logs: [],
         };
 
-        this.onChange = this.onChange.bind(this);
+        this.handleNewLog = this.handleNewLog.bind(this);
+        this.handleLogsInit = this.handleLogsInit.bind(this);
     }
 
-    onChange() {
-        let logs = GameStore.getState().logs;
+    handleLogsInit(logs){
         if(!logs){
             logs = [];
         }
@@ -29,18 +27,21 @@ class Log extends React.Component {
         this.setState({logs: logs});
     }
 
-    componentDidMount() {
-        if (this.props.creatorUsername) {
-            GameStore.listen(this.onChange);
-            GameActions.getLogs(this.props.creatorUsername);
-        } else if (this.props.logs) {
-            this.setState({logs: this.props.logs});
+    handleNewLog(log){
+        if(log.card) {
+            log.card = new Card(log.card);
         }
+        let logs = [...this.state.logs, log];
+        this.setState({logs: logs});
     }
 
-    componentWillUnmount() {
+    componentDidMount() {
         if (this.props.creatorUsername) {
-            GameStore.unlisten(this.onChange);
+            this.props.socket.emit('log:get');
+            this.props.socket.on('log:get', this.handleLogsInit);
+            this.props.socket.on('log:new', this.handleNewLog);
+        } else if (this.props.logs) {
+            this.setState({logs: this.props.logs});
         }
     }
 

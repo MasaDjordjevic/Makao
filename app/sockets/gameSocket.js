@@ -78,6 +78,13 @@ module.exports = function (socket) {
        });
     });
 
+    socket.on('log:get', () => {
+        Gameplay.getLogs(creatorName).then((logs) => {
+            socket.emit('log:get', logs);
+        })
+    });
+
+
     socket.on('disconnect', () => {
         console.log('user disconnected from gameSocket');
         Gameplay.setPlayerOnlineStatus(creatorName, name, false);
