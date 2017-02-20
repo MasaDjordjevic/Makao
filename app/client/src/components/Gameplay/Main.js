@@ -42,9 +42,7 @@ class Main extends React.Component {
     }
 
     handleGameStarted(started){
-        if(started){
-            this.setState({gameStarted:started});
-        }
+        this.setState({gameStarted:started});
     }
 
     handleGameStart() {
