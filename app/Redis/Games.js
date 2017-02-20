@@ -44,6 +44,22 @@ function _del(key) {
     });
 }
 
+function _sadd(key, member) {
+    return new Promise((resolve, reject) => {
+        redisCli.sadd(key, member, (err, reply) => {
+            err ? reject(err) : resolve(reply);
+        });
+    });
+}
+
+function _srem(key, member) {
+    return new Promise((resolve, reject) => {
+        redisCli.srem(key, member, (err, reply) => {
+            err ? reject(err) : resolve(reply);
+        });
+    });
+}
+
 function _addToList(key, values) {
     return new Promise((resolve, reject) => {
         redisCli.rpush(key, values, (err, reply) => {
@@ -128,6 +144,22 @@ function _hkeys(key, func) {
 exp.setGame = (creatorUsername, game) => {
     return _set(gameKey(creatorUsername), JSON.stringify(game));
 };
+
+exp.addPendingGame = (creatorUsername) => {
+    return _sadd('games:lobby', creatorUsername);
+};
+
+exp.addStartedGame = (creatorUsername) => {
+    return _sadd('games:started', creatorUsername);
+};
+
+exp.remPendingGame = (creatorUsername) => {
+    return _srem('games:lobby', creatorUsername);
+};
+
+exp.remStartedGame = (creatorUsername) => {
+    return _srem('games:started', creatorUsername);
+}
 
 exp.getGame = (creatorUsername) => {
     return _get(gameKey(creatorUsername), (game) => JSON.parse(game));
