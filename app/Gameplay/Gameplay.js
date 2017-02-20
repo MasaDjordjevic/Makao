@@ -7,7 +7,7 @@ let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
 function createStack() {
-    let numbers = [1, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 12, 2];
+    let numbers = [1, 3, 4, 5, 6, 7, 8,  10, 13, 14, 12, 2, 9];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
     numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
@@ -120,7 +120,6 @@ function determineNextPlayer(game, playerUsername, card) {
     }
 
     return nextPlayer(game);
-    return nextPlayer(game);
 }
 
 function determineDrawCount(game) {
@@ -173,7 +172,7 @@ function nextPlayer(game, offset = 1) {
     offset = offset * game.direction;
     let players = _.keys(game.players);
     let currIndex = players.indexOf(game.playerOnMove);
-    let nextIndex = (currIndex + offset) % players.length;
+    let nextIndex = (currIndex + offset + players.length) % players.length;
     let next = players[nextIndex];
     game.playerOnMove = next;
     return next;
