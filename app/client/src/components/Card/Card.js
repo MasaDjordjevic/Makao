@@ -7,6 +7,9 @@ export default class Card {
             this.symbol = sym.symbol;
             this.number = sym.number;
             this.jackSymbol = sym.jackSymbol || null;
+            if(sym.mustPlay){
+                this.mustPlay = true;
+            }
             return;
         }
         this.symbol = sym;

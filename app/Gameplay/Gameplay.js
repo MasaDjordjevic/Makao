@@ -231,14 +231,15 @@ exp.draw = (creatorUsername, playerUsername) => {
             fixDrawStack(game);
             let drawCount = determineDrawCount(game);
             let cards = game.drawStack.splice(-drawCount, drawCount);
-            if (isTwoDiamonds(game)) {
-                _.last(cards).mustPlay = true;
-            }
+            _.reverse(cards); //to be in order like if player took one by one
             game.players[playerUsername].cards = game.players[playerUsername].cards.concat(cards);
             //add log
             let log = {username: playerUsername, draw: drawCount};
             game.logs.push(log);
 
+            if (isTwoDiamonds(game)) {
+                _.last(cards).mustPlay = true;
+            }
 
             Games.setGame(creatorUsername, game).then(() => {
                 resolve({cards: cards, log: log, cardsNumber: drawCount});

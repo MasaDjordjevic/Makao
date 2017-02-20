@@ -45,6 +45,7 @@ class CorrectMoveWrapper extends React.Component {
 
     handleCardClick(card) {
         if (this.isMyTurn()) {
+            let talon = this.props.talon;
 
             let must = _.filter(this.props.myCards, 'mustPlay');
             if(must.length > 0){
@@ -53,29 +54,21 @@ class CorrectMoveWrapper extends React.Component {
                     this.setState({snackbarOpen: true, snackbarMessage: 'must play'});
                     return;
                 }else {
-                    this.setState({draw: false});
-                    this.props.onCardClick(card);
-                    return;
+                    //ako je bacena dvojka karo, zaca nema efekta
+                    if(talon.number === '2' && talon.symbol === 'diamonds') {
+                        if(this.state.draw){ //moras da kupis
+                            this.setState({jackPlayed: false, draw: false});
+                            this.props.onCardClick(card, true);
+                            return;
+                        }else {
+                            this.setState({snackbarOpen: true, snackbarMessage: '2 diamonds, draw'});
+                            return;
+                        }
+                    }else {
+                        this.setState({jackPlayed: true});
+                    }
                 }
             }
-
-            let talon = this.props.talon;
-
-            //ako je bacena dvojka karo, zaca nema efekta
-            if(talon.number === '2' && talon.symbol === 'diamonds') {
-                if(this.state.draw){ //moras da kupis
-                    this.setState({jackPlayed: false, draw: false});
-                    this.props.onCardClick(card, true);
-                    return;
-                }else {
-                    this.setState({snackbarOpen: true, snackbarMessage: '2 diamonds, draw'});
-                    return;
-                }
-
-            }else {
-                this.setState({jackPlayed: true});
-            }
-
 
 
             //na sedmicu moze samo sedmica ako nije vuko
@@ -87,7 +80,7 @@ class CorrectMoveWrapper extends React.Component {
             //zaca moze uvek da se baci
 
             if (card.number === '12' || card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
-                this.setState({draw: false});
+                this.setState({draw: false, jackPlayed: true});
                 this.props.onCardClick(card);
             } else {
                 this.setState({snackbarOpen: true, snackbarMessage: 'Wrong card'});
@@ -99,6 +92,8 @@ class CorrectMoveWrapper extends React.Component {
         if (this.isMyTurn() && !this.canPass) {
             this.setState({draw: true});
             this.props.onDrawClick();
+        } else {
+            this.setState({snackbarOpen: true, snackbarMessage: "Can't draw"});
         }
     }
 
