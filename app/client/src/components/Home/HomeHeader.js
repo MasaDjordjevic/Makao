@@ -27,7 +27,7 @@ class HomeHeader extends React.Component {
         super();
         this.state = {
             userdata: UserStore.getState(),
-            dialogOpen: true,
+            dialogOpen: false,
             searchResults: null,
         };
 
@@ -189,6 +189,10 @@ class HomeHeader extends React.Component {
         this.setState({dialogOpen: false});
     };
 
+    get notificationsNum(){
+        return this.state.userdata.friendRequests.length || 0; //TODO dodaj posle i invajtove
+    }
+
     render() {
         const friendRequests = this.state.userdata.friendRequests;
         return (
@@ -235,7 +239,8 @@ class HomeHeader extends React.Component {
                     iconElementRight={
                         <div style={this.styles.rightContainer}>
                             <Badge
-                                badgeContent={2}
+                                badgeContent={this.notificationsNum}
+                                badgeStyle={{display: this.notificationsNum ? 'flex' : 'none'}}
                                 secondary={true}
                                 style={this.styles.notifications}>
                                 <IconMenu
@@ -252,10 +257,6 @@ class HomeHeader extends React.Component {
                                             this.renderFriendRequest(from, i)
                                         )
                                     }
-                                    <MenuItem primaryText="Send feedback"/>
-                                    <MenuItem primaryText="Settings"/>
-                                    <MenuItem primaryText="Help"/>
-                                    <MenuItem primaryText="Sign out"/>
                                 </IconMenu>
                             </Badge>
 
