@@ -57,6 +57,16 @@ module.exports = function (socket) {
         // no need to send anything back to user
     });
 
+    socket.on('friend:find', (username) => {
+        User.findByUsername(username, (err, user) => {
+            if (err || !user){
+                socket.emit('friend:find', null);
+            } else {
+                socket.emit('friend:find', username);
+            }
+        });
+    });
+
     socket.on('disconnect', () => {
         App.removeUserSocket(socketUser);
         console.log('user ' + socketUser + ' disconnected from appSocket');
