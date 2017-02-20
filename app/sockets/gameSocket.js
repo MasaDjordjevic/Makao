@@ -36,7 +36,7 @@ module.exports = function (socket, io) {
                     });
                 });
                 let talon = _.last(game.openStack);
-                socket.emit('init', {players: players, cards: cards, talon: talon, playerOnMove: game.playerOnMove});
+                socket.emit('init', {players: players, cards: cards, talon: talon, playerOnMove: game.playerOnMove, scores: game.scores});
                 socket.to(creatorUsername).broadcast.emit('user:join', {
                     username: username,
                     online: true,
@@ -48,7 +48,7 @@ module.exports = function (socket, io) {
     });
 
     function emitToEveryone(key, value) {
-        socket.emit(key, value);
+        //socket.emit(key, value);
         socket.to(creatorName).broadcast.emit(key, value);
     }
 
@@ -59,6 +59,7 @@ module.exports = function (socket, io) {
     function emitLog(log) {
         emitToEveryone('log:new', log);
     }
+
 
     socket.on('play:move', (card) => {
         Gameplay.playMove(creatorName, name, card).then((data) => {
@@ -83,15 +84,16 @@ module.exports = function (socket, io) {
                             players: players,
                             cards: cards,
                             talon: talon,
-                            playerOnMove: game.playerOnMove
+                            playerOnMove: game.playerOnMove,
                         });
                     })
                 });
-
+                io.in(creatorName).emit('scores:new', data.scores);
             } else {
                 emitPlayerOnMove(data.playerOnMove);
             }
-            emitLog(data.log);
+
+            io.in(creatorName).emit('log:new',data.log);
         });
     });
 
@@ -115,6 +117,12 @@ module.exports = function (socket, io) {
         Gameplay.getLogs(creatorUsername).then((logs) => {
             socket.emit('log:get', logs);
         })
+    });
+
+    socket.on('game:started', (creatorUsername) => {
+        Gameplay.getGameStatus(creatorUsername).then((status) => {
+            socket.emit('game:started', status === 'started');
+        });
     });
 
 

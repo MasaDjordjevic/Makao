@@ -19,28 +19,31 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameStarted: false,
+            gameStarted: null,
             socket: null,
         };
 
         this.handleGameStart = this.handleGameStart.bind(this);
+        this.handleGameStarted = this.handleGameStarted.bind(this);
         this.handleAuthenticated = this.handleAuthenticated.bind(this);
     }
 
-    handleAuthenticated(){
+    handleAuthenticated(started) {
         this.setState({socket: socket});
-        // this.setState({gameStarted: started});
+        socket.emit('game:started', this.props.params.username);
     }
 
     componentDidMount() {
-        GameActions.isGameStarted(this.props.params.username, (started) => {
+        socket = io('/game');
+        socket.emit('authenticate', {token: Auth.getToken()});
+        socket.on('authenticated', this.handleAuthenticated);
+        socket.on('unauthorized', () => alert('nope'));
+        socket.on('game:started', this.handleGameStarted)
 
-            socket = io('/game');
-            socket.emit('authenticate', {token: Auth.getToken()});
-            socket.on('authenticated', this.handleAuthenticated);
-            socket.on('unauthorized', () => alert('nope'));
-        });
+    }
 
+    handleGameStarted(started){
+        this.setState({gameStarted:started});
     }
 
     handleGameStart() {
@@ -77,7 +80,8 @@ class Main extends React.Component {
                     <div style={this.styles.container}>
                         <div style={this.styles.game}>
                             {this.state.gameStarted ?
-                                <GameResizeHandler creatorUsername={this.props.params.username} socket={this.state.socket}/> :
+                                <GameResizeHandler creatorUsername={this.props.params.username}
+                                                   socket={this.state.socket}/> :
                                 <GameInitializer creatorUsername={this.props.params.username}
                                                  onGameStart={this.handleGameStart}/>}
                         </div>
