@@ -83,6 +83,17 @@ class Game extends React.Component {
         }
     }
 
+    get scores(){
+        if(this.props.scores && this.props.scores.length){
+            return this.props.scores;
+        }
+        let scores = [];
+        this.props.allPlayers.forEach((user)=> {
+            scores.push({username: user.username, score: 0});
+        });
+        return [scores];
+    }
+
     render() {
         return (
             <div style={this.styles.container}>
@@ -106,7 +117,7 @@ class Game extends React.Component {
                         <div style={{...this.styles.spacer, ...this.styles.scores}}>
                             <ScoresWrapper showScores={this.props.dimensions.showScores}
                                            height={this.props.dimensions.userCardsHeight}
-                                           scores={this.props.scores}/>
+                                           scores={this.scores}/>
                         </div>
                         <div style={this.styles.myCards}>
                             <CardSet
@@ -134,6 +145,7 @@ Game.PropTypes = {
     dimensions: React.PropTypes.object,
     myMove: React.PropTypes.object,
     opponents: React.PropTypes.array,
+    allPlayers: React.PropTypes.array,
     playerOnMove: React.PropTypes.string,
     myCards: React.PropTypes.array,
     Talon: React.PropTypes.object,

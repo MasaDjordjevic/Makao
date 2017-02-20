@@ -89,7 +89,7 @@ class CorrectMoveWrapper extends React.Component {
     }
 
     handleDrawClick() {
-        if (this.isMyTurn() && !this.canPass) {
+        if (true || (this.isMyTurn() && !this.canPass)) {
             this.setState({draw: true});
             this.props.onDrawClick();
         } else {
@@ -125,6 +125,7 @@ class CorrectMoveWrapper extends React.Component {
                       myMove={this.props.myMove}
                       enableNext={this.canPass}
                       opponents={this.props.opponents}
+                      allPlayers={this.props.allPlayers}
                       playerOnMove={this.props.playerOnMove}
                       myCards={this.props.myCards}
                       talon={this.props.talon}
@@ -152,6 +153,7 @@ CorrectMoveWrapper.propTypes = {
     dimensions: React.PropTypes.object,
     myMove: React.PropTypes.bool,
     opponents: React.PropTypes.array,
+    allPlayers: React.PropTypes.array,
     playerOnMove: React.PropTypes.string,
     myCards: React.PropTypes.array,
     scores: React.PropTypes.array,

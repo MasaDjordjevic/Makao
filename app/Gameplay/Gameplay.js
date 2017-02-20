@@ -6,11 +6,13 @@ import Card from '../client/src/components/Card/Card';
 let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
-function createStack() {
+function createStack(stackNum) {
     let numbers = [1, 3, 4, 5, 6, 7, 8, 10, 13, 14, 12, 2, 9];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
-    numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
+    Array(stackNum).fill(null).forEach((i)=> {
+        numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
+    });
     return deck;
 }
 
@@ -94,7 +96,7 @@ function nextHand(game){
 
 function deal(game) {
     //kreiraj spilove
-    let stack = createStack();
+    let stack = createStack(game.rules.deckNumber);
 
     //stavi kartu na talon (openStack)
     let talon = getTalon(stack);
@@ -146,6 +148,9 @@ function determineDrawCount(game) {
     } else {
         let sevens = game.sevens;
         game.sevens = 0;
+        if(sevens === 0){
+            return 1;
+        }
         return sevens * 2; //TODO nadji koliko se vuce na sedmicu
     }
 }
@@ -176,9 +181,11 @@ function determineConsequences(game, card) {
 
     if (card.number === '7') {
         game.sevens++;
+    }else {
+        game.sevens = 0;
     }
 
-    game.sevens = 0;
+
 }
 
 function nextHandStarter(game, offset = 1){
@@ -270,6 +277,28 @@ function handEnd(game, playerUsername) {
     return false;
 }
 
+function gameEnd(game){
+    let scores  = JSON.parse(JSON.stringify(game.scores));
+    scores = scores.map((round, i) => {
+        round.map((s, j) => {
+            s.score += i === 0 ? 0 : _.find(scores[i - 1], {username: s.username}).score;
+            return s;
+        });
+        return round;
+    });
+
+    let end = false;
+    let limit = game.rules.gameLimit;
+    _.last(scores).forEach((user, i) => {
+        if(user.score > limit || user.score < -limit){
+            end = true;
+            game.status = 'finished';
+        }
+    });
+
+    return end;
+}
+
 exp.playMove = (creatorUsername, playerUsername, card) => {
     return new Promise((resolve, reject) => {
         Games.getGame(creatorUsername).then((game) => {
@@ -288,6 +317,17 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 let log ={username: playerUsername, win: true};
                 game.logs.push(log);
                 newLogs.push(log);
+
+                //check if game is overe
+                if(gameEnd(game)){
+                    let log ={message: 'game over'};
+                    game.logs.push(log);
+                    newLogs.push(log);
+                    Games.setGame(creatorUsername, game).then(() => {
+                        resolve({gameOver: true, scores: game.scores, log: newLogs});
+                    });
+                }
+
                 Games.setGame(creatorUsername, game).then(() => {
                     resolve({newHand: game, log: newLogs});
                 });

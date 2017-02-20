@@ -64,7 +64,9 @@ module.exports = function (socket, io) {
     socket.on('play:move', (card) => {
         Gameplay.playMove(creatorName, name, card).then((data) => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
-            if (data.newHand) {
+            if(data.gameOver){
+                emitToEveryone('game:over', data.scores);
+            } else if (data.newHand) {
                 Games.getGameSockets(creatorName).then((sockets) => {
                     let game = data.newHand;
                     let players = [];

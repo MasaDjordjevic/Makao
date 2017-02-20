@@ -21,6 +21,7 @@ class GameSocketWrapper extends React.Component {
 
             socketInit: false,
             dialogOpen: false,
+            dialogMessage: "NEW HAND",
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -34,11 +35,22 @@ class GameSocketWrapper extends React.Component {
         this.handleDraw = this.handleDraw.bind(this);
         this.handleGetCards = this.handleGetCards.bind(this);
         this.handleNewHand = this.handleNewHand.bind(this);
+        this.handleGameOver = this.handleGameOver.bind(this);
 
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
     }
 
+    empty(){
+
+    }
+
+    handleGameOver(scores){
+        this.setState({dialogOpen: true, dialogMessage: "GAME OVER", scores: scores});
+        this.handleNext = this.empty;
+        this.handleCardClick = this.empty;
+        this.handleDrawClick = this.empty;
+    }
 
     handlePlayerOnMove(username) {
         this.setState({playerOnMove: username});
@@ -161,6 +173,7 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:get', this.handleGetCards);
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
             socket.on('game:newHand', this.handleNewHand);
+            socket.on('game:over', this.handleGameOver);
         }
     }
 
@@ -190,7 +203,7 @@ class GameSocketWrapper extends React.Component {
 
     render() {
         const players = this.state.players.slice();
-        const playersWithoutUser = _.remove(players, (p) => p.username !== this.state.me.username);
+        const playersWithoutUser = _.remove(this.state.players.slice(), (p) => p.username !== this.state.me.username);
         let myCards = this.state.myCards.slice();
         myCards = _.sortBy(myCards, ['symbol', 'number']);
         return (
@@ -202,11 +215,12 @@ class GameSocketWrapper extends React.Component {
                     bodyStyle={this.styles.dialogBody}
                     contentStyle={this.styles.dialogContent}
                 >
-                    NEW HAND
+                    {this.state.dialogMessage}
                 </Dialog>
                 <CorrectMoveWrapper dimensions={this.props.dimensions}
                                     myMove={this.state.playerOnMove === this.state.me.username}
                                     opponents={playersWithoutUser}
+                                    allPlayers={players}
                                     playerOnMove={this.state.playerOnMove}
                                     myCards={myCards}
                                     talon={this.state.openStack.slice(-1)[0]}
