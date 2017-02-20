@@ -48,7 +48,7 @@ module.exports = function (socket, io) {
     });
 
     function emitToEveryone(key, value) {
-        //socket.emit(key, value);
+        socket.emit(key, value);
         socket.to(creatorName).broadcast.emit(key, value);
     }
 
@@ -93,7 +93,7 @@ module.exports = function (socket, io) {
                 emitPlayerOnMove(data.playerOnMove);
             }
 
-            io.in(creatorName).emit('log:new',data.log);
+            emitLog(data.log);
         });
     });
 

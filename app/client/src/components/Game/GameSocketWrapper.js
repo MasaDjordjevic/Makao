@@ -17,6 +17,8 @@ class GameSocketWrapper extends React.Component {
             openStack: [],
             jackPlayed: false,
             scores: [],
+
+            socketInit:false
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -137,7 +139,8 @@ class GameSocketWrapper extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.socket) {
+        if(!this.state.socketInit && nextProps.socket) {
+            this.setState({socketInit: true});
             let socket = nextProps.socket;
             socket.emit('join', this.props.creatorUsername, this.state.me.username);
             socket.on('init', this.handleSocketInit);
@@ -149,6 +152,10 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
             socket.on('scores:new', this.handleNewScore)
         }
+    }
+
+    componenetDidMount(){
+        let a = this.props;
     }
 
 

@@ -13,6 +13,7 @@ class Log extends React.Component {
         this.state = {
             me: UserStore.getState(),
             logs: [],
+            socketInit: false,
         };
 
         this.handleNewLog = this.handleNewLog.bind(this);
@@ -37,7 +38,8 @@ class Log extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.socket) {
+        if(!this.state.socketInit && nextProps.socket) {
+            this.setState({socketInit: true});
             nextProps.socket.emit('log:get', this.props.creatorUsername);
             nextProps.socket.on('log:get', this.handleLogsInit);
             nextProps.socket.on('log:new', this.handleNewLog);
@@ -46,7 +48,7 @@ class Log extends React.Component {
 
     componentDidMount() {
         if (this.props.creatorUsername) {
-
+            let a = 5;
         } else if (this.props.logs) {
             this.setState({logs: this.props.logs});
         }
