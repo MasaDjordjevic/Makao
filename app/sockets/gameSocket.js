@@ -120,7 +120,7 @@ module.exports = function (socket, io) {
 
     socket.on('game:started', (creatorUsername) => {
         Gameplay.getGameStatus(creatorUsername).then((status) => {
-            socket.emit('game:started', status === 'started');
+            socket.emit('game:started', status === 'started' ? true : status === 'lobby' ? false : null);
         });
     });
 
