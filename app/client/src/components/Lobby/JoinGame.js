@@ -11,8 +11,8 @@ class JoinGame extends React.Component {
     }
 
     joinGame(selectedRow){
-        if(!this.state.games[selectedRow]) return;
-        browserHistory.push('/game/' + this.state.games[selectedRow].creator);
+        if(!this.props.games[selectedRow]) return;
+        browserHistory.push('/game/' + this.props.games[selectedRow].creator);
     }
 
     get styles() {
@@ -29,11 +29,12 @@ class JoinGame extends React.Component {
                        fixedHeader={false}
                        selectable={true}
                        onRowSelection={this.joinGame}>
-                    <TableHeader displaySelectAll={false}>
+                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn>Host</TableHeaderColumn>
                             <TableHeaderColumn>Current</TableHeaderColumn>
                             <TableHeaderColumn>Min - Max</TableHeaderColumn>
+                            <TableHeaderColumn>Rules</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
