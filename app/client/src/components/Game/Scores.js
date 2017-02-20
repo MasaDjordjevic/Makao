@@ -22,85 +22,28 @@ class Scores extends React.Component {
 
         this.state = {
             addMode: true,
+            players: ['masa', 'jajac', 'mitic'],
             scores: [
                 [
-                    {id: 1, score: -100},
-                    {id: 2, score: 150},
-                    {id: 3, score: 20},
-                    {id: 4, score: 7},
-                    {id: 5, score: 4},
+                    {username: 'masa', score: -100},
+                    {username: 'jajac', score: 150},
+                    {username: 'mitic', score: 20},
                 ],
                 [
-                    {id: 1, score: 17},
-                    {id: 2, score: 12},
-                    {id: 3, score: 3},
-                    {id: 4, score: -10},
-                    {id: 5, score: 2},
+                    {username: 'masa', score: 17},
+                    {username: 'jajac', score: 12},
+                    {username: 'mitic', score: 3},
                 ],
                 [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
+                    {username: 'masa', score: 5},
+                    {username: 'jajac', score: 2},
+                    {username: 'mitic', score: 4},
                 ],
-
                 [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
+                    {username: 'masa', score: 4},
+                    {username: 'jajac', score: 8},
+                    {username: 'mitic', score: -10},
                 ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
-                [
-                    {id: 1, score: 5},
-                    {id: 2, score: 2},
-                    {id: 3, score: 4},
-                    {id: 4, score: 8},
-                    {id: 5, score: -10},
-                ],
-
             ]
         };
     }
@@ -181,34 +124,23 @@ class Scores extends React.Component {
         this.setState({addMode: !this.state.addMode});
     }
 
-    get scores() {
-        let scores = JSON.parse(JSON.stringify(this.state.scores));
-        const players = GlobalVariables.playersById;
-        scores.map((round, i) => round.map((playerScore, _) => {
-            let pS = playerScore;
-            pS.name = players[pS.id].name;
-            return pS
-        }));
-        return scores;
-    }
-
     getScores() {
         //score are given for each round
         //return them if addMode is off
-        let scrs = JSON.parse(JSON.stringify(this.scores));
+        let scrs = JSON.parse(JSON.stringify(this.state.scores));
         if (!this.state.addMode) {
             return scrs;
         }
 
         return scrs.map((round, i) =>
             round.map((s, j) => {
-                s.score += i === 0 ? 0 : _.find(scrs[i - 1], {id: s.id}).score;
+                s.score += i === 0 ? 0 : _.find(scrs[i - 1], {username: s.username}).score;
                 return s;
             }));
     }
 
     render() {
-        const players = GlobalVariables.players.slice().map((player, i) => player.name);
+        const players = this.state.players.slice();
         const scores = this.getScores();
         //26.67 je visina hedera tabele, mng mi je zao zbog ovoga :'(
         const tableHeight = this.props.height - this.headerHeight - 26.67;
@@ -243,7 +175,7 @@ class Scores extends React.Component {
                                     <TableHeaderColumn key={i}
                                                        style={this.styles.th}>
                                         <DefaultTooltip tooltip={p} tooltipPosition="top-left">
-                                            {p.charAt(0)}
+                                            {p.toUpperCase().charAt(0)}
                                         </DefaultTooltip>
                                     </TableHeaderColumn >
                                 )
