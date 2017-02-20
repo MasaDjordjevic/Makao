@@ -34,6 +34,7 @@ class HomeHeader extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.handleFriendFound = this.handleFriendFound.bind(this);
         this.handleFriendSearch = this.handleFriendSearch.bind(this);
+        this.handleRequestSend = this.handleRequestSend.bind(this);
     }
 
     onChange() {
@@ -61,6 +62,12 @@ class HomeHeader extends React.Component {
                 });
                 socket.on('friend:ignore', (requestUsername) => {
                     UserActions.removeFriendRequest(requestUsername);
+                });
+                socket.on('friend:request:sent', () => {
+                    // friend request successfuly sent
+                });
+                socket.on('friend:request:received', (sender) => {
+                    UserActions.addFriendRequest(sender);
                 });
                 socket.on('user:invite', (inviter) => {
                     UserActions.receiveInvite(inviter);
@@ -129,6 +136,10 @@ class HomeHeader extends React.Component {
         }
     }
 
+    handleRequestSend(selectedUsername) {
+        socket.emit('friend:request:send', selectedUsername);
+    }
+
     handleRequestAccept(friendUsername) {
         socket.emit('friend:accept', friendUsername);
     }
@@ -190,7 +201,11 @@ class HomeHeader extends React.Component {
                     bodyStyle={this.styles.addFriendDialogBody}
 
                 >
-                    <FriendAdder onSearch={this.handleFriendSearch} searchResults={this.state.searchResults}/>
+                    <FriendAdder
+                        onSearch={this.handleFriendSearch}
+                        searchResults={this.state.searchResults}
+                        onUserSelect={this.handleRequestSend}
+                    />
                 </Dialog>
                 <AppBar
                     title={

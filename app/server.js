@@ -108,7 +108,7 @@ const server = app.listen(3001, () => {
 const io = sio(server);
 
 io.on('connection', authCheck.socketTokenAuth)
-  .on('authenticated', appSocket);
+  .on('authenticated', (socket) => appSocket(socket, io));
 // passing 'io' to lobbysocket as well for the 'user:invite' message
 io.of('/lobby')
   .on('connection', authCheck.socketTokenAuth)

@@ -15,41 +15,56 @@ UserSchema.plugin(mbcrypt);
 
 UserSchema.statics.findByUsername = function(username, callback) {
     this.findOne({ username: username}, (err, user) => {
-        callback(err, user);
+        return callback(err, user);
     });
 }
 
 UserSchema.statics.findByEmail = function(email, callback) {
     this.findOne({ email: email}, (err, user) => {
-        callback(err, user);
+        return callback(err, user);
     });
 }
 
 UserSchema.statics.addFriend = function(username, friendUsername, callback) {
     this.findByUsername(username, (err, user) => {
-        if (err) { callback(err) }
+        if (err) { return callback(err); }
         let requestIndex = user.friendRequests.indexOf(friendUsername);
         if (requestIndex != -1) {
             user.friendRequests.splice(requestIndex, 1);
         }
         user.friends.push(friendUsername);
         user.save((err) => {
-            if (err) { callback(err) }
-            callback(null);
+            if (err) { return callback(err); }
+            return callback(null);
+        });
+    });
+}
+
+UserSchema.statics.addFriendRequest = function(username, sender, callback) {
+    this.findByUsername(username, (err, user) => {
+        if (err) { return callback(err) };
+        if (user.friendRequests.indexOf(sender) !== -1) {
+            var error = new Error("Already sent.");
+            return callback(error);
+        }
+        user.friendRequests.push(sender);
+        user.save((err) => {
+            if (err) { return callback(err) }
+            return callback(null);
         });
     });
 }
 
 UserSchema.statics.removeFriendRequest = function(username, friendUsername, callback) {
     this.findByUsername(username, (err, user) => {
-        if (err) { callback(err) }
+        if (err) { return callback(err); }
         let requestIndex = user.friendRequests.indexOf(friendUsername);
         if (requestIndex != -1) {
             user.friendRequests.splice(requestIndex, 1);
         }
         user.save((err) => {
-            if (err) { callback(err) }
-            callback(null);
+            if (err) { return callback(err); }
+            return callback(null);
         });
     });
 }

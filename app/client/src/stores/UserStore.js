@@ -28,6 +28,10 @@ class UserStore {
         }
     }
 
+    addFriendRequest(sender) {
+        this.friendRequests.push(sender);
+    }
+
     receiveInvite(inviter) {
 
     }

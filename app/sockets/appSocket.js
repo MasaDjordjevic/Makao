@@ -2,7 +2,7 @@ import Games from '../Redis/Games';
 import App from '../Redis/App';
 import User from '../models/user';
 
-module.exports = function (socket) {
+module.exports = function (socket, io) {
     var socketUser = socket.decoded_token.name;
     // Socket can emit 'user:data' or any other message
     // only after being authenticated, so we're safe to continue.
@@ -29,6 +29,18 @@ module.exports = function (socket) {
     socket.on('friend:ignore', (friendUsername) => {
         User.removeFriendRequest(socketUser, friendUsername, (err) => {
             socket.emit('friend:ignore', friendUsername);
+        });
+    });
+
+    // client sends friend request to someone
+    socket.on('friend:request:send', (recipient) => {
+        User.addFriendRequest(recipient, socketUser, (err) => {
+            if (!err) {
+                socket.emit('friend:request:sent');
+                App.getUserSocket(recipient).then((socketid) => {
+                    io.to(socketid).emit('friend:request:received', socketUser);
+                });
+            }
         });
     });
 
