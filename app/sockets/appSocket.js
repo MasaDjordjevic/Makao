@@ -4,22 +4,20 @@ import User from '../models/user';
 
 module.exports = function (socket) {
     var socketUser = socket.decoded_token.name;
-    // Socket can emit 'user:info' or any other message
+    // Socket can emit 'user:data' or any other message
     // only after being authenticated, so we're safe to continue.
-    socket.on('user:info', () => {
+    socket.on('user:data', () => {
         console.log('user ' + socketUser + ' connected to appSocket');
         App.setUserSocket(socketUser, socket.id);
-        let userInfo = {
-            id: socket.decoded_token.sub,
-            username: socketUser
-        }
-        socket.emit('user:info', userInfo);
-    });
-
-    socket.on('user:friends', () => {
         User.findByUsername(socketUser, (err, user) => {
-            socket.emit('user:friends', user.friends);
-        })
+            let userData = {
+                id: user._id,
+                username: user.username,
+                friends: user.friends,
+                friendRequests: user.friendRequests
+            }
+            socket.emit('user:data', userData);
+        });
     });
 
     socket.on('friend:accept', (friendUsername) => {
@@ -32,6 +30,10 @@ module.exports = function (socket) {
         User.removeFriendRequest(socketUser, friendUsername, (err) => {
             socket.emit('friend:ignore', friendUsername);
         });
+    });
+
+    socket.on('user:friend:requests', () => {
+        User.findByUsername()
     });
 
     socket.on('invite:accept', (creatorUsername) => {

@@ -3,8 +3,9 @@ import alt from '../alt';
 class UserActions {
     constructor() {
         this.generateActions(
-            'updateUserInfo',
+            'updateUserData',
             'updateFriendList',
+            'removeFriendRequest',
             'receiveInvite',
             'clearUser'
         );

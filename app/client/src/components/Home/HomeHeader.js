@@ -24,7 +24,7 @@ class HomeHeader extends React.Component {
     constructor() {
         super();
         this.state = {
-            username: UserStore.getState().username
+            userdata: UserStore.getState()
         }
 
         this.onChange = this.onChange.bind(this);
@@ -32,10 +32,10 @@ class HomeHeader extends React.Component {
 
     onChange() {
         let newUsername = UserStore.getState().username;
-        if (this.state.username.length <= 0 && newUsername.length > 0) {
-            this.setState({ username: UserStore.getState().username });
+        if (this.state.userdata.username.length <= 0 && newUsername.length > 0) {
             this.props.onUserLoad();
         }
+        this.setState({ userdata: UserStore.getState() });
     }
 
     componentDidMount() {
@@ -45,34 +45,23 @@ class HomeHeader extends React.Component {
         socket.on('connect', () => {
             socket.emit('authenticate', { token: Auth.getToken() });
             socket.on('authenticated', () => {
-                // request user info from server
-                socket.emit('user:info');
-                socket.emit('user:friends');
-                // update user info when server responds
-                socket.on('user:info', (info) => {
-                    UserActions.updateUserInfo(info);
+                socket.emit('user:data');
+                socket.on('user:data', (data) => {
+                    UserActions.updateUserData(data);
                 });
-                socket.on('user:friends', (friends) => {
-                    UserActions.updateFriendList(friends);
-                });
-                // accept friend request was successful
                 socket.on('friend:added', (newFriend) => {
+                    UserActions.removeFriendRequest(newFriend);
                     UserActions.updateFriendList(newFriend);
                 });
-                // ignore friend request was successful
-                socket.on('friend:ignore', () => {
-                    alert('ignored!');
+                socket.on('friend:ignore', (requestUsername) => {
+                    UserActions.removeFriendRequest(requestUsername);
                 });
-                // when a new invite is received
                 socket.on('user:invite', (inviter) => {
                     UserActions.receiveInvite(inviter);
                 });
-                // when server allows client's accept
                 socket.on('invite:accept', (creatorUsername) => {
                     browserHistory.push('/game/' + creatorUsername);
                 });
-                // when server rejects client's accept because
-                // the game is full but it still hasn't started
                 socket.on('invite:reject', (creatorUsername) => {
                     alert('The lobby is full.');
                 });
@@ -126,9 +115,9 @@ class HomeHeader extends React.Component {
         socket.emit('friend:ignore', friendUsername);
     }
 
-    renderFriendRequest(friendName) {
+    renderFriendRequest(friendName, i) {
         return (
-            <MenuItem primaryText={
+            <MenuItem key={i} primaryText={
                 <div>
                     <span>Friend request from&nbsp;
                         <Link to={"/users/"+ friendName} >
@@ -158,12 +147,13 @@ class HomeHeader extends React.Component {
     }
 
     render() {
+        const friendRequests = this.state.userdata.friendRequests;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <AppBar
                     title={
-                        <Link to={"/users/"+ this.state.username}>
-                            <span style={this.styles.username}>{this.state.username}</span>
+                        <Link to={"/users/"+ this.state.userdata.username}>
+                            <span style={this.styles.username}>{this.state.userdata.username}</span>
                         </Link>}
                     iconElementLeft={
                         <IconMenu
@@ -196,7 +186,11 @@ class HomeHeader extends React.Component {
                                     targetOrigin={this.styles.notificationMenuPosition}
                                     width={300}
                                 >
-                                    {this.renderFriendRequest("Darko")}
+                                    {
+                                        friendRequests.map((from, i) =>
+                                            this.renderFriendRequest(from, i)
+                                        )
+                                    }
                                     <MenuItem primaryText="Send feedback"/>
                                     <MenuItem primaryText="Settings"/>
                                     <MenuItem primaryText="Help"/>
