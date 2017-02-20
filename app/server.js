@@ -112,13 +112,13 @@ io.on('connection', authCheck.socketTokenAuth)
 // passing 'io' to lobbysocket as well for the 'user:invite' message
 io.of('/lobby')
   .on('connection', authCheck.socketTokenAuth)
-  .on('authenticated', (socket) => lobbySocket(socket, io.of('/lobby')));
+  .on('authenticated', (socket) => lobbySocket(socket, io));
 io.of('/chat')
   .on('connection', authCheck.socketTokenAuth)
   .on('authenticated', chatSocket);
 io.of('/game')
   .on('connection', authCheck.socketTokenAuth)
-  .on('authenticated', (socket) => gameSocket(socket, io.of('/game')));
+  .on('authenticated', (socket) => gameSocket(socket, io));
 io.of('/play')
   .on('connection', authCheck.socketTokenAuth)
   .on('authenticated', playSocket);

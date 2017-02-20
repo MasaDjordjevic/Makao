@@ -80,7 +80,7 @@ module.exports = function (socket, io) {
                     players.forEach((player)=> {
                         let username = player.username;
                         let cards = game.players[username].cards.slice();
-                        io.to(sockets[username]).emit('game:newHand', {
+                        io.of('/game').to(sockets[username]).emit('game:newHand', {
                             players: players,
                             cards: cards,
                             talon: talon,
