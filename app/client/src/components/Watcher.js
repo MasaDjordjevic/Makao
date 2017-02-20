@@ -136,7 +136,7 @@ class Watcher extends React.Component {
 
         total += data.openStack.length;
         total += data.drawStack.length;
-        if(total != 52){
+        if (total !== 52){
             return <span>{total}</span>
         }
     }
