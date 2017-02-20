@@ -19,6 +19,8 @@ import AuthActions from '../../actions/AuthActions';
 import Auth from '../../Auth';
 import Dialog from 'material-ui/Dialog';
 import FriendAdder from './FriendAdder';
+import {red900} from 'material-ui/styles/colors';
+import InviteIcon from 'material-ui/svg-icons/maps/local-activity';
 
 var socket;
 
@@ -35,6 +37,9 @@ class HomeHeader extends React.Component {
         this.handleFriendFound = this.handleFriendFound.bind(this);
         this.handleFriendSearch = this.handleFriendSearch.bind(this);
         this.handleRequestSend = this.handleRequestSend.bind(this);
+
+        this.handleInviteAccept = this.handleInviteAccept.bind(this);
+        this.handleInviteIgnore = this.handleInviteIgnore.bind(this);
     }
 
     onChange() {
@@ -87,11 +92,11 @@ class HomeHeader extends React.Component {
         });
     }
 
-    handleFriendFound(friend){
+    handleFriendFound(friend) {
         this.setState({searchResults: friend});
     }
 
-    handleFriendSearch(searchText){
+    handleFriendSearch(searchText) {
         socket.emit('friend:find', searchText);
     }
 
@@ -148,9 +153,17 @@ class HomeHeader extends React.Component {
         socket.emit('friend:ignore', friendUsername);
     }
 
+    handleInviteAccept(firendUsername) {
+        alert('acc');
+    }
+
+    handleInviteIgnore(friendUsername) {
+        alert('ignore');
+    }
+
     renderFriendRequest(friendName, i) {
         return (
-            <MenuItem key={i} primaryText={
+            <MenuItem key={'friend' + i} primaryText={
                 <div>
                     <span>Friend request from&nbsp;
                         <Link to={"/users/" + friendName}>
@@ -171,14 +184,32 @@ class HomeHeader extends React.Component {
         );
     }
 
+    renderGameRequest(friendName, i) {
+        return (
+            <MenuItem key={'invite' + i}
+                      primaryText={
+                <div>
+                    <span style={{color: red900}}>Game invite from&nbsp;
+                            <b>{friendName}</b>
+                    </span>
+                    <div>
+                        <FlatButton label="Accept" labelStyle={{color: green600}}
+                                    onClick={() => this.handleInviteAccept(friendName)}/>
+                        <FlatButton label="Ignore" labelStyle={{color: grey500}}
+                                    onClick={() => this.handleInviteIgnore(friendName)}/>
+                    </div>
+                </div>
+
+            }
+                      rightIcon={<InviteIcon />}
+            />
+        );
+    }
+
     handleLogout() {
         UserActions.clearUser();
         AuthActions.logout();
         browserHistory.push('/');
-    }
-
-    renderGameRequest(friendName, gameId) {
-
     }
 
     handleOpen = () => {
@@ -189,12 +220,13 @@ class HomeHeader extends React.Component {
         this.setState({dialogOpen: false});
     };
 
-    get notificationsNum(){
+    get notificationsNum() {
         return this.state.userdata.friendRequests.length || 0; //TODO dodaj posle i invajtove
     }
 
     render() {
         const friendRequests = this.state.userdata.friendRequests;
+        const gameInvites = ['mitic'];
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <Dialog
@@ -252,6 +284,11 @@ class HomeHeader extends React.Component {
                                     targetOrigin={this.styles.notificationMenuPosition}
                                     width={300}
                                 >
+                                    {
+                                        gameInvites.map((username, i) =>
+                                            this.renderGameRequest(username, i)
+                                        )
+                                    }
                                     {
                                         friendRequests.map((from, i) =>
                                             this.renderFriendRequest(from, i)
