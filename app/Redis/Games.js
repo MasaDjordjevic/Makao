@@ -200,10 +200,12 @@ exp.getGameList = () => {
             if (err) { reject(err); }
             let games = [];
             reply.forEach((creator, index) => {
-                games.push(exp.getGame(creator));
-                if (index === reply.length - 1) {
-                    resolve(games);
-                }
+                exp.getGame(creator).then((game) => {
+                    games.push(game);
+                    if (index === reply.length - 1) {
+                        resolve(games);
+                    }
+                });
             });
         });
     });
