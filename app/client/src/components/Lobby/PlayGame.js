@@ -16,34 +16,41 @@ class PlayGame extends React.Component {
         super();
         this.state = {
             dialogOpen: false,
+            joinGameList: []
         }
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
+        this.updateGameList = this.updateGameList.bind(this);
+    }
+
+    updateGameList(newGames) {
+        this.setState({ joinGameList: newGames });
     }
 
     handleOpen = () => {
+        var that = this;
         socket = io('/play');
         socket.on('connect', () => {
             socket.emit('authenticate', { token: Auth.getToken() });
             socket.on('authenticated', () => {
                 socket.emit('game:list');
-                socket.on('game:list', (games) => {
-                    console.log(JSON.stringify(games));
+                socket.on('game:list', (newGames) => {
+                    that.updateGameList(newGames);
                 });
                 socket.on('game:created', (game) => {
                     browserHistory.push('/game/' + UserStore.getState().username);
                 });
                 socket.on('game:failed', (reason) => {
-                    this.setState({snackbarMessage: 'Game creation failed: ' + reason, snackbarOpen: true});
+                    that.setState({snackbarMessage: 'Game creation failed: ' + reason, snackbarOpen: true});
                 });
             })
             socket.on('unauthorized', (msg) => {
                 alert(JSON.stringify(msg.data));
             })
         });
-        this.setState({dialogOpen: true});
+        that.setState({dialogOpen: true});
     };
 
     handleClose = () => {
@@ -101,7 +108,7 @@ class PlayGame extends React.Component {
                     <Tabs contentContainerStyle={this.styles.tabs}
                           tabTemplateStyle={this.styles.height100}>
                         <Tab label="Join game">
-                            <JoinGame />
+                            <JoinGame games={this.state.joinGameList}/>
                         </Tab>
                         <Tab label="Create game">
                             <CreateGame onCreate={this.handleCreate} />

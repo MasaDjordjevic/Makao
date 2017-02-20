@@ -7,50 +7,6 @@ class JoinGame extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            games: [
-                {
-                    id: 1,
-                    creator: 'Darko',
-                    current: 3,
-                    rules: {
-                        gameLimit: 300,
-                        timeLimit: 10,
-                        playerNumberMin: 3,
-                        playerNumberMax: 8,
-                        deckNumber: 2,
-                        rankFilter: 2
-                    }
-                },
-                {
-                    id: 2,
-                    creator: 'Marko',
-                    current: 2,
-                    rules: {
-                        gameLimit: 200,
-                        timeLimit: 15,
-                        playerNumberMin: 5,
-                        playerNumberMax: 5,
-                        deckNumber: 2,
-                        rankFilter: 2
-                    }
-                },
-                {
-                    id: 3,
-                    creator: 'Nikola',
-                    current: 3,
-                    rules: {
-                        gameLimit: 150,
-                        timeLimit: 30,
-                        playerNumberMin: 2,
-                        playerNumberMax: 6,
-                        deckNumber: 1,
-                        rankFilter: 15
-                    }
-                },
-            ]
-        };
-
         this.joinGame = this.joinGame.bind(this);
     }
 
@@ -82,7 +38,7 @@ class JoinGame extends React.Component {
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                     {
-                        this.state.games.map((game, i) =>
+                        this.props.games.map((game, i) =>
                             <TableRow key={game.creator} >
                                 <TableRowColumn>{game.creator}</TableRowColumn>
                                 <TableRowColumn>{game.current}</TableRowColumn>

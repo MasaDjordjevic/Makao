@@ -213,6 +213,7 @@ exp.getGameList = () => {
             let games = [];
             reply.forEach((creator, index) => {
                 exp.getGame(creator).then((game) => {
+                    game.creator = creator;
                     games.push(game);
                     if (index === reply.length - 1) {
                         resolve(games);

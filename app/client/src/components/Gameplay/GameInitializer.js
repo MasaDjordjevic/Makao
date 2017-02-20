@@ -50,30 +50,31 @@ class GameInitializer extends React.Component {
 
     componentDidMount() {
         GameInitStore.listen(this.onChange);
+        var that = this;
 
         socket = io('/lobby');
         socket.on('connect', () => {
             socket.emit('authenticate', { token: Auth.getToken() });
             socket.on('authenticated', () => {
-                socket.emit('join', this.props.creatorUsername);
+                socket.emit('join', that.props.creatorUsername);
                 socket.on('init', (data) => {
                     GameInitActions.initLobbyAndRules(data);
                 });
                 socket.on('user:ready', (readyUsername) => {
                     GameInitActions.userReady(readyUsername);
                     if (UserStore.getState().username === readyUsername) {
-                        this.setState({ showReady: false });
+                        that.setState({ showReady: false });
                     }
                 });
                 socket.on('user:joined', (username) => {
-                    this.setState({ allowStart: false });
+                    that.setState({ allowStart: false });
                     GameInitActions.userJoined(username);
                 });
                 socket.on('user:left', (username) => {
                     GameInitActions.userLeft(username);
                 });
                 socket.on('game:started', () => {
-                    this.props.onGameStart();
+                    that.props.onGameStart();
                 });
             });
         });
