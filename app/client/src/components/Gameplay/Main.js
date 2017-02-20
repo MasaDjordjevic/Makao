@@ -14,7 +14,7 @@ import NoAccess from '../NoAccess';
 import Auth from '../../Auth';
 import io from 'socket.io-client';
 
-
+var socket;
 class Main extends React.Component {
     constructor() {
         super();
@@ -27,17 +27,17 @@ class Main extends React.Component {
         this.handleAuthenticated = this.handleAuthenticated.bind(this);
     }
 
-    handleAuthenticated(socket){
+    handleAuthenticated(){
         this.setState({socket: socket});
         // this.setState({gameStarted: started});
     }
 
     componentDidMount() {
         GameActions.isGameStarted(this.props.params.username, (started) => {
-            let socket;
+
             socket = io('/game');
             socket.emit('authenticate', {token: Auth.getToken()});
-            socket.on('authenticated', this.handleAuthenticated(socket));
+            socket.on('authenticated', this.handleAuthenticated);
             socket.on('unauthorized', () => alert('nope'));
         });
 
