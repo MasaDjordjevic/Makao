@@ -1,5 +1,6 @@
 import redis from 'redis';
 import Games from '../Redis/Games';
+import GameEnd from './GameEnd';
 import _ from 'lodash';
 import Card from '../client/src/components/Card/Card';
 
@@ -325,6 +326,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                     newLogs.push(log);
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({gameOver: true, scores: game.scores, log: newLogs});
+                        GameEnd.handleGameEnd(game);
                     });
                 }
 
