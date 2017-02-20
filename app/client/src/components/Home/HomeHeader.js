@@ -164,10 +164,12 @@ class HomeHeader extends React.Component {
     }
 
     handleInviteAccept(inviter) {
+        // call handleIgnore to remove invite from list
+        this.handleInviteIgnore(inviter);
         browserHistory.push('/game/' + inviter);
     }
 
-    handleInviteIgnore(inviter) {
+    handleInviteIgnore (inviter) {
         let currInvites = this.state.gameInvites;
         let index = currInvites.indexOf(inviter);
         if (index !== -1) {
