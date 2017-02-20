@@ -32,10 +32,6 @@ class UserStore {
         this.friendRequests.push(sender);
     }
 
-    receiveInvite(inviter) {
-
-    }
-
     clearUser() {
         this.username = '';
         this.id = '';
