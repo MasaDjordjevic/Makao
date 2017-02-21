@@ -8,6 +8,7 @@ module.exports = function (socket, io) {
 
     var name = '';
     var creatorName = '';
+    var timer;
     console.log('user connected to gameSocket');
 
     socket.on('join', (creatorUsername, username) => {
@@ -36,7 +37,13 @@ module.exports = function (socket, io) {
                     });
                 });
                 let talon = _.last(game.openStack);
-                socket.emit('init', {players: players, cards: cards, talon: talon, playerOnMove: game.playerOnMove, scores: game.scores});
+                socket.emit('init', {
+                    players: players,
+                    cards: cards,
+                    talon: talon,
+                    playerOnMove: game.playerOnMove,
+                    scores: game.scores
+                });
                 socket.to(creatorUsername).broadcast.emit('user:join', {
                     username: username,
                     online: true,
@@ -52,8 +59,17 @@ module.exports = function (socket, io) {
         socket.to(creatorName).broadcast.emit(key, value);
     }
 
-    function emitPlayerOnMove(username) {
+    function setTimer(creatorUsername, username){
+        timer = setTimeout(()=>timeUp(creatorUsername, username), 5000);
+    }
+
+    function emitPlayerOnMove(creatorUsername, username) {
         emitToEveryone('play:playerOnMove', username);
+        setTimer(creatorUsername, username);
+    }
+
+    function emitEveryoneLeft(){
+        emitToEveryone('game:everyoneLeft', null);
     }
 
     function emitLog(log) {
@@ -62,9 +78,14 @@ module.exports = function (socket, io) {
 
 
     socket.on('play:move', (card) => {
+        clearTimeout(timer);
         Gameplay.playMove(creatorName, name, card).then((data) => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
-            if(data.gameOver){
+            if(data.everyoneLeft){
+                emitLog(data.log);
+                emitEveryoneLeft();
+            }
+            if (data.gameOver) {
                 emitToEveryone('game:over', data.scores);
             } else if (data.newHand) {
                 Games.getGameSockets(creatorName).then((sockets) => {
@@ -79,7 +100,7 @@ module.exports = function (socket, io) {
                         });
                     });
 
-                    players.forEach((player)=> {
+                    players.forEach((player) => {
                         let username = player.username;
                         let cards = game.players[username].cards.slice();
                         io.of('/game').to(sockets[username]).emit('game:newHand', {
@@ -92,25 +113,61 @@ module.exports = function (socket, io) {
                     })
                 });
             } else {
-                emitPlayerOnMove(data.playerOnMove);
+                emitPlayerOnMove(creatorName, data.playerOnMove);
             }
             emitLog(data.log);
         });
     });
 
+    function timeUp(creatorUsername, playerUsername) {
+        clearTimeout(timer);
+        Gameplay.draw(creatorUsername, playerUsername, true).then((data) => {
+            Gameplay.getNextPlayer(creatorUsername, playerUsername).then((passData) => {
+                Games.getGameSockets(creatorUsername).then((sockets) => {
+                    io.of('/game').to(sockets[playerUsername]).emit('play:get', data.cards);
+                    if(data.kicked){
+                        io.of('/game').to(sockets[playerUsername]).emit('game:kicked', data.cards);
+                    }
+                    Object.keys(sockets).forEach((username) => {
+                        if(username === playerUsername){
+                            return;
+                        }
+                        io.of('/game').to(sockets[username]).emit('play:draw', playerUsername, data.cardsNumber);
+                    });
+                    emitLog(data.log);
+                    emitLog(passData.logs);
+                    if(passData.gameOver){
+                        emitEveryoneLeft();
+                    }else {
+                        emitPlayerOnMove(creatorName, passData.playerOnMove);
+                    }
+
+                });
+
+            });
+
+        })
+    }
+
     socket.on('play:draw', () => {
+        clearTimeout(timer);
+        setTimer(creatorName, name);
         Gameplay.draw(creatorName, name).then((data) => {
             socket.emit('play:get', data.cards);
             socket.to(creatorName).broadcast.emit('play:draw', name, data.cardsNumber);
             emitLog(data.log);
         });
-
     });
 
     socket.on('play:pass', () => {
+        clearTimeout(timer);
         Gameplay.getNextPlayer(creatorName, name).then((data) => {
-            emitPlayerOnMove(data.playerOnMove);
-            emitLog(data.logs);
+            if(data.gameOver){
+                emitEveryoneLeft();
+            }else {
+                emitPlayerOnMove(creatorName, data.playerOnMove);
+                emitLog(data.logs);
+            }
         });
     });
 

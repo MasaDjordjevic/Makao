@@ -64,7 +64,8 @@ exp.startGame = (creatorUsername) => {
             players.forEach((player) => {
                 if (player.ready) {
                     readyPlayers[player.username] = {
-                        online: false
+                        online: false,
+                        timeUp: 0,
                     }
                 }
             });
@@ -213,8 +214,19 @@ function nextUser(game, currentUsername, offset = 1) {
     let players = _.keys(game.players);
     let currIndex = players.indexOf(currentUsername);
     let nextIndex = (currIndex + offset + players.length) % players.length;
-    let next = players[nextIndex];
-    return next;
+
+    let count = 0;
+    while(game.players[players[nextIndex]].kicked && count < players.length){
+        nextIndex = (currIndex + 1 + players.length) % players.length;
+        count++;
+    }
+
+    //nema vise igraca, kraj igre
+    if(count === players.length){
+        return null;
+    }
+
+    return players[nextIndex];
 }
 
 exp.getNextPlayer = (creatorUsername, name) => {
@@ -223,8 +235,18 @@ exp.getNextPlayer = (creatorUsername, name) => {
             let playerOnMove = nextPlayer(game);
             let log = {username: name, message: "pass"};
             game.logs.push(log);
+            let newLogs = [log];
+
+            if(!playerOnMove){
+                handleGameEnd(game, newLogs);
+                Games.setGame(creatorUsername, game).then(() => {
+                    resolve({gameOver: true, logs: newLogs});
+                    GameEnd.handleGameEnd(game);
+                })
+            }
+
             Games.setGame(creatorUsername, game).then(() => {
-                resolve({playerOnMove: playerOnMove, logs: [log]});
+                resolve({playerOnMove: playerOnMove, logs: newLogs});
             })
         });
     });
@@ -299,11 +321,21 @@ function gameEnd(game){
     _.last(scores).forEach((user, i) => {
         if(user.score > limit || user.score < -limit){
             end = true;
-            game.status = 'finished';
         }
     });
 
     return end;
+}
+
+function handleGameEnd(game, newLogs){
+    let log ={message: 'game over'};
+    newLogs.push(log);
+
+    game.status = 'finished';
+    //utvrdi vreme trajanja
+    game.end = new Date();
+    let durationMiliseconds = new Date(game.end) - new Date(game.start);
+    game.duration = ((durationMiliseconds % 86400000) % 3600000) / 60000;
 }
 
 exp.playMove = (creatorUsername, playerUsername, card) => {
@@ -324,15 +356,9 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 game.logs.push(log);
                 newLogs.push(log);
 
-                //check if game is overe
-                if(gameEnd(game)){
-                    let log ={message: 'game over'};
-                    game.logs.push(log);
-                    newLogs.push(log);
-                    //utvrdi vreme trajanja
-                    game.end = new Date();
-                    let durationMiliseconds = new Date(game.end) - new Date(game.start);
-                    game.duration = ((durationMiliseconds % 86400000) % 3600000) / 60000;
+                    //check if game is over
+                    if(gameEnd(game)){
+                        handleGameEnd(game, newLogs);
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({gameOver: true, scores: game.scores, log: newLogs});
                         GameEnd.handleGameEnd(game);
@@ -354,6 +380,14 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 }
 
                 game.logs = game.logs.concat(newLogs);
+
+                if(!next){
+                    handleGameEnd(game, newLogs);
+                    Games.setGame(creatorUsername, game).then(() => {
+                        resolve({everyoneLeft: true, logs: newLogs});
+                    })
+                }
+
                 Games.setGame(creatorUsername, game).then(() => {
                     resolve({playerOnMove: next, log: newLogs});
                 });
@@ -362,7 +396,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
     });
 };
 
-exp.draw = (creatorUsername, playerUsername) => {
+exp.draw = (creatorUsername, playerUsername, timeUp = false) => {
     return new Promise((resolve, reject) => {
         Games.getGame(creatorUsername).then((game) => {
             fixDrawStack(game);
@@ -375,12 +409,28 @@ exp.draw = (creatorUsername, playerUsername) => {
             let newLogs = [log];
             game.logs.push(log);
 
+            //time up
+
+            if(timeUp){
+                let timeUpLog = {username: playerUsername, message: "time's up"};
+                newLogs = [timeUpLog, ...newLogs];
+                game.logs.push(timeUpLog);
+
+                game.players[playerUsername].timeUp++;
+
+                if(game.players[playerUsername].timeUp > 3){
+                    game.players[playerUsername].kicked = true;
+                    var kicked = true;
+                    console.log("Igrac " +  playerUsername + ' izbacen.');
+                }
+            }
+
             if (isTwoDiamonds(game)) {
                 _.last(cards).mustPlay = true;
             }
 
             Games.setGame(creatorUsername, game).then(() => {
-                resolve({cards: cards, log: newLogs, cardsNumber: drawCount});
+                resolve({cards: cards, log: newLogs, cardsNumber: drawCount, kicked: kicked});
             });
         });
     });

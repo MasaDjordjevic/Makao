@@ -38,6 +38,8 @@ class GameSocketWrapper extends React.Component {
         this.handleGetCards = this.handleGetCards.bind(this);
         this.handleNewHand = this.handleNewHand.bind(this);
         this.handleGameOver = this.handleGameOver.bind(this);
+        this.handleGameKicked = this.handleGameKicked.bind(this);
+        this.handleEveryoneLeft = this.handleEveryoneLeft.bind(this);
 
         this.handleMovePlayed = this.handleMovePlayed.bind(this);
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
@@ -47,11 +49,25 @@ class GameSocketWrapper extends React.Component {
 
     }
 
-    handleGameOver(scores){
-        this.setState({dialogOpen: true, dialogMessage: "GAME OVER", scores: scores});
+    disableUserActions(){
         this.handleNext = this.empty;
         this.handleCardClick = this.empty;
         this.handleDrawClick = this.empty;
+    }
+
+    handleEveryoneLeft(){
+        this.setState({dialogOpen: true, dialogMessage: "Everyone left, game over."});
+        this.disableUserActions();
+    }
+
+    handleGameKicked(){
+        this.setState({dialogOpen: true, dialogMessage: "You got kicked, game over."});
+        this.disableUserActions();
+    }
+
+    handleGameOver(scores){
+        this.setState({dialogOpen: true, dialogMessage: "GAME OVER", scores: scores});
+        this.disableUserActions();
     }
 
     handlePlayerOnMove(username) {
@@ -182,6 +198,8 @@ class GameSocketWrapper extends React.Component {
             socket.on('play:playerOnMove', this.handlePlayerOnMove);
             socket.on('game:newHand', this.handleNewHand);
             socket.on('game:over', this.handleGameOver);
+            socket.on('game:kicked', this.handleGameKicked);
+            socket.on('game:everyoneLeft', this.handleEveryoneLeft);
         }
     }
 
