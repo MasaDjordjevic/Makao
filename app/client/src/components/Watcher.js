@@ -205,7 +205,7 @@ class Watcher extends React.Component {
                                     Object.keys(data.players).map((user, index) =>
                                         <div key={user} style={this.styles.user}>
                                             <span style={this.styles.userProp}>{user}</span>
-                                            <span style={this.styles.userProp}>{data.players[user].online}</span>
+                                            <span style={this.styles.userProp}>{data.players[user].online ? 'online' : 'offline'}</span>
                                             <span style={this.styles.userProp}>{data.players[user].cards.length}</span>
                                         </div>
                                     )
