@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
-import { Router, browserHistory } from 'react-router'
-import Card from '../Card/Card';
+import {Router, browserHistory} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
@@ -9,36 +7,6 @@ import mainMuiTheme from '../../MainMuiTheme';
 import routes from '../../routes';
 
 class App extends Component {
-    get testCards() {
-        return [
-            new Card("spades", "2"),
-            new Card("spades", "7"),
-            new Card("diamonds", "1"),
-            new Card("spades", "12"),
-            new Card("spades", "13"),
-            new Card("spades", "1"),
-            new Card("diamonds", "2"),
-            new Card("diamonds", "13"),
-            new Card("clubs", "1"),
-            new Card("clubs", "2"),
-            new Card("clubs", "10"),
-            new Card("clubs", "14"),
-            new Card("hearts", "3"),
-            new Card("hearts", "12"),
-
-            new Card("spades", "12"),
-            new Card("spades", "13"),
-            new Card("spades", "1"),
-            new Card("diamonds", "2"),
-            new Card("diamonds", "13"),
-            new Card("clubs", "1"),
-            new Card("clubs", "2"),
-            new Card("clubs", "10"),
-            new Card("clubs", "14"),
-            new Card("hearts", "3"),
-            new Card("hearts", "12"),
-        ];
-    }
 
     get styles() {
         return {
@@ -52,34 +20,14 @@ class App extends Component {
         };
     }
 
-    /*
-     {this.testCards.map((card, i)=>
-     <CardComponent
-     card={card}
-     key={i.toString()}
-     cardHeight={310}/>
-     )}
-     */
     render() {
         return (
             <div className="App" style={this.styles.app}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>
                     <Router history={browserHistory}
-                            routes={routes} />
+                            routes={routes}/>
                 </MuiThemeProvider>
             </div>
-
-
-            /*
-             <div className="App" styles={this.styles}>
-             <CardSet width={500} cards={this.testCards.splice(5)} cardNumber={5} sort />
-             <CardSet width={500} cards={this.testCards.splice(7)} cardNumber={5} sort />
-             <CardSet width={500} cards={this.testCards.splice(2)} cardNumber={5} />
-             <CardSet width={500} cards={this.testCards} cardNumber={5} />
-             <CardSet width={500} back cardNumber={5} />
-
-             </div>
-             */
         );
     }
 }
