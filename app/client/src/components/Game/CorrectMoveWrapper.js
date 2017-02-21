@@ -45,6 +45,11 @@ class CorrectMoveWrapper extends React.Component {
 
     handleCardClick(card) {
         if (this.isMyTurn()) {
+            this.setState({draw: false, jackPlayed: true});
+            this.props.onCardClick(card);
+            return;
+            ////
+
             let talon = this.props.talon;
 
             let must = _.filter(this.props.myCards, 'mustPlay');
