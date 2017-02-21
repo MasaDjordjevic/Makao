@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import AuthActions from '../../actions/AuthActions';
@@ -24,9 +24,9 @@ class LoginForm extends React.Component {
     }
 
     onChange() {
-        this.setState({ loginResponse: AuthStore.getState() });
+        this.setState({loginResponse: AuthStore.getState()});
         if (!this.state.loginResponse.success) {
-            this.setState({ showResponse: true });
+            this.setState({showResponse: true});
         } else {
             browserHistory.push('/home');
         }
@@ -54,7 +54,7 @@ class LoginForm extends React.Component {
             errNo++;
         }
 
-        let params = { email: this.state.email, password: this.state.password };
+        let params = {email: this.state.email, password: this.state.password};
 
         if (errNo === 0) {
             AuthActions.tryLogin(params);
@@ -97,12 +97,10 @@ class LoginForm extends React.Component {
                     errorText={this.state.passwordError}
                     onChange={(e, v) => this.handleInputChange('password', v)}/>
                 <br />
-
                 <RaisedButton label="log in"
                               fullWidth={true}
                               primary={true}
                               onClick={this.handleLoginClick}/>
-
 
                 <Snackbar
                     open={this.state.showResponse}

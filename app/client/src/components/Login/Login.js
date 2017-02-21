@@ -1,6 +1,5 @@
 import React from 'react';
 import Radium from 'radium';
-
 import Logo from './Logo';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
@@ -53,7 +52,6 @@ class Login extends React.Component {
                 color: grey500,
                 marginLeft: -10,
                 fontWeight: 300,
-                //boxShadow: '0px 0.2px 0px 0px rgba(0, 0, 0, 0.2)',
             },
             logoWrapper: {
                 height: 100,
@@ -71,7 +69,7 @@ class Login extends React.Component {
         }
     }
 
-    handleChange(value) {
+    handleChange() {
         this.setState({
             index: this.state.index + 1,
         });
@@ -81,21 +79,21 @@ class Login extends React.Component {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.wrapper}>
-                <div style={this.styles.logoWrapper}>
-                    <Logo style={this.styles.logo}/>
-                    <span style={this.styles.title}>MAKAO</span>
-                </div>
-                <Tabs contentContainerStyle={{padding: '5% 10% 7% 10%'}}
-                      onChange={this.handleChange}
-                      style={this.styles.tabs}
-                      inkBarStyle={{backgroundColor: teal900}}>
-                    <Tab label="LOG IN">
-                        <LoginForm style={this.styles.form}/>
-                    </Tab>
-                    <Tab label="SIGN UP">
-                        <SignupForm style={this.styles.form}/>
-                    </Tab>
-                </Tabs>
+                    <div style={this.styles.logoWrapper}>
+                        <Logo style={this.styles.logo}/>
+                        <span style={this.styles.title}>MAKAO</span>
+                    </div>
+                    <Tabs contentContainerStyle={{padding: '5% 10% 7% 10%'}}
+                          onChange={this.handleChange}
+                          style={this.styles.tabs}
+                          inkBarStyle={{backgroundColor: teal900}}>
+                        <Tab label="LOG IN">
+                            <LoginForm style={this.styles.form}/>
+                        </Tab>
+                        <Tab label="SIGN UP">
+                            <SignupForm style={this.styles.form}/>
+                        </Tab>
+                    </Tabs>
                 </div>
             </div>
         )
