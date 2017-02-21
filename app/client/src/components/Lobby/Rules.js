@@ -20,7 +20,7 @@ class Rules extends React.Component {
             {
                 key: 'playerNumberMin',
                 text: 'Minimalan broj igraca',
-                defaultValue: 3,
+                defaultValue: 2,
             },
             {
                 key: 'playerNumberMax',

@@ -45,28 +45,24 @@ module.exports = function (socket, io) {
     });
 
     socket.on('invite:accept', (creatorUsername) => {
-        // TODO redis refactor
-        return;
-        let gameState, lobbyCount, gameRules;
-        Games.getGameState(creatorUsername)
-            .then((state) => gameState = state);
-        Games.getLobby(creatorUsername)
-            .then((users) => lobbyCount = users.length());
-        Games.getGameRules(creatorUsername)
-            .then((rules) => gameRules = rules);
-        if (gameState === 'lobby' && lobbyCount < gameRules.playerNumberMax) {
-            console.log('user ' + socketUser + ' accepted game invite from ' + creatorUsername);
-            socket.emit('invite:accept', creatorUsername);
-        } else {
-            // reject if the game is currently full but still in lobby
-            socket.emit('invite:reject', creatorUsername);
-        }
+        // first get games that didn't start and check is there a place for this player
+        Games.getGame(creatorUsername).then((game) => {
+            Games.getLobby(creatorUsername).then((lobby) => {
+                if (lobby.length < game.rules.playerNumberMax) {
+                    socket.emit('invite:accepted', creatorUsername);
+                } else {
+                    socket.emit('invite:rejected', 'Game lobby is full.');
+                }
+            }).catch((err) => {
+                socket.emit('invite:rejected', 'Game has already started.');
+            });
+        }).catch((err) => {
+            socket.emit('invite:rejected', 'Game has already finished.');
+        });
     });
 
-    socket.on('invite:decline', (creatorUsername) => {
-        console.log('user ' + socketUser + ' declined game invite from' + creatorUsername);
-        // remove the invite from redis [invites]
-        // no need to send anything back to user
+    socket.on('invite:ignore', (creatorUsername) => {
+        Games.remInvite(creatorUsername, socketUser);
     });
 
     socket.on('friend:find', (username) => {

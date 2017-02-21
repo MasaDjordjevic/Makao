@@ -42,6 +42,7 @@ class HomeHeader extends React.Component {
         this.handleInviteAccept = this.handleInviteAccept.bind(this);
         this.handleInviteIgnore = this.handleInviteIgnore.bind(this);
         this.handleInviteReceive = this.handleInviteReceive.bind(this);
+        this.removeInviteFromList = this.removeInviteFromList.bind(this);
     }
 
     onChange() {
@@ -79,14 +80,14 @@ class HomeHeader extends React.Component {
                 socket.on('user:invite', (inviter) => {
                     this.handleInviteReceive(inviter);
                 });
-                socket.on('invite:accept', (creatorUsername) => {
+                socket.on('invite:accepted', (creatorUsername) => {
+                    this.removeInviteFromList(creatorUsername);
                     browserHistory.push('/game/' + creatorUsername);
                 });
-                socket.on('invite:reject', (creatorUsername) => {
-                    alert('The lobby is full.');
+                socket.on('invite:rejected', (msg) => {
+                    alert(msg);
                 });
                 socket.on('friend:find', this.handleFriendFound)
-
             });
             socket.on('unauthorized', (msg) => {
                 alert(JSON.stringify(msg.data));
@@ -94,6 +95,12 @@ class HomeHeader extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        UserStore.unlisten(this.onChange);
+        socket.disconnect();
+    }
+
+    //////////////////// FRIEND SEARCH ////////////////////
     handleFriendFound(friend) {
         this.setState({searchResults: friend});
     }
@@ -101,11 +108,49 @@ class HomeHeader extends React.Component {
     handleFriendSearch(searchText) {
         socket.emit('friend:find', searchText);
     }
+    ///////////////////////////////////////////////////////
 
-    componentWillUnmount() {
-        UserStore.unlisten(this.onChange);
-        socket.disconnect();
+    /////////////////// FRIEND REQUESTS ///////////////////
+    handleRequestSend(selectedUsername) {
+        socket.emit('friend:request:send', selectedUsername);
     }
+
+    handleRequestAccept(friendUsername) {
+        socket.emit('friend:accept', friendUsername);
+    }
+
+    handleRequestIgnore(friendUsername) {
+        socket.emit('friend:ignore', friendUsername);
+    }
+    ///////////////////////////////////////////////////////
+
+    //////////////////// GAME INVITES /////////////////////
+    handleInviteReceive(inviter) {
+        let currInvites = this.state.gameInvites;
+        if (currInvites.indexOf(inviter) === -1) {
+            currInvites.push(inviter);
+            this.setState({ gameInvites: currInvites });
+        }
+    }
+
+    handleInviteAccept(inviter) {
+        socket.emit('invite:accept', inviter);
+    }
+
+    handleInviteIgnore (inviter) {
+        socket.emit('invite:ignore', inviter);
+        this.removeInviteFromList(inviter);
+    }
+
+    removeInviteFromList(inviter) {
+        let currInvites = this.state.gameInvites;
+        let index = currInvites.indexOf(inviter);
+        if (index !== -1) {
+            currInvites.splice(index, 1);
+            this.setState({ gameInvites: currInvites });
+        }
+    }
+    ///////////////////////////////////////////////////////
 
     get styles() {
         return {
@@ -140,41 +185,6 @@ class HomeHeader extends React.Component {
             addFriendDialogBody: {
                 paddingRight: 0,
             }
-        }
-    }
-
-    handleRequestSend(selectedUsername) {
-        socket.emit('friend:request:send', selectedUsername);
-    }
-
-    handleRequestAccept(friendUsername) {
-        socket.emit('friend:accept', friendUsername);
-    }
-
-    handleRequestIgnore(friendUsername) {
-        socket.emit('friend:ignore', friendUsername);
-    }
-
-    handleInviteReceive(inviter) {
-        let currInvites = this.state.gameInvites;
-        if (currInvites.indexOf(inviter) === -1) {
-            currInvites.push(inviter);
-            this.setState({ gameInvites: currInvites });
-        }
-    }
-
-    handleInviteAccept(inviter) {
-        // call handleIgnore to remove invite from list
-        this.handleInviteIgnore(inviter);
-        browserHistory.push('/game/' + inviter);
-    }
-
-    handleInviteIgnore (inviter) {
-        let currInvites = this.state.gameInvites;
-        let index = currInvites.indexOf(inviter);
-        if (index !== -1) {
-            currInvites.splice(index, 1);
-            this.setState({ gameInvites: currInvites });
         }
     }
 

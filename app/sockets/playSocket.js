@@ -6,7 +6,7 @@ module.exports = function (socket) {
     console.log('user ' + socketUser + ' connected to playSocket');
 
     socket.on('game:list', () => {
-        Games.getGameList().then((games) => {
+        Games.getPendingGames().then((games) => {
             socket.emit('game:list', games);
         });
     });
