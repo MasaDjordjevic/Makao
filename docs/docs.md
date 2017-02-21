@@ -22,6 +22,8 @@ S obzirom na popularnost ove kartaške igre nećemo se baviti samom igrom i njen
 - dostupnost igre (privatna ili javna)
 
 
+Takođe, korisniku treba omogućiti uvid u trenutno stanje na tabeli odnosno broj poena koji su osvojeni tokom same igre. Prikaz omogućiti u dva režima, običnom i kumulativnom.
+
 
 #### <i class="icon-user"></i>Korisnici
 
