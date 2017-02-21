@@ -71,8 +71,8 @@ class CorrectMoveWrapper extends React.Component {
             }
 
 
-            //na sedmicu moze samo sedmica ako nije vuko
-            if (!this.state.draw && talon.number === '7' && card.number !== '7') {
+            //na sedmicu moze samo sedmica ako nije vuko i ako neko drugi nije vuko
+            if (this.props.sevenDrawed || (!this.state.draw && talon.number === '7' && card.number !== '7')) {
                 this.setState({snackbarOpen: true, snackbarMessage: '7 na 7'});
                 return;
             }
@@ -163,4 +163,5 @@ CorrectMoveWrapper.propTypes = {
     onCardClick: React.PropTypes.func,
     onJackSignPicked: React.PropTypes.func,
     onNext: React.PropTypes.func,
+    sevenDrawed: React.PropTypes.bool,
 };

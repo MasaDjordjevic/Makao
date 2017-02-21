@@ -19,6 +19,8 @@ class GameSocketWrapper extends React.Component {
             jackPlayed: false,
             scores: [],
 
+            sevenDrawed: false,
+
             socketInit: false,
             dialogOpen: false,
             dialogMessage: "NEW HAND",
@@ -119,7 +121,13 @@ class GameSocketWrapper extends React.Component {
     handleDraw(username, cardsNumber) {
         let players = this.state.players.slice();
         players.find((player) => player.username === username).cardNumber += cardsNumber;
-        this.setState({players: players});
+        //ako je sedmica na talonu a neko je vuko
+        let seven = false;
+        let talon = _.last(this.state.openStack);
+        if(talon.number === '7'){
+            seven = true;
+        }
+        this.setState({players: players, sevenDrawed: seven});
     }
 
     handleUserJoin(user) {
@@ -229,7 +237,8 @@ class GameSocketWrapper extends React.Component {
                                     onDrawClick={this.handleDrawClick}
                                     onCardClick={this.handleCardClick}
                                     onJackSignPicked={this.handleJackSignPicked}
-                                    onNext={this.handleNext}/>
+                                    onNext={this.handleNext}
+                                    sevenDrawed={this.state.sevenDrawed}/>
             </div>
         );
     }
