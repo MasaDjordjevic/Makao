@@ -16,6 +16,7 @@ import gameRoutes from './routes/game';
 import mongoConnect from './models/connect';
 import User from './models/user';
 import Game from './models/game';
+import Stats from './models/stats';
 
 // authentication check middleware that we will use to secure endpoints
 import authCheck from './auth-check';
@@ -80,6 +81,7 @@ app.use(bodyParser.json());
 User.count({}, (err, count) => {
     Game.remove({}, () => {});
     User.remove({}, () => {});
+    Stats.remove({}, () => {});
     var users = [
         new User({username: "jajac", email: "jajac", password: "jajac",
                 friends: ['mitic', 'pera', 'mika'],
@@ -94,7 +96,7 @@ User.count({}, (err, count) => {
                 friends: ['masa', 'mitic', 'pera']})
     ]
 
-    users.map(x => x.save());
+    users.map(x => User.createUser(x, () => {}));
 });
 
 // forward /auth/* requests to the external route handler (login and signup)

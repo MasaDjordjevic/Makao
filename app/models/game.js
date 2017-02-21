@@ -10,5 +10,4 @@ var GameSchema = new mongoose.Schema({
     scores: [mongoose.Schema.Types.Mixed]
 });
 
-// export the model built around the schema
 module.exports = mongoose.model('Game', GameSchema);
