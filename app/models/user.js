@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import mbcrypt from 'mongoose-bcrypt';
+import Stats from './stats';
 
 // unique: true also creates an index for that field
 var UserSchema = new mongoose.Schema({
@@ -7,12 +8,26 @@ var UserSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     friends: [String], // list of usernames is enough for now
     friendRequests: [String],
-    games: [mongoose.Schema.Types.ObjectId]
+    games: [mongoose.Schema.Types.ObjectId],
+    stats: mongoose.Schema.Types.ObjectId
 });
 
 // adds password field and automatically encrypts/decrypts
 // the string saved in that field using bcrypt
 UserSchema.plugin(mbcrypt);
+
+// custom save/create function so a document for Stats gets
+// created as well and its id saved in user document
+UserSchema.statics.createUser = function(newUserData, callback) {
+    let emptyStats = new Stats({});
+    emptyStats.save((err) => {
+        newUserData.stats = emptyStats._id;
+        newUserData.save(newUserData, (err) => {
+            if (err) { return callback(err) }
+            return callback(null);
+        });
+    });
+}
 
 UserSchema.statics.findByUsername = function(username, callback) {
     this.findOne({ username: username}, (err, user) => {
@@ -81,5 +96,4 @@ UserSchema.statics.insertGame = function(username, gameId, callback) {
     });
 }
 
-// export the model built around the schema
 module.exports = mongoose.model('User', UserSchema);

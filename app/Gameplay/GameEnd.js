@@ -1,5 +1,6 @@
 import Game from '../models/game';
 import User from '../models/user';
+import Stats from '../models/stats';
 
 let exp = {};
 
@@ -16,18 +17,42 @@ exp.handleGameEnd = (game) => {
     });
     gameData.rules = game.rules;
     gameData.date = game.end;
-    gameData.duration = game.duration;
+    gameData.duration = Math.round(game.duration);
     gameData.players = players;
     gameData.kicked = kicked;
     gameData.handNum = game.scores.length;
     gameData.scores = game.scores;
+    gameData.winner = game.logs[game.logs.length - 1].username;
 
     let newGame = new Game(gameData);
     newGame.save((err) => {
         if (!err) {
+            // sum up scores for each player
+            let playerScores = {};
+            gameData.players.forEach((username) => {
+                playerScores[username] = 0;
+            });
+            gameData.scores.forEach((handScore) => {
+                handScore.forEach((playerScore) => {
+                    playerScores[playerScore.username] += playerScore.score;
+                });
+            });
+            // add gameid to db for each player
             Object.keys(game.players).forEach((username) => {
                 User.insertGame(username, newGame._id, (err) => {
                     if (err) { console.log(err) }
+                });
+                // and also update his statistics
+                let userGameStats = {
+                    kicked: gameData.kicked.indexOf(username) !== -1,
+                    winner: gameData.winner === username,
+                    timeSpent: gameData.duration,
+                    gameScore: playerScores[username]
+                }
+                User.findByUsername(username, (err, user) => {
+                    Stats.updateStats(user.stats, userGameStats , (err) => {
+                        if (err) { console.log(err) }
+                    });
                 });
             });
         }

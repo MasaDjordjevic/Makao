@@ -63,7 +63,7 @@ exp.signupAuth = (data, callback) => {
             }
 
             let newUser = new User(userData);
-            newUser.save((err) => {
+            User.createUser(newUser, (err) => {
                 if (err) { return callback(err); }
 
                 return callback(null, getUserInfo(newUser));
