@@ -37,7 +37,7 @@ class FriendAdder extends React.Component {
                 display: 'flex',
                 flexDirection: 'column',
             },
-            list:{
+            list: {
                 marginRight: 16
             },
             noResults: {

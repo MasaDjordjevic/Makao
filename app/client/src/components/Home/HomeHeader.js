@@ -92,7 +92,7 @@ class HomeHeader extends React.Component {
                     browserHistory.push('/game/' + creatorUsername);
                 });
                 socket.on('invite:rejected', (msg) => {
-                    this.setState({ rejectResponse: msg, showResponse: true });
+                    this.setState({rejectResponse: msg, showResponse: true});
                 });
                 socket.on('invite:remove', (creatorUsername) => {
                     this.removeInviteFromList(creatorUsername);
@@ -118,6 +118,7 @@ class HomeHeader extends React.Component {
     handleFriendSearch(searchText) {
         socket.emit('friend:find', searchText);
     }
+
     ///////////////////////////////////////////////////////
 
     /////////////////// FRIEND REQUESTS ///////////////////
@@ -132,6 +133,7 @@ class HomeHeader extends React.Component {
     handleRequestIgnore(friendUsername) {
         socket.emit('friend:ignore', friendUsername);
     }
+
     ///////////////////////////////////////////////////////
 
     //////////////////// GAME INVITES /////////////////////
@@ -139,7 +141,7 @@ class HomeHeader extends React.Component {
         let currInvites = this.state.gameInvites;
         if (currInvites.indexOf(inviter) === -1) {
             currInvites.push(inviter);
-            this.setState({ gameInvites: currInvites });
+            this.setState({gameInvites: currInvites});
         }
     }
 
@@ -147,7 +149,7 @@ class HomeHeader extends React.Component {
         socket.emit('invite:accept', inviter);
     }
 
-    handleInviteIgnore (inviter) {
+    handleInviteIgnore(inviter) {
         socket.emit('invite:ignore', inviter);
         this.removeInviteFromList(inviter);
     }
@@ -157,13 +159,14 @@ class HomeHeader extends React.Component {
         let index = currInvites.indexOf(inviter);
         if (index !== -1) {
             currInvites.splice(index, 1);
-            this.setState({ gameInvites: currInvites });
+            this.setState({gameInvites: currInvites});
         }
     }
+
     ///////////////////////////////////////////////////////
 
     handleSnackbarClosing() {
-        this.setState({ rejectResponse: ' ', showResponse: false });
+        this.setState({rejectResponse: ' ', showResponse: false});
     }
 
     get styles() {
@@ -229,19 +232,19 @@ class HomeHeader extends React.Component {
         return (
             <MenuItem key={'invite' + i}
                       primaryText={
-                <div>
+                          <div>
                     <span style={{color: red900}}>Game invite from&nbsp;
-                            <b>{friendName}</b>
+                        <b>{friendName}</b>
                     </span>
-                    <div>
-                        <FlatButton label="Accept" labelStyle={{color: green600}}
-                                    onClick={() => this.handleInviteAccept(friendName)}/>
-                        <FlatButton label="Ignore" labelStyle={{color: grey500}}
-                                    onClick={() => this.handleInviteIgnore(friendName)}/>
-                    </div>
-                </div>
+                              <div>
+                                  <FlatButton label="Accept" labelStyle={{color: green600}}
+                                              onClick={() => this.handleInviteAccept(friendName)}/>
+                                  <FlatButton label="Ignore" labelStyle={{color: grey500}}
+                                              onClick={() => this.handleInviteIgnore(friendName)}/>
+                              </div>
+                          </div>
 
-            }
+                      }
                       rightIcon={<InviteIcon />}
             />
         );

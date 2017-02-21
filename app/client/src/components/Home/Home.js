@@ -96,7 +96,7 @@ class Home extends React.Component {
                         </DefaultTooltip>
 
                     </div>
-                    <PlayGame style={this.styles.playButton} />
+                    <PlayGame style={this.styles.playButton}/>
                     <Leaderboards/>
                 </div>
             </div>
