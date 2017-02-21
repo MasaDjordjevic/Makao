@@ -1,11 +1,7 @@
-/**
- * Created by Masa on 23-Dec-16.
- */
 import React from 'react';
 import CardSet from '../Card/CardSet';
 import TimerProgress from './TimerProgress';
 import {blueGrey200} from 'material-ui/styles/colors';
-import GlobalVariables from '../Gameplay/GlobalVariables';
 import {toRad} from "../../util/util";
 
 
@@ -65,8 +61,6 @@ class Opponents extends React.Component {
         return this.props.playerHeight / 3 * 4;
     }
 
-
-
     get styles() {
         return {
             playerName: {
@@ -85,7 +79,6 @@ class Opponents extends React.Component {
         }
     }
 
-
     render() {
         const players = this.props.players;
         const width = this.elementWidth;
@@ -99,10 +92,15 @@ class Opponents extends React.Component {
             <div style={this.styles.container}>
                 {
                     players.map((player, i) =>
-                        <div key={i.toString()} style={this.getStyles(i, player.online)}>
-                            <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
+                        <div key={i.toString()}
+                             style={this.getStyles(i, player.online)}>
+                            <CardSet height={height}
+                                     width={width}
+                                     back
+                                     cardNumber={+player.cardNumber}/>
                             {player.username === this.props.playerOnMove &&
-                                <TimerProgress length={this.props.moveTime} style={this.styles.timer}/>
+                            <TimerProgress length={this.props.moveTime}
+                                           style={this.styles.timer}/>
                             }
                             <span style={this.styles.playerName}>{player.username.toLowerCase()}</span>
                         </div>

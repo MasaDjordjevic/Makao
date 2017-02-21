@@ -94,19 +94,16 @@ class Game extends React.Component {
         return [scores];
     }
 
-    get timer() {
-        return this.props.rules
-    }
-
     render() {
         return (
             <div style={this.styles.container}>
-                <div style={this.styles.opponents}>
-                    <Opponents playerHeight={this.props.dimensions.opponents}
-                               players={this.props.opponents}
-                               playerOnMove={this.props.playerOnMove}
-                               moveTime={this.props.moveTime}/>
-                </div>
+                <Opponents
+                    style={this.styles.opponents}
+                    playerHeight={this.props.dimensions.opponents}
+                    players={this.props.opponents}
+                    playerOnMove={this.props.playerOnMove}
+                    moveTime={this.props.moveTime}/>
+
                 <div style={this.styles.userCardsTalon}>
                     <div style={this.styles.talon}>
                         <Talon cardHeight={this.props.dimensions.talon}
@@ -119,11 +116,12 @@ class Game extends React.Component {
                         }
                     </div>
                     <div style={this.styles.userContainer}>
-                        <div style={{...this.styles.spacer, ...this.styles.scores}}>
-                            <ScoresWrapper showScores={this.props.dimensions.showScores}
-                                           height={this.props.dimensions.userCardsHeight}
-                                           scores={this.scores}/>
-                        </div>
+                        <ScoresWrapper
+                            style={{...this.styles.spacer, ...this.styles.scores}}
+                            showScores={this.props.dimensions.showScores}
+                            height={this.props.dimensions.userCardsHeight}
+                            scores={this.scores}/>
+
                         <div style={this.styles.myCards}>
                             <CardSet
                                 onClick={(card) => this.props.onCardClick(card)}

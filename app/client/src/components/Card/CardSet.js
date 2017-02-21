@@ -27,7 +27,7 @@ class CardSet extends React.Component {
         const chunkSize = this.props.back ? cardArray.length : this.props.chunkSize;
         const cardArrays = _.chunk(cardArray, chunkSize);
         return (
-            <div style={this.styles.container}>
+            <div style={{...this.styles.container, ...this.props.style}}>
                 {cardArrays.map((arr, i) =>
                     <div style={{
                         zIndex: i,

@@ -122,11 +122,11 @@ class Scores extends React.Component {
 
     }
 
-    get players(){
-        if(!this.props.scores ||  this.props.scores.length === 0){
+    get players() {
+        if (!this.props.scores || this.props.scores.length === 0) {
             return [];
-        }else {
-            return this.props.scores[0].map((s)=> s.username).sort();
+        } else {
+            return this.props.scores[0].map((s) => s.username).sort();
         }
     }
 
@@ -139,7 +139,8 @@ class Scores extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={this.styles.superHeader}>
                     <span style={this.styles.scores}>Scores</span>
-                    <DefaultTooltip tooltip="Add scores through rounds" tooltipPosition="bottom-left"
+                    <DefaultTooltip tooltip="Add scores through rounds"
+                                    tooltipPosition="bottom-left"
                                     style={{width: ''}}>
                         <Toggle
                             defaultToggled={true}
@@ -165,7 +166,8 @@ class Scores extends React.Component {
                                 players.map((p, i) =>
                                     <TableHeaderColumn key={i}
                                                        style={this.styles.th}>
-                                        <DefaultTooltip tooltip={p} tooltipPosition="top-left">
+                                        <DefaultTooltip tooltip={p}
+                                                        tooltipPosition="top-left">
                                             {p.toUpperCase().charAt(0)}
                                         </DefaultTooltip>
                                     </TableHeaderColumn >
@@ -180,7 +182,8 @@ class Scores extends React.Component {
 
                         {
                             scores.map((round, i) =>
-                                <TableRow key={i} style={this.styles.tr}>
+                                <TableRow key={i}
+                                          style={this.styles.tr}>
                                     <TableRowColumn style={{...this.styles.td, ...this.styles.colNarrow}}>
                                         {i}
                                     </TableRowColumn>

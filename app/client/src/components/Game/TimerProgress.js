@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 29-Dec-16.
- */
 import React from 'react';
 import LinearProgress from 'material-ui/LinearProgress';
 
@@ -23,8 +20,8 @@ export default class TimerProgress extends React.Component {
         clearTimeout(this.timer);
     }
 
-    componentWillReceiveProps(newProps){
-        if(!this.props.reset && newProps.reset){
+    componentWillReceiveProps(newProps) {
+        if (!this.props.reset && newProps.reset) {
             this.setState({completed: this.props.length});
             clearTimeout(this.timer);
             this.timer = setTimeout(() => this.progress(this.props.length - 1), 1000);
@@ -44,7 +41,11 @@ export default class TimerProgress extends React.Component {
 
     render() {
         return (
-            <LinearProgress mode="determinate" value={this.state.completed} min={0} max={this.props.length} style={this.props.style}/>
+            <LinearProgress mode="determinate"
+                            value={this.state.completed}
+                            min={0}
+                            max={this.props.length}
+                            style={this.props.style}/>
         );
     }
 }

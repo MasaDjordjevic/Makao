@@ -66,7 +66,9 @@ export default class GameResizeHandler extends React.Component {
 
     render() {
         return (
-            <GameSocketWrapper dimensions={this.state.dimensions} creatorUsername={this.props.creatorUsername} socket={this.props.socket}/>
+            <GameSocketWrapper dimensions={this.state.dimensions}
+                               creatorUsername={this.props.creatorUsername}
+                               socket={this.props.socket}/>
         );
     }
 }

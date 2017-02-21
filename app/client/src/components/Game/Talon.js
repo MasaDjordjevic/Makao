@@ -1,10 +1,6 @@
-/**
- * Created by Masa on 23-Dec-16.
- */
 import React from 'react';
 import CardComponent from '../Card/CardComponent';
 import AnimateOnChange from 'react-animate-on-change';
-//import styles from './talon.css';
 import Card from '../Card/Card';
 
 class Talon extends React.Component {
@@ -51,13 +47,18 @@ class Talon extends React.Component {
                     <div>
                         {this.props.card ?
                             <CardComponent cardHeight={this.props.cardHeight}
-                                           card={this.props.card} hover={false}/>
-                            : <CardComponent cardHeight={this.props.cardHeight} back/>
+                                           card={this.props.card}
+                                           hover={false}/>
+                            : <CardComponent cardHeight={this.props.cardHeight}
+                                             back/>
                         }
                     </div>
                 </AnimateOnChange>
-                <div style={this.styles.deck} onClick={() => this.props.onClick()}>
-                    <CardComponent cardHeight={this.props.cardHeight / 1.5} back hover="pointer"/>
+                <div style={this.styles.deck}
+                     onClick={() => this.props.onClick()}>
+                    <CardComponent cardHeight={this.props.cardHeight / 1.5}
+                                   back
+                                   hover="pointer"/>
                 </div>
             </div>
         );
