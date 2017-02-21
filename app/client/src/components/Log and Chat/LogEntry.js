@@ -7,7 +7,7 @@ class LogEntry extends React.Component {
     get styles() {
         return {
             container: {
-                alignSelf:  this.props.win ? 'center' : this.props.left ? 'flex-start' : 'flex-end',
+                alignSelf: this.props.win ? 'center' : this.props.left ? 'flex-start' : 'flex-end',
                 display: 'flex',
             },
             cardContainer: {
@@ -24,7 +24,7 @@ class LogEntry extends React.Component {
         }
     }
 
-    get playerName(){
+    get playerName() {
         return this.props.playerName + (this.props.win ? '' : ':');
     }
 

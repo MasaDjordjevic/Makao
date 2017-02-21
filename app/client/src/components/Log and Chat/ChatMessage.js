@@ -18,21 +18,19 @@ class ChatMessage extends React.Component {
             username: {
                 color: blueGrey300,
             }
-
         }
-
     }
 
     render() {
         return (
             <div style={this.styles.container}>
-                <DefaultTooltip tooltip={this.props.message.time} tooltipPosition={this.props.mine ? 'top-left' : 'top-center'}>
-
-                        {
-                            !this.props.mine &&
-                                <label style={this.styles.username}>{this.props.message.username}: </label>
-                        }
-                        <label>{this.props.message.message}</label>
+                <DefaultTooltip tooltip={this.props.message.time}
+                                tooltipPosition={this.props.mine ? 'top-left' : 'top-center'}>
+                    {
+                        !this.props.mine &&
+                        <label style={this.styles.username}>{this.props.message.username}: </label>
+                    }
+                    <label>{this.props.message.message}</label>
 
                 </DefaultTooltip>
             </div>

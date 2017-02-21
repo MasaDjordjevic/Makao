@@ -55,7 +55,7 @@ class LogAndChat extends React.Component {
     componentDidMount() {
         socket = io('/chat');
         socket.emit('authenticate', {token: Auth.getToken()});
-        socket.on('authenticated', ()=> {
+        socket.on('authenticated', () => {
             socket.emit('subscribe', this.props.creatorUsername, this.state.me.username);
             socket.on('init', this.handleSocketInit);
             socket.on('send:message', this.handleNewMessage);
@@ -89,11 +89,11 @@ class LogAndChat extends React.Component {
             <div style={{...this.styles.container, ...this.props.style}}>
                 <span style={this.styles.title}>LOG</span>
                 <Divider />
-
                 <SplitterLayout vertical
                                 percentage={true}
                                 primaryMinSize={2} secondaryMinSize={20}>
-                    <Log  creatorUsername={this.props.creatorUsername} socket={this.props.socket}/>
+                    <Log creatorUsername={this.props.creatorUsername}
+                         socket={this.props.socket}/>
                     <Chat messages={this.state.chatMessages}
                           style={this.styles.chat}/>
                 </SplitterLayout>

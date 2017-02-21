@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 03-Jan-17.
- */
 import React from 'react';
 import ChatMessage from './ChatMessage';
 import ReactDOM from 'react-dom';

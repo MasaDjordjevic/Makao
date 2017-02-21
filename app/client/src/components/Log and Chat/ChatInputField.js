@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 03-Jan-17.
- */
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
@@ -36,8 +33,8 @@ export default class ChatInputField extends React.Component {
     get styles() {
         return {
             container: {
-               display: 'flex',
-                flexDirection:'row',
+                display: 'flex',
+                flexDirection: 'row',
                 justifyContent: 'space-between',
                 width: '100%',
             },
@@ -67,8 +64,10 @@ export default class ChatInputField extends React.Component {
                     onChange={(event, value) => this.handleChange(event, value)}
                     value={this.state.value}
                 />
-                <div style={this.styles.buttonContainer} >
-                    <IconButton style={this.styles.button} onClick={(e)=>this.handleClick(e)} iconStyle={{color: 'rgba(0, 0, 0, 0.33)'}}>
+                <div style={this.styles.buttonContainer}>
+                    <IconButton style={this.styles.button}
+                                onClick={(e) => this.handleClick(e)}
+                                iconStyle={{color: 'rgba(0, 0, 0, 0.33)'}}>
                         <Send />
                     </IconButton>
                 </div>

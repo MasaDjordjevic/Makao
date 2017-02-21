@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 06-Jan-17.
- */
 import React from 'react';
 import LogEntry from './LogEntry';
 import Card from '../Card/Card';
@@ -92,7 +89,6 @@ class Log extends React.Component {
         });
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-
                 <div style={this.styles.logContainer}>
                     {
                         logs.map((log, index) =>
