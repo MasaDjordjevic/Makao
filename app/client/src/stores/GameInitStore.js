@@ -13,17 +13,8 @@ class GameInitStore {
 
     initLobbyAndRules(data) {
         let { creator, users, rules } = data;
-        let lobby = [];
-        // map {username:true, username2:false,...}
-        // to  [{username, true}, {username2, false},...]
-        Object.keys(users).forEach((usr, i) => {
-            lobby.push({
-                username: usr,
-                ready: users[usr]
-            });
-        });
         this.creatorUsername = creator;
-        this.lobby = lobby;
+        this.lobby = users;
         this.rules = rules;
     }
 

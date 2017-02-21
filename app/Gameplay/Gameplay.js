@@ -61,11 +61,11 @@ exp.startGame = (creatorUsername) => {
         //all ready players from lobby become players of game
         Games.getLobby(creatorUsername).then((players) => {
             let readyPlayers = {};
-            Object.keys(players).forEach((username, index) => {
-                if (players[username] === true) {
-                    readyPlayers[username] = {
-                        online: false,
-                    };
+            players.forEach((player) => {
+                if (player.ready) {
+                    readyPlayers[player.username] = {
+                        online: false
+                    }
                 }
             });
             Games.getGame(creatorUsername).then((game) => {
@@ -77,9 +77,11 @@ exp.startGame = (creatorUsername) => {
                 deal(game);
 
                 Games.setGame(creatorUsername, game).then(() => {
-                    Games.remPendingGame(creatorUsername).then(() => {
-                        Games.addStartedGame(creatorUsername).then(() => {
-                            resolve();
+                    Games.delGameInvites(creatorUsername).then(() => {
+                        Games.remPendingGame(creatorUsername).then(() => {
+                            Games.addStartedGame(creatorUsername).then(() => {
+                                resolve();
+                            });
                         });
                     });
                 });
