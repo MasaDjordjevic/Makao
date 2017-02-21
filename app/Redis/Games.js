@@ -210,7 +210,7 @@ exp.delGameInvites = (creatorUsername) => {
 exp.addInvite = (creatorUsername, inviteUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.sadd(invitesKey(creatorUsername), inviteUsername, (err, reply) => {
-            err ? reject() : resolve();
+            err ? reject(err) : resolve();
         });
     });
 };
@@ -218,14 +218,22 @@ exp.addInvite = (creatorUsername, inviteUsername) => {
 exp.remInvite = (creatorUsername, inviteUsername) => {
     return new Promise((resolve, reject) => {
         redisCli.srem(invitesKey(creatorUsername), inviteUsername, (err, reply) => {
-            err ? reject() : resolve();
+            err ? reject(err) : resolve();
         });
     });
 };
 
-exp.getGameList = () => {
+exp.getPendingGames = () => {
+    return exp.getGameList('lobby');
+};
+
+exp.getStartedGames = () => {
+    return exp.getGameList('started');
+};
+
+exp.getGameList = (status) => {
     return new Promise((resolve, reject) => {
-        redisCli.smembers('games:lobby', (err, reply) => {
+        redisCli.smembers('games:' + status, (err, reply) => {
             if (err) { reject(err); }
             let games = [];
             reply.forEach((creator, index) => {
