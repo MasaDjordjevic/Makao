@@ -6,7 +6,6 @@ import Rules from '../Lobby/Rules';
 import UserStore from '../../stores/UserStore';
 import GameInitStore from '../../stores/GameInitStore';
 import GameInitActions from '../../actions/GameInitActions';
-import _ from 'lodash';
 import io from 'socket.io-client';
 import Auth from '../../Auth';
 
@@ -54,7 +53,7 @@ class GameInitializer extends React.Component {
 
         socket = io('/lobby');
         socket.on('connect', () => {
-            socket.emit('authenticate', { token: Auth.getToken() });
+            socket.emit('authenticate', {token: Auth.getToken()});
             socket.on('authenticated', () => {
                 socket.emit('join', that.props.creatorUsername);
                 socket.on('init', (data) => {
@@ -63,11 +62,11 @@ class GameInitializer extends React.Component {
                 socket.on('user:ready', (readyUsername) => {
                     GameInitActions.userReady(readyUsername);
                     if (UserStore.getState().username === readyUsername) {
-                        that.setState({ showReady: false });
+                        that.setState({showReady: false});
                     }
                 });
                 socket.on('user:joined', (username) => {
-                    that.setState({ allowStart: false });
+                    that.setState({allowStart: false});
                     GameInitActions.userJoined(username);
                 });
                 socket.on('user:left', (username) => {
@@ -119,14 +118,16 @@ class GameInitializer extends React.Component {
         const allowStart = this.state.game.allUsersReady;
         const myUsername = UserStore.getState().username;
         const myGame = myUsername === this.props.creatorUsername;
-        const inviteFriends = <div style={this.styles.section}>
-            <h3 style={this.styles.title}>Invite friends</h3>
-            <FriendPicker onPick={this.handleFriendInvite}/>
+        const inviteFriends =
+            <div style={this.styles.section}>
+                <h3 style={this.styles.title}>Invite friends</h3>
+                <FriendPicker onPick={this.handleFriendInvite}/>
             </div>;
 
-        const rules = <div style={this.styles.section}>
-            <h3 style={this.styles.title}>Rules</h3>
-            <Rules rules={this.state.game.rules}/>
+        const rules =
+            <div style={this.styles.section}>
+                <h3 style={this.styles.title}>Rules</h3>
+                <Rules rules={this.state.game.rules}/>
             </div>;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -136,11 +137,19 @@ class GameInitializer extends React.Component {
                     }
                     <div style={this.styles.section}>
                         <h3 style={this.styles.title}>Lobby</h3>
-                        <Lobby users={this.state.game.lobby} gameCreatorUsername={this.props.creatorUsername}/>
-                        {!myGame && this.state.showReady && <RaisedButton primary={true} label="ready" onClick={this.handleReady}/> }
+                        <Lobby users={this.state.game.lobby}
+                               gameCreatorUsername={this.props.creatorUsername}/>
+                        {!myGame && this.state.showReady &&
+                        <RaisedButton primary={true}
+                                      label="ready"
+                                      onClick={this.handleReady}/> }
                     </div>
                 </div>
-                {myGame && <RaisedButton onClick={this.handleGameStart} label="Start game" primary={allowStart} disabled={!allowStart}/> }
+                {myGame &&
+                <RaisedButton onClick={this.handleGameStart}
+                              label="Start game"
+                              primary={allowStart}
+                              disabled={!allowStart}/> }
             </div>
         );
     }

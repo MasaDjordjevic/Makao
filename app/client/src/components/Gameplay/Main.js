@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 28-Dec-16.
- */
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -41,8 +38,8 @@ class Main extends React.Component {
 
     }
 
-    handleGameStarted(started){
-        this.setState({gameStarted:started});
+    handleGameStarted(started) {
+        this.setState({gameStarted: started});
     }
 
     handleGameStart() {

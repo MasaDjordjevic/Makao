@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 03-Jan-17.
- */
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
@@ -18,7 +15,6 @@ class RightSidebar extends React.Component {
         };
 
         this.handleShowHide = this.handleShowHide.bind(this);
-
     }
 
     handleShowHide() {
@@ -31,7 +27,7 @@ class RightSidebar extends React.Component {
         }
     }
 
-    componentWillReceiveProps(){
+    componentWillReceiveProps() {
         this.setState({animate: false});
     }
 
@@ -72,8 +68,8 @@ class RightSidebar extends React.Component {
         return (
             <div style={this.styles.container} id="right-sidebar">
                 {
-                     this.state.show &&
-                     <LogAndChat creatorUsername={this.props.creatorUsername} socket={this.props.socket} />
+                    this.state.show &&
+                    <LogAndChat creatorUsername={this.props.creatorUsername} socket={this.props.socket}/>
                 }
                 <div>
                     <Checkbox
@@ -93,5 +89,4 @@ class RightSidebar extends React.Component {
 
 export default RightSidebar;
 
-RightSidebar.defaultProps = {
-};
+RightSidebar.defaultProps = {};
