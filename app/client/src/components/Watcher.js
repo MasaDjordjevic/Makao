@@ -30,7 +30,7 @@ class Watcher extends React.Component {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                alignItems: 'baseline',
+                alignItems: 'stretch',
                 height: '100%'
             },
             section: {
@@ -148,6 +148,18 @@ class Watcher extends React.Component {
         }
     }
 
+    get scores(){
+        const data = Object.assign({}, this.state.response);
+        if(data.scores && data.scores.length){
+            return data.scores;
+        }
+        let scores = [];
+        Object.keys(data.players).forEach((user)=> {
+            scores.push({username: user, score: 0});
+        });
+        return [scores];
+    }
+
     render() {
         if (!this.state.response) return null;
         const data = Object.assign({}, this.state.response);
@@ -196,7 +208,7 @@ class Watcher extends React.Component {
                     </div>
                     <div>
                         <Scores height={250}
-                                scores={data.scores}/>
+                                scores={this.scores}/>
                     </div>
                 </div>
                 <div style={this.styles.cardsContainer}>
