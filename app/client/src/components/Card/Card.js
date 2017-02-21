@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 22-Dec-16.
- */
 export default class Card {
     constructor(sym, num, jackSymbol = null) {
         if(num === undefined){

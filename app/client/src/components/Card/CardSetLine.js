@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 23-Dec-16.
- */
 import React from 'react';
 import CardComponent from './CardComponent';
 import {getCardWidth, font} from './common';
@@ -52,9 +49,6 @@ class CardSetLine extends React.Component {
             this.props.cards.sort((c1, c2) => c1.number - c2.number);
     }
 
-
-
-
     render() {
         const offset = this.props.width / this.props.cards.length;
         if (this.props.backCardNumberLabel && this.props.back) {
@@ -89,7 +83,6 @@ CardSetLine.defaultProps = {
 CardSetLine.propTypes = {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number,
-
     back: React.PropTypes.bool,
     backCardNumberLabel: React.PropTypes.bool,
     cardNumber: React.PropTypes.number,

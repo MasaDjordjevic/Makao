@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 18-Dec-16.
- */
 import React from 'react';
 import Radium from 'radium';
 import CardFront from './CardFront';

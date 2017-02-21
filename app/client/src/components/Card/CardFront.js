@@ -1,9 +1,3 @@
-/**
- * Created by Masa on 23-Dec-16.
- */
-/**
- * Created by Masa on 18-Dec-16.
- */
 import React from 'react';
 import Radium from 'radium';
 import CardMain from './CardMain';
@@ -36,19 +30,21 @@ class CardFront extends React.Component {
         let markObj = this.props.mark ? mark : {};
 
         return {
-            cardStyle: {...markObj, ...{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                width: cardWidth,
-                height: cardHeight,
-                borderRadius: cardBorderRadius,
-                overflow: "hidden",
-                boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
-                marginRight: "10px",
-                backgroundColor: "white",
-                ':hover': hover,
-            }},
+            cardStyle: {
+                ...markObj, ...{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    width: cardWidth,
+                    height: cardHeight,
+                    borderRadius: cardBorderRadius,
+                    overflow: "hidden",
+                    boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+                    marginRight: "10px",
+                    backgroundColor: "white",
+                    ':hover': hover,
+                }
+            },
 
             headerStyle: {
                 width: "103%",
@@ -63,22 +59,20 @@ class CardFront extends React.Component {
     render() {
         return (
             <div style={this.styles.cardStyle}>
-                <div style={this.styles.headerStyle}>
-                    <CardHeader
-                        cardHeight={this.props.cardHeight}
-                        card={this.props.card}
-                        offset={this.props.offset}/>
-                </div>
+                <CardHeader
+                    style={this.styles.headerStyle}
+                    cardHeight={this.props.cardHeight}
+                    card={this.props.card}
+                    offset={this.props.offset}/>
                 <CardMain
                     card={this.props.card}
                     cardHeight={this.props.cardHeight}/>
-                <div style={{...this.styles.headerStyle, ...rotatedStyle}}>
-                    <CardHeader
-                        cardHeight={this.props.cardHeight}
-                        card={this.props.card}
-                        offset={this.props.offset}/>
-                </div>
 
+                <CardHeader
+                    style={{...this.styles.headerStyle, ...rotatedStyle}}
+                    cardHeight={this.props.cardHeight}
+                    card={this.props.card}
+                    offset={this.props.offset}/>
             </div>
         );
     }

@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 22-Dec-16.
- */
 
 export const blackColor = "#36474f";
 export const redColor = "#d4494f";

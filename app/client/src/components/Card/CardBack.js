@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 23-Dec-16.
- */
 import React from 'react';
 import Radium from 'radium';
 import {redColor, blackColor, getCardWidth, getCardBorderRadius} from './common';
@@ -107,37 +104,34 @@ class CardBack extends React.Component {
         }
     }
 
-    render() {
+    renderHalf(symbol1, symbol2) {
         const symbolSize = this.circleSize * 0.16;
         const margin = '0 auto';
         const padding = 0.01;
+        return (
+            <div style={this.styles.circleHalf}>
+                <div style={this.styles.circleFourth}>
+                    <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol={symbol1}/>
+                </div>
+                <div style={this.styles.verticalSeparator}>
+                </div>
+                <div style={this.styles.circleFourth}>
+                    <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol={symbol2}/>
+                </div>
+            </div>
+        )
+    }
+
+    render() {
+
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <div style={[this.styles.half, this.styles.upperHalf]}></div>
                 <div style={this.styles.center}>
                     <div style={this.styles.circle}>
-                        <div style={this.styles.circleHalf}>
-                            <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="hearts"/>
-                            </div>
-                            <div style={this.styles.verticalSeparator}>
-                            </div>
-                            <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="spades"/>
-                            </div>
-                        </div>
-                        <div style={this.styles.horizontalSeparator}>
-                        </div>
-                        <div style={this.styles.circleHalf}>
-                            <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="clubs"/>
-                            </div>
-                            <div style={this.styles.verticalSeparator}>
-                            </div>
-                            <div style={this.styles.circleFourth}>
-                                <CardSymbol containerSize={symbolSize} padding={padding} margin={margin} symbol="diamonds"/>
-                            </div>
-                        </div>
+                        {this.renderHalf("hearts", "spades")}
+                        <div style={this.styles.horizontalSeparator}></div>
+                        {this.renderHalf("clubs", "diamonds")}
                     </div>
                 </div>
                 <div style={[this.styles.half, this.styles.bottomHalf]}></div>
@@ -152,3 +146,4 @@ CardBack.propTypes = {
     cardHeight: React.PropTypes.number.isRequired,
     hover: React.PropTypes.any,
 };
+

@@ -1,13 +1,8 @@
-/**
- * Created by Masa on 18-Dec-16.
- */
-
 import React from 'react';
 import {isBlack, rotatedStyle} from './common';
 import CardSymbol from './CardSymbol';
 import CardSignRenderer from './CardSignRenderer';
 import Card from './Card';
-
 
 class CardMain extends React.Component {
     render() {
@@ -18,13 +13,7 @@ class CardMain extends React.Component {
             textAlign: 'center',
             justifyContent: "space-around",
         };
-        const mainStyle23 = {
-            display: "flex",
-            flexDirection: "row",
-            textAlign: 'center',
-            justifyContent: "center",
-        };
-        const symbolContainer = {
+        const rowCenter = {
             display: "flex",
             flexDirection: "row",
             textAlign: 'center',
@@ -43,7 +32,6 @@ class CardMain extends React.Component {
                     </div>
                 </div>
         } else {
-
             const symbolSize = num === '1' ? cardHeight / 3 : cardHeight / 8;
             const middle = Math.ceil(num / 2);
             var symArr = [];
@@ -56,23 +44,13 @@ class CardMain extends React.Component {
             const symUpper = symArr.slice().splice(0, middle);
             const symBottom = symArr.slice().splice(middle, +num);
 
-            if (num === '2') {
+            if (num === '3') {
                 mainSection =
-                    <div style={mainStyle23}>
-                        <div style={symbolContainer}>
-                            {symUpper}
-                        </div>
-                        <div style={{...symbolContainer, ...rotatedStyle}}>
+                    <div style={rowCenter}>
+                        <div style={rowCenter}>
                             {symBottom}
                         </div>
-                    </div>
-            } else if (num === '3') {
-                mainSection =
-                    <div style={mainStyle23}>
-                        <div style={symbolContainer}>
-                            {symBottom}
-                        </div>
-                        <div style={{...symbolContainer, ...rotatedStyle}}>
+                        <div style={{...rowCenter, ...rotatedStyle}}>
                             {symBottom}
                         </div>
                         <div>
@@ -81,11 +59,11 @@ class CardMain extends React.Component {
                     </div>
             } else {
                 mainSection =
-                    <div style={mainStyle}>
-                        <div style={symbolContainer}>
+                    <div style={num === '2' ? rowCenter : mainStyle}>
+                        <div style={rowCenter}>
                             {symUpper}
                         </div>
-                        <div style={{...symbolContainer, ...rotatedStyle}}>
+                        <div style={{...rowCenter, ...rotatedStyle}}>
                             {symBottom}
                         </div>
                     </div>

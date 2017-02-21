@@ -1,8 +1,4 @@
-/**
- * Created by Masa on 18-Dec-16.
- */
 import React from 'react';
-
 
 class CardSignRenderer extends React.Component {
     render() {
@@ -126,7 +122,6 @@ class CardSignRenderer extends React.Component {
                 </svg>
         }
 
-
         const wrapperStyle = {
             width: "100%",
             height: "100%",
@@ -136,7 +131,6 @@ class CardSignRenderer extends React.Component {
             <div style={wrapperStyle}>
                 {svgRet}
             </div>
-
         );
     }
 }

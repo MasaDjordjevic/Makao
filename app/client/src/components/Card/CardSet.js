@@ -1,6 +1,3 @@
-/**
- * Created by Masa on 23-Dec-16.
- */
 import React from 'react';
 import CardSetLine from './CardSetLine';
 import _ from 'lodash';
@@ -57,7 +54,6 @@ CardSet.defaultProps = {
 CardSet.propTypes = {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number,
-
     back: React.PropTypes.bool,
     cardNumber: React.PropTypes.number,
     cards: React.PropTypes.array,
