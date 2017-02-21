@@ -43,7 +43,7 @@ class PlayGame extends React.Component {
                     browserHistory.push('/game/' + UserStore.getState().username);
                 });
                 socket.on('game:failed', (reason) => {
-                    that.setState({snackbarMessage: 'Game creation failed: ' + reason, snackbarOpen: true});
+                    alert('Game creation failed: ' + reason);
                 });
             })
             socket.on('unauthorized', (msg) => {
