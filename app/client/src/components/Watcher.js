@@ -176,7 +176,8 @@ class Watcher extends React.Component {
                         <div style={this.styles.subsection}>
                             <span style={this.styles.title}>Time</span>
                             <span>{new Date(data.start).getHours() + ":" + new Date(data.start).getMinutes()}</span>
-                            {data.end &&  <span>{" - " + new Date(data.end).getHours() + ":" + new Date(data.end).getMinutes()}</span> }
+                            {data.end &&
+                            <span>{" - " + new Date(data.end).getHours() + ":" + new Date(data.end).getMinutes()}</span> }
                         </div>
                         }
 
@@ -205,7 +206,8 @@ class Watcher extends React.Component {
                                     Object.keys(data.players).map((user, index) =>
                                         <div key={user} style={this.styles.user}>
                                             <span style={this.styles.userProp}>{user}</span>
-                                            <span style={this.styles.userProp}>{data.players[user].online ? 'online' : 'offline'}</span>
+                                            <span
+                                                style={this.styles.userProp}>{data.players[user].online ? 'online' : 'offline'}</span>
                                             <span style={this.styles.userProp}>{data.players[user].cards.length}</span>
                                         </div>
                                     )
@@ -223,7 +225,7 @@ class Watcher extends React.Component {
                     <div style={this.styles.section}>
                         <Scores height={250}
                                 scores={this.scores}
-                        style={{boxShadow: 'none'}}/>
+                                style={{boxShadow: 'none'}}/>
                     </div>
                 </div>
                 <div style={this.styles.cardsContainer}>

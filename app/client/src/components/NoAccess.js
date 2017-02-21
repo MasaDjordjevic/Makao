@@ -9,7 +9,7 @@ class NoAccess extends React.Component {
             width: '100%',
             height: height / 2,
         };
-        const halfBorderRadius = (width/2) + 'px';
+        const halfBorderRadius = (width / 2) + 'px';
         return {
             container: {
                 display: 'flex',
@@ -28,12 +28,12 @@ class NoAccess extends React.Component {
                 borderRadius: '50%',
                 backgroundColor: 'red',
                 boxSizing: 'border-box',
-                marginRight: width/2,
+                marginRight: width / 2,
             },
             zeroUpper: {
                 ...half, ...{
                     backgroundColor: redColor,
-                    borderRadius: halfBorderRadius + ' ' + halfBorderRadius +' 0 0',
+                    borderRadius: halfBorderRadius + ' ' + halfBorderRadius + ' 0 0',
                 }
             },
             zeroLower: {
@@ -44,7 +44,7 @@ class NoAccess extends React.Component {
             },
             rightText: {
                 color: blackColor,
-                fontSize: (height*1.3) + 'px',
+                fontSize: (height * 1.3) + 'px',
                 fontFamily: 'Dosis'
             },
             message: {
@@ -64,10 +64,8 @@ class NoAccess extends React.Component {
                 <div style={this.styles.main}>
                     <span style={this.styles.rightText}>N</span>
                     <div style={this.styles.zero}>
-                        <div style={this.styles.zeroUpper}>
-                        </div>
-                        <div style={this.styles.zeroLower}>
-                        </div>
+                        <div style={this.styles.zeroUpper}></div>
+                        <div style={this.styles.zeroLower}></div>
                     </div>
                     <span style={this.styles.rightText}>ACCESS</span>
                 </div>

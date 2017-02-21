@@ -62,10 +62,8 @@ class PageNotFound extends React.Component {
                 <div style={this.styles.four0four}>
                     <span style={this.styles.four}>4</span>
                     <div style={this.styles.zero}>
-                        <div style={this.styles.zeroUpper}>
-                        </div>
-                        <div style={this.styles.zeroLower}>
-                        </div>
+                        <div style={this.styles.zeroUpper}></div>
+                        <div style={this.styles.zeroLower}></div>
                     </div>
                     <span style={this.styles.four}>4</span>
                 </div>
