@@ -15,6 +15,7 @@ import gameRoutes from './routes/game';
 // mongodb connection logic
 import mongoConnect from './models/connect';
 import User from './models/user';
+import Game from './models/game';
 
 // authentication check middleware that we will use to secure endpoints
 import authCheck from './auth-check';
@@ -77,6 +78,7 @@ app.use(bodyParser.json());
 
 // insert some users if none exist in database
 User.count({}, (err, count) => {
+    Game.remove({}, () => {});
     User.remove({}, () => {});
     var users = [
         new User({username: "jajac", email: "jajac", password: "jajac",
