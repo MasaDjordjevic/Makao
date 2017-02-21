@@ -87,6 +87,9 @@ class HomeHeader extends React.Component {
                 socket.on('invite:rejected', (msg) => {
                     alert(msg);
                 });
+                socket.on('invite:remove', (creatorUsername) => {
+                    this.removeInviteFromList(creatorUsername);
+                });
                 socket.on('friend:find', this.handleFriendFound)
             });
             socket.on('unauthorized', (msg) => {

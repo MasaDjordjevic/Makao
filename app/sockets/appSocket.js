@@ -50,14 +50,17 @@ module.exports = function (socket, io) {
             Games.getLobby(creatorUsername).then((lobby) => {
                 if (lobby.length < game.rules.playerNumberMax) {
                     socket.emit('invite:accepted', creatorUsername);
+                    socket.emit('invite:remove', creatorUsername);
                 } else {
                     socket.emit('invite:rejected', 'Game lobby is full.');
                 }
             }).catch((err) => {
                 socket.emit('invite:rejected', 'Game has already started.');
+                socket.emit('invite:remove', creatorUsername);
             });
         }).catch((err) => {
             socket.emit('invite:rejected', 'Game has already finished.');
+            socket.emit('invite:remove', creatorUsername);
         });
     });
 

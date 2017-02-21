@@ -35,11 +35,9 @@ module.exports = function (socket, io) {
 
     socket.on('game:start', () => {
         Gameplay.setGameStatus(creatorName, 'started');
-        // ovo je masino bilo na .on('game:started')
         Gameplay.startGame(creatorName).then(()=> {
             io.of('/lobby').to(creatorName).emit('game:started');
         });
-        /////////////////
     });
 
     socket.on('user:invite', (username) => {
