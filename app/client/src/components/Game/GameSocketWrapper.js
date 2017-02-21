@@ -181,6 +181,7 @@ class GameSocketWrapper extends React.Component {
             scores: data.scores,
             moveTime: data.moveTime,
         });
+        this.props.onPlayerNum(data.players.length);
     }
 
     handleNewHand(data) {
