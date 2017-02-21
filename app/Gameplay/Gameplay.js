@@ -418,7 +418,7 @@ exp.draw = (creatorUsername, playerUsername, timeUp = false) => {
 
                 game.players[playerUsername].timeUp++;
 
-                if(game.players[playerUsername].timeUp > 3){
+                if(game.players[playerUsername].timeUp > 1){
                     game.players[playerUsername].kicked = true;
                     var kicked = true;
                     console.log("Igrac " +  playerUsername + ' izbacen.');

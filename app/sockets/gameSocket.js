@@ -59,13 +59,13 @@ module.exports = function (socket, io) {
         socket.to(creatorName).broadcast.emit(key, value);
     }
 
-    function setTimer(creatorUsername, username){
-        timer = setTimeout(()=>timeUp(creatorUsername, username), 5000);
+    function setTimer(){
+        timer = setTimeout(timeUp, 5000);
     }
 
     function emitPlayerOnMove(creatorUsername, username) {
         emitToEveryone('play:playerOnMove', username);
-        setTimer(creatorUsername, username);
+
     }
 
     function emitEveryoneLeft(){
@@ -76,6 +76,9 @@ module.exports = function (socket, io) {
         emitToEveryone('log:new', log);
     }
 
+    socket.on('myMove', () => {
+        setTimer();
+    })
 
     socket.on('play:move', (card) => {
         clearTimeout(timer);
@@ -119,8 +122,10 @@ module.exports = function (socket, io) {
         });
     });
 
-    function timeUp(creatorUsername, playerUsername) {
+    function timeUp() {
         clearTimeout(timer);
+        let creatorUsername = creatorName;
+        let playerUsername = name;
         Gameplay.draw(creatorUsername, playerUsername, true).then((data) => {
             Gameplay.getNextPlayer(creatorUsername, playerUsername).then((passData) => {
                 Games.getGameSockets(creatorUsername).then((sockets) => {

@@ -72,6 +72,9 @@ class GameSocketWrapper extends React.Component {
 
     handlePlayerOnMove(username) {
         this.setState({playerOnMove: username});
+        if(username === this.state.me.username){
+            this.props.socket.emit('myMove');
+        }
     };
 
     handleNext() {
