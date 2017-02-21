@@ -21,6 +21,7 @@ import Dialog from 'material-ui/Dialog';
 import FriendAdder from './FriendAdder';
 import {red900} from 'material-ui/styles/colors';
 import InviteIcon from 'material-ui/svg-icons/maps/local-activity';
+import Snackbar from 'material-ui/Snackbar';
 
 var socket;
 
@@ -30,8 +31,12 @@ class HomeHeader extends React.Component {
         this.state = {
             userdata: UserStore.getState(),
             gameInvites: [],
+            // for add friend dialog
             dialogOpen: false,
             searchResults: null,
+            // for invite reject snackbar message
+            rejectResponse: '',
+            showResponse: false
         };
 
         this.onChange = this.onChange.bind(this);
@@ -43,6 +48,8 @@ class HomeHeader extends React.Component {
         this.handleInviteIgnore = this.handleInviteIgnore.bind(this);
         this.handleInviteReceive = this.handleInviteReceive.bind(this);
         this.removeInviteFromList = this.removeInviteFromList.bind(this);
+
+        this.handleSnackbarClosing = this.handleSnackbarClosing.bind(this);
     }
 
     onChange() {
@@ -85,7 +92,7 @@ class HomeHeader extends React.Component {
                     browserHistory.push('/game/' + creatorUsername);
                 });
                 socket.on('invite:rejected', (msg) => {
-                    alert(msg);
+                    this.setState({ rejectResponse: msg, showResponse: true });
                 });
                 socket.on('invite:remove', (creatorUsername) => {
                     this.removeInviteFromList(creatorUsername);
@@ -154,6 +161,10 @@ class HomeHeader extends React.Component {
         }
     }
     ///////////////////////////////////////////////////////
+
+    handleSnackbarClosing() {
+        this.setState({ rejectResponse: ' ', showResponse: false });
+    }
 
     get styles() {
         return {
@@ -334,6 +345,13 @@ class HomeHeader extends React.Component {
                                         onClick={this.handleLogout}/>
                         </div>
                     }
+                />
+
+                <Snackbar
+                    open={this.state.showResponse}
+                    message={this.state.rejectResponse}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleSnackbarClosing}
                 />
 
             </div>
