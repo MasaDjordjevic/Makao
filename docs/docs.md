@@ -15,7 +15,7 @@ S obzirom na popularnost ove kartaške igre nećemo se baviti samom igrom i njen
 
 - dužina partije odnosno broj poena koje je potrebno osvojiti kako bi igra bila gotova
 - dozvoljeno vreme za odigravanje poteza
-- minimalan broj igrča potreban za početak igre
+- minimalan broj igrača potreban za početak igre
 - maksimalan broj igrača koji može učestvovati u igri
 - broj špilova sa kojima se igra
 - rank filter koji omogućava filtriranje igrača po njihovom ukupnom skoru
@@ -57,7 +57,7 @@ Express.js je frejmovork otvorenog koda za Node.js koji pruža mnogo mogućnosti
 React je JavaScript biblioteka otvorenog koda namenjena izradi korisničkih interfejsa. Baziran je na komponentama što, pored modularnosti, olakšava razdvajanje problema i poštovanje principa pojedinačne odgovornosti. 
 
 ####JSX
-React komponente su pisane u JSX-u, JavaSript proširenoj sintaksi koja dozvoljava korišćenje HTML tag sintakse za rederovanje subkomponenti. Nakon kompajliranja JSX izrazi postaju JavaScript objekti što nam dozvoljava korišćenje ovih izrazima u `if` naredbama, `for` petljama, naredbama dodele i slično. Zbog mešanja HTML sintakse sa JavaScriptom naziva se i sintaksa smešnih tagova.
+React komponente su pisane u JSX-u, JavaSript proširenoj sintaksi koja dozvoljava korišćenje HTML tag sintakse za rederovanje subkomponenti. Nakon kompajliranja JSX izrazi postaju JavaScript objekti što nam dozvoljava korišćenje ovih izraza u `if` naredbama, `for` petljama, naredbama dodele i slično. Zbog mešanja HTML sintakse sa JavaScriptom naziva se i sintaksa smešnih tagova.
 
 ####Alt
 Alt je biblioteka koja olakšava rukvanje stanjem aplikacije u okviru JavaScript aplikacija. Modulirana je po fluxu, arhitekturnom obrazcu za kreiranje kompleksnih korisničkih interfejsa. Ona izbegava MVC u korist jednosmernog toka podataka. 
@@ -67,11 +67,11 @@ Navešćemo nekoliko paketa koji nisu karakteristični za većinu React aplikaci
 ####Frontend 
 - chart.js - iscrtava HTML5 grafikone koristeći kanvas
 - radium - omogućava pisanje inline stilova sa dodatnim mogućnostima
-- material-ui - skup komponenti koje implementiraju guglovu *Material Desing* specifikaciju
+- material-ui - skup komponenti koje implementiraju guglovu *Material Design* specifikaciju
 - socket.io - omogućava dvosmernu komunikaciju u realnom vremenu baziranu na događajima
 
 ####Bekend
-- concuretntly - omogućava pokretanje više procesa konkurentno
+- concurrently - omogućava pokretanje više procesa konkurentno
 - jsonwebtoken - implementacija jwt-a, olakšava proces autentikacije
 
 Zaduženja
