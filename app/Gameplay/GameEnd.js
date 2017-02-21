@@ -1,4 +1,5 @@
-import Game from '../models/Game';
+import Game from '../models/game';
+import User from '../models/user';
 
 let exp = {};
 
@@ -23,7 +24,13 @@ exp.handleGameEnd = (game) => {
 
     let newGame = new Game(gameData);
     newGame.save((err) => {
-        console.log(err);
+        if (!err) {
+            Object.keys(game.players).forEach((username) => {
+                User.insertGame(username, newGame._id, (err) => {
+                    if (err) { console.log(err) }
+                });
+            });
+        }
     });
 };
 

@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
     username: { type: String, unique: true },
     email: { type: String, unique: true },
     friends: [String], // list of usernames is enough for now
-    friendRequests: [String]
+    friendRequests: [String],
+    games: [mongoose.Schema.Types.ObjectId]
 });
 
 // adds password field and automatically encrypts/decrypts
@@ -62,6 +63,17 @@ UserSchema.statics.removeFriendRequest = function(username, friendUsername, call
         if (requestIndex != -1) {
             user.friendRequests.splice(requestIndex, 1);
         }
+        user.save((err) => {
+            if (err) { return callback(err); }
+            return callback(null);
+        });
+    });
+}
+
+UserSchema.statics.insertGame = function(username, gameId, callback) {
+    this.findByUsername(username, (err, user) => {
+        if (err) { return callback(err); }
+        user.games.push(gameId);
         user.save((err) => {
             if (err) { return callback(err); }
             return callback(null);
