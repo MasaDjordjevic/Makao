@@ -9,13 +9,16 @@ class Talon extends React.Component {
         super();
         this.state = {
             animate: false,
+            cardChanged: false,
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.card !== nextProps.card &&
             (nextProps.card.number !== '12' || nextProps.card.jackSymbol !== null)) {
-            this.setState({animate: true});
+            this.setState({cardChanged: true});
+        } else if (this.state.cardChanged) {
+            this.setState({animate: true, cardChanged: false});
         } else {
             this.setState({animate: false});
         }
