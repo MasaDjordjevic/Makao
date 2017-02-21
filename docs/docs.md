@@ -48,7 +48,7 @@ MongoDB je višeplatformska NoSQL baza podataka zasnovana na čuvanju dokumenata
 
 ###Frejmvorci i jezici
 ####Express.js
-
+Express.js je frejmovork otvorenog koda za Node.js koji pruža mnogo mogućnosti za razvoj web aplikacija.
  
 ###Biblioteke i jezici
 ####React 
@@ -67,6 +67,7 @@ Navešćemo nekoliko paketa koji nisu karakteristični za većinu React aplikaci
 - radium - omogućava pisanje inline stilova sa dodatnim mogućnostima
 - material-ui - skup komponenti koje implementiraju guglovu *Material Desing* specifikaciju
 - socket.io - omogućava dvosmernu komunikaciju u realnom vremenu baziranu na događajima
+
 ####Bekend
 - concuretntly - omogućava pokretanje više procesa konkurentno
 - jsonwebtoken - implementacija jwt-a, olakšava proces autentikacije
@@ -79,3 +80,4 @@ Nikola Mitić će voditi računa o bazama podataka, Miloš Jajac o toku igre na 
 > **Note:**
 
 >  Rešili smo da koristimo tehnologije koje ranije nismo i da naučimo nešto novo. To će vrlo verovatno prouzrokovati promenu ovog fajla nakon upoznavanja sa tehnologijama.
+
