@@ -124,7 +124,7 @@ function playerHasOnly12(game, playerUsername) {
     return _.every(cards, (card) => card.number == 12);
 }
 
-function determineNextPlayer(game, playerUsername, card) {
+function determineNextPlayer(game, playerUsername, card, newLogs) {
     if (card.number === '1') { //same player
         return nextPlayer(game, 0);
     }
@@ -134,7 +134,7 @@ function determineNextPlayer(game, playerUsername, card) {
         }
     }
     if (card.number === '8') {
-        return nextPlayer(game, 2);
+        newLogs.push({message:'player skipped'});
         return nextPlayer(game, 2);
     }
 
@@ -176,10 +176,11 @@ function fixDrawStack(game) {
     game.openStack = [last];
 }
 
-function determineConsequences(game, card) {
+function determineConsequences(game, card, newLogs) {
 
     if (card.number === '9') {
         game.direction *= -1;
+        newLogs.push({message: 'direction changed'});
     }
 
     if (card.number === '7') {
@@ -215,12 +216,14 @@ function nextUser(game, currentUsername, offset = 1) {
     return next;
 }
 
-exp.getNextPlayer = (creatorUsername) => {
+exp.getNextPlayer = (creatorUsername, name) => {
     return new Promise((resolve, reject) => {
         Games.getGame(creatorUsername).then((game) => {
             let playerOnMove = nextPlayer(game);
+            let log = {username: name, message: "pass"};
+            game.logs.push(log);
             Games.setGame(creatorUsername, game).then(() => {
-                resolve(playerOnMove);
+                resolve({playerOnMove: playerOnMove, logs: [log]});
             })
         });
     });
@@ -311,7 +314,6 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             game.openStack.push(card);
             //add log
             let log = {username: playerUsername, card: card};
-            game.logs.push(log);
 
 
             let newLogs = [log];
@@ -339,12 +341,14 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 let next;
                 if (!isTwoDiamonds(game)) {
                     //determine consequences
-                    determineConsequences(game, card);
+                    determineConsequences(game, card, newLogs);
                     //determine next player
-                    next = determineNextPlayer(game, playerUsername, card);
+                    next = determineNextPlayer(game, playerUsername, card, newLogs);
                 } else {
                     next = nextPlayer(game);
                 }
+
+                game.logs = game.logs.concat(newLogs);
                 Games.setGame(creatorUsername, game).then(() => {
                     resolve({playerOnMove: next, log: newLogs});
                 });

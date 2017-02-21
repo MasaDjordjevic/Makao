@@ -7,7 +7,7 @@ class LogEntry extends React.Component {
     get styles() {
         return {
             container: {
-                alignSelf: !this.props.playerName || this.props.win ? 'center' : this.props.left ? 'flex-start' : 'flex-end',
+                alignSelf:  this.props.win ? 'center' : this.props.left ? 'flex-start' : 'flex-end',
                 display: 'flex',
             },
             cardContainer: {
