@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -17,7 +17,7 @@ class PlayGame extends React.Component {
         this.state = {
             dialogOpen: false,
             joinGameList: []
-        }
+        };
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -26,14 +26,14 @@ class PlayGame extends React.Component {
     }
 
     updateGameList(newGames) {
-        this.setState({ joinGameList: newGames });
+        this.setState({joinGameList: newGames});
     }
 
     handleOpen = () => {
         var that = this;
         socket = io('/play');
         socket.on('connect', () => {
-            socket.emit('authenticate', { token: Auth.getToken() });
+            socket.emit('authenticate', {token: Auth.getToken()});
             socket.on('authenticated', () => {
                 socket.emit('game:list');
                 socket.on('game:list', (newGames) => {
@@ -45,7 +45,7 @@ class PlayGame extends React.Component {
                 socket.on('game:failed', (reason) => {
                     alert('Game creation failed: ' + reason);
                 });
-            })
+            });
             socket.on('unauthorized', (msg) => {
                 alert(JSON.stringify(msg.data));
             })
@@ -60,7 +60,7 @@ class PlayGame extends React.Component {
 
     handleCreate = (rules) => {
         socket.emit('game:create', rules);
-    }
+    };
 
     get styles() {
         const playButtonSize = 70;
@@ -111,7 +111,7 @@ class PlayGame extends React.Component {
                             <JoinGame games={this.state.joinGameList}/>
                         </Tab>
                         <Tab label="Create game">
-                            <CreateGame onCreate={this.handleCreate} />
+                            <CreateGame onCreate={this.handleCreate}/>
                         </Tab>
                     </Tabs>
                 </Dialog>

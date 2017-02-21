@@ -22,8 +22,7 @@ class FriendPicker extends React.Component {
     }
 
     componentWillMount() {
-        var state = UserStore.getState();
-        this.setState({ friends: UserStore.getState().friends });
+        this.setState({friends: UserStore.getState().friends});
     }
 
     handleSearch(text) {
@@ -37,7 +36,7 @@ class FriendPicker extends React.Component {
     }
 
     handleRemove(username) {
-        if(!this.props.removable) return;
+        if (!this.props.removable) return;
         let pickedFriends = this.state.pickedFriends.slice();
         pickedFriends = _.without(pickedFriends, username);
         this.setState({pickedFriends: pickedFriends});
@@ -84,30 +83,27 @@ class FriendPicker extends React.Component {
                 <div style={this.styles.lists}>
                     <List style={this.styles.list}>
                         <Subheader>Friends</Subheader>
-
-                        {
-                            friends.map((username, i) =>
-                                <ListItem
-                                    key={username}
-                                    primaryText={username}
-                                    leftAvatar={<Avatar>{username.charAt(0)}</Avatar>}
-                                    onClick={() => this.handlePick(username)}
-                                />
-                            )
+                        { friends.map((username, i) =>
+                            <ListItem
+                                key={username}
+                                primaryText={username}
+                                leftAvatar={<Avatar>{username.charAt(0)}</Avatar>}
+                                onClick={() => this.handlePick(username)}
+                            />
+                        )
                         }
                     </List>
                     <List style={this.styles.list}>
                         <Subheader>Invited</Subheader>
-                        {
-                            pickedFriends.map((username, i) =>
-                                <ListItem
-                                    key={username}
-                                    primaryText={username}
-                                    leftAvatar={<Avatar>{username.charAt(0)}</Avatar>}
-                                    onClick={() => this.handleRemove(username)}
-                                    disabled={!this.props.removable}
-                                />
-                            )
+                        { pickedFriends.map((username, i) =>
+                            <ListItem
+                                key={username}
+                                primaryText={username}
+                                leftAvatar={<Avatar>{username.charAt(0)}</Avatar>}
+                                onClick={() => this.handleRemove(username)}
+                                disabled={!this.props.removable}
+                            />
+                        )
                         }
                     </List>
                 </div>

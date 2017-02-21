@@ -1,7 +1,9 @@
 import React from 'react';
-import {Table, TableBody, TableHeader, TableHeaderColumn,
-        TableRow, TableRowColumn}  from 'material-ui/Table';
-import { browserHistory } from 'react-router';
+import {
+    Table, TableBody, TableHeader, TableHeaderColumn,
+    TableRow, TableRowColumn
+}  from 'material-ui/Table';
+import {browserHistory} from 'react-router';
 
 class JoinGame extends React.Component {
     constructor() {
@@ -10,8 +12,8 @@ class JoinGame extends React.Component {
         this.joinGame = this.joinGame.bind(this);
     }
 
-    joinGame(selectedRow){
-        if(!this.props.games[selectedRow]) return;
+    joinGame(selectedRow) {
+        if (!this.props.games[selectedRow]) return;
         browserHistory.push('/game/' + this.props.games[selectedRow].creator);
     }
 
@@ -38,16 +40,17 @@ class JoinGame extends React.Component {
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
-                    {
-                        this.props.games.map((game, i) =>
-                            <TableRow key={game.creator} >
-                                <TableRowColumn>{game.creator}</TableRowColumn>
-                                <TableRowColumn>{game.current}</TableRowColumn>
-                                <TableRowColumn>{game.rules.playerNumberMin} - {game.rules.playerNumberMax}</TableRowColumn>
-                                <TableRowColumn><span>rules</span></TableRowColumn>
-                            </TableRow>
-                        )
-                    }
+                        {
+                            this.props.games.map((game, i) =>
+                                <TableRow key={game.creator}>
+                                    <TableRowColumn>{game.creator}</TableRowColumn>
+                                    <TableRowColumn>{game.current}</TableRowColumn>
+                                    <TableRowColumn>{game.rules.playerNumberMin}
+                                        - {game.rules.playerNumberMax}</TableRowColumn>
+                                    <TableRowColumn><span>rules</span></TableRowColumn>
+                                </TableRow>
+                            )
+                        }
                     </TableBody>
                 </Table>
             </div>
