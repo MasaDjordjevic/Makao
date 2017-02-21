@@ -38,6 +38,14 @@ class CorrectMoveWrapper extends React.Component {
 
     handleNext() {
         if (this.isMyTurn()) {
+
+            //ako je na talonu dvojka karo moras da bacis kartu koju si izvuko
+            let must = _.filter(this.props.myCards, 'mustPlay');
+            if(must.length > 0) {
+                this.setState({snackbarOpen: true, snackbarMessage: '2 diamonds, you must play the card'});
+                return;
+            }
+
             this.setState({draw: false});
             this.props.onNext();
         }

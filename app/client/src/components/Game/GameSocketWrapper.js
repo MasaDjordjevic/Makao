@@ -103,10 +103,16 @@ class GameSocketWrapper extends React.Component {
 
     handleMovePlayed(username, card, ignoreJack = false) {
         let jackPlayed = username === this.state.me.username && card.number === "12";
+        const myCards = this.state.myCards.slice();
+
+        //ako su mu ostale samo zace pobedjuje i ne bira znak
+        if(_.every(myCards, (card) => card.number === '12')){
+            jackPlayed = false;
+        }
 
         const myMove = username === this.state.me.username;
         if (myMove) {
-            const myCards = this.state.myCards.slice();
+
             myCards.splice(myCards.indexOf(card), 1);
             this.setState({
                 myCards: myCards,

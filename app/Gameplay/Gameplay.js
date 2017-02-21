@@ -8,10 +8,10 @@ let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
 function createStack(stackNum) {
-    let numbers = [1, 3, 4, 5, 6, 7, 8, 10, 13, 14, 12, 2, 9];
+    let numbers = [1, 3, 4, 5, 6, 7, 8, 10, 13, 14, 9, 2, 12];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
-    Array(stackNum).fill(null).forEach((i)=> {
+    Array(stackNum).fill(null).forEach((i) => {
         numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
     });
     return deck;
@@ -92,7 +92,7 @@ exp.startGame = (creatorUsername) => {
     });
 };
 
-function nextHand(game){
+function nextHand(game) {
     game.direction = 1;
     let nextStarter = nextHandStarter(game);
     game.playerOnMove = nextStarter;
@@ -130,13 +130,13 @@ function determineNextPlayer(game, playerUsername, card, newLogs) {
     if (card.number === '1') { //same player
         return nextPlayer(game, 0);
     }
-    if (card.number === '11') {//ako su mu ostale samo zace moze sve da ih baci
+    if (card.number === '12') {//ako su mu ostale samo zace moze sve da ih baci
         if (playerHasOnly12(game, playerUsername)) {
             return nextPlayer(game, 0);
         }
     }
     if (card.number === '8') {
-        newLogs.push({message:'player skipped'});
+        newLogs.push({message: 'player skipped'});
         return nextPlayer(game, 2);
     }
 
@@ -153,7 +153,7 @@ function determineDrawCount(game) {
     } else {
         let sevens = game.sevens;
         game.sevens = 0;
-        if(sevens === 0){
+        if (sevens === 0) {
             return 1;
         }
         return sevens * 2; //TODO nadji koliko se vuce na sedmicu
@@ -187,14 +187,14 @@ function determineConsequences(game, card, newLogs) {
 
     if (card.number === '7') {
         game.sevens++;
-    }else {
+    } else {
         game.sevens = 0;
     }
 
 
 }
 
-function nextHandStarter(game, offset = 1){
+function nextHandStarter(game, offset = 1) {
     let next = nextUser(game, game.handStarter, offset);
     game.handStarter = next;
     return next;
@@ -216,13 +216,13 @@ function nextUser(game, currentUsername, offset = 1) {
     let nextIndex = (currIndex + offset + players.length) % players.length;
 
     let count = 0;
-    while(game.players[players[nextIndex]].kicked && count < players.length){
+    while (game.players[players[nextIndex]].kicked && count < players.length) {
         nextIndex = (currIndex + 1 + players.length) % players.length;
         count++;
     }
 
     //nema vise igraca, kraj igre
-    if(count === players.length){
+    if (count === players.length) {
         return null;
     }
 
@@ -237,7 +237,7 @@ exp.getNextPlayer = (creatorUsername, name) => {
             game.logs.push(log);
             let newLogs = [log];
 
-            if(!playerOnMove){
+            if (!playerOnMove) {
                 handleGameEnd(game, newLogs);
                 Games.setGame(creatorUsername, game).then(() => {
                     resolve({gameOver: true, logs: newLogs});
@@ -257,7 +257,7 @@ function isTwoDiamonds(game) {
     return talon.number === '2' && talon.symbol === 'diamonds';
 }
 
-function setScores(game, playerUsername){
+function setScores(game, playerUsername) {
     let scores = [];
     // winner
     let winnerScore;
@@ -288,7 +288,7 @@ function setScores(game, playerUsername){
                 score += 10;
             }
         });
-        score*=scoresFactor;
+        score *= scoresFactor;
         scores.push({username: username, score: score});
     });
 
@@ -306,8 +306,8 @@ function handEnd(game, playerUsername) {
     return false;
 }
 
-function gameEnd(game){
-    let scores  = JSON.parse(JSON.stringify(game.scores));
+function gameEnd(game) {
+    let scores = JSON.parse(JSON.stringify(game.scores));
     scores = scores.map((round, i) => {
         round.map((s, j) => {
             s.score += i === 0 ? 0 : _.find(scores[i - 1], {username: s.username}).score;
@@ -319,7 +319,7 @@ function gameEnd(game){
     let end = false;
     let limit = game.rules.gameLimit;
     _.last(scores).forEach((user, i) => {
-        if(user.score > limit || user.score < -limit){
+        if (user.score > limit || user.score < -limit) {
             end = true;
         }
     });
@@ -327,8 +327,8 @@ function gameEnd(game){
     return end;
 }
 
-function handleGameEnd(game, newLogs){
-    let log ={message: 'game over'};
+function handleGameEnd(game, newLogs) {
+    let log = {message: 'game over'};
     newLogs.push(log);
 
     game.status = 'finished';
@@ -347,18 +347,16 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
             game.openStack.push(card);
             //add log
             let log = {username: playerUsername, card: card};
-
-
             let newLogs = [log];
             //check if hand is over
-            if(handEnd(game, playerUsername, newLogs)){
-                let log ={username: playerUsername, win: true};
-                game.logs.push(log);
+            if (handEnd(game, playerUsername, newLogs)) {
+                let log = {username: playerUsername, win: true};
                 newLogs.push(log);
 
-                    //check if game is over
-                    if(gameEnd(game)){
-                        handleGameEnd(game, newLogs);
+                //check if game is over
+                if (gameEnd(game)) {
+                    handleGameEnd(game, newLogs);
+                    game.logs = game.logs.concat(newLogs);
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({gameOver: true, scores: game.scores, log: newLogs});
                         GameEnd.handleGameEnd(game);
@@ -368,7 +366,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 Games.setGame(creatorUsername, game).then(() => {
                     resolve({newHand: game, log: newLogs});
                 });
-            }else {
+            } else {
                 let next;
                 if (!isTwoDiamonds(game)) {
                     //determine consequences
@@ -379,15 +377,17 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                     next = nextPlayer(game);
                 }
 
-                game.logs = game.logs.concat(newLogs);
 
-                if(!next){
+
+                if (!next) {
                     handleGameEnd(game, newLogs);
+                    game.logs = game.logs.concat(newLogs);
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({everyoneLeft: true, logs: newLogs});
                     })
                 }
 
+                game.logs = game.logs.concat(newLogs);
                 Games.setGame(creatorUsername, game).then(() => {
                     resolve({playerOnMove: next, log: newLogs});
                 });
@@ -411,17 +411,17 @@ exp.draw = (creatorUsername, playerUsername, timeUp = false) => {
 
             //time up
 
-            if(timeUp){
+            if (timeUp) {
                 let timeUpLog = {username: playerUsername, message: "time's up"};
                 newLogs = [timeUpLog, ...newLogs];
                 game.logs.push(timeUpLog);
 
                 game.players[playerUsername].timeUp++;
 
-                if(game.players[playerUsername].timeUp > 1){
+                if (game.players[playerUsername].timeUp > 1) {
                     game.players[playerUsername].kicked = true;
                     var kicked = true;
-                    console.log("Igrac " +  playerUsername + ' izbacen.');
+                    console.log("Igrac " + playerUsername + ' izbacen.');
                 }
             }
 
