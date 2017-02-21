@@ -57,16 +57,19 @@ class GameSocketWrapper extends React.Component {
     }
 
     handleEveryoneLeft() {
+        this.props.socket.disconnect();
         this.setState({dialogOpen: true, dialogMessage: "Everyone left, game over."});
         this.disableUserActions();
     }
 
     handleGameKicked() {
+        this.props.socket.disconnect();
         this.setState({dialogOpen: true, dialogMessage: "You got kicked, game over."});
         this.disableUserActions();
     }
 
     handleGameOver(scores) {
+        this.props.socket.disconnect();
         this.setState({dialogOpen: true, dialogMessage: "GAME OVER", scores: scores});
         this.disableUserActions();
     }

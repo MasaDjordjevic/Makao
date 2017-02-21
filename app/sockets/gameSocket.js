@@ -81,14 +81,14 @@ module.exports = function (socket, io) {
 
     socket.on('myMove', () => {
         setTimer();
-    })
+    });
 
     socket.on('play:move', (card) => {
         clearTimeout(timer);
         Gameplay.playMove(creatorName, name, card).then((data) => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
+            emitLog(data.log);
             if(data.everyoneLeft){
-                emitLog(data.log);
                 emitEveryoneLeft();
             }
             if (data.gameOver) {
@@ -121,7 +121,6 @@ module.exports = function (socket, io) {
             } else {
                 emitPlayerOnMove(creatorName, data.playerOnMove);
             }
-            emitLog(data.log);
         });
     });
 
