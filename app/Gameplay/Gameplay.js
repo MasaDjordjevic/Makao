@@ -69,6 +69,7 @@ exp.startGame = (creatorUsername) => {
                 }
             });
             Games.getGame(creatorUsername).then((game) => {
+                game.start = new Date();
                 game.players = readyPlayers;
                 game.playerOnMove = creatorUsername;
                 game.handStarter = creatorUsername;
@@ -328,6 +329,10 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                     let log ={message: 'game over'};
                     game.logs.push(log);
                     newLogs.push(log);
+                    //utvrdi vreme trajanja
+                    game.end = new Date();
+                    let durationMiliseconds = new Date(game.end) - new Date(game.start);
+                    game.duration = ((durationMiliseconds % 86400000) % 3600000) / 60000;
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({gameOver: true, scores: game.scores, log: newLogs});
                         GameEnd.handleGameEnd(game);

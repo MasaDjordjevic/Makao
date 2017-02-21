@@ -143,18 +143,18 @@ class Watcher extends React.Component {
 
         total += data.openStack.length;
         total += data.drawStack.length;
-        if (total !== data.rules.deckNumber*52) {
+        if (total !== data.rules.deckNumber * 52) {
             return <span>{total}</span>
         }
     }
 
-    get scores(){
+    get scores() {
         const data = Object.assign({}, this.state.response);
-        if(data.scores && data.scores.length){
+        if (data.scores && data.scores.length) {
             return data.scores;
         }
         let scores = [];
-        Object.keys(data.players).forEach((user)=> {
+        Object.keys(data.players).forEach((user) => {
             scores.push({username: user, score: 0});
         });
         return [scores];
@@ -172,6 +172,20 @@ class Watcher extends React.Component {
                             <span style={this.styles.title}>State</span>
                             <span>{data.status}</span>
                         </div>
+                        {data.start &&
+                        <div style={this.styles.subsection}>
+                            <span style={this.styles.title}>Time</span>
+                            <span>{new Date(data.start).getHours() + ":" + new Date(data.start).getMinutes()}</span>
+                            {data.end &&  <span>{" - " + new Date(data.end).getHours() + ":" + new Date(data.end).getMinutes()}</span> }
+                        </div>
+                        }
+
+                        {data.duration &&
+                        <div style={this.styles.subsection}>
+                            <span style={this.styles.title}>Duration</span>
+                            <span>{data.duration}</span>
+                        </div>
+                        }
                         <div style={this.styles.subsection}>
                             <span style={this.styles.title}>On move</span>
                             <span>{data.playerOnMove}</span>
@@ -206,9 +220,10 @@ class Watcher extends React.Component {
                         <h3 style={this.styles.title}>Rules</h3>
                         <Rules rules={data.rules}/>
                     </div>
-                    <div>
+                    <div style={this.styles.section}>
                         <Scores height={250}
-                                scores={this.scores}/>
+                                scores={this.scores}
+                        style={{boxShadow: 'none'}}/>
                     </div>
                 </div>
                 <div style={this.styles.cardsContainer}>
