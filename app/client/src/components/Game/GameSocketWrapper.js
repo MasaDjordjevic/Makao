@@ -18,6 +18,7 @@ class GameSocketWrapper extends React.Component {
             openStack: [],
             jackPlayed: false,
             scores: [],
+            moveTime: 0,
 
             sevenDrawed: false,
 
@@ -45,34 +46,34 @@ class GameSocketWrapper extends React.Component {
         this.handlePlayerOnMove = this.handlePlayerOnMove.bind(this);
     }
 
-    empty(){
+    empty() {
 
     }
 
-    disableUserActions(){
+    disableUserActions() {
         this.handleNext = this.empty;
         this.handleCardClick = this.empty;
         this.handleDrawClick = this.empty;
     }
 
-    handleEveryoneLeft(){
+    handleEveryoneLeft() {
         this.setState({dialogOpen: true, dialogMessage: "Everyone left, game over."});
         this.disableUserActions();
     }
 
-    handleGameKicked(){
+    handleGameKicked() {
         this.setState({dialogOpen: true, dialogMessage: "You got kicked, game over."});
         this.disableUserActions();
     }
 
-    handleGameOver(scores){
+    handleGameOver(scores) {
         this.setState({dialogOpen: true, dialogMessage: "GAME OVER", scores: scores});
         this.disableUserActions();
     }
 
     handlePlayerOnMove(username) {
         this.setState({playerOnMove: username});
-        if(username === this.state.me.username){
+        if (username === this.state.me.username) {
             this.props.socket.emit('myMove');
         }
     };
@@ -143,7 +144,7 @@ class GameSocketWrapper extends React.Component {
         //ako je sedmica na talonu a neko je vuko
         let seven = false;
         let talon = _.last(this.state.openStack);
-        if(talon.number === '7'){
+        if (talon.number === '7') {
             seven = true;
         }
         this.setState({players: players, sevenDrawed: seven});
@@ -177,11 +178,12 @@ class GameSocketWrapper extends React.Component {
             myCards: cards,
             openStack: pile,
             playerOnMove: data.playerOnMove,
-            scores: data.scores
+            scores: data.scores,
+            moveTime: data.moveTime,
         });
     }
 
-    handleNewHand(data){
+    handleNewHand(data) {
         this.handleSocketInit(data);
         this.setState({dialogOpen: true});
         setTimeout(this.handleClose, 1000);
@@ -259,7 +261,8 @@ class GameSocketWrapper extends React.Component {
                                     onCardClick={this.handleCardClick}
                                     onJackSignPicked={this.handleJackSignPicked}
                                     onNext={this.handleNext}
-                                    sevenDrawed={this.state.sevenDrawed}/>
+                                    sevenDrawed={this.state.sevenDrawed}
+                                    moveTime={this.state.moveTime}/>
             </div>
         );
     }

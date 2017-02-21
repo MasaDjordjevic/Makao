@@ -83,15 +83,19 @@ class Game extends React.Component {
         }
     }
 
-    get scores(){
-        if(this.props.scores && this.props.scores.length){
+    get scores() {
+        if (this.props.scores && this.props.scores.length) {
             return this.props.scores;
         }
         let scores = [];
-        this.props.allPlayers.forEach((user)=> {
+        this.props.allPlayers.forEach((user) => {
             scores.push({username: user.username, score: 0});
         });
         return [scores];
+    }
+
+    get timer() {
+        return this.props.rules
     }
 
     render() {
@@ -100,7 +104,8 @@ class Game extends React.Component {
                 <div style={this.styles.opponents}>
                     <Opponents playerHeight={this.props.dimensions.opponents}
                                players={this.props.opponents}
-                               playerOnMove={this.props.playerOnMove}/>
+                               playerOnMove={this.props.playerOnMove}
+                               moveTime={this.props.moveTime}/>
                 </div>
                 <div style={this.styles.userCardsTalon}>
                     <div style={this.styles.talon}>
@@ -130,7 +135,8 @@ class Game extends React.Component {
                             <UserInfo style={this.styles.userInfo}
                                       myMove={this.props.myMove}
                                       enableNext={this.props.enableNext}
-                                      onNext={this.props.onNext}/>
+                                      onNext={this.props.onNext}
+                                      length={this.props.moveTime}/>
                         </div>
                     </div>
                 </div>
@@ -156,8 +162,7 @@ Game.PropTypes = {
     onJackSignPicked: React.PropTypes.func,
     onNext: React.PropTypes.func,
     enableNext: React.PropTypes.bool,
-
-
+    moveTime: React.PropTypes.number,
 };
 
 export default Game;

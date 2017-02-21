@@ -9,6 +9,7 @@ module.exports = function (socket, io) {
     var name = '';
     var creatorName = '';
     var timer;
+    var timeLimit;
     console.log('user connected to gameSocket');
 
     socket.on('join', (creatorUsername, username) => {
@@ -42,8 +43,10 @@ module.exports = function (socket, io) {
                     cards: cards,
                     talon: talon,
                     playerOnMove: game.playerOnMove,
-                    scores: game.scores
+                    scores: game.scores,
+                    moveTime: game.rules.timeLimit,
                 });
+                timeLimit = game.rules.timeLimit * 1000;
                 socket.to(creatorUsername).broadcast.emit('user:join', {
                     username: username,
                     online: true,
@@ -60,7 +63,7 @@ module.exports = function (socket, io) {
     }
 
     function setTimer(){
-        timer = setTimeout(timeUp, 5000);
+        timer = setTimeout(timeUp, timeLimit);
     }
 
     function emitPlayerOnMove(creatorUsername, username) {

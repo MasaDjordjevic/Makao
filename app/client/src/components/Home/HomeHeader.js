@@ -288,7 +288,7 @@ class HomeHeader extends React.Component {
                 </Dialog>
                 <AppBar
                     title={
-                        <Link to={"/users/" + this.state.userdata.username}>
+                        <Link to={"/home"}>
                             <span style={this.styles.username}>{this.state.userdata.username}</span>
                         </Link>}
                     iconElementLeft={

@@ -15,21 +15,30 @@ export default class TimerProgress extends React.Component {
     }
 
     componentDidMount() {
-        this.timer = setTimeout(() => this.progress(0), 1000);
+        this.setState({completed: this.props.length});
+        this.timer = setTimeout(() => this.progress(this.props.length - 1), 1000);
     }
 
     componentWillUnmount() {
         clearTimeout(this.timer);
     }
 
-    progress(completed) {
-        if (completed > this.props.length) {
+    componentWillReceiveProps(newProps){
+        if(!this.props.reset && newProps.reset){
             this.setState({completed: this.props.length});
-            this.props.onTimeExpiration();
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => this.progress(this.props.length - 1), 1000);
+        }
+    }
 
+
+    progress(completed) {
+        if (completed < 0) {
+            this.setState({completed: 0});
+            this.props.onTimeExpiration && this.props.onTimeExpiration();
         } else {
             this.setState({completed});
-            //this.timer = setTimeout(() => this.progress(completed + 1), 1000);
+            this.timer = setTimeout(() => this.progress(completed - 1), 1000);
         }
     }
 
@@ -44,4 +53,5 @@ export default class TimerProgress extends React.Component {
 TimerProgress.propTypes = {
     length: React.PropTypes.number,
     onTimeExpiration: React.PropTypes.func,
+    reset: React.PropTypes.bool,
 };

@@ -135,6 +135,7 @@ class CorrectMoveWrapper extends React.Component {
                       myCards={this.props.myCards}
                       talon={this.props.talon}
                       scores={this.props.scores}
+                      moveTime={this.props.moveTime}
                       jackPlayed={this.jackPlayed}
                       onJackSignPicked={this.props.onJackSignPicked}
                       onDrawClick={this.handleDrawClick}
@@ -169,4 +170,5 @@ CorrectMoveWrapper.propTypes = {
     onJackSignPicked: React.PropTypes.func,
     onNext: React.PropTypes.func,
     sevenDrawed: React.PropTypes.bool,
+    moveTime: React.PropTypes.number,
 };

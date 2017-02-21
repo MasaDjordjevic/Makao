@@ -1,5 +1,5 @@
 import React from 'react';
-import GlobalValues from '../Gameplay/GlobalVariables';
+import UserStore from '../../stores/UserStore'
 import TimerProgress from './TimerProgress';
 import {blueGrey300} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
@@ -27,7 +27,7 @@ class UserInfo extends React.Component {
                 marginTop: '5%',
                 width: '100%',
             },
-            nextButton:{
+            nextButton: {
                 alignSelf: 'center',
                 width: '100%',
                 height: nextIconSize,
@@ -40,8 +40,8 @@ class UserInfo extends React.Component {
         }
     }
 
-    handleTimeExpiration() {
-        alert("isteklo ti je vreme");
+    get me() {
+        return UserStore.getState();
     }
 
     render() {
@@ -58,11 +58,11 @@ class UserInfo extends React.Component {
                     icon={<FastForward />}
                 />
                 {this.props.myMove &&
-                <TimerProgress length={GlobalValues.handLength}
+                <TimerProgress length={this.props.length}
                                style={this.styles.timer}
-                               onTimeExpiration={this.handleTimeExpiration}/>
+                               reset={this.props.enableNext}/>
                 }
-                <span style={this.styles.username}>{GlobalValues.username}</span>
+                <span style={this.styles.username}>{this.me.username}</span>
             </div>
         );
     }

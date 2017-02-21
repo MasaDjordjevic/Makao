@@ -66,11 +66,6 @@ class Opponents extends React.Component {
     }
 
 
-    handleTimeExpiration(player){
-        return function(){
-            alert("Igracu " + player.name + " je isteklo vreme.");
-        }
-    }
 
     get styles() {
         return {
@@ -107,7 +102,7 @@ class Opponents extends React.Component {
                         <div key={i.toString()} style={this.getStyles(i, player.online)}>
                             <CardSet height={height} width={width} back cardNumber={+player.cardNumber}/>
                             {player.username === this.props.playerOnMove &&
-                                <TimerProgress length={GlobalVariables.handLength} style={this.styles.timer} onTimeExpiration={this.handleTimeExpiration(player)}/>
+                                <TimerProgress length={this.props.moveTime} style={this.styles.timer}/>
                             }
                             <span style={this.styles.playerName}>{player.username.toLowerCase()}</span>
                         </div>
@@ -122,6 +117,7 @@ Opponents.propTypes = {
     players: React.PropTypes.array.isRequired,
     playerHeight: React.PropTypes.number,
     playerOnMove: React.PropTypes.string.isRequired,
+    moveTime: React.PropTypes.number,
 };
 
 export default Opponents;
