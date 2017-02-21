@@ -118,7 +118,7 @@ function _hmset1(arr) {
 function _hgetall(key, func) {
     return new Promise((resolve, reject) => {
         redisCli.hgetall(key, (err, reply) => {
-            if (func) {
+            if (reply && func) {
                 reply = func(reply);
             }
             err ? reject(err) : resolve(reply);
@@ -187,10 +187,15 @@ exp.removeFromLobby = (creatorUsername, playerUsername) => {
 
 exp.getLobby = (creatorUsername) => {
     return _hgetall(lobbyKey(creatorUsername), (reply) => {
-        Object.keys(reply).map((user, i) =>
-            reply[user] = JSON.parse(reply[user])
-        )
-        return reply;
+        let lobbyUsers = [];
+        Object.keys(reply).map((user, i) => {
+            reply[user] = JSON.parse(reply[user]);
+            lobbyUsers.push({
+                username: user,
+                ready: reply[user]
+            });
+        });
+        return lobbyUsers;
     });
 };
 
