@@ -1,6 +1,7 @@
 import React from 'react';
 import CardComponent from '../Card/CardComponent';
 import AnimateOnChange from 'react-animate-on-change';
+//import styles from './talon.css';
 import Card from '../Card/Card';
 
 class Talon extends React.Component {
