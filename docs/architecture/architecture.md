@@ -11,8 +11,6 @@ Slojeviti klijent-server
 
 Aplikacija ima dvoslojnu klijent-server arhitekturu. Slojevi su:
 
-![General structure](images/general-structure.png)
-
 - **klijentski sloj**
  - korisnički interfejs
  - obrada dozvoljenih poteza
@@ -20,6 +18,8 @@ Aplikacija ima dvoslojnu klijent-server arhitekturu. Slojevi su:
  - upravljanje bazom podataka
  - aplikaciona logika
 
+![General structure](images/general-structure.png)
+ 
 Odlučili smo se za dvoslojnu arhitekturu iz sledećih razloga:
 
  - Deo obrade poteza mora postojati i na klijentu, kako korisnik ne bi morao da čeka na odgovor sa servera prilikom svakog svog klika. Ovo takođe omogućava raspodelu poslova, gde klijent brine o tome da je serveru poslao potez koji je sigurno korektan a server brine o odigravanju poteza. Obrada poteza je detaljno objašnjena u ....
