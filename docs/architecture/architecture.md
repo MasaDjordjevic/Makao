@@ -11,7 +11,7 @@ Slojeviti klijent-server
 
 Aplikacija ima dvoslojnu klijent-server arhitekturu. Slojevi su:
 
-SLIKA
+![General structure](images/general-structure.png)
 
 - **klijentski sloj**
  - korisnički interfejs
