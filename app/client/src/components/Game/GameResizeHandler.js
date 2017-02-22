@@ -34,13 +34,19 @@ export default class GameResizeHandler extends React.Component {
             opponents: 150,
             showScores: true,
         };
+        if (w < 1100) {
+            dimensions.userCardsWidth = w * 0.6;
+        }
         if (w < 1000) {
-            dimensions.userCardsWidth = w * 7 / 10;
+            dimensions.userCardsWidth = w * 0.6 ;
             dimensions.talon = w * 270 / 1000;
             dimensions.opponents = w * 15 / 100;
         }
+        if (w < 930) {
+            dimensions.userCardsWidth = w * 0.6;
+        }
         if (w < 550) {
-            dimensions.userCardsWidth = w * 0.95;
+            dimensions.userCardsWidth = w * 0.6;
         }
         if (h < 750) {
             dimensions.userCardsHeight = h * 250 / 750;
