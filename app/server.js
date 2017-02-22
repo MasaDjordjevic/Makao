@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 import path from 'path';
 import redis from 'redis';
 import sio from 'socket.io';
-//import sioauth from 'socketio-auth';
 
 // external route handlers
 import authRoutes from './routes/auth';
