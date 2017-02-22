@@ -5,13 +5,13 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
 
 ##Komponente
 
-- *AppSocketWrapper* - ova komponenta je prisutna na svim stranicama aplikacije kojima prijavljeni korisnik ima pristup. Ova komponenta komunicira sa serverom kako bi omogućila korisniku da šalje i prima zahteve za prijateljstvo kao i da prima pozive za učešće u igri.
+- *HeaderSocketWrapper* - ova komponenta je prisutna na svim stranicama aplikacije kojima prijavljeni korisnik ima pristup. Ova komponenta komunicira sa serverom kako bi omogućila korisniku da šalje i prima zahteve za prijateljstvo kao i da prima pozive za učešće u igri.
 - *PlaySocketWrapper* - komponenta koja vrši komunikaciju sa serverom u slučaju kreiranja nove igre ili uključivanja u postojeću igru iz liste javnih igara.
 - *LobbySocketWrapper* - komponenta koja je zadužena za inicijalizaciju igre, mesto gde se skupljaju igrači pre nego što sama igra počne. Komunicira sa serverom kako bi ispitala stanje igre i odlučila da li je korisniku dozvoljen pristup lobiju određene igre. Omogućava praćenje stanja svih igrača koji su prisutni u lobiju, odnosno da li su spremni za početak igre ili ne. Takođe omogućava pozivanje prijatelja u igru.
 - *GameSocketWrapper* - komponenta koja je zadužena za komunikaciju sa serverom u vezi sa tokom same igre. Sve pribavljene podatke prosleđuje komponenti koja prikazuje samu igru.
 - *ChatSocketWrapper* - komponenta koja omogućuje ćaskanje u toku same igre.
 
-##AppSocketWrapper
+##HeaderSocketWrapper
 
 TODO
 
