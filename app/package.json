@@ -19,7 +19,8 @@
     "morgan": "^1.7.0",
     "redis": "^2.6.5",
     "socket.io": "^1.7.2",
-    "socketio-jwt": "^4.5.0"
+    "socketio-jwt": "^4.5.0",
+    "validator": "^6.2.1"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
