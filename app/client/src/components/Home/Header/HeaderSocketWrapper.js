@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router';
 import UserActions from '../../../actions/UserActions';
 var socket;
 
-class HomeHeaderSocketWrapper extends React.Component {
+class HeaderSocketWrapper extends React.Component {
 
     constructor() {
         super();
@@ -169,10 +169,10 @@ class HomeHeaderSocketWrapper extends React.Component {
         );
     }
 }
-export default HomeHeaderSocketWrapper;
+export default HeaderSocketWrapper;
 
-HomeHeaderSocketWrapper.defaultProps = {};
+HeaderSocketWrapper.defaultProps = {};
 
-HomeHeaderSocketWrapper.propTypes = {
+HeaderSocketWrapper.propTypes = {
     onUserLoad: React.PropTypes.func,
 };
