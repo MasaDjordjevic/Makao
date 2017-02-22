@@ -66,8 +66,32 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
 
 ##PlaySocketWrapper
 
-TODO
+###Poruke servera
 
+ - `game:list`
+ ```
+ games[]: object(Game)
+ ```
+
+ - `game:created`
+ ```
+ creator: string
+ rules: object(Rules)
+ ```
+ - `game:failed`
+ ```
+ reason: string
+ ```
+ 
+###Poruke klijenta
+
+ - `game:create`
+ ```
+ rules: object(Rules)
+ ```
+
+ - `game:list` ne šalje podatke
+ 
 ##LobbySocketWrapper
 
 TODO
