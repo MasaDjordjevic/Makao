@@ -7,7 +7,7 @@ import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import StyleIcon from 'material-ui/svg-icons/image/style';
 import CreateIcon from 'material-ui/svg-icons/content/create';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import {white, green600, grey500} from 'material-ui/styles/colors';
+import {white} from 'material-ui/styles/colors';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -17,8 +17,8 @@ import UserActions from '../../actions/UserActions';
 import AuthActions from '../../actions/AuthActions';
 import Dialog from 'material-ui/Dialog';
 import FriendAdder from './FriendAdder';
-import {red900} from 'material-ui/styles/colors';
-import InviteIcon from 'material-ui/svg-icons/maps/local-activity';
+import FriendRequestMenuItem from './Requests/FriendRequestMenuItem';
+import GameRequestMenuItem from './Requests/GameRequestMenuItem';
 
 class HomeHeader extends React.Component {
     constructor() {
@@ -30,9 +30,7 @@ class HomeHeader extends React.Component {
         };
 
         this.onChange = this.onChange.bind(this);
-
     }
-
 
     onChange() {
         let newUsername = UserStore.getState().username;
@@ -92,50 +90,6 @@ class HomeHeader extends React.Component {
         }
     }
 
-    renderFriendRequest(friendName, i) {
-        return (
-            <MenuItem key={'friend' + i} primaryText={
-                <div>
-                    <span>Friend request from&nbsp;
-                        <Link to={"/users/" + friendName}>
-                            <b>{friendName}</b>
-                        </Link>
-                    </span>
-                    <div>
-                        <FlatButton label="Accept" labelStyle={{color: green600}}
-                                    onClick={() => this.props.onRequestAccept(friendName)}/>
-                        <FlatButton label="Ignore" labelStyle={{color: grey500}}
-                                    onClick={() => this.props.onRequestIgnore(friendName)}/>
-                    </div>
-                </div>
-
-            }
-                      rightIcon={<PersonAdd />}
-            />
-        );
-    }
-
-    renderGameRequest(friendName, i) {
-        return (
-            <MenuItem key={'invite' + i}
-                      primaryText={
-                          <div>
-                    <span style={{color: red900}}>Game invite from&nbsp;
-                        <b>{friendName}</b>
-                    </span>
-                              <div>
-                                  <FlatButton label="Accept" labelStyle={{color: green600}}
-                                              onClick={() => this.props.onInviteAccept(friendName)}/>
-                                  <FlatButton label="Ignore" labelStyle={{color: grey500}}
-                                              onClick={() => this.props.onInviteIgnore(friendName)}/>
-                              </div>
-                          </div>
-
-                      }
-                      rightIcon={<InviteIcon />}
-            />
-        );
-    }
 
     handleLogout() {
         UserActions.clearUser();
@@ -203,6 +157,7 @@ class HomeHeader extends React.Component {
                                 badgeStyle={{display: this.notificationsNum ? 'flex' : 'none'}}
                                 secondary={true}
                                 style={this.styles.notifications}>
+
                                 <IconMenu
                                     iconButtonElement={
                                         <IconButton tooltip="Notifications">
@@ -214,12 +169,18 @@ class HomeHeader extends React.Component {
                                 >
                                     {
                                         gameInvites.map((username, i) =>
-                                            this.renderGameRequest(username, i)
+                                            <GameRequestMenuItem key={'game' + i}
+                                                                 requester={username}
+                                                                 onAccept={this.props.onInviteAccept}
+                                                                 onIgnore={this.props.onInviteIgnore}/>
                                         )
                                     }
                                     {
                                         friendRequests.map((from, i) =>
-                                            this.renderFriendRequest(from, i)
+                                            <FriendRequestMenuItem key={'friend' + i}
+                                                                   requester={from}
+                                                                   onAccept={this.props.onRequestAccept}
+                                                                   onIgnore={this.props.onRequestIgnore}/>
                                         )
                                     }
                                 </IconMenu>
@@ -233,7 +194,6 @@ class HomeHeader extends React.Component {
                 />
 
 
-
             </div>
         );
     }
@@ -245,4 +205,15 @@ HomeHeader.defaultProps = {
     searchResults: null,
 };
 
-HomeHeader.propTypes = {};
+HomeHeader.propTypes = {
+    onUserLoad: React.PropTypes.func,
+    onFriendSearch: React.PropTypes.func,
+    onSendRequest: React.PropTypes.func,
+    onRequestAccept: React.PropTypes.func,
+    onRequestIgnore: React.PropTypes.func,
+    onInviteAccept: React.PropTypes.func,
+    onInviteIgnore: React.PropTypes.func,
+    searchResults: React.PropTypes.object,
+    gameInvites: React.PropTypes.array,
+
+};

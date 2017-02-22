@@ -173,4 +173,6 @@ export default HomeHeaderSocketWrapper;
 
 HomeHeaderSocketWrapper.defaultProps = {};
 
-HomeHeaderSocketWrapper.propTypes = {};
+HomeHeaderSocketWrapper.propTypes = {
+    onUserLoad: React.PropTypes.func,
+};
