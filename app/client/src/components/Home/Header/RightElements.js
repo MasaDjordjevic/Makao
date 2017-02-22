@@ -148,4 +148,7 @@ RightElements.propTypes = {
     onRequestIgnore: React.PropTypes.func,
     onInviteAccept: React.PropTypes.func,
     onInviteIgnore: React.PropTypes.func,
+    onFrienSearch: React.PropTypes.func,
+    onSendRequest: React.PropTypes.func,
+    searchResults: React.PropTypes.object,
 };

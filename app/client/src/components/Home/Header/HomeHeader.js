@@ -84,6 +84,9 @@ class HomeHeader extends React.Component {
                                        onRequestIgnore={this.props.onRequestIgnore}
                                        onInviteAccept={this.props.onInviteAccept}
                                        onInviteIgnore={this.props.onInviteIgnore}
+                                       onFriendSearch={this.props.onFriendSearch}
+                                       onSendRequest={this.props.onSendRequest}
+                                       searchResults={this.props.searchResults}
                         />
                     }
                 />
