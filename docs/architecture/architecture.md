@@ -42,8 +42,8 @@ Dispečer raspolaže metodom koja nam omogućava da pošaljemo obaveštenje i pr
 
 ![Flux React architecture](images/flux-react.png)
 
-Ova arhitektura podseća na mešavinu implicintnog pozivanja i obrasca skladište jer je osnovna ideja da komponente osluškuju jedinstveni izvor podataka i reaguju na njegove promene.
-Akcije su najčešce akcije korisnika sa pogledom (komponentom) koje se prosleđuju dispečeru. Skladište reaguje na poziv, vrši obradu i menja svoje stanje. Nakon završetka izmene stanja, skladište šalje poruku da je došlo do promene njegovog stanja komponentama koje osluškuju to skladište.
+Ova arhitektura podseća na mešavinu implicitnog pozivanja i obrasca skladište jer je osnovna ideja da komponente osluškuju jedinstveni izvor podataka i reaguju na njegove promene.
+Akcije su najčešce posledica interakcije korisnika sa pogledom (komponentom) koje se prosleđuju dispečeru. Skladište reaguje na poziv, vrši obradu i menja svoje stanje. Nakon završetka izmene stanja, skladište šalje poruku da je došlo do promene njegovog stanja komponentama koje osluškuju to skladište.
 
 U slučaju komunikacije sa serverom preko poruka korišćenjem soketa, odnos sa serverom je implementiran u komponentama koje omotavaju određeni deo aplikacije i vrše razmenu poruka vezanih za taj deo. Konkretni primeri ovih komponenti navedeni su u delu *publish-subscribe*.
 
