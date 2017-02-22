@@ -1,66 +1,28 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import JoinGame from './JoinGame';
 import CreateGame from './CreateGame';
-import UserStore from '../../stores/UserStore';
-import Auth from '../../Auth';
-import io from 'socket.io-client';
-
-var socket;
 
 class PlayGame extends React.Component {
     constructor() {
         super();
         this.state = {
-            dialogOpen: false,
-            joinGameList: []
+            dialogOpen: false
         };
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleCreate = this.handleCreate.bind(this);
-        this.updateGameList = this.updateGameList.bind(this);
-    }
-
-    updateGameList(newGames) {
-        this.setState({joinGameList: newGames});
     }
 
     handleOpen = () => {
-        var that = this;
-        socket = io('/play');
-        socket.on('connect', () => {
-            socket.emit('authenticate', {token: Auth.getToken()});
-            socket.on('authenticated', () => {
-                socket.emit('game:list');
-                socket.on('game:list', (newGames) => {
-                    that.updateGameList(newGames);
-                });
-                socket.on('game:created', (game) => {
-                    browserHistory.push('/game/' + UserStore.getState().username);
-                });
-                socket.on('game:failed', (reason) => {
-                    alert('Game creation failed: ' + reason);
-                });
-            });
-            socket.on('unauthorized', (msg) => {
-                alert(JSON.stringify(msg.data));
-            })
-        });
-        that.setState({dialogOpen: true});
-    };
+        this.setState({dialogOpen: true});
+    }
 
     handleClose = () => {
         this.setState({dialogOpen: false});
-        socket.disconnect();
-    };
-
-    handleCreate = (rules) => {
-        socket.emit('game:create', rules);
-    };
+    }
 
     get styles() {
         const playButtonSize = 70;
@@ -108,10 +70,10 @@ class PlayGame extends React.Component {
                     <Tabs contentContainerStyle={this.styles.tabs}
                           tabTemplateStyle={this.styles.height100}>
                         <Tab label="Join game">
-                            <JoinGame games={this.state.joinGameList}/>
+                            <JoinGame games={this.props.gameList}/>
                         </Tab>
                         <Tab label="Create game">
-                            <CreateGame onCreate={this.handleCreate}/>
+                            <CreateGame onCreate={this.props.onCreate}/>
                         </Tab>
                     </Tabs>
                 </Dialog>
@@ -119,8 +81,8 @@ class PlayGame extends React.Component {
         );
     }
 }
+
 export default PlayGame;
 
 PlayGame.defaultProps = {};
-
 PlayGame.propTypes = {};
