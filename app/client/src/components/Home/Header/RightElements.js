@@ -11,9 +11,21 @@ import {white} from 'material-ui/styles/colors';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import PlaySocketWrapper from '../../Lobby/PlaySocketWrapper';
+import Dialog from 'material-ui/Dialog';
+import FriendAdder from '../FriendAdder';
+import PersonAddIcon from 'material-ui/svg-icons/social/person-add';
+
 
 
 class RightElements extends React.Component {
+    constructor(){
+        super();
+        this.state={
+            dialogOpen: false,
+        }
+    }
+
+
     get styles() {
         return {
             container: {
@@ -52,11 +64,35 @@ class RightElements extends React.Component {
         return totalInvites || 0;
     }
 
+    handleOpen = () => {
+        this.setState({dialogOpen: true});
+    };
+
+    handleClose = () => {
+        this.setState({dialogOpen: false});
+    };
+
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <PlaySocketWrapper style={this.styles.playButton}/>
+                <Dialog
+                    modal={false}
+                    open={this.state.dialogOpen}
+                    onRequestClose={this.handleClose}
+                    contentStyle={this.styles.addFriendDialogContent}
+                    bodyStyle={this.styles.addFriendDialogBody}
 
+                >
+                    <FriendAdder
+                        onSearch={this.props.onFriendSearch}
+                        searchResults={this.props.searchResults}
+                        onUserSelect={this.props.onSendRequest}
+                    />
+                </Dialog>
+                <PlaySocketWrapper style={this.styles.playButton}/>
+                <IconButton tooltip="Add friend" onClick={this.handleOpen}>
+                    <PersonAddIcon color={white}/>
+                </IconButton>
                 <Badge
                     badgeContent={this.notificationsNum}
                     badgeStyle={{display: this.notificationsNum ? 'flex' : 'none'}}
