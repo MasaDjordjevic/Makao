@@ -13,7 +13,37 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
 
 ##HeaderSocketWrapper
 
-TODO
+###Poruke servera
+
+ - `user:data`
+ ```
+ id: Object.id
+ username: string
+ friends[]: string
+ friendRequests[]: string
+ ```
+ 
+ - `friend:added` i  `friend:ignore` i `friend:request:received`
+ ```
+ friendUsername: string
+ ```
+ 
+ - `invite:accepted` i `invite:remove`
+ ```
+ creatorUsername: string
+ ```
+ 
+ - `invite:rejected`
+ ```
+ message: string
+ ```
+ 
+ - `friend:find`
+ ```
+ username: string
+ ```
+ 
+ - `friend:request:sent` ne šalje podatke
 
 ##PlaySocketWrapper
 
