@@ -1,7 +1,7 @@
 Poruke
 =======
 
-U ovom dokumentu bice objašnjena struktura poruka koje razmenjuju klijent i server.
+U ovom dokumentu bice objaÅ¡njena struktura poruka koje razmenjuju klijent i server.
 
 ##Chat
 
@@ -29,11 +29,11 @@ U toku same igre komuniciraju `GameSocketWrapper` na fronendu i `gameSocket` na 
 					username: string,
 					online: bool,
 					cardNumber: number
-				} //lista svih igraca
+				}
 	 cards[]: object(Card), //lista karata tog igraca
 	 talon[]: object(Card),
 	 playerOnMove: string, //username
-	 scores[]: [{username: string, score: number}, ...] //niz rundi, gde svaka runda ima niz igraca
+	 scores[]: [{username: string, score: number}, ...] //niz rundi gde svaka runda ima niz igraca
 	 moveTime: number //dozvoljeno vreme za odigravanje poteza u sekundama	 	 
  }
  ```
@@ -65,7 +65,7 @@ U toku same igre komuniciraju `GameSocketWrapper` na fronendu i `gameSocket` na 
  scores[]: [{username: string, score: number}, ...] //obuhvata rezultate cele igre
 
  ```
- - `game:kicked` i `game:everyoneLeft` ne šalju podatke
+ - `game:kicked` i `game:everyoneLeft` ne Å¡alju podatke
  
  > tip podatka object(Card) je zapravo obican JavaScript objekat koji samo odgovara strukturi klase Card koja postoji na frontendu.
 
