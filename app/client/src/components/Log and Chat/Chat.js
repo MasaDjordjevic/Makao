@@ -1,6 +1,5 @@
 import React from 'react';
 import ChatMessage from './ChatMessage';
-import ReactDOM from 'react-dom';
 import UserStore from '../../stores/UserStore';
 
 class Chat extends React.Component {
@@ -9,17 +8,6 @@ class Chat extends React.Component {
         this.state = {
             me: UserStore.getState(),
         }
-    }
-
-    componentWillUpdate() {
-        const node = ReactDOM.findDOMNode(this).parentElement;
-        this.scrollHeight = node.scrollHeight;
-        this.scrollTop = node.scrollTop;
-    }
-
-    componentDidUpdate() {
-        const node = ReactDOM.findDOMNode(this).parentElement;
-        node.scrollTop = this.scrollTop + (node.scrollHeight - this.scrollHeight);
     }
 
     get styles() {
