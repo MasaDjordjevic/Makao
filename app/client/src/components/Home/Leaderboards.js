@@ -4,7 +4,7 @@ import PublicIcon from 'material-ui/svg-icons/social/public';
 import GroupIcon from 'material-ui/svg-icons/social/group';
 import {List, ListItem} from 'material-ui/List';
 import DefultTooltip from '../DefaultTooltip/DefaultTooltip';
-import AuthStore from '../../stores/AuthStore';
+import UserStore from '../../stores/UserStore';
 import {grey400, teal800}    from 'material-ui/styles/colors';
 import {Link} from 'react-router';
 
@@ -12,7 +12,7 @@ class Leaderboards extends React.Component {
     constructor() {
         super();
         this.state = {
-            me: AuthStore.getState().user,
+            me: UserStore.getState(),
             myPosition: {
                 friends: 3,
                 global: 39,
@@ -42,7 +42,7 @@ class Leaderboards extends React.Component {
     get styles() {
         return {
             container: {
-                width: 250,
+                width: 260,
                 marginLeft: 'auto'
             }
         }
@@ -85,7 +85,7 @@ class Leaderboards extends React.Component {
     renderList(userArray, userPosition) {
         return (
             <div>
-                <List style={{height: 240, overflow: 'auto'}}>
+                <List style={{overflow: 'auto'}}>
                     {
                         userArray.map((user, i) =>
                             <Link to={"/users:" + user.id} key={user.id}>
