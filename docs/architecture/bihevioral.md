@@ -1,7 +1,7 @@
 Bihevioralni pogled
 =============
 
-U ovom dokumentu ćemo biti predstavljen biheviralni pogled na aplikaciju Makao.
+U ovom dokumentu će biti predstavljen bihevioralni pogled na aplikaciju Makao.
 
 Kroz sledeća dva dijagrama biće prikazana komunikacija klijenta i servera preko soketa i preko HTTP protokola. 
 
