@@ -4,7 +4,7 @@ import PointsWonStats from './PointsWonStats';
 import {blackColor, redColor} from '../Card/common';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
-import PlayGame from '../Lobby/PlayGame';
+import PlaySocketWrapper from '../Lobby/PlaySocketWrapper';
 
 class Home extends React.Component {
     get styles() {
@@ -96,15 +96,15 @@ class Home extends React.Component {
                         </DefaultTooltip>
 
                     </div>
-                    <PlayGame style={this.styles.playButton}/>
+                    <PlaySocketWrapper style={this.styles.playButton}/>
                     <Leaderboards/>
                 </div>
             </div>
         );
     }
 }
+
 export default Home;
 
 Home.defaultProps = {};
-
 Home.propTypes = {};
