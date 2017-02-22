@@ -5,6 +5,7 @@ import {blackColor, redColor} from '../Card/common';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
 import Logo from '../Login/Logo';
+import {white, darkWhite, lightWhite} from 'material-ui/styles/colors';
 
 class Home extends React.Component {
     get styles() {
@@ -17,6 +18,18 @@ class Home extends React.Component {
         };
         const scoreSize = 150;
         const leftSize = 40;
+        const backgroundColor = lightWhite;
+        const background = {
+            borderRadius: '1%',
+            backgroundColor: backgroundColor,
+            boxShadow: 'rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px',
+        };
+        const stats = {
+            ...background, ...{
+                padding: '2% 0 1% 3%'
+            }
+        };
+
         return {
             container: {
                 width: '100%',
@@ -28,10 +41,14 @@ class Home extends React.Component {
                 padding: '3% 0 2% 2%',
             },
             timeStats: {
-                width: 500,
+                ...stats, ...{
+                    width: 500,
+                }
             },
             pointsStats: {
-                width: 700,
+                ...stats, ...{
+                    width: 700,
+                }
             },
             leftPane: {
                 display: 'flex',
@@ -58,13 +75,12 @@ class Home extends React.Component {
                 marginLeft: -40,
             },
             scoreLeft: {
-                width: scoreSize * 2 - leftSize,
-                height: scoreSize,
-                display: 'flex',
-                borderRadius: '2%',
-                overflow: 'hidden',
-                backgroundColor: 'rgb(250, 250, 250)',
-                boxShadow: 'rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px',
+                ...background, ...{
+                    width: scoreSize * 2 - leftSize,
+                    height: scoreSize,
+                    display: 'flex',
+                    borderRadius: '2%',
+                }
             },
             score: {
                 display: 'flex',
@@ -80,7 +96,6 @@ class Home extends React.Component {
                 display: 'flex',
                 marginLeft: -(scoreSize - leftSize),
                 boxSizing: 'content-box',
-                width: 0,
                 height: 0,
                 borderLeft: (scoreSize - leftSize) + 'px solid rgba(0,0,0,0)',
                 borderTop: '0 solid',
@@ -88,7 +103,7 @@ class Home extends React.Component {
                 color: 'rgba(0,0,0,1)',
             },
             background: {
-                borderRadius: '2%',
+                borderRadius: '1%',
                 backgroundColor: 'rgb(250, 250, 250)',
                 boxShadow: 'rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px',
             },
@@ -111,22 +126,19 @@ class Home extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-
                 <div style={this.styles.leftPane}>
-                    <div style={{...this.styles.background, ...this.styles.scoreLeft}}>
-                        <DefaultTooltip tooltip="Total points won" tooltipPosition="top-right">
+                    <div style={this.styles.scoreLeft}>
+                        <DefaultTooltip tooltip="Total points won" tooltipPosition="bottom-left">
                             <div style={this.styles.score}>
                                 <span style={this.styles.scoreText}>260</span>
                             </div>
                         </DefaultTooltip>
-                        <DefaultTooltip tooltip="Games left" tooltipPosition="top-right">
+                        <DefaultTooltip tooltip="Games left" tooltipPosition="bottom-left">
                             <div style={this.styles.left}>
                                 <span style={this.styles.leftText}>3</span>
                             </div>
                         </DefaultTooltip>
-
                     </div>
-
                     <Leaderboards style={this.styles.background}/>
                 </div>
                 <div style={this.styles.charts}>

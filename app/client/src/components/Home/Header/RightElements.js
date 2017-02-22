@@ -19,6 +19,7 @@ class RightElements extends React.Component {
             container: {
                 height: '100%',
                 display: 'flex',
+                justifyContent: 'flex-end',
                 alignItems: 'center',
             },
             notifications: {
@@ -33,6 +34,9 @@ class RightElements extends React.Component {
             notificationMenuPosition: {
                 horizontal: 'left', vertical: 'top'
             },
+            playButton: {
+                marginRight: 'auto',
+            }
         }
     }
 

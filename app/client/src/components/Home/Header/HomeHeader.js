@@ -54,6 +54,8 @@ class HomeHeader extends React.Component {
             },
             rightIconElement: {
                 margin: 0,
+                width: '100%',
+                paddingLeft: '3%',
             },
             addFriendDialogContent: {
                 width: 380,
@@ -98,6 +100,7 @@ class HomeHeader extends React.Component {
                         <Link to={"/home"}>
                             <span style={this.styles.username}>{this.state.userdata.username}</span>
                         </Link>}
+                    titleStyle={{overflow: ''}}
                     iconElementLeft={
                         <IconMenu
                             iconButtonElement={

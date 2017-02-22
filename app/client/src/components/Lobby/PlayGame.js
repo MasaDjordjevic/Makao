@@ -55,7 +55,7 @@ class PlayGame extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <FlatButton label="PLAY"
+                <FlatButton label="PLAY MAKAO"
                             style={this.styles.playButton}
                             onTouchTap={this.handleOpen}/>
 
