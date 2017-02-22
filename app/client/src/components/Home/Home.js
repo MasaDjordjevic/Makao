@@ -4,7 +4,6 @@ import PointsWonStats from './PointsWonStats';
 import {blackColor, redColor} from '../Card/common';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
-import PlaySocketWrapper from '../Lobby/PlaySocketWrapper';
 
 class Home extends React.Component {
     get styles() {
@@ -69,9 +68,6 @@ class Home extends React.Component {
                 color: 'white',
                 fontSize: 45
             },
-            playButton: {
-                margin: '240px 0 0 180px',
-            }
         }
     }
 
@@ -96,7 +92,6 @@ class Home extends React.Component {
                         </DefaultTooltip>
 
                     </div>
-                    <PlaySocketWrapper style={this.styles.playButton}/>
                     <Leaderboards/>
                 </div>
             </div>

@@ -10,6 +10,8 @@ import AuthActions from '../../../actions/AuthActions';
 import {white} from 'material-ui/styles/colors';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
+import PlaySocketWrapper from '../../Lobby/PlaySocketWrapper';
+
 
 class RightElements extends React.Component {
     get styles() {
@@ -20,7 +22,8 @@ class RightElements extends React.Component {
                 alignItems: 'center',
             },
             notifications: {
-                marginRight: 20,
+                marginRight: 15,
+                marginLeft: 15 + 16,
                 padding: 6,
                 float: 'right',
             },
@@ -48,6 +51,8 @@ class RightElements extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
+                <PlaySocketWrapper style={this.styles.playButton}/>
+
                 <Badge
                     badgeContent={this.notificationsNum}
                     badgeStyle={{display: this.notificationsNum ? 'flex' : 'none'}}

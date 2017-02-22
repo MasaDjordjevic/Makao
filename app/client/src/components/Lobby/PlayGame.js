@@ -1,9 +1,10 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import JoinGame from './JoinGame';
 import CreateGame from './CreateGame';
+import {redColor} from '../Card/common';
 
 class PlayGame extends React.Component {
     constructor() {
@@ -18,20 +19,19 @@ class PlayGame extends React.Component {
 
     handleOpen = () => {
         this.setState({dialogOpen: true});
-    }
+    };
 
     handleClose = () => {
         this.setState({dialogOpen: false});
-    }
+    };
 
     get styles() {
-        const playButtonSize = 70;
 
         return {
             container: {},
             playButton: {
-                width: playButtonSize,
-                height: playButtonSize,
+                color: 'white',
+                backgroundColor: redColor,
             },
             tabs: {
                 height: 500,
@@ -55,9 +55,9 @@ class PlayGame extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <RaisedButton label="PLAY"
-                              style={this.styles.playButton}
-                              onTouchTap={this.handleOpen}/>
+                <FlatButton label="PLAY"
+                            style={this.styles.playButton}
+                            onTouchTap={this.handleOpen}/>
 
                 <Dialog
                     title="Play game"
