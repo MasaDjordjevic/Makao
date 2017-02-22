@@ -1,5 +1,4 @@
 import React from 'react';
-import io from 'socket.io-client';
 import AppBar from 'material-ui/AppBar';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
@@ -16,41 +15,24 @@ import {Link, browserHistory} from 'react-router';
 import UserStore from '../../stores/UserStore';
 import UserActions from '../../actions/UserActions';
 import AuthActions from '../../actions/AuthActions';
-import Auth from '../../Auth';
 import Dialog from 'material-ui/Dialog';
 import FriendAdder from './FriendAdder';
 import {red900} from 'material-ui/styles/colors';
 import InviteIcon from 'material-ui/svg-icons/maps/local-activity';
-import Snackbar from 'material-ui/Snackbar';
-
-var socket;
 
 class HomeHeader extends React.Component {
     constructor() {
         super();
         this.state = {
             userdata: UserStore.getState(),
-            gameInvites: [],
             // for add friend dialog
             dialogOpen: false,
-            searchResults: null,
-            // for invite reject snackbar message
-            rejectResponse: '',
-            showResponse: false
         };
 
         this.onChange = this.onChange.bind(this);
-        this.handleFriendFound = this.handleFriendFound.bind(this);
-        this.handleFriendSearch = this.handleFriendSearch.bind(this);
-        this.handleRequestSend = this.handleRequestSend.bind(this);
 
-        this.handleInviteAccept = this.handleInviteAccept.bind(this);
-        this.handleInviteIgnore = this.handleInviteIgnore.bind(this);
-        this.handleInviteReceive = this.handleInviteReceive.bind(this);
-        this.removeInviteFromList = this.removeInviteFromList.bind(this);
-
-        this.handleSnackbarClosing = this.handleSnackbarClosing.bind(this);
     }
+
 
     onChange() {
         let newUsername = UserStore.getState().username;
@@ -62,111 +44,16 @@ class HomeHeader extends React.Component {
 
     componentDidMount() {
         UserStore.listen(this.onChange);
-
-        socket = io();
-        socket.on('connect', () => {
-            socket.emit('authenticate', {token: Auth.getToken()});
-            socket.on('authenticated', () => {
-                socket.emit('user:data');
-                socket.on('user:data', (data) => {
-                    UserActions.updateUserData(data);
-                });
-                socket.on('friend:added', (newFriend) => {
-                    UserActions.removeFriendRequest(newFriend);
-                    UserActions.updateFriendList(newFriend);
-                });
-                socket.on('friend:ignore', (requestUsername) => {
-                    UserActions.removeFriendRequest(requestUsername);
-                });
-                socket.on('friend:request:sent', () => {
-                    // friend request successfuly sent
-                });
-                socket.on('friend:request:received', (sender) => {
-                    UserActions.addFriendRequest(sender);
-                });
-                socket.on('user:invite', (inviter) => {
-                    this.handleInviteReceive(inviter);
-                });
-                socket.on('invite:accepted', (creatorUsername) => {
-                    this.removeInviteFromList(creatorUsername);
-                    browserHistory.push('/game/' + creatorUsername);
-                });
-                socket.on('invite:rejected', (msg) => {
-                    this.setState({rejectResponse: msg, showResponse: true});
-                });
-                socket.on('invite:remove', (creatorUsername) => {
-                    this.removeInviteFromList(creatorUsername);
-                });
-                socket.on('friend:find', this.handleFriendFound)
-            });
-            socket.on('unauthorized', (msg) => {
-                alert(JSON.stringify(msg.data));
-            });
-        });
     }
 
     componentWillUnmount() {
         UserStore.unlisten(this.onChange);
-        socket.disconnect();
     }
 
-    //////////////////// FRIEND SEARCH ////////////////////
-    handleFriendFound(friend) {
-        this.setState({searchResults: friend});
-    }
-
-    handleFriendSearch(searchText) {
-        socket.emit('friend:find', searchText);
-    }
-
-    ///////////////////////////////////////////////////////
-
-    /////////////////// FRIEND REQUESTS ///////////////////
-    handleRequestSend(selectedUsername) {
-        socket.emit('friend:request:send', selectedUsername);
-    }
-
-    handleRequestAccept(friendUsername) {
-        socket.emit('friend:accept', friendUsername);
-    }
-
-    handleRequestIgnore(friendUsername) {
-        socket.emit('friend:ignore', friendUsername);
-    }
-
-    ///////////////////////////////////////////////////////
-
-    //////////////////// GAME INVITES /////////////////////
-    handleInviteReceive(inviter) {
-        let currInvites = this.state.gameInvites;
-        if (currInvites.indexOf(inviter) === -1) {
-            currInvites.push(inviter);
-            this.setState({gameInvites: currInvites});
-        }
-    }
-
-    handleInviteAccept(inviter) {
-        socket.emit('invite:accept', inviter);
-    }
-
-    handleInviteIgnore(inviter) {
-        socket.emit('invite:ignore', inviter);
-        this.removeInviteFromList(inviter);
-    }
-
-    removeInviteFromList(inviter) {
-        let currInvites = this.state.gameInvites;
-        let index = currInvites.indexOf(inviter);
-        if (index !== -1) {
-            currInvites.splice(index, 1);
-            this.setState({gameInvites: currInvites});
-        }
-    }
-
-    ///////////////////////////////////////////////////////
-
-    handleSnackbarClosing() {
-        this.setState({rejectResponse: ' ', showResponse: false});
+    get notificationsNum() {
+        let totalInvites = this.state.userdata.friendRequests.length;
+        totalInvites += this.props.gameInvites.length;
+        return totalInvites || 0;
     }
 
     get styles() {
@@ -216,9 +103,9 @@ class HomeHeader extends React.Component {
                     </span>
                     <div>
                         <FlatButton label="Accept" labelStyle={{color: green600}}
-                                    onClick={() => this.handleRequestAccept(friendName)}/>
+                                    onClick={() => this.props.onRequestAccept(friendName)}/>
                         <FlatButton label="Ignore" labelStyle={{color: grey500}}
-                                    onClick={() => this.handleRequestIgnore(friendName)}/>
+                                    onClick={() => this.props.onRequestIgnore(friendName)}/>
                     </div>
                 </div>
 
@@ -238,9 +125,9 @@ class HomeHeader extends React.Component {
                     </span>
                               <div>
                                   <FlatButton label="Accept" labelStyle={{color: green600}}
-                                              onClick={() => this.handleInviteAccept(friendName)}/>
+                                              onClick={() => this.props.onInviteAccept(friendName)}/>
                                   <FlatButton label="Ignore" labelStyle={{color: grey500}}
-                                              onClick={() => this.handleInviteIgnore(friendName)}/>
+                                              onClick={() => this.props.onInviteIgnore(friendName)}/>
                               </div>
                           </div>
 
@@ -264,15 +151,10 @@ class HomeHeader extends React.Component {
         this.setState({dialogOpen: false});
     };
 
-    get notificationsNum() {
-        let totalInvites = this.state.userdata.friendRequests.length;
-        totalInvites += this.state.gameInvites.length;
-        return totalInvites || 0;
-    }
 
     render() {
         const friendRequests = this.state.userdata.friendRequests;
-        const gameInvites = this.state.gameInvites;
+        const gameInvites = this.props.gameInvites;
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
                 <Dialog
@@ -284,9 +166,9 @@ class HomeHeader extends React.Component {
 
                 >
                     <FriendAdder
-                        onSearch={this.handleFriendSearch}
-                        searchResults={this.state.searchResults}
-                        onUserSelect={this.handleRequestSend}
+                        onSearch={this.props.onFriendSearch}
+                        searchResults={this.props.searchResults}
+                        onUserSelect={this.props.onSendRequest}
                     />
                 </Dialog>
                 <AppBar
@@ -350,12 +232,7 @@ class HomeHeader extends React.Component {
                     }
                 />
 
-                <Snackbar
-                    open={this.state.showResponse}
-                    message={this.state.rejectResponse}
-                    autoHideDuration={4000}
-                    onRequestClose={this.handleSnackbarClosing}
-                />
+
 
             </div>
         );
@@ -363,6 +240,9 @@ class HomeHeader extends React.Component {
 }
 export default HomeHeader;
 
-HomeHeader.defaultProps = {};
+HomeHeader.defaultProps = {
+    gameInvites: [],
+    searchResults: null,
+};
 
 HomeHeader.propTypes = {};

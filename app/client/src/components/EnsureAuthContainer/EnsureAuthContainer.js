@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import {browserHistory} from 'react-router';
-import HomeHeader from '../Home/HomeHeader';
+import HomeHeaderSocketWrapper from '../Home/HomeHeaderSocketWrapper';
 import Auth from '../../Auth';
 
 class EnsureAuthContainer extends React.Component {
@@ -41,7 +41,7 @@ class EnsureAuthContainer extends React.Component {
         } else {
             return (
                 <div style={this.styles.container}>
-                    <HomeHeader onUserLoad={this.handleUserLoaded}/>
+                    <HomeHeaderSocketWrapper onUserLoad={this.handleUserLoaded}/>
                     {this.state.userLoaded && this.props.children}
                 </div>
             )
