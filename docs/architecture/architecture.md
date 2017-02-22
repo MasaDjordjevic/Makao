@@ -25,7 +25,7 @@ Odlučili smo se za dvoslojnu arhitekturu iz sledećih razloga:
  - Deo obrade poteza mora postojati i na klijentu, kako korisnik ne bi morao da čeka na odgovor sa servera prilikom svakog svog klika. Ovo takođe omogućava raspodelu poslova, gde klijent brine o tome da je serveru poslao potez koji je sigurno korektan a server brine o odigravanju poteza. Obrada poteza je detaljno objašnjena u ....
  - Serverski sloj upravlja bazama podataka. Ovo se možda može klasifikovati kao podsloj, jer je logika za samu komunikaciju sa bazom potuno odvojena. Upravljanje redisom je moguće samo kroz njegov API a mongodb se koristi upravljanjem njegovih modela. Iako aplikaciona logika i upravljanje bazom podataka nisu striktno izdvojeni, predstavljaju dve posebne logičke celine.
 
-FLUX
+Flux
 ----------
 
 Flux je arhitektura koju Facebook koristi za kreiranje klijentskih strana web aplikacija i koja se lepo uparuje sa Reactom. Suština ovog obrasca je jednosmerni tok podataka. 
@@ -42,8 +42,8 @@ Dispečer raspolaže metodom koja nam omogućava da pošaljemo obaveštenje i pr
 
 ![Flux React architecture](images/flux-react.png)
 
-Ova arhitektura podseća na mešavinu implicintnog pozivanja i obrasca skladište jer je osnovna ideja da komponente osluškuju jedinstveni izvor podataka i reaguju na njegove promene.
-Akcije su najčešce akcije korisnika sa pogledom (komponentom) koje se prosleđuju dispečeru. Skladište reaguje na poziv, vrši obradu i menja svoje stanje. Nakon završetka izmene stanja, skladište šalje poruku da je došlo do promene njegovog stanja komponentama koje osluškuju to skladište.
+Ova arhitektura podseća na mešavinu implicitnog pozivanja i obrasca skladište jer je osnovna ideja da komponente osluškuju jedinstveni izvor podataka i reaguju na njegove promene.
+Akcije su najčešce posledica interakcije korisnika sa pogledom (komponentom) koje se prosleđuju dispečeru. Skladište reaguje na poziv, vrši obradu i menja svoje stanje. Nakon završetka izmene stanja, skladište šalje poruku da je došlo do promene njegovog stanja komponentama koje osluškuju to skladište.
 
 U slučaju komunikacije sa serverom preko poruka korišćenjem soketa, odnos sa serverom je implementiran u komponentama koje omotavaju određeni deo aplikacije i vrše razmenu poruka vezanih za taj deo. Konkretni primeri ovih komponenti navedeni su u delu *publish-subscribe*.
 
@@ -56,4 +56,4 @@ Više o konkretnim skladištima....
 Publish-subscribe
 -----------------------
 
-Razmena poruka u realnom vremenu između klijenata i servera se odvija po publish-subscribe obrascu. Svaku razmenu poruka započinje klijent koji se konektuje i traži autentikaciju na osnovu svog tokena (*JWT - JSON Web Tokens*). Server proverava identitet korisnika i odobrava mu ili zabranjuje dalju komunikaciju. Kada korisnik napravi novu igru ili uđe u postojeću, istovremeno se i uključuje u kanal razmene poruka koji je vezan za tu sobu. Ovaj obrazac je implementiran u nekoliko komponenti, a više o njima i njihovoj komunikaciji se može pročitati [ovde](message-passing.md).
+Razmena poruka u realnom vremenu između klijenata i servera se odvija po publish-subscribe obrascu. Svaku razmenu poruka započinje klijent koji se konektuje i traži autentikaciju na osnovu svog tokena (*JWT - JSON Web Tokens*). Server proverava identitet korisnika i odobrava mu ili zabranjuje dalju komunikaciju. Kada korisnik napravi novu igru ili uđe u postojeću, istovremeno se i uključuje u kanal razmene poruka koji je vezan za tu sobu. Ovaj obrazac je implementiran u nekoliko komponenata, a više o njima i njihovoj komunikaciji sa serverom se može pročitati [ovde](message-passing.md).
