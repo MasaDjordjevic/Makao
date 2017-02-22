@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import {browserHistory} from 'react-router';
-import HomeHeaderSocketWrapper from '../Home/HomeHeaderSocketWrapper';
+import HomeHeaderSocketWrapper from '../Home/Header/HomeHeaderSocketWrapper';
 import Auth from '../../Auth';
 
 class EnsureAuthContainer extends React.Component {

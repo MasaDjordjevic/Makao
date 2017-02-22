@@ -1,10 +1,10 @@
 import React from 'react';
-import Auth from '../../Auth';
+import Auth from '../../../Auth';
 import io from 'socket.io-client';
 import HomeHeader from './HomeHeader';
 import Snackbar from 'material-ui/Snackbar';
 import {browserHistory} from 'react-router';
-import UserActions from '../../actions/UserActions';
+import UserActions from '../../../actions/UserActions';
 var socket;
 
 class HomeHeaderSocketWrapper extends React.Component {
