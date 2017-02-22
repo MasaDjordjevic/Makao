@@ -45,6 +45,25 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
  
  - `friend:request:sent` ne šalje podatke
 
+###Poruke klijenta
+
+ - `friend:find`
+ ```
+ searchText: string
+ ```
+ 
+ - `friend:request:send` i `friend:accept` i `friend:ignore`
+ ```
+ username: string
+ ```
+ 
+ - `invite:accept` i `invite:ignore`
+ ```
+ inviter: string
+ ```
+
+ - `user:data` ne šalje podatke
+
 ##PlaySocketWrapper
 
 TODO
