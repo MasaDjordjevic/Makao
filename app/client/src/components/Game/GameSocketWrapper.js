@@ -108,7 +108,7 @@ class GameSocketWrapper extends React.Component {
         const myCards = this.state.myCards.slice();
 
         //ako su mu ostale samo zace pobedjuje i ne bira znak
-        if(_.every(myCards, (card) => card.number === '12')){
+        if (_.every(myCards, (card) => card.number === '12')) {
             jackPlayed = false;
         }
 
@@ -157,7 +157,10 @@ class GameSocketWrapper extends React.Component {
         let talon = _.last(this.state.openStack);
         if (talon.number === '7') {
             seven = true;
+        } else if (this.state.sevenDrawed) {
+            seven = false;
         }
+
         this.setState({players: players, sevenDrawed: seven});
     }
 
@@ -170,7 +173,7 @@ class GameSocketWrapper extends React.Component {
             users.push(user);
         }
         let newState = {players: users};
-        if(user.timeLeft) {
+        if (user.timeLeft) {
             newState.timeLeft = user.timeLeft
         }
         this.setState(newState);
@@ -188,22 +191,24 @@ class GameSocketWrapper extends React.Component {
     handleSocketInit(data) {
         let pile = [new Card(data.talon)];
         let cards = data.cards.map((card) => new Card(card));
-        this.setState({
+        let newState = {
             players: data.players,
             myCards: cards,
             openStack: pile,
             playerOnMove: data.playerOnMove,
             scores: data.scores,
-            moveTime: data.moveTime,
-            sevenDrawed: data.sevenDrawed,
-            timeLeft: data.timeLeft,
-        });
+        };
+        data.moveTime && (newState.moveTime = data.moveTime);
+        data.sevenDrawed && (newState.sevenDrawed = data.sevenDrawed);
+        data.timeLeft && (newState.timeLeft = data.timeLeft);
+        this.setState(newState);
+
         this.props.onPlayerNum(data.players.length);
     }
 
     handleNewHand(data) {
         this.handleSocketInit(data);
-        this.setState({dialogOpen: true});
+        this.setState({dialogOpen: true, timeLeft: this.state.moveTime});
         setTimeout(this.handleClose, 1000);
     }
 
