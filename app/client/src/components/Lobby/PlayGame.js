@@ -24,22 +24,23 @@ class PlayGame extends React.Component {
     handleOpen = () => {
         this.props.onOpen();
         this.setState({dialogOpen: true});
-    }
+    };
 
     handleClose = () => {
         this.setState({dialogOpen: false});
-    }
+    };
 
     handleCreate = (rules) => {
         this.handleClose();
         this.props.onCreate(rules);
-    }
+    };
 
     handleJoin = (selectedGame) => {
         this.handleClose();
         if (!this.props.gameList[selectedGame]) return;
+        browserHistory.push('/');
         browserHistory.push('/game/' + this.props.gameList[selectedGame].creator);
-    }
+    };
 
     get styles() {
 

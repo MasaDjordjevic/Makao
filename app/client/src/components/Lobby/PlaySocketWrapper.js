@@ -25,11 +25,11 @@ class PlaySocketWrapper extends React.Component {
 
     handleCreate = (rules) => {
         socket.emit('game:create', rules);
-    }
+    };
 
     handleOpen = () => {
         socket.emit('game:list');
-    }
+    };
 
     componentDidMount() {
         let thisComp = this;
@@ -41,7 +41,8 @@ class PlaySocketWrapper extends React.Component {
                 thisComp.updateGameList(newGames);
             });
             socket.on('game:created', (game) => {
-                browserHistory.push('/game/' + UserStore.getState().username);
+                browserHistory.push('/');
+                browserHistory.push( '/game/' + UserStore.getState().username);
             });
             socket.on('game:failed', (reason) => {
                 alert('Game creation failed: ' + reason);
