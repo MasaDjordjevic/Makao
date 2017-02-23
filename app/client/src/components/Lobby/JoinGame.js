@@ -27,7 +27,7 @@ class JoinGame extends React.Component {
                             <TableHeaderColumn>Rules</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody displayRowCheckbox={false} showRowHover={true}>
                         {
                             this.props.gameList.map((game, i) =>
                                 <TableRow key={game.creator}>
