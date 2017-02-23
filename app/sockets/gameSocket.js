@@ -39,7 +39,7 @@ module.exports = function (socket, io) {
                 });
                 let talon = _.last(game.openStack);
                 let timer = game.players[game.playerOnMove].timer;
-                let timeLeft = timer ? game.rules.timeLimit - (new Date() - new Date(timer))/1000 : game.rules.timeLimit;
+                let timeLeft = timer ? game.rules.timeLimit - (new Date() - new Date(timer)) / 1000 : game.rules.timeLimit;
                 socket.emit('init', {
                     players: players,
                     cards: cards,
@@ -55,7 +55,7 @@ module.exports = function (socket, io) {
                     username: username,
                     online: true,
                     cardNumber: 1,
-                    timeLeft: game.playerOnMove === username ? timeLeft: null,
+                    timeLeft: game.playerOnMove === username ? timeLeft : null,
                 });
             });
         });
@@ -67,7 +67,7 @@ module.exports = function (socket, io) {
         socket.to(creatorName).broadcast.emit(key, value);
     }
 
-    function setTimer(){
+    function setTimer() {
         timer = setTimeout(timeUp, timeLimit);
         Gameplay.setPlayerTimer(creatorName, name, new Date());
     }
@@ -77,7 +77,7 @@ module.exports = function (socket, io) {
 
     }
 
-    function emitEveryoneLeft(){
+    function emitEveryoneLeft() {
         emitToEveryone('game:everyoneLeft', null);
     }
 
@@ -94,7 +94,7 @@ module.exports = function (socket, io) {
         Gameplay.playMove(creatorName, name, card).then((data) => {
             socket.to(creatorName).broadcast.emit('play:move', name, card);
             emitLog(data.log);
-            if(data.everyoneLeft){
+            if (data.everyoneLeft) {
                 emitEveryoneLeft();
             }
             if (data.gameOver) {
@@ -138,20 +138,20 @@ module.exports = function (socket, io) {
             Gameplay.getNextPlayer(creatorUsername, playerUsername).then((passData) => {
                 Games.getGameSockets(creatorUsername).then((sockets) => {
                     io.of('/game').to(sockets[playerUsername]).emit('play:get', data.cards);
-                    if(data.kicked){
+                    if (data.kicked) {
                         io.of('/game').to(sockets[playerUsername]).emit('game:kicked', data.cards);
                     }
                     Object.keys(sockets).forEach((username) => {
-                        if(username === playerUsername){
+                        if (username === playerUsername) {
                             return;
                         }
                         io.of('/game').to(sockets[username]).emit('play:draw', playerUsername, data.cardsNumber);
                     });
                     emitLog(data.log);
                     emitLog(passData.logs);
-                    if(passData.gameOver){
+                    if (passData.gameOver) {
                         emitEveryoneLeft();
-                    }else {
+                    } else {
                         emitPlayerOnMove(creatorName, passData.playerOnMove);
                     }
 
@@ -175,9 +175,9 @@ module.exports = function (socket, io) {
     socket.on('play:pass', () => {
         clearTimeout(timer);
         Gameplay.getNextPlayer(creatorName, name).then((data) => {
-            if(data.gameOver){
+            if (data.gameOver) {
                 emitEveryoneLeft();
-            }else {
+            } else {
                 emitPlayerOnMove(creatorName, data.playerOnMove);
                 emitLog(data.logs);
             }
