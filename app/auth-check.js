@@ -6,12 +6,11 @@ let exp = {};
 // helper function to extract only necessary
 // user data for returning callbacks
 function getUserInfo(userModel) {
-    let userInfo = {
+    return {
         id: userModel._id,
         username: userModel.username,
         friends: userModel.friends
-    }
-    return userInfo;
+    };
 }
 
 exp.loginAuth = (data, callback) => {
@@ -44,7 +43,7 @@ exp.signupAuth = (data, callback) => {
         email : data.email.trim(),
         username : data.username.trim(),
         password : data.password.trim()
-    }
+    };
 
     User.findByEmail(userData.email, (err, user) => {
         if (err) { return callback(err); }

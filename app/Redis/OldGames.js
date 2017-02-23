@@ -324,7 +324,7 @@ exp.getLobby = (creatorUsername) => {
     return _hgetall(lobbyKey(creatorUsername), (reply) => {
         Object.keys(reply).map((user, i) =>
             reply[user] = JSON.parse(reply[user])
-        )
+        );
         return reply;
     });
 };

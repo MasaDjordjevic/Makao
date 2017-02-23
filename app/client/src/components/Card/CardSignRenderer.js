@@ -4,15 +4,15 @@ class CardSignRenderer extends React.Component {
     render() {
         const type = this.props.type.toString();
         const color = this.props.color;
-        var colorOne;
-        var colorTwo;
-        var colorThree;
-        var colorFour;
-        var colorFive;
-        var colorSix;
-        var colorSeven;
-        var colorEight;
-        var svgRet;
+        let colorOne;
+        let colorTwo;
+        let colorThree;
+        let colorFour;
+        let colorFive;
+        let colorSix;
+        let colorSeven;
+        let colorEight;
+        let svgRet;
         if (type === '12') {
             if (color === 'red') {
                 colorOne = '#d74b4c';

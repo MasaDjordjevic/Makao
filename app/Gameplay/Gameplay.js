@@ -146,8 +146,7 @@ function determineNextPlayer(game, playerUsername, card, newLogs) {
 function determineDrawCount(game) {
     let lastCard = _.last(game.openStack);
     if (lastCard.number === '2' && lastCard.symbol === 'diamonds') { //dvojka karo
-        let num = _.takeRightWhile(game.drawStack, (card) => card.symbol !== 'diamonds').length + 1; //vuce sve do kocke
-        return num;
+        return _.takeRightWhile(game.drawStack, (card) => card.symbol !== 'diamonds').length + 1; //vuce sve do kocke
     } else if (lastCard.number !== '7') {
         return 1;
     } else {

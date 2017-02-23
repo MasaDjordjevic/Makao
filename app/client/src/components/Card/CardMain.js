@@ -34,7 +34,7 @@ class CardMain extends React.Component {
         } else {
             const symbolSize = num === '1' ? cardHeight / 3 : cardHeight / 8;
             const middle = Math.ceil(num / 2);
-            var symArr = [];
+            let symArr = [];
             for (let i = 0; i < num; i++) {
                 symArr.push(<CardSymbol containerSize={symbolSize}
                                         symbol={this.props.card.symbol}

@@ -47,8 +47,7 @@ class Opponents extends React.Component {
     }
 
     get total() {
-        var a = this.props.players.length;
-        return a;
+        return this.props.players.length;
     }
 
     getEllipseLength(rx, ry) {

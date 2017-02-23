@@ -93,7 +93,7 @@ User.count({}, (err, count) => {
                 friends: ['masa', 'mitic']}),
         new User({username: "mika", email: "mika", password: "mika",
                 friends: ['masa', 'mitic', 'pera']})
-    ]
+    ];
 
     users.map(x => User.createUser(x, () => {}));
 });

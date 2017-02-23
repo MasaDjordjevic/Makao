@@ -25,6 +25,6 @@ UserStatsSchema.statics.updateStats = function(statsId, data, callback) {
             return callback(null);
         });
     });
-}
+};
 
 module.exports = mongoose.model('UserStats', UserStatsSchema);

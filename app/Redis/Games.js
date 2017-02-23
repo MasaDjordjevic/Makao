@@ -163,7 +163,7 @@ exp.remPendingGame = (creatorUsername) => {
 
 exp.remStartedGame = (creatorUsername) => {
     return _srem('games:started', creatorUsername);
-}
+};
 
 exp.getGame = (creatorUsername) => {
     return _get(gameKey(creatorUsername), (game) => JSON.parse(game));
@@ -205,7 +205,7 @@ exp.setPlayerLobbyStatus = (creatorUsername, playerUsername, ready) => {
 
 exp.delGameInvites = (creatorUsername) => {
     return _del(invitesKey(creatorUsername));
-}
+};
 
 exp.addInvite = (creatorUsername, inviteUsername) => {
     return new Promise((resolve, reject) => {

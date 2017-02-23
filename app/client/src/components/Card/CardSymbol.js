@@ -4,7 +4,7 @@ import {blackColor, redColor, isBlack} from './common';
 class CardSymbol extends React.Component {
     get styles() {
         const containerSize = this.props.containerSize;
-        var style = {
+        let style = {
             container: {
                 width: containerSize,
                 height: containerSize,

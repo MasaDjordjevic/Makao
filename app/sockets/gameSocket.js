@@ -6,10 +6,10 @@ import _ from 'lodash';
 
 module.exports = function (socket, io) {
 
-    var name = '';
-    var creatorName = '';
-    var timer;
-    var timeLimit;
+    let name = '';
+    let creatorName = '';
+    let timer;
+    let timeLimit;
     console.log('user connected to gameSocket');
 
     socket.on('join', (creatorUsername, username) => {

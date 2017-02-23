@@ -25,7 +25,7 @@ class PlaySocketWrapper extends React.Component {
 
     handleCreate = (rules) => {
         socket.emit('game:create', rules);
-    }
+    };
 
     componentDidMount() {
         var thisComp = this;

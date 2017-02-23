@@ -15,7 +15,7 @@ module.exports = function (socket, io) {
                 username: user.username,
                 friends: user.friends,
                 friendRequests: user.friendRequests
-            }
+            };
             socket.emit('user:data', userData);
         });
     });

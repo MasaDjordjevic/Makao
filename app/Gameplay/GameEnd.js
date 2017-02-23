@@ -48,7 +48,7 @@ exp.handleGameEnd = (game) => {
                     winner: gameData.winner === username,
                     timeSpent: gameData.duration,
                     gameScore: playerScores[username]
-                }
+                };
                 User.findByUsername(username, (err, user) => {
                     Stats.updateStats(user.stats, userGameStats , (err) => {
                         if (err) { console.log(err) }

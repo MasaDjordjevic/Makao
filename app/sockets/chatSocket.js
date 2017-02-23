@@ -3,8 +3,8 @@ import Chat from '../Redis/Chat';
 module.exports = function (socket) {
     console.log('user connected to chatSocket');
 
-    var name = '';
-    var creatorName = '';
+    let name = '';
+    let creatorName = '';
 
     socket.on('subscribe', (creatorUsername, playerUsername) => {
         creatorName = creatorUsername;

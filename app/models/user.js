@@ -27,19 +27,19 @@ UserSchema.statics.createUser = function(newUserData, callback) {
             return callback(null);
         });
     });
-}
+};
 
 UserSchema.statics.findByUsername = function(username, callback) {
     this.findOne({ username: username}, (err, user) => {
         return callback(err, user);
     });
-}
+};
 
 UserSchema.statics.findByEmail = function(email, callback) {
     this.findOne({ email: email}, (err, user) => {
         return callback(err, user);
     });
-}
+};
 
 UserSchema.statics.addFriend = function(username, friendUsername, callback) {
     this.findByUsername(username, (err, user) => {
@@ -54,7 +54,7 @@ UserSchema.statics.addFriend = function(username, friendUsername, callback) {
             return callback(null);
         });
     });
-}
+};
 
 UserSchema.statics.addFriendRequest = function(username, sender, callback) {
     this.findByUsername(username, (err, user) => {
@@ -69,7 +69,7 @@ UserSchema.statics.addFriendRequest = function(username, sender, callback) {
             return callback(null);
         });
     });
-}
+};
 
 UserSchema.statics.removeFriendRequest = function(username, friendUsername, callback) {
     this.findByUsername(username, (err, user) => {
@@ -83,7 +83,7 @@ UserSchema.statics.removeFriendRequest = function(username, friendUsername, call
             return callback(null);
         });
     });
-}
+};
 
 UserSchema.statics.insertGame = function(username, gameId, callback) {
     this.findByUsername(username, (err, user) => {
@@ -94,6 +94,6 @@ UserSchema.statics.insertGame = function(username, gameId, callback) {
             return callback(null);
         });
     });
-}
+};
 
 module.exports = mongoose.model('User', UserSchema);

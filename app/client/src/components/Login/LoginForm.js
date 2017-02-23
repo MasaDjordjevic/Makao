@@ -50,7 +50,7 @@ class LoginForm extends React.Component {
         }
 
         if (!this.state.password) {
-            this.setState({passwordError: "This field is required."})
+            this.setState({passwordError: "This field is required."});
             errNo++;
         }
 
