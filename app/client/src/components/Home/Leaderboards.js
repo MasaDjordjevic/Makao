@@ -99,17 +99,17 @@ class Leaderboards extends React.Component {
                 <Tabs style={{width: '100%', overflow: 'auto'}}>
                     <Tab
                         icon={
-                            <DefultTooltip tooltip="friends" tooltipPosition="bottom-center">
-                                <GroupIcon color={teal800}/>
-                            </DefultTooltip>}>
-                        {this.renderList(this.props.leaderboards.friends, this.props.leaderboards.meFriends)}
-                    </Tab>
-                    <Tab
-                        icon={
                             <DefultTooltip tooltip="global" tooltipPosition="bottom-center">
                                 <PublicIcon color={teal800}/>
                             </DefultTooltip>}>
                         {this.renderList(this.props.leaderboards.global, this.props.leaderboards.meGlobal)}
+                    </Tab>
+                    <Tab
+                        icon={
+                            <DefultTooltip tooltip="friends" tooltipPosition="bottom-center">
+                                <GroupIcon color={teal800}/>
+                            </DefultTooltip>}>
+                        {this.renderList(this.props.leaderboards.friends, this.props.leaderboards.meFriends)}
                     </Tab>
                 </Tabs>
             </div>
