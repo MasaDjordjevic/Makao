@@ -75,7 +75,8 @@ class ChatSocketWrapper extends React.Component {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
+                width: '100%',
             }
         }
     }
