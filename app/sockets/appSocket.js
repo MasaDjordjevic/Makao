@@ -23,7 +23,9 @@ module.exports = function (socket, io) {
 
     socket.on('friend:accept', (friendUsername) => {
         User.addFriend(socketUser, friendUsername, (err) => {
-            socket.emit('friend:added', friendUsername);
+            User.addFriend(friendUsername, socketUser, (err) => {
+                socket.emit('friend:added', friendUsername);
+            });
         });
     });
 
