@@ -94,7 +94,35 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
  
 ##LobbySocketWrapper
 
-TODO
+###Poruke servera
+
+ - `init`
+ ```
+ creator: string
+ users[]: object({username, ready})
+ rules: object(Rules)
+ ```
+
+ - `user:joined` i `user:left` i `user:ready` i `user:invite`
+ ```
+ username: string
+ ```
+ 
+ - `game:started` ne šalje podatke
+ 
+###Poruke klijenta
+
+ - `join`
+ ```
+ username: string
+ ```
+
+ - `user:invite` i `user:ready`
+ ```
+ username: string
+ ```
+
+ - `game:start` ne šalje podatke
 
 ##ChatSocketWrapper
 
