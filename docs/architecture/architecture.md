@@ -22,8 +22,8 @@ Aplikacija ima dvoslojnu klijent-server arhitekturu. Slojevi su:
  
 Odlučili smo se za dvoslojnu arhitekturu iz sledećih razloga:
 
- - Deo obrade poteza mora postojati i na klijentu, kako korisnik ne bi morao da čeka na odgovor sa servera prilikom svakog svog klika. Ovo takođe omogućava raspodelu poslova, gde klijent brine o tome da je serveru poslao potez koji je sigurno korektan a server brine o odigravanju poteza. Obrada poteza je detaljno objašnjena u ....
- - Serverski sloj upravlja bazama podataka. Ovo se možda može klasifikovati kao podsloj, jer je logika za samu komunikaciju sa bazom potuno odvojena. Upravljanje redisom je moguće samo kroz njegov API a mongodb se koristi upravljanjem njegovih modela. Iako aplikaciona logika i upravljanje bazom podataka nisu striktno izdvojeni, predstavljaju dve posebne logičke celine.
+ - Deo obrade poteza mora postojati i na klijentu, kako korisnik ne bi morao da čeka na odgovor sa servera prilikom svakog svog klika. Ovo takođe omogućava raspodelu poslova, gde klijent brine o tome da je serveru poslao potez koji je sigurno korektan a server brine o odigravanju poteza.
+ - Serverski sloj upravlja bazama podataka. Ovo se možda može klasifikovati kao podsloj, jer je logika za samu komunikaciju sa bazom potuno odvojena. Upravljanje redisom je moguće samo kroz njegov API a mongodb se koristi upravljanjem njegovim modelima. Iako aplikaciona logika i upravljanje bazom podataka nisu striktno izdvojeni, predstavljaju dve posebne logičke celine.
 
 Flux
 ----------
@@ -45,13 +45,12 @@ Dispečer raspolaže metodom koja nam omogućava da pošaljemo obaveštenje i pr
 Ova arhitektura podseća na mešavinu implicitnog pozivanja i obrasca skladište jer je osnovna ideja da komponente osluškuju jedinstveni izvor podataka i reaguju na njegove promene.
 Akcije su najčešce posledica interakcije korisnika sa pogledom (komponentom) koje se prosleđuju dispečeru. Skladište reaguje na poziv, vrši obradu i menja svoje stanje. Nakon završetka izmene stanja, skladište šalje poruku da je došlo do promene njegovog stanja komponentama koje osluškuju to skladište.
 
+U slučaju prijavljivanja i registrovanja, komunikacija sa serverom se odvija putem HTTP protokola. U tom slučaju akcije vrše komunikaciju sa serverom i prosleđuju rezultat skladištu.
+
 U slučaju komunikacije sa serverom preko poruka korišćenjem soketa, odnos sa serverom je implementiran u komponentama koje omotavaju određeni deo aplikacije i vrše razmenu poruka vezanih za taj deo. Konkretni primeri ovih komponenti navedeni su u delu *publish-subscribe*.
 
 ![Flux sockets](images/flux-sockets.png)
 
-U slučaju prijavljivanja i registrovanja, komunikacija sa serverom ne ide preko sistema poruka već preko HTTP protokola. U tom slučaju akcije vrše komunikaciju sa serverom i prosleđuju rezultat skladištu.
-
-Više o konkretnim skladištima....
 
 Publish-subscribe
 -----------------------
