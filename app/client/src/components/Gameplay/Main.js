@@ -4,7 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import mainMuiTheme from '../../MainMuiTheme';
 
 import GameResizeHandler from '../Game/GameResizeHandler';
-import GameInitializer from './GameInitializer';
+import LobbySocketWrapper from './LobbySocketWrapper';
 import RightSidebar from './RightSidebar';
 import NoAccess from '../NoAccess';
 import Auth from '../../Auth';
@@ -78,8 +78,8 @@ class Main extends React.Component {
                             {this.state.gameStarted ?
                                 <GameResizeHandler creatorUsername={this.props.params.username}
                                                    socket={this.state.socket}/> :
-                                <GameInitializer creatorUsername={this.props.params.username}
-                                                 onGameStart={this.handleGameStart}/>}
+                                <LobbySocketWrapper creatorUsername={this.props.params.username}
+                                                    onGameStart={this.handleGameStart}/>}
                         </div>
                         <RightSidebar creatorUsername={this.props.params.username} socket={this.state.socket}/>
                     </div>

@@ -5,11 +5,6 @@ import Lobby from '../Lobby/Lobby';
 import Rules from '../Lobby/Rules';
 import UserStore from '../../stores/UserStore';
 import GameInitStore from '../../stores/GameInitStore';
-import GameInitActions from '../../actions/GameInitActions';
-import io from 'socket.io-client';
-import Auth from '../../Auth';
-
-var socket;
 
 class GameInitializer extends React.Component {
     constructor() {
@@ -22,9 +17,6 @@ class GameInitializer extends React.Component {
         };
 
         this.onChange = this.onChange.bind(this);
-
-        this.handleFriendInvite = this.handleFriendInvite.bind(this);
-        this.handleGameStart = this.handleGameStart.bind(this);
         this.handleReady = this.handleReady.bind(this);
     }
 
@@ -35,53 +27,17 @@ class GameInitializer extends React.Component {
         });
     }
 
-    handleFriendInvite(username) {
-        socket.emit('user:invite', username);
-    }
-
-    handleGameStart() {
-        socket.emit('game:start');
-    };
-
     handleReady() {
-        socket.emit('user:ready', UserStore.getState().username);
-    };
+        this.setState({ showReady: false });
+        this.props.onReady();
+    }
 
     componentDidMount() {
         GameInitStore.listen(this.onChange);
-        var that = this;
-
-        socket = io('/lobby');
-        socket.on('connect', () => {
-            socket.emit('authenticate', {token: Auth.getToken()});
-            socket.on('authenticated', () => {
-                socket.emit('join', that.props.creatorUsername);
-                socket.on('init', (data) => {
-                    GameInitActions.initLobbyAndRules(data);
-                });
-                socket.on('user:ready', (readyUsername) => {
-                    GameInitActions.userReady(readyUsername);
-                    if (UserStore.getState().username === readyUsername) {
-                        that.setState({showReady: false});
-                    }
-                });
-                socket.on('user:joined', (username) => {
-                    that.setState({allowStart: false});
-                    GameInitActions.userJoined(username);
-                });
-                socket.on('user:left', (username) => {
-                    GameInitActions.userLeft(username);
-                });
-                socket.on('game:started', () => {
-                    that.props.onGameStart();
-                });
-            });
-        });
     }
 
     componentWillUnmount() {
         GameInitStore.unlisten(this.onChange);
-        socket.disconnect();
     }
 
     get styles() {
@@ -121,7 +77,7 @@ class GameInitializer extends React.Component {
         const inviteFriends =
             <div style={this.styles.section}>
                 <h3 style={this.styles.title}>Invite friends</h3>
-                <FriendPicker onPick={this.handleFriendInvite}/>
+                <FriendPicker onPick={this.props.onInvite}/>
             </div>;
 
         const rules =
@@ -142,11 +98,11 @@ class GameInitializer extends React.Component {
                         {!myGame && this.state.showReady &&
                         <RaisedButton primary={true}
                                       label="ready"
-                                      onClick={this.handleReady}/> }
+                                      onClick={this.props.onReady}/> }
                     </div>
                 </div>
                 {myGame &&
-                <RaisedButton onClick={this.handleGameStart}
+                <RaisedButton onClick={this.props.onStart}
                               label="Start game"
                               primary={allowStart}
                               disabled={!allowStart}/> }
@@ -154,10 +110,10 @@ class GameInitializer extends React.Component {
         );
     }
 }
+
 export default GameInitializer;
 
 GameInitializer.defaultProps = {};
-
 GameInitializer.propTypes = {
     onGameStart: React.PropTypes.func
 };

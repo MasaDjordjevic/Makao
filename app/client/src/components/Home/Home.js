@@ -1,21 +1,21 @@
 import React from 'react';
 import TimeSpentStats from './TimeSpentStats';
 import PointsWonStats from './PointsWonStats';
-import {blackColor, redColor} from '../Card/common';
+import { blackColor } from '../Card/common';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
 import Logo from '../Login/Logo';
-import {white, darkWhite, lightWhite} from 'material-ui/styles/colors';
+import { lightWhite } from 'material-ui/styles/colors';
 
 class Home extends React.Component {
     get styles() {
-        const centerDiv = {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
-            borderRadius: '3%',
-        };
+        // const centerDiv = {
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     borderShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
+        //     borderRadius: '3%',
+        // };
         const scoreSize = 150;
         const leftSize = 40;
         const backgroundColor = lightWhite;

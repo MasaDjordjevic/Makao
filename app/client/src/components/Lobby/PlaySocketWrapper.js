@@ -12,7 +12,6 @@ class PlaySocketWrapper extends React.Component {
         super();
 
         this.state = {
-            username: UserStore.getState().username,
             gameList: []
         };
 
@@ -38,7 +37,7 @@ class PlaySocketWrapper extends React.Component {
                 thisComp.updateGameList(newGames);
             });
             socket.on('game:created', (game) => {
-                browserHistory.push('/game/' + this.state.username);
+                browserHistory.push('/game/' + UserStore.getState().username);
             });
             socket.on('game:failed', (reason) => {
                 alert('Game creation failed: ' + reason);
