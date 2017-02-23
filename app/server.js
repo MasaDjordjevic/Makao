@@ -82,6 +82,8 @@ User.count({}, (err, count) => {
     User.remove({}, () => {});
     Stats.remove({}, () => {});
     var users = [
+        new User({username: "marko", email: "marko", password: "marko",
+                friends: ['masa', 'mitic', 'pera']}),
         new User({username: "jajac", email: "jajac", password: "jajac",
                 friends: ['mitic', 'pera', 'mika', 'masa'],
                 friendRequests: ['kristina']}),
@@ -95,8 +97,6 @@ User.count({}, (err, count) => {
                 friends: ['masa', 'mitic', 'pera']}),
         new User({username: "darko", email: "darko", password: "darko",
                 friends: ['jajac', 'mitic']}),
-        new User({username: "marko", email: "marko", password: "marko",
-                friends: ['masa', 'mitic', 'pera']}),
         new User({username: "kristina", email: "kristina", password: "kristina",
                 friends: ['masa', 'mika', 'darko']}),
         new User({username: "jovana", email: "jovana", password: "jovana",
@@ -134,7 +134,11 @@ User.count({}, (err, count) => {
     statsList[2].gamesLeft = 2;
     statsList[2].gamesWon = 2;
 
-    users.map((x, i) => User.createUser(x, statsList[i % 3], () => {}));
+    for (var i = 0; i < users.length; i++) {
+        User.createUser(users[i], statsList[i % 3], () => {});
+    }
+
+    // users.map((x, i) => User.createUser(x, statsList[i % 3], () => {}));
 });
 
 // forward /auth/* requests to the external route handler (login and signup)

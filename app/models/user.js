@@ -28,10 +28,7 @@ UserSchema.statics.createUser = function(newUserData, userStats, callback) {
     }
     stats.save((err) => {
         newUserData.stats = stats._id;
-        newUserData.save(newUserData, (err) => {
-            if (err) { return callback(err) }
-            return callback(null);
-        });
+        newUserData.save(newUserData);
     });
 };
 
