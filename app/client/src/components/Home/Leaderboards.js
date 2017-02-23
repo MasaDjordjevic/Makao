@@ -5,7 +5,7 @@ import GroupIcon from 'material-ui/svg-icons/social/group';
 import {List, ListItem} from 'material-ui/List';
 import DefultTooltip from '../DefaultTooltip/DefaultTooltip';
 import UserStore from '../../stores/UserStore';
-import {grey400, teal800}    from 'material-ui/styles/colors';
+import {teal800}    from 'material-ui/styles/colors';
 import {Link} from 'react-router';
 
 class Leaderboards extends React.Component {
@@ -24,6 +24,11 @@ class Leaderboards extends React.Component {
                 marginLeft: 'auto',
 
                 overflow: 'visible',
+            },
+            user: {
+                display: 'flex',
+                justifyContent: 'space-between'
+
             }
         }
     }
@@ -32,7 +37,6 @@ class Leaderboards extends React.Component {
     getFriendAttributes(user) {
         return user.friend ? {
                 style: {fontWeight: 600},
-                rightIcon: <GroupIcon color={grey400}/>
             } : {};
     }
 
@@ -70,7 +74,13 @@ class Leaderboards extends React.Component {
                         userArray.map((user, i) =>
                             <Link to={"/users/" + user.username} key={i}>
                                 <ListItem
-                                    primaryText={(i + 1).toString() + ". " + user.username}
+                                    primaryText={
+                                        <div style={this.styles.user}>
+                                            <span>{(i + 1).toString() + ". " + user.username}</span>
+                                            <span>{user.score}</span>
+                                        </div>
+
+                                    }
                                     {...this.getFriendAttributes(user)}
                                     {...this.renderMyScoreAttributes(i, userPosition)}/>
                             </Link>
