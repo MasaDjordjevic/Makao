@@ -17,9 +17,9 @@ UserStatsSchema.statics.getStats = function(username, callback) {
         if (err) { return callback(err) }
         this.findById(user.stats, (err, stats) => {
             let userStats = {
-                scores: stats.scores,
+                scores: stats.scores.slice(-7),
                 totalScore: stats.totalScore,
-                timeSpent: stats.timeSpent,
+                timeSpent: stats.timeSpent.slice(-7),
                 totalTimeSpent: stats.totalTimeSpent,
                 averageTimeSpent: stats.averageTimeSpent,
                 gamesPlayed: stats.gamesPlayed,
@@ -41,7 +41,9 @@ UserStatsSchema.statics.updateStats = function(statsId, data, callback) {
         stats.totalScore += data.gameScore;
         stats.timeSpent[stats.timeSpent.length - 1] += data.timeSpent;
         stats.totalTimeSpent += data.timeSpent;
-        stats.averageTimeSpent = Math.round(stats.totalTimeSpent / stats.gamesPlayed);
+        let lastSeven = stats.timeSpent.slice(-7);
+        let lastSevenSum = lastSeven.reduce((a, b) => a + b, 0);
+        stats.averageTimeSpent = Math.round(lastSevenSum / 7);
 
         stats.markModified('scores');
         stats.markModified('timeSpent');
