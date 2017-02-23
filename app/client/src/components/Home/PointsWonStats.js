@@ -3,14 +3,6 @@ import {Bar} from 'react-chartjs-2';
 import {redColor} from '../Card/common';
 
 class PointsWonStats extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            pointsWonLastWeek: [100, 250, 240, 10, 800, 410, 170],
-        }
-    }
-
     get styles() {
         return {
             container: {}
@@ -23,10 +15,6 @@ class PointsWonStats extends React.Component {
         return days.slice(today).concat(days.slice(0, today));
     }
 
-    getAverageData() {
-        return Array(7).fill(null).map((_, i) => this.state.timeSpentAverage);
-    }
-
     render() {
         const mainColor = redColor;// '#EC932F';
         const data = {
@@ -34,7 +22,7 @@ class PointsWonStats extends React.Component {
             datasets: [{
                 label: 'Points won last week',
                 type:'line',
-                data: this.state.pointsWonLastWeek,
+                data: this.props.scoresArray,
                 fill: false,
                 backgroundColor: mainColor,
                 pointBorderColor: mainColor,
@@ -98,6 +86,8 @@ class PointsWonStats extends React.Component {
 }
 export default PointsWonStats;
 
-PointsWonStats.defaultProps = {};
+PointsWonStats.defaultProps = {
+    scoresAverage: [0]
+};
 
 PointsWonStats.propTypes = {};

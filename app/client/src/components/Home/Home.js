@@ -1,21 +1,31 @@
 import React from 'react';
 import TimeSpentStats from './TimeSpentStats';
 import PointsWonStats from './PointsWonStats';
-import { blackColor } from '../Card/common';
+import {blackColor} from '../Card/common';
 import DefaultTooltip from '../DefaultTooltip/DefaultTooltip';
 import Leaderboards from './Leaderboards';
 import Logo from '../Login/Logo';
-import { lightWhite } from 'material-ui/styles/colors';
+import {lightWhite} from 'material-ui/styles/colors';
+import UserStore from '../../stores/UserStore';
 
 class Home extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            stats: {
+                averageTimeSpent: 0,
+                timeSpent: [0],
+                scores: [0],
+                totalScore: 0,
+                gamesLeft: 0,
+            },
+        };
+
+        this.onChange = this.onChange.bind(this);
+    }
+
     get styles() {
-        // const centerDiv = {
-        //     display: 'flex',
-        //     justifyContent: 'center',
-        //     alignItems: 'center',
-        //     borderShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
-        //     borderRadius: '3%',
-        // };
         const scoreSize = 150;
         const leftSize = 40;
         const backgroundColor = lightWhite;
@@ -126,6 +136,34 @@ class Home extends React.Component {
         }
     }
 
+
+    padLeftArray(array, pad) {
+        return Array(pad - array ? array.length : 0).fill(0).concat(array);
+    }
+
+    onChange() {
+        let stat = UserStore.getState().stats;
+        if(!stat){
+            return;
+        }
+        let retVal = {};
+        retVal.averageTimeSpent = stat.averageTimeSpent;
+        retVal.timeSpent = this.padLeftArray(stat.timeSpent);
+        retVal.scores = this.padLeftArray(stat.scores);
+        retVal.totalScore = stat.totalScore;
+        retVal.gamesLeft = stat.gamesLeft;
+        this.setState({stats: retVal});
+    };
+
+    componentDidMount() {
+        UserStore.listen(this.onChange);
+    }
+
+    componentWillUnmount() {
+        UserStore.unlisten(this.onChange);
+    }
+
+
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
@@ -133,20 +171,23 @@ class Home extends React.Component {
                     <div style={this.styles.scoreLeft}>
                         <DefaultTooltip tooltip="Total points won" tooltipPosition="bottom-left">
                             <div style={this.styles.score}>
-                                <span style={this.styles.scoreText}>260</span>
+                                <span style={this.styles.scoreText}>{this.state.stats.totalScore}</span>
                             </div>
                         </DefaultTooltip>
                         <DefaultTooltip tooltip="Games left" tooltipPosition="bottom-left">
                             <div style={this.styles.left}>
-                                <span style={this.styles.leftText}>3</span>
+                                <span style={this.styles.leftText}>{this.state.stats.gamesLeft}</span>
                             </div>
                         </DefaultTooltip>
                     </div>
                     <Leaderboards style={this.styles.background}/>
                 </div>
                 <div style={this.styles.charts}>
-                    <TimeSpentStats style={this.styles.timeStats}/>
-                    <PointsWonStats style={this.styles.pointsStats}/>
+                    <TimeSpentStats style={this.styles.timeStats}
+                                    average={this.state.stats.averageTimeSpent}
+                                    timeArray={this.state.stats.timeSpent}/>
+                    <PointsWonStats style={this.styles.pointsStats}
+                                    scoresArray={this.state.stats.scores}/>
                 </div>
                 <div style={this.styles.logoWrapper}>
                     <div style={this.styles.logo}>

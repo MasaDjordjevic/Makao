@@ -3,14 +3,6 @@ import {Bar} from 'react-chartjs-2';
 import {blackColor, redColor} from '../Card/common';
 
 class TimeSpentStats extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            timeSpentLastWeek: [15, 20, 25, 17, 12, 20, 5],
-            timeSpentAverage: 18,
-        }
-    }
 
     get styles() {
         return {
@@ -25,7 +17,7 @@ class TimeSpentStats extends React.Component {
     }
 
     getAverageData() {
-        return Array(7).fill(null).map((_, i) => this.state.timeSpentAverage);
+        return Array(7).fill(null).map((_, i) => this.props.average);
     }
 
     render() {
@@ -47,7 +39,7 @@ class TimeSpentStats extends React.Component {
             },{
                 type: 'bar',
                 label: 'Time spent last week',
-                data: this.state.timeSpentLastWeek,
+                data: this.props.timeArray,
                 fill: false,
                 backgroundColor: barColor,
                 //borderColor: '#71B37C',
@@ -109,6 +101,9 @@ class TimeSpentStats extends React.Component {
 }
 export default TimeSpentStats;
 
-TimeSpentStats.defaultProps = {};
+TimeSpentStats.defaultProps = {
+    average: 0,
+    timeArray: [0],
+};
 
 TimeSpentStats.propTypes = {};
