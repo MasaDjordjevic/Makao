@@ -23,24 +23,16 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
  friendRequests[]: string
  ```
  
- - `friend:added` i  `friend:ignore` i `friend:request:received`
+ - `friend:find`, `friend:added`,  `friend:ignore`, `friend:request:received` kao i `invite:accepted`, `invite:remove`
  ```
- friendUsername: string
+ username: string
  ```
- 
- - `invite:accepted` i `invite:remove`
- ```
- creatorUsername: string
- ```
+
+ gde se u prvoj grupi username odnosi na prijatelja a u drugoj na kreatora igre.
  
  - `invite:rejected`
  ```
  message: string
- ```
- 
- - `friend:find`
- ```
- username: string
  ```
  
  - `friend:request:sent` ne šalje podatke
@@ -52,15 +44,11 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
  searchText: string
  ```
  
- - `friend:request:send` i `friend:accept` i `friend:ignore`
+ - `friend:request:send`, `friend:accept`, `friend:ignore` kao i `invite:accept`, `invite:ignore`
  ```
  username: string
  ```
  
- - `invite:accept` i `invite:ignore`
- ```
- inviter: string
- ```
 
  - `user:data` ne šalje podatke
 
@@ -112,12 +100,7 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
  
 ###Poruke klijenta
 
- - `join`
- ```
- username: string
- ```
-
- - `user:invite` i `user:ready`
+ - `join` kao i `user:invite`, `user:ready`
  ```
  username: string
  ```

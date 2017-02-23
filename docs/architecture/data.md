@@ -65,3 +65,39 @@ Za pristup bazi korišćen je redis klijent za node.js koji implementira sve Red
 Odlučili smo se da samu partiju čuvamo kao string, odnosno da jedan objekat čuva sve potrebne informacije jer je prilikom odigravanja poteza igrača potreban uvid u većinu polja tog objekta (lista karata igraca, lista karata na talonu, lista karata za izvlačenje, lista igrača, njihov status i broj karata...). Pa kako je redis key-value baza podataka odabrali smo da korisnik jednim upitom dobije pristup celom objektu, kako bi smanjili broj poziva baze i vreme potrebno za pribavljanje a kasnije i čuvanje tih podataka.
 
 Redis ne brine (i ne interesuje ga) sadržaj odnosno sturktura samih podataka koje čuva, što izmenu cini jako jednostavnom. 
+
+Šema objekta same igre
+--------------------------
+
+```
+{
+	status: string ('lobby' | 'started' | 'finished'),
+	start: Date,
+	end: Date,
+	duration: Number, //real number, duration in minutes
+	playerOnMove: string, //username
+	handStarter: string, //username
+	direction: Number (1 | -1),
+	players: {
+		username: {
+                     online: boolean,
+                     cards: [object(Card)]
+                     timeUp: Number, //koliko puta nije odigrao potez na vreme
+                     kicked: boolean, 
+                  },
+		username2: {}...
+		},
+	drawStack: [object(Card)],
+	openStack: [object(Card)],
+	sevens: Number, //broj uzastopnih sedmica na talonu pre nego što je neko kupio karte
+	rules: object,
+	logs[]: {
+				username: string,
+				draw: Number,
+				card: object(Card),
+				jackSymbol: string,
+				win: boolean,
+			}
+	scores[]: [{username: string, score: number}, ...] //niz rundi gde svaka runda ima niz igraca
+}
+```
