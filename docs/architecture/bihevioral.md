@@ -3,7 +3,7 @@ Bihevioralni pogled
 
 U ovom dokumentu će biti predstavljen bihevioralni pogled na aplikaciju Makao.
 
-Kroz sledeća dva dijagrama biće prikazana komunikacija klijenta i servera preko soketa i preko HTTP protokola. 
+Kroz sledeći dijagram biće prikazana komunikacija klijenta i servera preko soketa. Na sličan način se komunikacija vrši i preko HTTP protokola.
 
 ##Proces pokretanja igre
 
