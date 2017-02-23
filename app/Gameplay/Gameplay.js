@@ -7,6 +7,25 @@ import Card from '../client/src/components/Card/Card';
 let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
+function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
 function createStack(stackNum) {
     let numbers = [ 3, 4, 5, 6, 7, 8, 10, 13, 14, 9, 2, 12, 1];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
@@ -14,31 +33,23 @@ function createStack(stackNum) {
     Array(stackNum).fill(null).forEach((i) => {
         numbers.forEach((number) => signs.forEach((s) => deck.push(new Card(s, number.toString()))));
     });
+    shuffle(deck);
     return deck;
 }
 
-function getRandomCards(stack, number) {
-    let retCards = [];
-    for (let i = 0; i < number; i++) {
-        let randomIndex = Math.floor(Math.random() * stack.length);
-        let randomElement = stack[randomIndex];
-        stack.splice(randomIndex, 1);
-        retCards.push(randomElement);
-    }
-    return retCards;
+function getCards(stack, number) {
+    return stack.splice(0, number);
 }
 
 function getTalon(stack) {
-    let randomCard = null;
-    let randomIndex = -1;
+    let card = null;
+    let index = 0;
     do {
-        randomIndex = Math.floor(Math.random() * stack.length);
-        randomCard = stack[randomIndex];
-    } while (randomCard.number === 12 || randomCard.number === 7 || randomCard.number === 8); //do not let some meaningful card be on talon
-
-    stack.splice(randomIndex, 1);
-
-    return randomCard;
+        card = stack[index++];
+    } while (card.number === '12' || card.number === '7' || card.number === '8' ); //do not let some meaningful card be on talon
+    index--;
+    stack.splice(index, 1)
+    return card;
 }
 
 exp.createGame = (creatorUsername, rules) => {
@@ -110,7 +121,7 @@ function deal(game) {
     //podeli igracima karte
     const cardsPerPlayer = 6;
     Object.keys(game.players).forEach((player, index) => {
-        game.players[player].cards = getRandomCards(stack, cardsPerPlayer);
+        game.players[player].cards = getCards(stack, cardsPerPlayer);
     });
     game.drawStack = stack;
     game.status = 'started';
