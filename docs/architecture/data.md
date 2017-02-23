@@ -3,9 +3,9 @@ Model perzistencije i podataka
 
 U ovom dokumentu biće opisani modeli podataka koji se čuvaju u aplikaciji Makao.
 Modeli podataka na frontednu pripadaju jednoj od sledece tri grupe:
- - podaci koji su dobijeni sistemom za razmenu poruka o kojima možete procitati više u ![message-passing](message-passing.md)
- - podaci koji se čuvaju u skladištimi o kojima možete procitati više u...
- - podaci koje same komponente koriste za prikaz i koji su opisani na kraju svake komponente preko `propTypes` koji govori koje podatke komponenta očekuje i njihov tip ili oblik.
+ - podaci koji su dobijeni sistemom za razmenu poruka o kojima možete procitati više u [message-passing](message-passing.md)
+ - podaci koji se čuvaju u skladištimi o kojima možete procitati više u [store-structure](store-structure.md)
+ - podaci koje same komponente koriste za prikaz i koji se nalaze u stanju te komponente ili su opisani na njenom kraju preko `propTypes` ukoliko te podatke dobijaju od neke komponente koja se nalazi na višoj poziciji u hijerarhiji
 
 Šema baze podataka
 --------------------------
