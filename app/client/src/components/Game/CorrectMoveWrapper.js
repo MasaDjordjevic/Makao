@@ -61,6 +61,10 @@ class CorrectMoveWrapper extends React.Component {
 
             let must = _.filter(this.props.myCards, 'mustPlay');
             if (talon.number === '2' && talon.symbol === 'diamonds') {
+                if(must.length === 0){
+                    this.setState({snackbarOpen: true, snackbarMessage: 'must draw'});
+                    return;
+                }
                 let findCard = _.find(must, card);
                 if (!findCard) {
                     this.setState({snackbarOpen: true, snackbarMessage: 'must play'});
