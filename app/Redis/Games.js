@@ -149,6 +149,10 @@ exp.setGame = (creatorUsername, game) => {
     return _set(gameKey(creatorUsername), JSON.stringify(game));
 };
 
+exp.delGame = (creatorUsername) => {
+    return _del(gameKey(creatorUsername));
+};
+
 exp.addPendingGame = (creatorUsername) => {
     return _sadd('games:lobby', creatorUsername);
 };
@@ -177,6 +181,10 @@ exp.getGameSockets = (creatorUsername) => {
     return _hgetall(gameSocketKey(creatorUsername));
 };
 
+exp.delGameSockets = (creatorUsername) => {
+    return _del(gameSocketKey(creatorUsername));
+};
+
 exp.addToLobby = (creatorUsername, playerUsername, ready) => {
     return _hmset3(lobbyKey(creatorUsername), playerUsername, ready);
 };
@@ -197,6 +205,10 @@ exp.getLobby = (creatorUsername) => {
         });
         return lobbyUsers;
     });
+};
+
+exp.delLobby = (creatorUsername) => {
+    return _del(lobbyKey(creatorUsername));
 };
 
 exp.setPlayerLobbyStatus = (creatorUsername, playerUsername, ready) => {
