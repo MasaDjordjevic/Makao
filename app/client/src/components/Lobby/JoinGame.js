@@ -3,20 +3,8 @@ import {
     Table, TableBody, TableHeader, TableHeaderColumn,
     TableRow, TableRowColumn
 }  from 'material-ui/Table';
-import {browserHistory} from 'react-router';
 
 class JoinGame extends React.Component {
-    constructor() {
-        super();
-
-        this.joinGame = this.joinGame.bind(this);
-    }
-
-    joinGame(selectedRow) {
-        if (!this.props.games[selectedRow]) return;
-        browserHistory.push('/game/' + this.props.games[selectedRow].creator);
-    }
-
     get styles() {
         return {
             container: {}
@@ -30,7 +18,7 @@ class JoinGame extends React.Component {
                        fixedFooter={false}
                        fixedHeader={false}
                        selectable={true}
-                       onRowSelection={this.joinGame}>
+                       onRowSelection={this.props.onJoin}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn>Host</TableHeaderColumn>
@@ -41,7 +29,7 @@ class JoinGame extends React.Component {
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                         {
-                            this.props.games.map((game, i) =>
+                            this.props.gameList.map((game, i) =>
                                 <TableRow key={game.creator}>
                                     <TableRowColumn>{game.creator}</TableRowColumn>
                                     <TableRowColumn>{game.current}</TableRowColumn>
