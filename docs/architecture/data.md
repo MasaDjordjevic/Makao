@@ -37,11 +37,11 @@ Kao maper za MongoDB korišćen je Mongoose.
 Šema za statistiku korisnika
 ```
 {
-    scores: {type: [Number]},
-    timeSpent: {type: [Number]},
-    gamesLeft: {type: Number},
-    gamesWon: {type: Number},
-    totalScore: {type: Number}
+    scores: [Number],
+    timeSpent: [Number],
+    gamesLeft: Number,
+    gamesWon: Number,
+    totalScore: Number
 }
 ```
 
