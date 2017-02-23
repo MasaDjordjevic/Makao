@@ -20,9 +20,10 @@ class Leaderboards extends React.Component {
         return {
             container: {
                 display: 'flex',
-                overflow: 'auto',
-                width: 260,
-                marginLeft: 'auto'
+                width: '100%',
+                marginLeft: 'auto',
+
+                overflow: 'visible',
             }
         }
     }
@@ -85,17 +86,17 @@ class Leaderboards extends React.Component {
     render() {
         return (
             <div style={{...this.styles.container, ...this.props.style}}>
-                <Tabs>
+                <Tabs style={{width: '100%', overflow: 'auto'}}>
                     <Tab
                         icon={
-                            <DefultTooltip tooltip="friends" tooltipPosition="top-center">
+                            <DefultTooltip tooltip="friends" tooltipPosition="bottom-center">
                                 <GroupIcon color={teal800}/>
                             </DefultTooltip>}>
                         {this.renderList(this.props.leaderboards.friends, this.props.leaderboards.meFriends)}
                     </Tab>
                     <Tab
                         icon={
-                            <DefultTooltip tooltip="global" tooltipPosition="top-center">
+                            <DefultTooltip tooltip="global" tooltipPosition="bottom-center">
                                 <PublicIcon color={teal800}/>
                             </DefultTooltip>}>
                         {this.renderList(this.props.leaderboards.global, this.props.leaderboards.meGlobal)}
