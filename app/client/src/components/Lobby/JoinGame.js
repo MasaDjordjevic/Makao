@@ -30,7 +30,7 @@ class JoinGame extends React.Component {
                     <TableBody displayRowCheckbox={false} showRowHover={true}>
                         {
                             this.props.gameList.map((game, i) =>
-                                <TableRow key={game.creator}>
+                                <TableRow key={game.creator} style={{cursor:'pointer'}}>
                                     <TableRowColumn>{game.creator}</TableRowColumn>
                                     <TableRowColumn>{game.current}</TableRowColumn>
                                     <TableRowColumn>{game.rules.playerNumberMin} - {game.rules.playerNumberMax}</TableRowColumn>
