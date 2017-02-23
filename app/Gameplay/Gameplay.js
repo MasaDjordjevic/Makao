@@ -91,9 +91,11 @@ exp.startGame = (creatorUsername) => {
 
                 Games.setGame(creatorUsername, game).then(() => {
                     Games.delGameInvites(creatorUsername).then(() => {
-                        Games.remPendingGame(creatorUsername).then(() => {
-                            Games.addStartedGame(creatorUsername).then(() => {
-                                resolve();
+                        Games.delLobby(creatorUsername).then(() => {
+                            Games.remPendingGame(creatorUsername).then(() => {
+                                Games.addStartedGame(creatorUsername).then(() => {
+                                    resolve();
+                                });
                             });
                         });
                     });
@@ -394,6 +396,10 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({gameOver: true, scores: game.scores, log: newLogs});
                         GameEnd.handleGameEnd(game);
+
+                        Games.delGame(creatorUsername);
+                        Games.delGameSockets(creatorUsername);
+                        Games.remStartedGame(creatorUsername);
                     });
                 }
 
