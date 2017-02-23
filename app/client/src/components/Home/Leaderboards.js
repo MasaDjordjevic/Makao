@@ -12,30 +12,7 @@ class Leaderboards extends React.Component {
     constructor() {
         super();
         this.state = {
-            me: UserStore.getState(),
-            myPosition: {
-                friends: 3,
-                global: 39,
-            },
-            friendsLeaderboard: [
-                {id: '1', firstName: 'Marko', lastname: 'Petrovic'},
-                {id: '2', firstName: 'Darko', lastname: 'Markovic'},
-                {id: '3', firstName: 'Igor', lastname: 'Nikolic'},
-                {id: '4', firstName: 'Petar', lastname: 'Zivic'},
-                {id: '5', firstName: 'Filip', lastname: 'Stojanovic'},
-                {id: '6', firstName: 'Marko', lastname: 'Petrovic'},
-                {id: '7', firstName: 'Darko', lastname: 'Markovic'},
-                {id: '8', firstName: 'Igor', lastname: 'Nikolic'},
-                {id: '9', firstName: 'Petar', lastname: 'Zivic'},
-                {id: '10', firstName: 'Filip', lastname: 'Stojanovic'},
-            ],
-            globalLeaderboard: [
-                {id: '21', firstName: 'Milica', lastname: 'Petrovic', friend: false},
-                {id: '22', firstName: 'Tijana', lastname: 'Markovic', friend: true},
-                {id: '23', firstName: 'Kristina', lastname: 'Nikolic', friend: false},
-                {id: '24', firstName: 'Ana', lastname: 'Zivic', friend: false},
-                {id: '25', firstName: 'Marina', lastname: 'Stojanovic', friend: true},
-            ],
+            username: UserStore.getState().username
         }
     }
 
@@ -75,9 +52,9 @@ class Leaderboards extends React.Component {
         if (position <= this.props.numberOfUsersInBoards) return;
         return (
             <List>
-                <Link to={"/users:" + this.state.me.id}>
+                <Link to={"/users/" + this.state.username}>
                     <ListItem
-                        primaryText={position + ". " + this.state.me.username}
+                        primaryText={position + ". " + this.state.username}
                         {...this.myScoreAttributes}/>
                 </Link>
             </List>
@@ -90,9 +67,9 @@ class Leaderboards extends React.Component {
                 <List style={{height: '100%', overflow: 'auto'}}>
                     {
                         userArray.map((user, i) =>
-                            <Link to={"/users:" + user.id} key={user.id}>
+                            <Link to={"/users/" + user.username} key={i}>
                                 <ListItem
-                                    primaryText={(i + 1).toString() + ". " + user.firstName + " " + user.lastname}
+                                    primaryText={(i + 1).toString() + ". " + user.username}
                                     {...this.getFriendAttributes(user)}
                                     {...this.renderMyScoreAttributes(i, userPosition)}/>
                             </Link>
@@ -114,14 +91,14 @@ class Leaderboards extends React.Component {
                             <DefultTooltip tooltip="friends" tooltipPosition="top-center">
                                 <GroupIcon color={teal800}/>
                             </DefultTooltip>}>
-                        {this.renderList(this.state.friendsLeaderboard, this.state.myPosition.friends)}
+                        {this.renderList(this.props.leaderboards.friends, this.props.leaderboards.meFriends)}
                     </Tab>
                     <Tab
                         icon={
                             <DefultTooltip tooltip="global" tooltipPosition="top-center">
                                 <PublicIcon color={teal800}/>
                             </DefultTooltip>}>
-                        {this.renderList(this.state.globalLeaderboard, this.state.myPosition.global)}
+                        {this.renderList(this.props.leaderboards.global, this.props.leaderboards.meGlobal)}
                     </Tab>
                 </Tabs>
             </div>

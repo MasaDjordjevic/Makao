@@ -42,12 +42,17 @@ class HeaderSocketWrapper extends React.Component {
             socket.on('authenticated', () => {
                 socket.emit('user:data');
                 socket.emit('user:stats');
+                socket.emit('leaderboards');
                 socket.on('user:data', (data) => {
                     UserActions.updateUserData(data);
                 });
                 socket.on('user:stats', (stats) => {
                     UserActions.updateUserStats(stats);
                     console.log(JSON.stringify(stats));
+                });
+                socket.on('leaderboards', (leaderboards) => {
+                    UserActions.updateLeaderboards(leaderboards);
+                    console.log(leaderboards);
                 });
                 socket.on('friend:added', (newFriend) => {
                     UserActions.removeFriendRequest(newFriend);

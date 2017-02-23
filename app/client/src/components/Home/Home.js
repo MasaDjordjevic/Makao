@@ -13,13 +13,8 @@ class Home extends React.Component {
         super();
 
         this.state = {
-            stats: {
-                averageTimeSpent: 0,
-                timeSpent: [0],
-                scores: [0],
-                totalScore: 0,
-                gamesLeft: 0,
-            },
+            stats: UserStore.getState().stats,
+            leaderboards: UserStore.getState().leaderboards
         };
 
         this.onChange = this.onChange.bind(this);
@@ -143,16 +138,14 @@ class Home extends React.Component {
 
     onChange() {
         let stat = UserStore.getState().stats;
-        if(!stat){
-            return;
-        }
-        let retVal = {};
-        retVal.averageTimeSpent = stat.averageTimeSpent;
-        retVal.timeSpent = this.padLeftArray(stat.timeSpent);
-        retVal.scores = this.padLeftArray(stat.scores);
-        retVal.totalScore = stat.totalScore;
-        retVal.gamesLeft = stat.gamesLeft;
-        this.setState({stats: retVal});
+        let leaderboards = UserStore.getState().leaderboards;
+        let retStats = {};
+        retStats.averageTimeSpent = stat.averageTimeSpent;
+        retStats.timeSpent = this.padLeftArray(stat.timeSpent);
+        retStats.scores = this.padLeftArray(stat.scores);
+        retStats.totalScore = stat.totalScore;
+        retStats.gamesLeft = stat.gamesLeft;
+        this.setState({ stats: retStats, leaderboards: leaderboards });
     };
 
     componentDidMount() {
@@ -180,7 +173,8 @@ class Home extends React.Component {
                             </div>
                         </DefaultTooltip>
                     </div>
-                    <Leaderboards style={this.styles.background}/>
+                    <Leaderboards style={this.styles.background}
+                                  leaderboards={this.state.leaderboards}/>
                 </div>
                 <div style={this.styles.charts}>
                     <TimeSpentStats style={this.styles.timeStats}

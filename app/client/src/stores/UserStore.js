@@ -8,7 +8,19 @@ class UserStore {
         this.id = '';
         this.friends = [];
         this.friendRequests = [];
-        this.stats = {};
+        this.stats = {
+            averageTimeSpent: 0,
+            timeSpent: [0],
+            scores: [0],
+            totalScore: 0,
+            gamesLeft: 0
+        };
+        this.leaderboards = {
+            global: [],
+            friends: [],
+            meGlobal: 0,
+            meFriends: 0
+        };
     }
 
     updateUserData(data) {
@@ -20,6 +32,10 @@ class UserStore {
 
     updateUserStats(stats) {
         this.stats = stats;
+    }
+
+    updateLeaderboards(leaderboards) {
+        this.leaderboards = leaderboards;
     }
 
     updateFriendList(friends) {
