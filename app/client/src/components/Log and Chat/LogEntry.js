@@ -9,10 +9,12 @@ class LogEntry extends React.Component {
             container: {
                 alignSelf: this.props.win ? 'center' : this.props.left ? 'flex-start' : 'flex-end',
                 display: 'flex',
+                alignItems: 'center',
+                minHeight: 20,
             },
             cardContainer: {
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'baseline',
             },
             jackSymbolContainer: {
                 display: 'flex',
