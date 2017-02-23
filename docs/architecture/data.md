@@ -4,7 +4,7 @@ Model perzistencije i podataka
 U ovom dokumentu biće opisani modeli podataka koji se čuvaju u aplikaciji Makao.
 Modeli podataka na frontednu pripadaju jednoj od sledece tri grupe:
  - podaci koji su dobijeni sistemom za razmenu poruka o kojima možete procitati više u [message-passing](message-passing.md)
- - podaci koji se čuvaju u skladištima o kojima možete procitati više u [store-structure](store-structure.md)
+ - podaci koji se čuvaju u skladištima
  - podaci koje same komponente koriste za prikaz i koji se nalaze u stanju te komponente ili su opisani na njenom kraju preko `propTypes` ukoliko te podatke dobijaju od neke komponente koja se nalazi na višoj poziciji u hijerarhiji
 
 Šema baze podataka
@@ -93,6 +93,7 @@ Redis ne brine (i ne interesuje ga) sadržaj odnosno sturktura samih podataka ko
 	rules: object,
 	logs[]: {
 				username: string,
+				message: string,
 				draw: Number,
 				card: object(Card),
 				jackSymbol: string,
@@ -101,3 +102,4 @@ Redis ne brine (i ne interesuje ga) sadržaj odnosno sturktura samih podataka ko
 	scores[]: [{username: string, score: number}, ...] //niz rundi gde svaka runda ima niz igraca
 }
 ```
+> **Napomena:** određeni atributi nisu obavezni ili ne postoje tokom celog "životnog veka" objekta. ```end``` se upise po završetku igre, ```players[username].kicked``` se inicijalizuje nakon što je igraš izbačen iz igre. Objekti koji se nalaze u nizu logs obično sadrže samo neke od atributa koji govore o tipu loga: odigravanje poteza, menjanje znaka, pobeda i slično. 
