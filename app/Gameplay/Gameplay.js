@@ -8,7 +8,7 @@ let redisCli = redis.createClient();
 let exp = {}; //da ne pisem svaki put module.exports
 
 function createStack(stackNum) {
-    let numbers = [1, 3, 4, 5, 6, 7, 8, 10, 13, 14, 9, 2, 12];
+    let numbers = [ 3, 4, 5, 6, 7, 8, 10, 13, 14, 9, 2, 12, 1];
     let signs = ["spades", "diamonds", "clubs", "hearts"];
     let deck = [];
     Array(stackNum).fill(null).forEach((i) => {
@@ -477,6 +477,18 @@ exp.getGameRules = (creatorUsername) => {
     return new Promise((resolve, reject) => {
         Games.getGame(creatorUsername).then((game) => {
             resolve(game.rules);
+        });
+    });
+};
+
+
+exp.setPlayerTimer = (creatorUsername, playerUsername, timer) => {
+    return new Promise((resolve, reject) => {
+        Games.getGame(creatorUsername).then((game) => {
+            game.players[playerUsername].timer = timer;
+            Games.setGame(creatorUsername, game).then(() => {
+                resolve();
+            })
         });
     });
 };

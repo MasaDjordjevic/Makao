@@ -22,6 +22,8 @@ class GameSocketWrapper extends React.Component {
 
             sevenDrawed: false,
 
+            timeLeft: null,
+
             socketInit: false,
             dialogOpen: false,
             dialogMessage: "NEW HAND",
@@ -189,6 +191,8 @@ class GameSocketWrapper extends React.Component {
             playerOnMove: data.playerOnMove,
             scores: data.scores,
             moveTime: data.moveTime,
+            sevenDrawed: data.sevenDrawed,
+            timeLeft: data.timeLeft,
         });
         this.props.onPlayerNum(data.players.length);
     }
@@ -272,7 +276,8 @@ class GameSocketWrapper extends React.Component {
                                     onJackSignPicked={this.handleJackSignPicked}
                                     onNext={this.handleNext}
                                     sevenDrawed={this.state.sevenDrawed}
-                                    moveTime={this.state.moveTime}/>
+                                    moveTime={this.state.moveTime}
+                                    timeLeft={this.state.timeLeft}/>
             </div>
         );
     }

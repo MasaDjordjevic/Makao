@@ -11,6 +11,9 @@ class CorrectMoveWrapper extends React.Component {
             snackbarMessage: '',
             draw: false,
             jackPlayed: false,
+
+            //when 1 is played
+            resetTimer: false,
         };
 
         this.isMyTurn = this.isMyTurn.bind(this);
@@ -53,10 +56,6 @@ class CorrectMoveWrapper extends React.Component {
 
     handleCardClick(card) {
         if (this.isMyTurn()) {
-            this.setState({draw: false, jackPlayed: true});
-            this.props.onCardClick(card);
-            return;
-            ////
 
             let talon = this.props.talon;
 
@@ -70,7 +69,7 @@ class CorrectMoveWrapper extends React.Component {
                     //ako je bacena dvojka karo, zaca nema efekta
                     if(talon.number === '2' && talon.symbol === 'diamonds') {
                         if(this.state.draw){ //moras da kupis
-                            this.setState({jackPlayed: false, draw: false});
+                            this.setState({jackPlayed: false, draw: false, resetTimer: card.number === '1'});
                             this.props.onCardClick(card, true);
                             return;
                         }else {
@@ -85,7 +84,7 @@ class CorrectMoveWrapper extends React.Component {
 
 
             //na sedmicu moze samo sedmica ako nije vuko i ako neko drugi nije vuko
-            if (this.props.sevenDrawed || (!this.state.draw && talon.number === '7' && card.number !== '7')) {
+            if (!this.props.sevenDrawed && (!this.state.draw && talon.number === '7' && card.number !== '7')) {
                 this.setState({snackbarOpen: true, snackbarMessage: '7 na 7'});
                 return;
             }
@@ -93,7 +92,7 @@ class CorrectMoveWrapper extends React.Component {
             //zaca moze uvek da se baci
 
             if (card.number === '12' || card.number === talon.number || (talon.jackSymbol ? card.symbol === talon.jackSymbol : card.symbol === talon.symbol)) {
-                this.setState({draw: false, jackPlayed: true});
+                this.setState({draw: false, jackPlayed: true, resetTimer: card.number === '1'});
                 this.props.onCardClick(card);
             } else {
                 this.setState({snackbarOpen: true, snackbarMessage: 'Wrong card'});
@@ -148,7 +147,10 @@ class CorrectMoveWrapper extends React.Component {
                       onJackSignPicked={this.props.onJackSignPicked}
                       onDrawClick={this.handleDrawClick}
                       onCardClick={this.handleCardClick}
-                      onNext={this.handleNext}/>
+                      onNext={this.handleNext}
+                      resetTimer={this.state.resetTimer}
+                      timeLeft={this.props.timeLeft}
+                        />
                 <Snackbar
                     open={this.state.snackbarOpen}
                     message={this.state.snackbarMessage}
@@ -179,4 +181,5 @@ CorrectMoveWrapper.propTypes = {
     onNext: React.PropTypes.func,
     sevenDrawed: React.PropTypes.bool,
     moveTime: React.PropTypes.number,
+    timeLeft: React.PropTypes.number,
 };

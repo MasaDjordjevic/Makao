@@ -60,7 +60,8 @@ class UserInfo extends React.Component {
                 {this.props.myMove &&
                 <TimerProgress length={this.props.length}
                                style={this.styles.timer}
-                               reset={this.props.enableNext}/>
+                               reset={this.props.reset || this.props.enableNext}
+                               timeLeft={this.props.timeLeft}/>
                 }
                 <span style={this.styles.username}>{this.me.username}</span>
             </div>
@@ -75,4 +76,6 @@ UserInfo.propTypes = {
     myMove: React.PropTypes.bool,
     onNext: React.PropTypes.func,
     enableNext: React.PropTypes.bool,
+    reset: React.PropTypes.bool,
+    timeLeft: React.PropTypes.number,
 };

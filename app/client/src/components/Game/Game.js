@@ -102,7 +102,8 @@ class Game extends React.Component {
                     playerHeight={this.props.dimensions.opponents}
                     players={this.props.opponents}
                     playerOnMove={this.props.playerOnMove}
-                    moveTime={this.props.moveTime}/>
+                    moveTime={this.props.moveTime}
+                    timeLeft={this.props.timeLeft}/>
 
                 <div style={this.styles.userCardsTalon}>
                     <div style={this.styles.talon}>
@@ -134,7 +135,9 @@ class Game extends React.Component {
                                       myMove={this.props.myMove}
                                       enableNext={this.props.enableNext}
                                       onNext={this.props.onNext}
-                                      length={this.props.moveTime}/>
+                                      length={this.props.moveTime}
+                                      reset={this.props.resetTimer}
+                                      timeLeft={this.props.timeLeft}/>
                         </div>
                     </div>
                 </div>
@@ -161,6 +164,8 @@ Game.PropTypes = {
     onNext: React.PropTypes.func,
     enableNext: React.PropTypes.bool,
     moveTime: React.PropTypes.number,
+    resetTimer: React.PropTypes.bool,
+    timeLeft: React.PropTypes.number,
 };
 
 export default Game;

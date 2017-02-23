@@ -8,6 +8,7 @@ export default class TimerProgress extends React.Component {
 
         this.state = {
             completed: 0,
+            timeLeft: null,
         };
     }
 
@@ -21,11 +22,18 @@ export default class TimerProgress extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        if (newProps.timeLeft !== this.state.timeLeft) {
+            this.setState({completed: this.props.timeLeft, timeLeft:newProps.timeLeft});
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => this.progress(this.props.timeLeft - 1), 1000);
+            return;
+        }
         if (!this.props.reset && newProps.reset) {
             this.setState({completed: this.props.length});
             clearTimeout(this.timer);
             this.timer = setTimeout(() => this.progress(this.props.length - 1), 1000);
         }
+
     }
 
 

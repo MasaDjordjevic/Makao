@@ -38,6 +38,8 @@ module.exports = function (socket, io) {
                     });
                 });
                 let talon = _.last(game.openStack);
+                let timer = game.players[game.playerOnMove].timer;
+                let timeLeft = timer ? game.rules.timeLimit - (new Date() - new Date(timer))/1000 : game.rules.timeLimit;
                 socket.emit('init', {
                     players: players,
                     cards: cards,
@@ -45,6 +47,8 @@ module.exports = function (socket, io) {
                     playerOnMove: game.playerOnMove,
                     scores: game.scores,
                     moveTime: game.rules.timeLimit,
+                    sevenDrawed: game.sevens === 0,
+                    timeLeft: timeLeft,
                 });
                 timeLimit = game.rules.timeLimit * 1000;
                 socket.to(creatorUsername).broadcast.emit('user:join', {
@@ -64,6 +68,7 @@ module.exports = function (socket, io) {
 
     function setTimer(){
         timer = setTimeout(timeUp, timeLimit);
+        Gameplay.setPlayerTimer(creatorName, name, new Date());
     }
 
     function emitPlayerOnMove(creatorUsername, username) {

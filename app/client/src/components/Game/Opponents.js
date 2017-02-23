@@ -99,7 +99,8 @@ class Opponents extends React.Component {
                                      cardNumber={+player.cardNumber}/>
                             {player.username === this.props.playerOnMove &&
                             <TimerProgress length={this.props.moveTime}
-                                           style={this.styles.timer}/>
+                                           style={this.styles.timer}
+                                           timeLeft={this.props.timeLeft}/>
                             }
                             <span style={this.styles.playerName}>{player.username.toLowerCase()}</span>
                         </div>
