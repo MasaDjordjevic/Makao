@@ -85,6 +85,12 @@ module.exports = function (socket, io) {
         });
     });
 
+    socket.on('leaderboards', () => {
+        Stats.getLeaderboards(socketUser, (err, leaderboards) => {
+            socket.emit('leaderboards', leaderboards);
+        });
+    });
+
     socket.on('disconnect', () => {
         App.removeUserSocket(socketUser);
         console.log('user ' + socketUser + ' disconnected from appSocket');
