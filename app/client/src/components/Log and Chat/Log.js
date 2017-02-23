@@ -66,6 +66,7 @@ class Log extends React.Component {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
+                width: '100%',
             },
             logContainer: {
                 display: 'flex',
