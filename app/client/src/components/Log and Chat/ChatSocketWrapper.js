@@ -45,8 +45,7 @@ class ChatSocketWrapper extends React.Component {
     }
 
     handleSocketInit(messages) {
-        const chatMessages = [...this.state.chatMessages, ...messages];
-        this.setState({chatMessages: chatMessages});
+        this.setState({chatMessages: messages});
     }
 
     componentDidMount() {
@@ -76,6 +75,7 @@ class ChatSocketWrapper extends React.Component {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'space-between',
             }
         }
     }

@@ -13,11 +13,6 @@ class Chat extends React.Component {
     get styles() {
         return {
             container: {
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                justifyContent: 'flex-end',
-
             },
             messagesContainer: {
                 display: 'flex',

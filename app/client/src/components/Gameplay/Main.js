@@ -69,7 +69,7 @@ class Main extends React.Component {
 
 
     render() {
-        if (this.state.gameStarted === null) return <NoAccess />;
+        if (this.state.gameStarted === null ) return <NoAccess />;
         return (
             <div style={this.styles.container}>
                 <MuiThemeProvider muiTheme={getMuiTheme(mainMuiTheme)}>

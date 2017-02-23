@@ -21,9 +21,6 @@ class LogAndChat extends React.Component {
                 fontSize: 14,
                 color: blueGrey300,
             },
-            chat: {
-                alignSelf: 'flex-end',
-            }
         }
     }
 
@@ -39,7 +36,7 @@ class LogAndChat extends React.Component {
                                 primaryMinSize={2} secondaryMinSize={20}>
                     <Log creatorUsername={this.props.creatorUsername}
                          socket={this.props.socket}/>
-                    <ChatSocketWrapper style={this.styles.chat}/>
+                    <ChatSocketWrapper creatorUsername={this.props.creatorUsername}/>
                 </SplitterLayout>
             </div>
         );

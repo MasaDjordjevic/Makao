@@ -1,4 +1,5 @@
 import Games from '../Redis/Games';
+import Chat from '../Redis/Chat';
 import Gameplay from '../Gameplay/Gameplay';
 
 module.exports = function (socket) {
@@ -13,6 +14,7 @@ module.exports = function (socket) {
 
     socket.on('game:create', (rules) => {
         let creator = socketUser;
+        Chat.removeMessages(creator);
         Gameplay.createGame(creator, rules)
             .then(() => socket.emit('game:created', { creator, rules }))
             .catch((reason) => socket.emit('game:failed', reason));

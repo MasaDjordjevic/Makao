@@ -23,4 +23,12 @@ exp.getMessages = (creatorUsername) => {
     });
 };
 
+exp.removeMessages = (creatorUsername) => {
+    return new Promise((resolve, reject) => {
+        redisCli.del(chatKey(creatorUsername), (err, reply) => {
+            err ? reject() : resolve();
+        })
+    });
+};
+
 module.exports = exp;
