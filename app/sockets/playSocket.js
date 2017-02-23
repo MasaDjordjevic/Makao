@@ -2,7 +2,7 @@ import Games from '../Redis/Games';
 import Gameplay from '../Gameplay/Gameplay';
 
 module.exports = function (socket) {
-    var socketUser = socket.decoded_token.name;
+    let socketUser = socket.decoded_token.name;
     console.log('user ' + socketUser + ' connected to playSocket');
 
     socket.on('game:list', () => {

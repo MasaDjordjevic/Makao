@@ -86,7 +86,7 @@ class Scores extends React.Component {
 
     componentWillUpdate() {
         //scroll to bottom
-        var tableElement = document.getElementsByClassName('table')[1].parentElement;
+        let tableElement = document.getElementsByClassName('table')[1].parentElement;
         tableElement.scrollTop = tableElement.scrollHeight;
 
         //adds margin to header where there is a scroll

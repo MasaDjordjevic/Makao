@@ -3,8 +3,8 @@ import App from '../Redis/App';
 import Gameplay from '../Gameplay/Gameplay';
 
 module.exports = function (socket, io) {
-    var socketUser = socket.decoded_token.name;
-    var creatorName = '';
+    let socketUser = socket.decoded_token.name;
+    let creatorName = '';
 
     socket.on('join', (creatorUsername) => {
         console.log('user ' + socketUser + ' connected to lobbySocket');

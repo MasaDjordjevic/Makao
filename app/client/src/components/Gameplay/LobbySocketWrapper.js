@@ -29,7 +29,7 @@ class LobbySocketWrapper extends React.Component {
     };
 
     componentDidMount() {
-        var thisComp = this;
+        let thisComp = this;
         socket = io('/lobby');
         socket.on('connect', () => {
             socket.emit('authenticate', {token: Auth.getToken()});

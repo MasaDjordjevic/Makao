@@ -28,7 +28,7 @@ class PlaySocketWrapper extends React.Component {
     };
 
     componentDidMount() {
-        var thisComp = this;
+        let thisComp = this;
         socket = io('/play');
         socket.emit('authenticate', { token: Auth.getToken() });
         socket.on('authenticated', () => {

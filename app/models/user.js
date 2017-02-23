@@ -58,9 +58,9 @@ UserSchema.statics.addFriend = function(username, friendUsername, callback) {
 
 UserSchema.statics.addFriendRequest = function(username, sender, callback) {
     this.findByUsername(username, (err, user) => {
-        if (err) { return callback(err) };
+        if (err) { return callback(err); }
         if (user.friendRequests.indexOf(sender) !== -1) {
-            var error = new Error("Already sent.");
+            let error = new Error("Already sent.");
             return callback(error);
         }
         user.friendRequests.push(sender);
