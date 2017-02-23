@@ -1,6 +1,7 @@
 import Games from '../Redis/Games';
 import App from '../Redis/App';
 import User from '../models/user';
+import Stats from '../models/stats';
 
 module.exports = function (socket, io) {
     var socketUser = socket.decoded_token.name;
@@ -75,6 +76,12 @@ module.exports = function (socket, io) {
             } else {
                 socket.emit('friend:find', username);
             }
+        });
+    });
+
+    socket.on('user:stats', () => {
+        Stats.getStats(socketUser, (err, stats) => {
+            socket.emit('user:stats', stats);
         });
     });
 

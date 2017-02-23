@@ -4,6 +4,7 @@ class UserActions {
     constructor() {
         this.generateActions(
             'updateUserData',
+            'updateUserStats',
             'updateFriendList',
             'removeFriendRequest',
             'addFriendRequest',

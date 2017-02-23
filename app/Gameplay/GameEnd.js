@@ -22,7 +22,7 @@ exp.handleGameEnd = (game) => {
     gameData.kicked = kicked;
     gameData.handNum = game.scores.length;
     gameData.scores = game.scores;
-    gameData.winner = game.logs[game.logs.length - 1].username;
+    gameData.winner = game.winner;
 
     let newGame = new Game(gameData);
     newGame.save((err) => {
@@ -45,7 +45,7 @@ exp.handleGameEnd = (game) => {
                 // and also update his statistics
                 let userGameStats = {
                     kicked: gameData.kicked.indexOf(username) !== -1,
-                    winner: gameData.winner === username,
+                    won: gameData.winner === username,
                     timeSpent: gameData.duration,
                     gameScore: playerScores[username]
                 };

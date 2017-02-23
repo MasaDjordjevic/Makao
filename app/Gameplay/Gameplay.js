@@ -331,6 +331,7 @@ function gameEnd(game) {
     _.last(scores).forEach((user, i) => {
         if (user.score > limit || user.score < -limit) {
             end = true;
+            saveWinner(game);
         }
     });
 
@@ -346,6 +347,28 @@ function handleGameEnd(game, newLogs) {
     game.end = new Date();
     let durationMiliseconds = new Date(game.end) - new Date(game.start);
     game.duration = ((durationMiliseconds % 86400000) % 3600000) / 60000;
+}
+
+function saveWinner(game) {
+    let playerScores = {};
+    Object.keys(game.players).forEach((username) => {
+        playerScores[username] = 0;
+    });
+    game.scores.forEach((handScore) => {
+        handScore.forEach((playerScore) => {
+            playerScores[playerScore.username] += playerScore.score;
+        });
+    });
+    let minScore = 999999;
+    let winner = '';
+    Object.keys(playerScores).forEach((username) => {
+        if (playerScores[username] < minScore) {
+            minScore = playerScores[username];
+            winner = username;
+        }
+    });
+
+    game.winner = winner;
 }
 
 exp.playMove = (creatorUsername, playerUsername, card) => {
@@ -367,6 +390,7 @@ exp.playMove = (creatorUsername, playerUsername, card) => {
                 if (gameEnd(game)) {
                     handleGameEnd(game, newLogs);
                     game.logs = game.logs.concat(newLogs);
+
                     Games.setGame(creatorUsername, game).then(() => {
                         resolve({gameOver: true, scores: game.scores, log: newLogs});
                         GameEnd.handleGameEnd(game);

@@ -8,6 +8,7 @@ class UserStore {
         this.id = '';
         this.friends = [];
         this.friendRequests = [];
+        this.stats = {};
     }
 
     updateUserData(data) {
@@ -15,6 +16,10 @@ class UserStore {
         this.id = data.id;
         this.friends = data.friends;
         this.friendRequests = data.friendRequests;
+    }
+
+    updateUserStats(stats) {
+        this.stats = stats;
     }
 
     updateFriendList(friends) {
