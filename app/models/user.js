@@ -18,10 +18,16 @@ UserSchema.plugin(mbcrypt);
 
 // custom save/create function so a document for Stats gets
 // created as well and its id saved in user document
-UserSchema.statics.createUser = function(newUserData, callback) {
-    let emptyStats = new Stats({ username: newUserData.username });
-    emptyStats.save((err) => {
-        newUserData.stats = emptyStats._id;
+UserSchema.statics.createUser = function(newUserData, userStats, callback) {
+    let stats;
+    if (userStats) {
+        userStats.username = newUserData.username;
+        stats = new Stats(userStats);
+    } else {
+        stats = new Stats({ username: newUserData.username });
+    }
+    stats.save((err) => {
+        newUserData.stats = stats._id;
         newUserData.save(newUserData, (err) => {
             if (err) { return callback(err) }
             return callback(null);

@@ -15,6 +15,7 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
+            allowRender: false,
             gameStarted: null,
             socket: null,
         };
@@ -39,7 +40,7 @@ class Main extends React.Component {
     }
 
     handleGameStarted(started) {
-        this.setState({gameStarted: started});
+        this.setState({allowRender: true, gameStarted: started});
     }
 
     handleGameStart() {
@@ -69,6 +70,7 @@ class Main extends React.Component {
 
 
     render() {
+        if (!this.state.allowRender) return null;
         if (this.state.gameStarted === null ) return <NoAccess />;
         return (
             <div style={this.styles.container}>

@@ -83,8 +83,8 @@ User.count({}, (err, count) => {
     Stats.remove({}, () => {});
     var users = [
         new User({username: "jajac", email: "jajac", password: "jajac",
-                friends: ['mitic', 'pera', 'mika'],
-                friendRequests: ['masa']}),
+                friends: ['mitic', 'pera', 'mika', 'masa'],
+                friendRequests: ['kristina']}),
         new User({username: "masa", email: "masa", password: "masa",
                 friends: ['jajac', 'mitic', 'mika']}),
         new User({username: "mitic", email: "mitic", password: "mitic",
@@ -92,10 +92,49 @@ User.count({}, (err, count) => {
         new User({username: "pera", email: "pera", password: "pera",
                 friends: ['masa', 'mitic']}),
         new User({username: "mika", email: "mika", password: "mika",
-                friends: ['masa', 'mitic', 'pera']})
+                friends: ['masa', 'mitic', 'pera']}),
+        new User({username: "darko", email: "darko", password: "darko",
+                friends: ['jajac', 'mitic']}),
+        new User({username: "marko", email: "marko", password: "marko",
+                friends: ['masa', 'mitic', 'pera']}),
+        new User({username: "kristina", email: "kristina", password: "kristina",
+                friends: ['masa', 'mika', 'darko']}),
+        new User({username: "jovana", email: "jovana", password: "jovana",
+                friends: ['jajac', 'mitic']}),
+        new User({username: "ema", email: "ema", password: "ema",
+                friends: ['darko', 'masa', 'kristina']}),
     ];
 
-    users.map(x => User.createUser(x, () => {}));
+    var statsList = [{}, {}, {}];
+
+    statsList[0].scores = [40, 70, -30, 20, 120, 50, 90, 20, 30];
+    statsList[0].totalScore = 410;
+    statsList[0].timeSpent = [10, 30, 15, 10, 50, 20, 30, 5, 10];
+    statsList[0].totalTimeSpent = 180;
+    statsList[0].averageTimeSpent = 20;
+    statsList[0].gamesPlayed = 9;
+    statsList[0].gamesLeft = 1;
+    statsList[0].gamesWon = 4;
+
+    statsList[1].scores = [80, 10, 120, 150, 0, -100, -50, 30];
+    statsList[1].totalScore = 240;
+    statsList[1].timeSpent = [20, 5, 60, 50, 0, 50, 15, 10];
+    statsList[1].totalTimeSpent = 210;
+    statsList[1].averageTimeSpent = 30;
+    statsList[1].gamesPlayed = 20;
+    statsList[1].gamesLeft = 0;
+    statsList[1].gamesWon = 6;
+
+    statsList[2].scores = [50, -10, 70, 30, 150, -100, -30, 30];
+    statsList[2].totalScore = 190;
+    statsList[2].timeSpent = [10, 0, 30, 50, 0, 20, 15, 10];
+    statsList[2].totalTimeSpent = 135;
+    statsList[2].averageTimeSpent = 23;
+    statsList[2].gamesPlayed = 15;
+    statsList[2].gamesLeft = 2;
+    statsList[2].gamesWon = 2;
+
+    users.map((x, i) => User.createUser(x, statsList[i % 3], () => {}));
 });
 
 // forward /auth/* requests to the external route handler (login and signup)
