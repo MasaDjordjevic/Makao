@@ -47,9 +47,6 @@ class HomeHeader extends React.Component {
                 width: '100%',
                 paddingLeft: '3%',
             },
-            addFriendDialogContent: {
-                width: 380,
-            },
             addFriendDialogBody: {
                 paddingRight: 0,
             }

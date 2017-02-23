@@ -48,7 +48,10 @@ class RightElements extends React.Component {
             },
             playButton: {
                 marginRight: 'auto',
-            }
+            },
+            addFriendDialogContent: {
+                width: 380,
+            },
         }
     }
 
