@@ -25,9 +25,9 @@ class PlayGame extends React.Component {
         this.setState({dialogOpen: false});
     };
 
-    handleCreate = () => {
+    handleCreate = (rules) => {
         this.handleClose();
-        this.props.onCreate();
+        this.props.onCreate(rules);
     };
 
     get styles() {
