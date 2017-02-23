@@ -25,6 +25,11 @@ class PlayGame extends React.Component {
         this.setState({dialogOpen: false});
     };
 
+    handleCreate = () => {
+        this.handleClose();
+        this.props.onCreate();
+    };
+
     get styles() {
 
         return {
@@ -73,7 +78,7 @@ class PlayGame extends React.Component {
                             <JoinGame games={this.props.gameList}/>
                         </Tab>
                         <Tab label="Create game">
-                            <CreateGame onCreate={this.props.onCreate}/>
+                            <CreateGame onCreate={this.handleCreate}/>
                         </Tab>
                     </Tabs>
                 </Dialog>
