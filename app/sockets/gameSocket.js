@@ -54,7 +54,8 @@ module.exports = function (socket, io) {
                 socket.to(creatorUsername).broadcast.emit('user:join', {
                     username: username,
                     online: true,
-                    cardNumber: 1
+                    cardNumber: 1,
+                    timeLeft: game.playerOnMove === username ? timeLeft: null,
                 });
             });
         });

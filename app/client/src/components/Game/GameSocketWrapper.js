@@ -169,7 +169,11 @@ class GameSocketWrapper extends React.Component {
         } else {
             users.push(user);
         }
-        this.setState({players: users});
+        let newState = {players: users};
+        if(user.timeLeft) {
+            newState.timeLeft = user.timeLeft
+        }
+        this.setState(newState);
     }
 
     handleUserLeft(username) {
