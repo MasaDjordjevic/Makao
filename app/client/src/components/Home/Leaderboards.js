@@ -42,6 +42,8 @@ class Leaderboards extends React.Component {
     get styles() {
         return {
             container: {
+                display: 'flex',
+                overflow: 'auto',
                 width: 260,
                 marginLeft: 'auto'
             }
@@ -85,7 +87,7 @@ class Leaderboards extends React.Component {
     renderList(userArray, userPosition) {
         return (
             <div>
-                <List style={{overflow: 'auto'}}>
+                <List style={{height: '100%', overflow: 'auto'}}>
                     {
                         userArray.map((user, i) =>
                             <Link to={"/users:" + user.id} key={user.id}>

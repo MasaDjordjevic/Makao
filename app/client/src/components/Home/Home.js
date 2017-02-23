@@ -42,12 +42,12 @@ class Home extends React.Component {
             },
             timeStats: {
                 ...stats, ...{
-                    width: 500,
+                    width: 650,
                 }
             },
             pointsStats: {
                 ...stats, ...{
-                    width: 700,
+                    width: 650,
                 }
             },
             leftPane: {
@@ -78,6 +78,9 @@ class Home extends React.Component {
                 ...background, ...{
                     width: scoreSize * 2 - leftSize,
                     height: scoreSize,
+                    minHeight: scoreSize,
+                    maxHeight: scoreSize,
+                    marginBottom: 10,
                     display: 'flex',
                     borderRadius: '2%',
                 }
