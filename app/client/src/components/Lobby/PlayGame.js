@@ -22,6 +22,7 @@ class PlayGame extends React.Component {
     }
 
     handleOpen = () => {
+        this.props.onOpen();
         this.setState({dialogOpen: true});
     }
 
@@ -29,9 +30,9 @@ class PlayGame extends React.Component {
         this.setState({dialogOpen: false});
     }
 
-    handleCreate = () => {
+    handleCreate = (rules) => {
         this.handleClose();
-        this.props.onCreate();
+        this.props.onCreate(rules);
     }
 
     handleJoin = (selectedGame) => {

@@ -33,8 +33,7 @@ class JoinGame extends React.Component {
                                 <TableRow key={game.creator}>
                                     <TableRowColumn>{game.creator}</TableRowColumn>
                                     <TableRowColumn>{game.current}</TableRowColumn>
-                                    <TableRowColumn>{game.rules.playerNumberMin}
-                                        - {game.rules.playerNumberMax}</TableRowColumn>
+                                    <TableRowColumn>{game.rules.playerNumberMin} - {game.rules.playerNumberMax}</TableRowColumn>
                                     <TableRowColumn><span>rules</span></TableRowColumn>
                                 </TableRow>
                             )
@@ -45,8 +44,8 @@ class JoinGame extends React.Component {
         );
     }
 }
+
 export default JoinGame;
 
 JoinGame.defaultProps = {};
-
 JoinGame.propTypes = {};

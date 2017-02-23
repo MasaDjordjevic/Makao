@@ -25,7 +25,11 @@ class PlaySocketWrapper extends React.Component {
 
     handleCreate = (rules) => {
         socket.emit('game:create', rules);
-    };
+    }
+
+    handleOpen = () => {
+        socket.emit('game:list');
+    }
 
     componentDidMount() {
         let thisComp = this;
@@ -55,6 +59,7 @@ class PlaySocketWrapper extends React.Component {
             <PlayGame style={this.props.style}
                       onCreate={this.handleCreate}
                       gameList={this.state.gameList}
+                      onOpen={this.handleOpen}
             />
         );
     }
