@@ -28,7 +28,7 @@ U ovom dokumentu biće objašnjene komponente koje vrše komunikaciju sa servero
  username: string
  ```
 
- gde se u prvoj grupi username odnosi na prijatelja a u drugom na kreatora igre.
+ gde se u prvoj grupi username odnosi na prijatelja a u drugoj na kreatora igre.
  
  - `invite:rejected`
  ```
