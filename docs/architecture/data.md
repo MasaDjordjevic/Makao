@@ -93,6 +93,7 @@ Redis ne brine (i ne interesuje ga) sadržaj odnosno sturktura samih podataka ko
 	rules: object,
 	logs[]: {
 				username: string,
+				message: string,
 				draw: Number,
 				card: object(Card),
 				jackSymbol: string,
@@ -101,3 +102,4 @@ Redis ne brine (i ne interesuje ga) sadržaj odnosno sturktura samih podataka ko
 	scores[]: [{username: string, score: number}, ...] //niz rundi gde svaka runda ima niz igraca
 }
 ```
+> **Napomena:** određeni atributi nisu obavezni ili ne postoje tokom celog "životnog veka" objekta. ```end``` se upise po završetku igre, ```players[username].kicked``` se inicijalizuje nakon što je igraš izbačen iz igre. Objekti koji se nalaze u nizu logs obično sadrže samo neke od atributa koji govore o tipu loga: odigravanje poteza, menjanje znaka, pobeda i slično. 
