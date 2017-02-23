@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import FlatButton from 'material-ui/FlatButton';
 
+
 class FriendAdder extends React.Component {
     constructor() {
         super();
@@ -74,7 +75,7 @@ class FriendAdder extends React.Component {
                             />
                         </List>
                         :
-                        <span style={this.styles.noResults}>No results</span>
+                        <span style={this.styles.noResults}>{this.props.searchMessage ? this.props.searchMessage : "No results"}</span>
                     }
                 </div>
             </div>
@@ -83,9 +84,13 @@ class FriendAdder extends React.Component {
 }
 export default FriendAdder;
 
-FriendAdder.defaultProps = {};
+FriendAdder.defaultProps = {
+    searchMessage: "No results",
+};
 
 FriendAdder.propTypes = {
     searchResults: React.PropTypes.string,
+    searchMessage: React.PropTypes.string,
     onSearch: React.PropTypes.func,
+    onUserSelect: React.PropTypes.func,
 };

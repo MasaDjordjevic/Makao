@@ -87,6 +87,7 @@ class RightElements extends React.Component {
                         onSearch={this.props.onFriendSearch}
                         searchResults={this.props.searchResults}
                         onUserSelect={this.props.onSendRequest}
+                        searchMessage={this.props.searchMessage}
                     />
                 </Dialog>
                 <PlaySocketWrapper style={this.styles.playButton}/>
@@ -150,5 +151,5 @@ RightElements.propTypes = {
     onInviteIgnore: React.PropTypes.func,
     onFrienSearch: React.PropTypes.func,
     onSendRequest: React.PropTypes.func,
-    searchResults: React.PropTypes.object,
+    searchResults: React.PropTypes.string,
 };

@@ -5,6 +5,7 @@ import HomeHeader from './HomeHeader';
 import Snackbar from 'material-ui/Snackbar';
 import {browserHistory} from 'react-router';
 import UserActions from '../../../actions/UserActions';
+import UserStore from '../../../stores/UserStore';
 var socket;
 
 class HeaderSocketWrapper extends React.Component {
@@ -15,6 +16,7 @@ class HeaderSocketWrapper extends React.Component {
             gameInvites: [],
             // for add friend dialog
             searchResults: null,
+            searchMessage: null,
             // for invite reject snackbar message
             rejectResponse: '',
             showResponse: false
@@ -86,6 +88,16 @@ class HeaderSocketWrapper extends React.Component {
     }
 
     handleFriendSearch(searchText) {
+        let user = UserStore.getState();
+        if(searchText === user.username){
+            this.setState({searchResults: null, searchMessage: "It's your username" });
+            return;
+        }
+        if(user.friends.indexOf(searchText) >= 0){
+            this.setState({searchResults: null, searchMessage: "Already a friend" });
+            return;
+        }
+
         socket.emit('friend:find', searchText);
     }
 
@@ -151,6 +163,7 @@ class HeaderSocketWrapper extends React.Component {
                 <HomeHeader onUserLoad={this.props.onUserLoad}
                             onFriendSearch={this.handleFriendSearch}
                             searchResults={this.state.searchResults}
+                            searchMessage={this.state.searchMessage}
                             onSendRequest={this.handleRequestSend}
                             onRequestAccept={this.handleRequestAccept}
                             onRequestIgnore={this.handleRequestIgnore}

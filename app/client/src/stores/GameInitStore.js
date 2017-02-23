@@ -6,7 +6,7 @@ class GameInitStore {
     constructor() {
         this.bindActions(GameInitActions);
         this.creatorUsername = '';
-        this.rules = {}
+        this.rules = {};
         this.lobby = [];
         this.allUsersReady = false;
     }

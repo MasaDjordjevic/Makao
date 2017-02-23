@@ -87,6 +87,8 @@ class HomeHeader extends React.Component {
                                        onFriendSearch={this.props.onFriendSearch}
                                        onSendRequest={this.props.onSendRequest}
                                        searchResults={this.props.searchResults}
+                                       searchMessage={this.props.searchMessage}
+
                         />
                     }
                 />
@@ -111,7 +113,7 @@ HomeHeader.propTypes = {
     onRequestIgnore: React.PropTypes.func,
     onInviteAccept: React.PropTypes.func,
     onInviteIgnore: React.PropTypes.func,
-    searchResults: React.PropTypes.object,
+    searchResults: React.PropTypes.string,
     gameInvites: React.PropTypes.array,
 
 };
