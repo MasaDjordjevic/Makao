@@ -135,7 +135,7 @@ User.count({}, (err, count) => {
     statsList[2].gamesWon = 2;
 
     for (var i = 0; i < users.length; i++) {
-        User.createUser(users[i], statsList[i % 3], () => {});
+        User.createUserWithStats(users[i], statsList[i % 3], () => {});
     }
 
     // users.map((x, i) => User.createUser(x, statsList[i % 3], () => {}));
