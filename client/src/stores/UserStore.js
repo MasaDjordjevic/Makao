@@ -60,4 +60,4 @@ class UserStore {
     }
 }
 
-export default alt.createStore(UserStore);
+export default alt.createStore(UserStore, 'UserStore');

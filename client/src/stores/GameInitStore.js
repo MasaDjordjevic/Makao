@@ -45,4 +45,4 @@ class GameInitStore {
     }
 }
 
-export default alt.createStore(GameInitStore);
+export default alt.createStore(GameInitStore, 'GameInitStore');
