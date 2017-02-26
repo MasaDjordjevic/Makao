@@ -49,7 +49,6 @@ UserStatsSchema.statics.updateStats = function(statsId, data, callback) {
         stats.markModified('timeSpent');
 
         stats.save((err) => {
-            if (err) { return callback(err) }
             return callback(null);
         });
     });
@@ -69,15 +68,11 @@ UserStatsSchema.statics.getLeaderboards = function(username, callback) {
                     score: userStats.totalScore
                 }
 
-                if (user.username === userStats.username) {
+                if (user.username === userStats.username || isFriend) {
                     friends.push(entry);
                 }
 
-                if (isFriend) {
-                    friends.push(entry);
-                }
-
-                // clone the object and save ref to that clone
+                // clone the object and assign its ref to 'entry'
                 entry = Object.assign({}, entry);
                 entry.friend = isFriend;
                 global.push(entry);
@@ -89,8 +84,8 @@ UserStatsSchema.statics.getLeaderboards = function(username, callback) {
             let meGlobal = global.findIndex(item => item.username === username);
             let meFriends = friends.findIndex(item => item.username === username);
 
-            if (global.length > 10) global = global.slice(0, 10);
-            if (friends.length > 10) friends = friends.slice(0, 10);
+            if (global.length > 10) { global = global.slice(0, 10) }
+            if (friends.length > 10) { friends = friends.slice(0, 10) }
 
             return callback(null, {
                 global: global,
