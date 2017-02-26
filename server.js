@@ -7,9 +7,8 @@ import path from 'path';
 import redis from 'redis';
 import sio from 'socket.io';
 
-// external route handlers
-import authRoutes from './routes/auth';
-import gameRoutes from './routes/game';
+// external route handler
+import routes from './routes';
 
 // mongodb connection logic
 import mongoConnect from './models/connect';
@@ -40,44 +39,14 @@ let app = express();
 // change promises used to native ES6 promises and connect to mongodb
 mongoConnect.connect('mongodb://localhost/makao');
 
-import Card from './client/src/components/Card/Card';
-// redis client used for saving game state
-app.get('/test', (req, res, next) => {
-    let rules = {deckNumber: 2, gameLimit: 300, playerNumberMax: 8, playerNumberMin: 3, rankFilter: 2, timeLimit: 10};
-    debugger;
-    Games.storeGame('masa', rules);
-    let p1;
-    Games.getGameState('masa').then((val) => {
-        console.log('Game state: ' + val);
-    });
-    Games.isGameStarted('masa').then((val) => {
-        console.log('Is game started: ' + val);
-    });
-    Games.getGameRules('masa').then((val) => {
-        console.log('Game rules:' + val);
-        //res.status(200).json({test: val});
-    });
-    let cards = [
-        new Card("spades", "2"),
-        new Card("spades", "7"),
-        new Card("diamonds", "1"),
-        new Card("spades", "12"),
-        new Card("spades", "13")];
-    Games.setPlayerCards('masa', 'masa', cards);
-    Games.getPlayerCards('masa', 'masa').then((val) => {
-        console.log('Cards: ' + val);
-        res.status(200).json({test: val.map((card) => JSON.parse(card))});
-    })
-});
-
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client', 'build')));
 }
 app.use(logger('combined'));
 app.use(bodyParser.json());
 
-// insert some users if none exist in database
 User.count({}, (err, count) => {
+    if (count != 0) { return }
     Game.remove({}, () => {});
     User.remove({}, () => {});
     Stats.remove({}, () => {});
@@ -137,15 +106,9 @@ User.count({}, (err, count) => {
     for (var i = 0; i < users.length; i++) {
         User.createUserWithStats(users[i], statsList[i % 3], () => {});
     }
-
-    // users.map((x, i) => User.createUser(x, statsList[i % 3], () => {}));
 });
 
-// forward /auth/* requests to the external route handler (login and signup)
-app.use('/auth', authRoutes);
-// all other requests have to go through authCheck before forwarding to handler
-// app.use('/', authCheck, appRoutes, gameRoutes);
-app.use('/', gameRoutes);
+app.use(routes);
 
 const server = app.listen(3001, () => {
     console.log('Server listening on port 3001.');
@@ -168,4 +131,3 @@ io.of('/game')
 io.of('/play')
   .on('connection', authCheck.socketTokenAuth)
   .on('authenticated', playSocket);
-// sioauth(io, { authenticate: authCheck.socketAuth, timeout: 'none' });
