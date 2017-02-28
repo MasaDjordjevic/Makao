@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import validations from './validations';
+import Gameplay from './Gameplay/Gameplay';
 import { loginAuth, signupAuth } from './auth-check';
 
 var router = express.Router();
